@@ -1,0 +1,1 @@
+aa bb - typeA cc dd - (either typeB) ee

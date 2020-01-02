@@ -1,0 +1,13 @@
+(define (domain domainName)
+  (:requirements :typing :adl :fluents)
+  (:constants constA constB)
+  (:predicates (pred0) (pred1) (pred2))
+  (:action actionName0
+    :parameters ()
+    :precondition ()
+    :effect (and (pred2)
+                 (not (pred0))
+                 (not (pred1))
+            )
+  )
+)

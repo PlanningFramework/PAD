@@ -1,0 +1,17 @@
+(define (domain domainName)
+  (:requirements :typing :adl :fluents)
+  (:constants constA constB)
+  (:predicates (pred) (pred ?a))
+  (:functions (objFunc) - object)
+  (:action actionName
+    :parameters ()
+    :precondition (not (or
+                         (and (pred) (<= 2 5))
+                         (imply (pred) (pred))
+                         (not (= (objFunc) constA))
+                         (forall (?a) (pred ?a))
+                         (exists (?a) (not (pred ?a)))
+                       )
+                  )       
+  )
+)

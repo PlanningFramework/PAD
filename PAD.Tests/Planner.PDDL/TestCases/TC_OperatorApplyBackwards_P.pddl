@@ -1,0 +1,36 @@
+(define (problem problemName)
+  (:domain domainName)
+  (:goal (and
+           (and
+             (predA)
+             (not (predB))
+             (or (predC) (predD))
+             (predE)
+           )
+           (and
+             (= (objFunc1) constA)
+             (= (objFunc3) (objFunc2))
+             (= (objFunc4) constA)
+             (= (objFunc5) (objFunc6))
+             (not (= (objFunc7 constA) constA))
+           )
+           (and
+             (<= (+ numFunc1 5) 8)
+             (not (> (+ numFunc1 5) 8))
+             (>= (numFunc1) (numFunc2))
+             (not (< (numFunc1) (numFunc2)))
+             (= (numFunc3) 0)
+           )
+           (and
+             (predF constA constA)
+             (predF constA constB)
+             (predF constB constA)
+             (predF constB constB)
+           )
+           (and
+             (predX)
+             (predY)
+           )
+         )
+  )
+)

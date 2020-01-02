@@ -1,0 +1,6 @@
+(define (problem problemName)
+  (:domain domainName)
+  (:init (predStart))
+  (:goal (pred y1)
+  )
+)

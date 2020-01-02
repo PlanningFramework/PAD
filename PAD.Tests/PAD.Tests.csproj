@@ -1,0 +1,596 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3D391630-E95D-4BEA-BCAD-78D5F448516E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PAD.Tests</RootNamespace>
+    <AssemblyName>PAD.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Irony, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irony.0.9.1\lib\net40\Irony.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Irony.Interpreter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irony.Interpreter.0.9.1\lib\net40\Irony.Interpreter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="Planner\EvaluationTests.cs" />
+    <Compile Include="Planner\SearchUnitTests.cs" />
+    <Compile Include="Planner\HeuristicsUnitTests.cs" />
+    <Compile Include="Planner\HeapsUnitTests.cs" />
+    <Compile Include="Planner.PDDL\UnitTests.cs" />
+    <Compile Include="Loader.SAS\UnitTests.cs" />
+    <Compile Include="Loader.SAS\Utilities.cs" />
+    <Compile Include="Loader.PDDL\BatchTests.cs" />
+    <Compile Include="Loader.PDDL\FullUnitTests.cs" />
+    <Compile Include="Loader.PDDL\Utilities.cs" />
+    <Compile Include="Loader.PDDL\GrammarUnitTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Planner.SAS\UnitTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PAD.InputData\PAD.InputData.csproj">
+      <Project>{66626b85-3b67-407f-bc18-5d3edb81d3d1}</Project>
+      <Name>PAD.InputData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PAD.Planner\PAD.Planner.csproj">
+      <Project>{e3014f1d-b823-4779-981c-3ebb66b84aeb}</Project>
+      <Name>PAD.Planner</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Planner.PDDL\TestCases\TC_ConditionsUsedPredicatesCollector.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_AtomsManager.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_GroundingManager_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Operator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Operator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Effects_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsBackwardsRelativeStateApplier_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsBackwardsRelativeStateApplier_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Effects_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsResultAtomsCollector.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsPreprocessedCollection.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsRelevanceRelativeStateEvaluator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsRelevanceRelativeStateEvaluator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_IDManager_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_IDManager_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_GroundingManager_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_PlanningGraphOperatorLabelEvaluatorCNF_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_PlanningGraphOperatorLabelEvaluatorCNF_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Problem_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Problem_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_StatesEnumerator.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_SatisfyingAtomsEvaluator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_SatisfyingAtomsEvaluator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NotAccomplishedConstraintsCounterCNF_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NotAccomplishedConstraintsCounterCNF_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NumericFunctionsCollector.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_RelativeState.pddl" />
+    <None Include="Planner.SAS\TestCases\TC_RedBlackState.sas" />
+    <None Include="Planner.SAS\TestCases\TC_AbstractedState.sas" />
+    <None Include="Planner.SAS\TestCases\TC_StatesEnumerator.sas" />
+    <None Include="Planner.SAS\TestCases\TC_RelativeState.sas" />
+    <None Include="Planner\TestCases\TC_Gripper.sas" />
+    <None Include="Planner\TestCases\TC_Gripper_D.pddl" />
+    <None Include="Planner\TestCases\TC_Gripper_P.pddl" />
+    <None Include="Planner\TestCases\TC_SearchResults2.sas" />
+    <None Include="Planner\TestCases\TC_SearchResults.sas" />
+    <None Include="packages.config" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\blocksworld_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\blocksworld_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\ferry_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\ferry_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\fridge_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\fridge_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\hanoi_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\hanoi_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\miconic_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\FF-Benchmark\miconic_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\assembly_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\assembly_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\gripper_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\gripper_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\logistics_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\logistics_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\movie_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\movie_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\mprime_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\mprime_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\mystery_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-1998\mystery_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\blocks_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\blocks_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\elevators_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\elevators_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\freecell_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\freecell_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\logistics_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\logistics_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\schedule_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2000\schedule_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2002\depot_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2002\depot_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2002\driverlog_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2002\driverlog_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2002\rovers_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2002\rovers_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2002\zenotravel_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2002\zenotravel_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\airport_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\airport_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\philosophers_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\philosophers_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\psr_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\psr_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\satellite_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\satellite_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\settlers_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2004\settlers_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\openstacks_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\openstacks_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\pathways_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\pathways_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\pipesworld_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\pipesworld_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\rovers_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\rovers_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\storage_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\storage_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\tpp_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\tpp_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\trucks_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2006\trucks_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\elevators_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\elevators_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\openstacks_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\openstacks_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\parcprinter_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\parcprinter_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\pegsol_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\pegsol_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\scanalyzer_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\scanalyzer_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\sokoban_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\sokoban_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\transport_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\transport_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\woodworking_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2008\woodworking_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\barman_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\barman_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\floortile_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\floortile_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\nomystery_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\nomystery_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\openstacks_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\openstacks_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\parking_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\parking_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\tidybot_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\tidybot_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\visitall_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2011\visitall_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\cavediving_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\cavediving_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\childsnack_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\childsnack_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\citycar_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\citycar_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\ged_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\ged_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\hiking_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\hiking_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\maintenance_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\maintenance_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\tetris_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\tetris_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\thoughtful_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2014\thoughtful_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\agricola_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\agricola_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\caldera_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\caldera_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\data_network_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\data_network_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\flashfill_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\flashfill_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\nurikabe_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\nurikabe_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\organic_synthesis_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\organic_synthesis_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\petrinet_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\petrinet_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\settlers_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\settlers_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\snake_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\snake_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\spider_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\spider_problem.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\termes_domain.pddl" />
+    <None Include="Loader.PDDL\BatchTestCases\IPC-2018\termes_problem.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\Dummy_D.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\Dummy_P.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Terms.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Parameters.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_ConstraintsInProblem.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Init_D.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Goal.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Init_P.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Metric.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Objects.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Length.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Problem.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_DurativeEffects.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_DurativeExpressions.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_DurativeConstraints.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Effects.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_NumericExpressions.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Expressions.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_DurativeActions.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Actions.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Functions.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_ConstraintsInDomain.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_DerivedPredicates.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Predicates.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Constants.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_RequirementsInProblem.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Types.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_RequirementsInDomain.pddl" />
+    <None Include="Loader.PDDL\FullTestCases\TC_Domain.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarAction.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarConGD.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarDaEffect.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarDaGD.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarDerivedPred.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarDomain.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarDurAction.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarDurConstr.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarEffect.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarFunctionTerm.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarFunctionTermC.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarFunctionTypedList.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarGD.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarIdentifier.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarInitElem.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarMetricExpr.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarNumericExpr.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarNumericExprDa.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarNumericExprT.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarNumericOp.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarPEffect.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarPEffectT.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarPredicateGD.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarPrefConGD.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarPreGD.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarProblem.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarTerm.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarTimedEffect.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarTypedList.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarTypedListC.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarValueOrTerm.pddl" />
+    <None Include="Loader.PDDL\GrammarTestCases\TC_GrammarValueOrTermT.pddl" />
+    <None Include="Planner.PDDL\TestCases\Dummy_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConditionsCNF_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConditionsCNF_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Conditions_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConditionsParametersCollector_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Conditions_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Parameters.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConditionsParametersRenamer_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsBackwardsConditionsApplierLifted_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsBackwardsConditionsApplierLifted_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConditionsGrounder.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_RelaxedProblem_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_RelaxedProblem_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorCost_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorCost_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_RelaxedPlanningGraph_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_PlanningGraphOperatorLabelEvaluator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NotAccomplishedConstraintsCounter_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_RelaxedPlanningGraph_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_PlanningGraphOperatorLabelEvaluator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_RigidRelationsComplianceEvaluator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NotAccomplishedConstraintsCounter_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_RigidRelationsComplianceEvaluator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_TransitionsGenerator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_TransitionsGenerator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EvaluationManager_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EvaluationManager_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsBuilder.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Atom.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ExpressionsBuilder.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConditionsCNFEvaluator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConditionsCNFEvaluator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Terms.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_TermsBuilder.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NumericExpressionsBuilder.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorApplyBackwards_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorApplyBackwards_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Substitution.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NumericExpressionsGrounder.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Grounder_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_Grounder_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_TermsGrounder_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_TermsGrounder_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ExpressionsGrounder.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_State.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_InitialStateDataBuilder_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_InitialStateDataBuilder_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsBackwardsConditionsApplier_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NumericAssignmentsBackwardsReplacer_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsBackwardsConditionsApplier_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NumericAssignmentsBackwardsReplacer_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorIsApplicable_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorIsApplicable_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorApply_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorApply_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorIsRelevant_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsRelevanceConditionsEvaluator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_OperatorIsRelevant_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsRelevanceConditionsEvaluator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConditionsCNFBuilder.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ExpressionToCNFTransformer.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ExpressionToNNFTransformer.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_RigidRelations_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsApplier_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_RigidRelations_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_EffectsApplier_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NumericExpressionEvaluator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_NumericExpressionEvaluator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ExpressionEvaluator_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ExpressionEvaluator_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_SubstitutionGenerator.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConstantsManager_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\Dummy_P.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_ConstantsManager_D.pddl" />
+    <None Include="Planner.PDDL\TestCases\TC_TypeHierarchy.pddl" />
+    <None Include="Loader.SAS\TestCases\TC_FullTest_Blocks.sas" />
+    <None Include="Loader.SAS\TestCases\TC_FullTest_PSR.sas" />
+    <None Include="Loader.SAS\TestCases\TC_FullTest_Gripper.sas" />
+    <None Include="Loader.SAS\TestCases\TC_AxiomRules.sas" />
+    <None Include="Loader.SAS\TestCases\TC_Operators.sas" />
+    <None Include="Loader.SAS\TestCases\TC_GoalConditions.sas" />
+    <None Include="Loader.SAS\TestCases\TC_InitialState.sas" />
+    <None Include="Loader.SAS\TestCases\TC_Problem.sas" />
+    <None Include="Loader.SAS\TestCases\TC_MutexGroups.sas" />
+    <None Include="Loader.SAS\TestCases\TC_Variables.sas" />
+    <None Include="Loader.SAS\TestCases\TC_Version1.sas" />
+    <None Include="Loader.SAS\TestCases\TC_Version2.sas" />
+    <None Include="Loader.SAS\TestCases\TC_Metric.sas" />
+    <None Include="Loader.SAS\TestCases\TC_Version3.sas" />
+    <None Include="Planner.SAS\TestCases\TC_Assignment.sas" />
+    <None Include="Planner.SAS\TestCases\TC_MutexChecker.sas" />
+    <None Include="Planner.SAS\TestCases\TC_MutexGroups.sas" />
+    <None Include="Planner.SAS\TestCases\TC_PatternDatabase.sas" />
+    <None Include="Planner.SAS\TestCases\TC_PatternsFinder.sas" />
+    <None Include="Planner.SAS\TestCases\TC_RelaxedProblem.sas" />
+    <None Include="Planner.SAS\TestCases\TC_RelaxedPlanningGraph.sas" />
+    <None Include="Planner.SAS\TestCases\TC_Problem.sas" />
+    <None Include="Planner.SAS\TestCases\TC_OperatorDecisionTreeBuilder.sas" />
+    <None Include="Planner.SAS\TestCases\TC_RelaxedState.sas" />
+    <None Include="Planner.SAS\TestCases\TC_SuccessorsGenerator.sas" />
+    <None Include="Planner.SAS\TestCases\TC_State.sas" />
+    <None Include="Planner.SAS\TestCases\TC_PredecessorsGenerator.sas" />
+    <None Include="Planner.SAS\TestCases\TC_TransitionsEnumerator.sas" />
+    <None Include="Planner.SAS\TestCases\TC_TransitionsGenerator.sas" />
+    <None Include="Planner.SAS\TestCases\TC_Operators.sas" />
+    <None Include="Planner.SAS\TestCases\TC_Effects.sas" />
+    <None Include="Planner.SAS\TestCases\TC_Conditions.sas" />
+    <None Include="Planner.SAS\TestCases\TC_AxiomRules.sas" />
+    <None Include="Planner.SAS\TestCases\TC_Variables.sas" />
+    <None Include="TestCases_IPC\PDDL\agricola_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\agricola_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\airport_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\airport_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\assembly_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\assembly_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\barman_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\barman_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\blocksworld_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\blocksworld_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\blocks_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\blocks_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\caldera_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\caldera_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\cavediving_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\cavediving_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\childsnack_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\childsnack_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\citycar_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\citycar_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\data_network_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\data_network_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\depot_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\depot_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\driverlog_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\driverlog_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\elevators_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\elevators_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\ferry_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\ferry_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\flashfill_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\flashfill_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\floortile_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\floortile_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\freecell_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\freecell_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\fridge_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\fridge_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\ged_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\ged_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\gripper_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\gripper_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\hanoi_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\hanoi_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\hiking_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\hiking_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\logistics_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\logistics_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\maintenance_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\maintenance_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\miconic_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\miconic_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\movie_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\movie_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\mprime_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\mprime_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\mystery_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\mystery_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\nomystery_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\nomystery_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\nurikabe_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\nurikabe_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\openstacks_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\openstacks_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\organic_synthesis_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\organic_synthesis_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\parcprinter_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\parcprinter_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\parking_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\parking_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\pathways_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\pathways_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\pegsol_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\pegsol_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\petrinet_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\petrinet_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\philosophers_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\philosophers_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\pipesworld_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\pipesworld_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\psr_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\psr_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\rovers_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\rovers_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\satellite_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\satellite_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\scanalyzer_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\scanalyzer_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\schedule_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\schedule_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\settlers_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\settlers_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\snake_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\snake_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\sokoban_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\sokoban_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\spider_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\spider_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\storage_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\storage_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\termes_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\termes_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\tetris_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\tetris_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\thoughtful_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\thoughtful_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\tidybot_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\tidybot_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\tpp_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\tpp_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\transport_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\transport_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\trucks_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\trucks_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\visitall_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\visitall_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\woodworking_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\woodworking_problem.pddl" />
+    <None Include="TestCases_IPC\PDDL\zenotravel_domain.pddl" />
+    <None Include="TestCases_IPC\PDDL\zenotravel_problem.pddl" />
+    <None Include="TestCases_IPC\SAS\barman.sas" />
+    <None Include="TestCases_IPC\SAS\pegsol.sas" />
+    <None Include="TestCases_IPC\SAS\openstacks.sas" />
+    <None Include="TestCases_IPC\SAS\pathways.sas" />
+    <None Include="TestCases_IPC\SAS\parcprinter.sas" />
+    <None Include="TestCases_IPC\SAS\sokoban.sas" />
+    <None Include="TestCases_IPC\SAS\settlers.sas" />
+    <None Include="TestCases_IPC\SAS\psr.sas" />
+    <None Include="TestCases_IPC\SAS\pipesworld.sas" />
+    <None Include="TestCases_IPC\SAS\philosophers.sas" />
+    <None Include="TestCases_IPC\SAS\airport.sas" />
+    <None Include="TestCases_IPC\SAS\depot.sas" />
+    <None Include="TestCases_IPC\SAS\driverlog.sas" />
+    <None Include="TestCases_IPC\SAS\blocks.sas" />
+    <None Include="TestCases_IPC\SAS\assembly.sas" />
+    <None Include="TestCases_IPC\SAS\elevators.sas" />
+    <None Include="TestCases_IPC\SAS\freecell.sas" />
+    <None Include="TestCases_IPC\SAS\zenotravel.sas" />
+    <None Include="TestCases_IPC\SAS\satellite.sas" />
+    <None Include="TestCases_IPC\SAS\rovers.sas" />
+    <None Include="TestCases_IPC\SAS\movie.sas" />
+    <None Include="TestCases_IPC\SAS\gripper.sas" />
+  </ItemGroup>
+  <ItemGroup />
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

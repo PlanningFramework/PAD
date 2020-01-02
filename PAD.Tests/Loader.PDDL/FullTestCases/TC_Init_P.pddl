@@ -1,0 +1,13 @@
+(define (problem problemName)
+  (:domain domainName)
+  (:init
+    (pred constA)
+    (= constA constB)
+    (not (pred constB))
+    (at 5 (pred constA))
+    (= numFuncA 66)
+    (= objFuncA constA)
+    (= (numFuncB constA) 55)
+    (= (objFuncB constA) constB)
+  )
+)

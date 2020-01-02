@@ -1,0 +1,6 @@
+(define (problem problemName)
+  (:domain domainName)
+  (:init (pred0)
+         (= total-cost 0)
+  )
+)

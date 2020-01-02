@@ -1,0 +1,26 @@
+(define (domain domainName)
+  (:requirements :typing :fluents :equality :conditional-effects)
+  (:types typeA)
+  (:constants constA - typeA)
+  (:predicates (pred ?aa) (predA ?aa) (predB ?aa))
+  (:functions (numFunc) - number
+              (objFunc) - object)
+  (:action actionA
+    :parameters (?aa ?bb)
+	:precondition ()
+    :effect (and
+              (pred ?aa)
+			  (= objFunc constA)
+              (forall (?cc - typeA) (pred ?cc))
+              (when (pred ?bb)
+                (and
+                  (predA ?aa)
+                  (predB ?aa)
+                )
+              )
+			  (assign numFunc 5)
+			  (assign objFunc ?aa)
+			  (scale-up (numFunc) (+ 5 5))
+			)
+  )
+)

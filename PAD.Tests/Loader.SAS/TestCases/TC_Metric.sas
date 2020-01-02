@@ -1,0 +1,15 @@
+begin_version
+3
+end_version
+begin_metric
+1
+end_metric
+0
+0
+begin_state
+end_state
+begin_goal
+0
+end_goal
+0
+0

@@ -1,0 +1,13 @@
+(and
+  (forall (?aa) (always (pred ?aa)))
+  (at end (pred ?aa))
+  (always (pred ?aa))
+  (sometime (pred ?aa))
+  (within 6 (pred ?aa))
+  (at-most-once (pred ?aa))
+  (sometime-after (pred ?aa) (pred ?bb))
+  (sometime-before (pred ?aa) (pred ?bb))
+  (always-within 6 (pred ?aa) (pred ?bb))
+  (hold-during 6 6 (pred ?aa))
+  (hold-after 6 (pred ?aa))
+)

@@ -1,0 +1,17 @@
+(define (domain domainName)
+  (:requirements :durative-actions :preferences :adl)
+  (:predicates (pred ?a))
+  (:durative-action actionA
+    :parameters (?a)
+    :duration ()
+	:condition (and
+	             (forall (?b) (at start (pred ?a)))
+				 (and (at start (pred ?a)))
+	             (preference prefName (at start (pred ?a)))
+	             (at start (pred ?a))
+				 (at end (pred ?a))
+				 (over all (pred ?a))
+	           )
+    :effect ()
+  )
+)

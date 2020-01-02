@@ -1,0 +1,13 @@
+(define (domain domainName)
+  (:requirements :adl)
+  (:constants constA constB)
+  (:predicates (predA ?a) (predB ?a) (predC) (predTrue))
+  (:action actionName0
+    :parameters (?a)
+    :precondition (and (predTrue)
+                       (or (predA ?a) (predB ?a))
+                       (predC)
+                  )
+    :effect (and (predA ?a) (predB ?a))
+  )
+)

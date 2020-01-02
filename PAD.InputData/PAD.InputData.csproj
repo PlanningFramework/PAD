@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{66626B85-3B67-407F-BC18-5D3EDB81D3D1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PAD.InputData</RootNamespace>
+    <AssemblyName>PAD.InputData</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Irony, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irony.0.9.1\lib\net40\Irony.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Irony.Interpreter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irony.Interpreter.0.9.1\lib\net40\Irony.Interpreter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InputData.cs" />
+    <Compile Include="PDDL.Loader\LoadingException.cs" />
+    <Compile Include="SAS.Loader\LineReader.cs" />
+    <Compile Include="SAS.Validator\ValidateVisitor.cs" />
+    <Compile Include="SAS.Validator\ValidationException.cs" />
+    <Compile Include="SAS.Loader\LoadingException.cs" />
+    <Compile Include="SAS.Loader\MasterExporter.cs" />
+    <Compile Include="SASInputDataValidator.cs" />
+    <Compile Include="SASInputDataLoader.cs" />
+    <Compile Include="SASInputData.cs" />
+    <Compile Include="PDDLInputData.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToDurativeConstraintsConverter.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToDurativeEffectsConverter.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToInitConverter.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToEffectConverter.cs" />
+    <Compile Include="PDDL.Loader\MasterExporter.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToConstraintsConverter.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToDurativeExpressionConverter .cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToMetricExpressionConverter.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToNumericExpressionConverter.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToTermConverter.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToExpressionConverter.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToProblemConverter.cs" />
+    <Compile Include="PDDL.Loader\MasterParser.cs" />
+    <Compile Include="PDDLInputDataLoader.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstAction.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstBaseNode.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstConGD.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstDaEffect.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstDaGD.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstDerivedPred.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstDomain.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstDurAction.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstDurConstr.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstEffect.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstFuncTypedList.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstGD.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstInitElem.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstNumericExpr.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstNumericOp.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstPEffect.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstProblem.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstTimedEffect.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstTypedList.cs" />
+    <Compile Include="PDDL.Loader\Ast\EnumMapper.cs" />
+    <Compile Include="PDDL.Loader\Ast\ParseExtensions.cs" />
+    <Compile Include="PDDL.Loader\Ast\AstVisitor.cs" />
+    <Compile Include="PDDL.Loader\DataExport\ToDomainConverter.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarAction.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarBaseNode.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarConGD.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarDaEffect.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarDaGD.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarDerivedPred.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarDomain.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarDurAction.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarDurConstr.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarEffect.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarFunctionTerm.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarFunctionTermC.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarFuncTypedList.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarGD.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarIdentifier.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarInitElem.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarMetricExpr.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarNumericExpr.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarNumericExprDa.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarNumericExprT.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarNumericOp.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarPEffect.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarPEffectT.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarPredicateGD.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarPrefConGD.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarPreGD.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarProblem.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarTerm.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarTimedEffect.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarTypedList.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarTypedListC.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarValueOrTerm.cs" />
+    <Compile Include="PDDL.Loader\Grammar\GrammarValueOrTermT.cs" />
+    <Compile Include="PDDL.Loader\Grammar\MasterGrammar.cs" />
+    <Compile Include="PDDL.Loader\Grammar\MasterGrammarDomain.cs" />
+    <Compile Include="PDDL.Loader\Grammar\MasterGrammarProblem.cs" />
+    <Compile Include="PDDLInputDataValidator.cs" />
+    <Compile Include="PDDL.Validator\ValidationException.cs" />
+    <Compile Include="PDDL.Validator\ValidateVisitor.cs" />
+    <Compile Include="PDDL\Actions.cs" />
+    <Compile Include="PDDL\Constants.cs" />
+    <Compile Include="PDDL\Constraints.cs" />
+    <Compile Include="PDDL\DerivedPredicates.cs" />
+    <Compile Include="PDDL\Domain.cs" />
+    <Compile Include="PDDL\DurativeActions.cs" />
+    <Compile Include="PDDL\DurativeConditions.cs" />
+    <Compile Include="PDDL\DurativeConstraints.cs" />
+    <Compile Include="PDDL\DurativeEffect.cs" />
+    <Compile Include="PDDL\DurativeExpression.cs" />
+    <Compile Include="PDDL\Effects.cs" />
+    <Compile Include="PDDL\Expression.cs" />
+    <Compile Include="PDDL\Functions.cs" />
+    <Compile Include="PDDL\Goal.cs" />
+    <Compile Include="PDDL\Visitor.cs" />
+    <Compile Include="PDDL\Init.cs" />
+    <Compile Include="PDDL\Length.cs" />
+    <Compile Include="PDDL\Metric.cs" />
+    <Compile Include="PDDL\NumericExpression.cs" />
+    <Compile Include="PDDL\Objects.cs" />
+    <Compile Include="PDDL\Parameters.cs" />
+    <Compile Include="PDDL\Preconditions.cs" />
+    <Compile Include="PDDL\Predicates.cs" />
+    <Compile Include="PDDL\Problem.cs" />
+    <Compile Include="PDDL\Requirements.cs" />
+    <Compile Include="PDDL\Terms.cs" />
+    <Compile Include="PDDL\Traits.cs" />
+    <Compile Include="PDDL\Types.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SAS\Assignment.cs" />
+    <Compile Include="SAS\Effects.cs" />
+    <Compile Include="SAS\Conditions.cs" />
+    <Compile Include="SAS\Utilities.cs" />
+    <Compile Include="SAS\Version.cs" />
+    <Compile Include="SAS\Metric.cs" />
+    <Compile Include="SAS\AxiomRules.cs" />
+    <Compile Include="SAS\Operators.cs" />
+    <Compile Include="SAS\GoalConditions.cs" />
+    <Compile Include="SAS\InitialState.cs" />
+    <Compile Include="SAS\MutexGroups.cs" />
+    <Compile Include="SAS\Variables.cs" />
+    <Compile Include="SAS\Problem.cs" />
+    <Compile Include="SAS\Visitor.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

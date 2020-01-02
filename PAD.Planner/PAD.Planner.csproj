@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E3014F1D-B823-4779-981C-3EBB66B84AEB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PAD.Planner</RootNamespace>
+    <AssemblyName>PAD.Planner</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SoftUni.Wintellect.PowerCollections, Version=1.1.5733.22550, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SoftUni.Wintellect.PowerCollections.1.1.5733.22550\lib\net20\SoftUni.Wintellect.PowerCollections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Heaps\FibonacciHeap.cs" />
+    <Compile Include="Heaps\SimpleStack.cs" />
+    <Compile Include="Heaps\SimpleQueue.cs" />
+    <Compile Include="Heaps\MeasuredHeap.cs" />
+    <Compile Include="Heaps\RedBlackTreeHeap.cs" />
+    <Compile Include="Heuristics\AdditiveRelaxationHeuristic.cs" />
+    <Compile Include="Heuristics\ComplexHeuristic.cs" />
+    <Compile Include="Heuristics\ISearchableHeuristic.cs" />
+    <Compile Include="Heuristics\WeightedSumHeuristic.cs" />
+    <Compile Include="Heuristics\SumHeuristic.cs" />
+    <Compile Include="Heuristics\MinHeuristic.cs" />
+    <Compile Include="Heuristics\MaxHeuristic.cs" />
+    <Compile Include="Heuristics\HeuristicStatistics.cs" />
+    <Compile Include="Heuristics\PDBHeuristic.cs" />
+    <Compile Include="Heuristics\FFHeuristic.cs" />
+    <Compile Include="Heuristics\MaxRelaxationHeuristic.cs" />
+    <Compile Include="Problem\Common\Transitions\Transition.cs" />
+    <Compile Include="Problem\Common\ISearchableProblem.cs" />
+    <Compile Include="Problem\Common\IRelativeState.cs" />
+    <Compile Include="Problem\Common\IRelaxedPlanningGraph.cs" />
+    <Compile Include="Problem\Common\IPatternDatabase.cs" />
+    <Compile Include="Problem\Common\ISearchNode.cs" />
+    <Compile Include="Problem\Common\IStateOrConditions.cs" />
+    <Compile Include="Problem\Common\PlanningGraph\IProposition.cs" />
+    <Compile Include="Problem\Common\PlanningGraph\ActionLayer.cs" />
+    <Compile Include="Problem\Common\PlanningGraph\ForwardCostEvaluationStrategy.cs" />
+    <Compile Include="Problem\Common\PlanningGraph\RelaxedPlanningGraph.cs" />
+    <Compile Include="Problem\Common\PlanningGraph\IStateLabels.cs" />
+    <Compile Include="Problem\Common\PlanningGraph\IStateLayer.cs" />
+    <Compile Include="Problem\Common\Transitions\Predecessor.cs" />
+    <Compile Include="Problem\Common\Transitions\IPredecessor.cs" />
+    <Compile Include="Problem\Common\Transitions\Successor.cs" />
+    <Compile Include="Problem\Common\Transitions\ISuccessor.cs" />
+    <Compile Include="Problem\Common\Transitions\ITransition.cs" />
+    <Compile Include="Problem\PDDL\Atoms\IAtom.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\ConditionsUsedPredicatesCollector.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\EffectsBackwardsRelativeStateApplier.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\EffectsRelevanceRelativeStateEvaluator.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\NumericFunctionsCollector.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Elements\NumericCompareLiteralCNF.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Elements\PredicateLiteralCNF.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Elements\LiteralCNF.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Elements\IConjunctCNF.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Elements\EqualsLiteralCNF.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Elements\ClauseCNF.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Elements\IElementCNF.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Visitors\IElementCNFBackwardsApplierVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Visitors\IConditionsCNFEvalVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Visitors\IConditionsCNFPropCountVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Visitors\IConditionsCNFPropEvalVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Visitors\IConditionsCNFVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\Visitors\IElementCNFRelevanceEvaluationVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\NumericCompareExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\EqualsExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\PreferenceExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\PredicateExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\ExistsExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\ForallExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\NotExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\ImplyExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\OrExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\AndExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Elements\IExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Visitors\BaseExpressionTransformVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Visitors\IExpressionVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Visitors\BaseExpressionVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Visitors\IExpressionTransformVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Visitors\IExpressionPropEvalVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Visitors\IExpressionPropCountVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\Visitors\IExpressionEvalVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\IConditions.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\ConditionsParametersCollector.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\SatisfyingAtomsEvaluator.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\ConditionsGrounder.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Elements\UnaryMinus.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Elements\Multiply.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Elements\Divide.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Elements\Number.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Elements\DurationVariable.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Elements\NumericFunction.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Elements\Minus.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Elements\Plus.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Elements\INumericExpression.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Visitors\INumericExpressionVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Visitors\BaseNumericExpressionVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Visitors\INumericExpressionTransformVisitor.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\Visitors\INumericExpressionEvaluationVisitor.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\EffectRelevance.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\NumericAssignEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\NumericIncreaseEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\NumericDecreaseEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\NumericScaleUpEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\NumericScaleDownEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\ObjectAssignEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Visitors\IEffectVisitor.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\NotEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\EqualsEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\PredicateEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\AtomicFormulaEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\PrimitiveEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\WhenEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\ForallEffect.cs" />
+    <Compile Include="Problem\PDDL\Effects\Elements\IEffect.cs" />
+    <Compile Include="Problem\PDDL\Instances\AtomsManager.cs" />
+    <Compile Include="Problem\PDDL\Instances\ISubstitution.cs" />
+    <Compile Include="Problem\PDDL\Operators\LiftedOperator.cs" />
+    <Compile Include="Problem\PDDL\Operators\IOperator.cs" />
+    <Compile Include="Problem\PDDL\Parameters\Parameter.cs" />
+    <Compile Include="Problem\PDDL\PrimitivesFactory\PrimitivesFactory.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\ConditionsParametersRenamer.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\EffectsResultAtomsCollector.cs" />
+    <Compile Include="Problem\PDDL\PlanningGraph\PlanningGraphOperatorLabelEvaluatorCNF.cs" />
+    <Compile Include="Problem\Common\PlanningGraph\ActionNode.cs" />
+    <Compile Include="Problem\PDDL\PlanningGraph\Proposition.cs" />
+    <Compile Include="Problem\PDDL\PlanningGraph\StateLayer.cs" />
+    <Compile Include="Problem\PDDL\PlanningGraph\PlanningGraphOperatorLabelEvaluator.cs" />
+    <Compile Include="Problem\PDDL\PlanningGraph\StateLabels.cs" />
+    <Compile Include="Problem\PDDL\PlanningGraph\RelaxedPlanningGraph.cs" />
+    <Compile Include="Heuristics\StateSizeHeuristic.cs" />
+    <Compile Include="Heuristics\PerfectRelaxationHeuristic.cs" />
+    <Compile Include="Heuristics\StripsHeuristic.cs" />
+    <Compile Include="Heuristics\WeightedHeuristic.cs" />
+    <Compile Include="Heuristics\BlindHeuristic.cs" />
+    <Compile Include="Heuristics\Heuristic.cs" />
+    <Compile Include="Problem\Common\IRelaxedProblem.cs" />
+    <Compile Include="Problem\PDDL\States\RelativeState.cs" />
+    <Compile Include="Problem\PDDL\States\IState.cs" />
+    <Compile Include="Problem\PDDL\States\IRelativeState.cs" />
+    <Compile Include="Problem\PDDL\States\StatesEnumerator.cs" />
+    <Compile Include="Problem\PDDL\Terms\Elements\ConstantTerm.cs" />
+    <Compile Include="Problem\PDDL\Terms\Elements\ObjectFunctionTerm.cs" />
+    <Compile Include="Problem\PDDL\Terms\Elements\VariableTerm.cs" />
+    <Compile Include="Problem\PDDL\Terms\Elements\ITerm.cs" />
+    <Compile Include="Problem\SAS\Conditions\ISimpleConditions.cs" />
+    <Compile Include="Problem\SAS\Operators\IOperator.cs" />
+    <Compile Include="Problem\SAS\States\AbstractedState.cs" />
+    <Compile Include="Problem\SAS\States\RedBlackState.cs" />
+    <Compile Include="Problem\SAS\States\StatesEnumerator.cs" />
+    <Compile Include="Problem\SAS\States\IRelativeState.cs" />
+    <Compile Include="Problem\SAS\States\RelativeState.cs" />
+    <Compile Include="Search\AStarSearch\IterativeDeepeningAStarSearch.cs" />
+    <Compile Include="Search\BeamSearch\BeamSearchTransitionCandidates.cs" />
+    <Compile Include="Search\BeamSearch\BeamSearchTransitionCandidate.cs" />
+    <Compile Include="Search\SearchType.cs" />
+    <Compile Include="Search\AStarSearch\MultiHeuristicAStarSearch.cs" />
+    <Compile Include="Search\AStarSearch\AStarSearch.cs" />
+    <Compile Include="Search\HillClimbingSearch\HillClimbingSearch.cs" />
+    <Compile Include="Search\HeuristicSearch.cs" />
+    <Compile Include="Search\BeamSearch\BeamSearch.cs" />
+    <Compile Include="Heaps\RegularTernaryHeap.cs" />
+    <Compile Include="Heaps\LeftistHeap.cs" />
+    <Compile Include="Heaps\BinomialHeap.cs" />
+    <Compile Include="Heaps\SortedSetHeap.cs" />
+    <Compile Include="Heaps\SortedDictionaryHeap.cs" />
+    <Compile Include="Heaps\SingleBucketHeap.cs" />
+    <Compile Include="Heaps\FibonacciHeap2.cs" />
+    <Compile Include="Heaps\RadixHeap.cs" />
+    <Compile Include="Heaps\RegularBinaryHeap.cs" />
+    <Compile Include="Heaps\IHeap.cs" />
+    <Compile Include="Search\IHeuristicSearch.cs" />
+    <Compile Include="Heuristics\IHeuristic.cs" />
+    <Compile Include="Search\ResultStatus.cs" />
+    <Compile Include="Search\SearchResults.cs" />
+    <Compile Include="Search\AStarSearch\NodeInfo.cs" />
+    <Compile Include="Search\SolutionPlan\ISolutionPlan.cs" />
+    <Compile Include="Search\SolutionPlan\SolutionPlanViaStates.cs" />
+    <Compile Include="Search\SolutionPlan\SolutionPlan.cs" />
+    <Compile Include="Problem\Common\IOperator.cs" />
+    <Compile Include="Problem\Common\IConditions.cs" />
+    <Compile Include="Problem\PDDL\RigidRelations\RigidRelationsComplianceEvaluator.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\NotAccomplishedConstraintsCounterCNF.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\NotAccomplishedConstraintsCounter.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\ExpressionToCNFTransformer.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\ConditionsCNFEvaluator.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\EvaluationManager.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\EffectsApplierMode.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\NumericAssignmentsBackwardsReplacer.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\EffectsBackwardsConditionsApplier.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\EffectsPreprocessedCollection.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\EffectsRelevanceConditionsEvaluator.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ExpressionsCNF\ConditionsCNFBuilder.cs" />
+    <Compile Include="Problem\PDDL\RelaxedProblem.cs" />
+    <Compile Include="Problem\PDDL\Problem.cs" />
+    <Compile Include="Problem\SAS\Assignments\IAssignment.cs" />
+    <Compile Include="Problem\SAS\Assignments\Assignment.cs" />
+    <Compile Include="Problem\SAS\AxiomRules\AxiomRule.cs" />
+    <Compile Include="Problem\SAS\AxiomRules\AxiomLayer.cs" />
+    <Compile Include="Problem\SAS\Conditions\IConditions.cs" />
+    <Compile Include="Problem\SAS\Conditions\ConditionsContradiction.cs" />
+    <Compile Include="Problem\SAS\Conditions\ConditionsClause.cs" />
+    <Compile Include="Problem\SAS\Conditions\Conditions.cs" />
+    <Compile Include="Problem\SAS\AxiomRules\AxiomRules.cs" />
+    <Compile Include="Problem\SAS\Effects\ConditionalEffect.cs" />
+    <Compile Include="Problem\SAS\Effects\EffectRelevance.cs" />
+    <Compile Include="Problem\SAS\Effects\PrimitiveEffect.cs" />
+    <Compile Include="Problem\SAS\Effects\IEffect.cs" />
+    <Compile Include="Problem\SAS\MutexGroups\MutexChecker.cs" />
+    <Compile Include="Problem\SAS\MutexGroups\MutexGroup.cs" />
+    <Compile Include="Problem\SAS\Operators\OperatorDecisionTreeBuilder.cs" />
+    <Compile Include="Problem\SAS\Transitions\PredecessorsGenerator.cs" />
+    <Compile Include="Problem\Common\Transitions\TransitionsEnumerator.cs" />
+    <Compile Include="Problem\SAS\Transitions\PredecessorsCollector.cs" />
+    <Compile Include="Problem\SAS\Transitions\SuccessorsCollector.cs" />
+    <Compile Include="Problem\SAS\Operators\Operator.cs" />
+    <Compile Include="Problem\SAS\Transitions\SuccessorsGenerator.cs" />
+    <Compile Include="Problem\SAS\Operators\OperatorDecisionTree.cs" />
+    <Compile Include="Problem\SAS\Operators\Operators.cs" />
+    <Compile Include="Problem\SAS\MutexGroups\MutexGroups.cs" />
+    <Compile Include="Problem\SAS\Effects\Effects.cs" />
+    <Compile Include="Problem\SAS\Transitions\TransitionsGenerator.cs" />
+    <Compile Include="Problem\SAS\PatternDatabase\PatternsFinder.cs" />
+    <Compile Include="Problem\SAS\PatternDatabase\PatternValuesDistances.cs" />
+    <Compile Include="Problem\SAS\PatternDatabase\PatternDatabaseBuilder.cs" />
+    <Compile Include="Problem\SAS\PatternDatabase\Pattern.cs" />
+    <Compile Include="Problem\SAS\PatternDatabase\PatternDatabase.cs" />
+    <Compile Include="Problem\SAS\PlanningGraph\Proposition.cs" />
+    <Compile Include="Problem\SAS\PlanningGraph\StateLabels.cs" />
+    <Compile Include="Problem\SAS\PlanningGraph\StateLayer.cs" />
+    <Compile Include="Problem\SAS\PlanningGraph\RelaxedPlanningGraph.cs" />
+    <Compile Include="Problem\SAS\RelaxedProblem.cs" />
+    <Compile Include="Problem\SAS\States\IState.cs" />
+    <Compile Include="Problem\SAS\States\RelaxedState.cs" />
+    <Compile Include="Problem\SAS\Variables\Variable.cs" />
+    <Compile Include="Problem\SAS\Variables\Variables.cs" />
+    <Compile Include="Problem\SAS\States\State.cs" />
+    <Compile Include="Utils\HashHelper.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\ExpressionToNNFTransformer.cs" />
+    <Compile Include="Problem\PDDL\Conditions\ConditionsCNF.cs" />
+    <Compile Include="Problem\PDDL\RigidRelations\RigidRelationsBuilder.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectAppliers\EffectsApplier.cs" />
+    <Compile Include="Problem\PDDL\Effects\EffectsBuilder.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\ExpressionsGrounder.cs" />
+    <Compile Include="Problem\PDDL\Terms\TermsGrounder.cs" />
+    <Compile Include="Problem\PDDL\Instances\Grounder.cs" />
+    <Compile Include="Problem\PDDL\Transitions\TransitionsGenerator.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\NumericExpressionsGrounder.cs" />
+    <Compile Include="Problem\PDDL\Operators\Operator.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\NumericExpressionEvaluator.cs" />
+    <Compile Include="Problem\PDDL\Instances\TypeHierarchy.cs" />
+    <Compile Include="Problem\PDDL\Instances\GroundingManager.cs" />
+    <Compile Include="Problem\PDDL\Instances\IDManager.cs" />
+    <Compile Include="Problem\PDDL\RigidRelations\RigidRelations.cs" />
+    <Compile Include="Problem\PDDL\States\InitialStateDataBuilder.cs" />
+    <Compile Include="Problem\PDDL\Instances\ConstantsManager.cs" />
+    <Compile Include="Problem\PDDL\Instances\SubstitutionGenerator.cs" />
+    <Compile Include="Problem\PDDL\Instances\Substitution.cs" />
+    <Compile Include="Problem\PDDL\Terms\TermsBuilder.cs" />
+    <Compile Include="Utils\Randomization.cs" />
+    <Compile Include="Utils\CollectionsEquality.cs" />
+    <Compile Include="Problem\PDDL\Atoms\Atom.cs" />
+    <Compile Include="Problem\PDDL\Conditions\NumericExpressions\NumericExpressionsBuilder.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Expressions\ExpressionsBuilder.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Evaluators\ExpressionEvaluator.cs" />
+    <Compile Include="Problem\PDDL\Parameters\Parameters.cs" />
+    <Compile Include="Problem\PDDL\Effects\Effects.cs" />
+    <Compile Include="Problem\PDDL\Terms\Visitors\ITermTransformVisitor.cs" />
+    <Compile Include="Problem\Common\IState.cs" />
+    <Compile Include="Problem\PDDL\Operators\LiftedOperators.cs" />
+    <Compile Include="Problem\PDDL\Conditions\Conditions.cs" />
+    <Compile Include="Problem\PDDL\States\State.cs" />
+    <Compile Include="Problem\SAS\Problem.cs" />
+    <Compile Include="Problem\Common\IProblem.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PAD.InputData\PAD.InputData.csproj">
+      <Project>{66626b85-3b67-407f-bc18-5d3edb81d3d1}</Project>
+      <Name>PAD.InputData</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

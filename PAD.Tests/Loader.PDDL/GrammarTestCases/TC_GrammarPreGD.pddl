@@ -1,0 +1,11 @@
+(and
+  (pred1 ?aa)
+  (not (pred2 ?aa))
+  (or )
+  (imply (pred3) (pred4))
+  (exists (?aa) (pred3))
+  (forall (?aa) (pred3))
+  (= (func1 ?aa) const1)
+  (< func2 666)
+  (preference prefName (pred1 ?aa))
+)

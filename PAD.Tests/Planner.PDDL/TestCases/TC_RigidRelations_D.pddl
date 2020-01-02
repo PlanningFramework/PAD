@@ -1,0 +1,26 @@
+(define (domain domainName)
+  (:requirements :typing :adl)
+  (:constants constA constB constC)
+  (:predicates (pred0)
+               (pred1 ?a)
+               (pred2 ?a ?b)
+               (pred3 ?a ?b ?c)
+               (predA) (predB ?a)
+  )
+  (:action actionName0
+    :parameters (?a)
+    :precondition ()
+    :effect (and
+              (pred0)
+              (not (pred1 ?a))
+            )
+  )
+  (:action actionName1
+    :parameters (?a ?b ?c)
+    :precondition ()
+    :effect (and
+              (forall (?x) (pred2 ?x ?b))
+              (when (pred0) (pred3 ?a ?b ?c))
+            )
+  )
+)

@@ -1,0 +1,1 @@
+(predName ?aa (func) cc)

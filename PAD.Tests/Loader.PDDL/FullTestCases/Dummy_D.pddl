@@ -1,0 +1,7 @@
+(define (domain domainName)
+  (:requirements :adl :preferences :fluents :typing)
+  (:types typeA typeB)
+  (:constants constA constB)
+  (:predicates (predA ?a) (predB ?a))
+  (:functions (numFunc))
+)

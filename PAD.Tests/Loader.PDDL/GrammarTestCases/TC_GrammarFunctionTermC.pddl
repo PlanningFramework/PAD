@@ -1,0 +1,1 @@
+(funcName constA funcA (funcB))

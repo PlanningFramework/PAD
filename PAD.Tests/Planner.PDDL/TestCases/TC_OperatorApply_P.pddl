@@ -1,0 +1,8 @@
+(define (problem problemName)
+  (:domain domainName)
+  (:init (pred0)
+         (pred1 constA)
+         (= (numericFunc) 0)
+         (= (objectFunc) constA)
+  )
+)

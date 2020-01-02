@@ -1,0 +1,8 @@
+(define (domain domainName)
+  (:requirements :typing)
+  (:types typeA typeB)
+  (:predicates (predicateA ?a)
+               (predicateB ?a ?b - typeA)
+			   (predicateC)
+  )
+)

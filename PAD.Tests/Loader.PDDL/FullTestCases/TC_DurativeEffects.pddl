@@ -1,0 +1,18 @@
+(define (domain domainName)
+  (:requirements :durative-actions :preferences :conditional-effects :numeric-fluents :continuous-effects)
+  (:predicates (pred ?a))
+  (:functions (numFunc) - number)
+  (:durative-action actionA
+    :parameters (?a ?b)
+    :duration ()
+	:condition ()
+    :effect (and
+	          (forall (?b) (at start (pred ?b)))
+			  (when (at start (pred ?a)) (at start (pred ?b)))
+			  (at start (pred ?a))
+			  (at end (pred ?a))
+			  (increase (numFunc) #t)
+			  (decrease (numFunc) (* #t 5))
+            )
+  )
+)

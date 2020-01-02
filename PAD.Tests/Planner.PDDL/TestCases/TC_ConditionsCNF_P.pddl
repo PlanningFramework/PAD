@@ -1,0 +1,8 @@
+(define (problem problemName)
+  (:domain domainName)
+  (:init (predA) (predD constA))
+  (:goal (and (predA)
+              (predB)
+         )
+  )
+)

@@ -1,0 +1,6 @@
+(define (problem problemName)
+  (:domain domainName)
+  (:length (:serial 55)
+           (:parallel 66)
+  )
+)

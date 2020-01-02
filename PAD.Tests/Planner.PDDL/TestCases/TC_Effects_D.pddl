@@ -1,0 +1,36 @@
+(define (domain domainName)
+  (:requirements :typing :adl :fluents)
+  (:constants constA constB)
+  (:predicates (predA ?a) (predB) (predC) (predD ?a))
+  (:functions (numFunc) - number
+              (objFunc) - object
+  )
+  (:action actionName0
+    :parameters ()
+    :precondition ()
+    :effect (and
+              (predA constA)
+              (not (predB))
+              (forall (?x) (not (predA ?x)))
+              (assign (numFunc) 5)
+              (increase (numFunc) 7)
+              (decrease (numFunc) 2)
+              (scale-up (numFunc) 3)
+              (scale-down (numFunc) 2)
+              (assign (objFunc) constB)
+              (when (not (predC)) (predC))
+              (when (predC) (assign (numFunc) 1))
+            )
+  )
+  (:action actionName1
+    :parameters (?a)
+    :precondition ()
+    :effect (and
+              (predA ?a)
+              (not (predB))
+              (forall (?x) (predD ?x))
+              (increase (numFunc) 3)
+              (when (predA constB) (assign (objFunc) constB))
+            )
+  )
+)
