@@ -422,6 +422,7 @@
     <None Include="Planner.SAS\TestCases\TC_Conditions.sas" />
     <None Include="Planner.SAS\TestCases\TC_AxiomRules.sas" />
     <None Include="Planner.SAS\TestCases\TC_Variables.sas" />
+    <None Include="README.md" />
     <None Include="TestCases_IPC\PDDL\agricola_domain.pddl" />
     <None Include="TestCases_IPC\PDDL\agricola_problem.pddl" />
     <None Include="TestCases_IPC\PDDL\airport_domain.pddl" />
