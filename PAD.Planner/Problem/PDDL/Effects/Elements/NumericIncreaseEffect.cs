@@ -12,7 +12,7 @@ namespace PAD.Planner.PDDL
         /// <param name="functionAtom">Numeric function atom.</param>
         /// <param name="value">Numeric value to be assigned.</param>
         /// <param name="idManager">ID manager.</param>
-        public NumericIncreaseEffect(IAtom functionAtom, INumericExpression value, IDManager idManager) : base(functionAtom, value, idManager)
+        public NumericIncreaseEffect(IAtom functionAtom, INumericExpression value, IdManager idManager) : base(functionAtom, value, idManager)
         {
         }
 
@@ -28,12 +28,12 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Gets the substitued value from the backwards application of the assignment.
+        /// Gets the substituted value from the backwards application of the assignment.
         /// </summary>
         /// <returns>Backwards applied assignment.</returns>
-        public override INumericExpression GetBackwardsSubstituedValue()
+        public override INumericExpression GetBackwardsSubstitutedValue()
         {
-            return new Minus(new NumericFunction(FunctionAtom, IDManager), Value);
+            return new Minus(new NumericFunction(FunctionAtom, IdManager), Value);
         }
 
         /// <summary>

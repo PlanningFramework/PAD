@@ -1,5 +1,6 @@
 ﻿using PAD.InputData.SAS;
 using PAD.InputData.SAS.Validator;
+// ReSharper disable UnusedMember.Global
 
 namespace PAD.InputData
 {

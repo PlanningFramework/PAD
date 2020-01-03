@@ -1,5 +1,8 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -13,14 +16,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
         public Problem(MasterGrammar p) : base(p)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -42,7 +37,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             var requireList = new NonTerminal("Requirements list", typeof(TransientAstNode));
             var initElemList = new NonTerminal("Init elements list", typeof(TransientAstNode));
-            var optimizationSpecifier = new NonTerminal("Optimimation specifier", typeof(TransientAstNode));
+            var optimizationSpecifier = new NonTerminal("Optimization specifier", typeof(TransientAstNode));
             var lengthSpec = new NonTerminal("Length definition specification", typeof(TransientAstNode));
             var lengthSpecifier = new NonTerminal("Length specifier", typeof(TransientAstNode));
 
@@ -55,8 +50,8 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             var typedListC = new TypedListC(p);
             var initElem = new InitElem(p);
-            var preGD = new PreGD(p);
-            var prefConGD = new PrefConGD(p);
+            var preGd = new PreGd(p);
+            var prefConGd = new PrefConGd(p);
             var metricExpr = new MetricExpr(p);
 
             // RULES
@@ -73,8 +68,8 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             requireDef.Rule = p.ToTerm(":requirements") + requireList;
             objectsDef.Rule = p.ToTerm(":objects") + typedListC;
             initDef.Rule    = p.ToTerm(":init") + initElemList;
-            goalDef.Rule    = p.ToTerm(":goal") + preGD;
-            constrDef.Rule  = p.ToTerm(":constraints") + prefConGD;
+            goalDef.Rule    = p.ToTerm(":goal") + preGd;
+            constrDef.Rule  = p.ToTerm(":constraints") + prefConGd;
             metricDef.Rule  = p.ToTerm(":metric") + optimizationSpecifier + metricExpr;
             lengthDef.Rule  = p.ToTerm(":length") + lengthSpec + lengthSpec;
 
@@ -88,7 +83,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(problemSection, problemSectionBase, optimizationSpecifier, lengthSpecifier);
 
-            return problem;
+            Rule = problem;
         }
     }
 }

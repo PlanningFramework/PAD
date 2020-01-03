@@ -19,7 +19,7 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Internal collection for the values.
         /// </summary>
-        private Stack<Value> Stack = new Stack<Value>();
+        private Stack<Value> Stack { get; } = new Stack<Value>();
 
         /// <summary>
         /// Adds a new key-value pair into the collection.

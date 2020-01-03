@@ -9,12 +9,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Left numeric expression.
         /// </summary>
-        public INumericExpression LeftChild { set; get; } = null;
+        public INumericExpression LeftChild { set; get; }
 
         /// <summary>
         /// Right numeric expression.
         /// </summary>
-        public INumericExpression RightChild { set; get; } = null;
+        public INumericExpression RightChild { set; get; }
 
         /// <summary>
         /// Constructs the "divide" numeric expression.

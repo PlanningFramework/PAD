@@ -1,11 +1,9 @@
-﻿using System.Diagnostics;
-
+﻿
 namespace PAD.InputData.SAS
 {
     /// <summary>
     /// Input data structure for a SAS+ metric.
     /// </summary>
-    [DebuggerDisplay("Metric = {IsMetricUsed}")]
     public class Metric : IVisitable
     {
         /// <summary>

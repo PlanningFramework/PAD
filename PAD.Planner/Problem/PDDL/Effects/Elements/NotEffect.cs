@@ -9,15 +9,15 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Argument effect.
         /// </summary>
-        public AtomicFormulaEffect Argument { get; set; } = null;
+        public AtomicFormulaEffect Argument { get; set; }
 
         /// <summary>
         /// Constructs the effect.
         /// </summary>
         /// <param name="argument">Argument effect.</param>
-        public NotEffect(AtomicFormulaEffect effect)
+        public NotEffect(AtomicFormulaEffect argument)
         {
-            Argument = effect;
+            Argument = argument;
         }
 
         /// <summary>

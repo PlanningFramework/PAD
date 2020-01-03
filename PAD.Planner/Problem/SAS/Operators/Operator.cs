@@ -11,37 +11,32 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Name of the SAS+ operator.
         /// </summary>
-        public string Name { set; get; } = "";
+        public string Name { set; get; }
 
         /// <summary>
         /// Operator unique identifier (index of the operator in the list of all operators).
         /// </summary>
-        public int ID { set; get; } = -1;
+        public int Id { set; get; }
 
         /// <summary>
         /// Preconditions of the SAS+ operator.
         /// </summary>
-        public Conditions Preconditions { set; get; } = null;
+        public Conditions Preconditions { set; get; }
 
         /// <summary>
         /// Effects of the SAS+ operator.
         /// </summary>
-        public Effects Effects { set; get; } = null;
+        public Effects Effects { set; get; }
 
         /// <summary>
         /// Cost of the operator in the SAS+ planning problem.
         /// </summary>
-        public int Cost { set; get; } = DEFAULT_OPERATOR_COST;
-
-        /// <summary>
-        /// Default operator cost (if not specified in operator effects).
-        /// </summary>
-        public const int DEFAULT_OPERATOR_COST = 1;
+        public int Cost { set; get; }
 
         /// <summary>
         /// Checker of the mutex groups of the SAS+ planning problem.
         /// </summary>
-        private Lazy<MutexChecker> MutexChecker { set; get; } = null;
+        private Lazy<MutexChecker> MutexChecker { get; }
 
         /// <summary>
         /// Constructs the SAS+ operator from the input data.
@@ -53,7 +48,7 @@ namespace PAD.Planner.SAS
         public Operator(InputData.SAS.Operator inputData, int index, AxiomRules axiomRules, MutexGroups mutexGroups)
         {
             Name = inputData.Name;
-            ID = index;
+            Id = index;
             Preconditions = new Conditions(inputData.Conditions);
             Effects = new Effects(inputData.Effects, axiomRules);
             Cost = inputData.Cost;
@@ -72,7 +67,7 @@ namespace PAD.Planner.SAS
         public Operator(string name, int id, Conditions preconditions, Effects effects, int cost)
         {
             Name = name;
-            ID = id;
+            Id = id;
             Preconditions = preconditions;
             Effects = effects;
             Cost = cost;
@@ -128,7 +123,7 @@ namespace PAD.Planner.SAS
         /// Checks whether the operator is relevant to the given target conditions.
         /// </summary>
         /// <param name="conditions">Target conditions.</param>
-        /// <returns>True if the operator is relevant to the given condititons, false otherwise.</returns>
+        /// <returns>True if the operator is relevant to the given conditions, false otherwise.</returns>
         public bool IsRelevant(Planner.IConditions conditions)
         {
             return Effects.IsRelevant((IConditions)conditions, Preconditions) && MutexChecker.Value.CheckPredecessorCompatibility((IConditions)conditions, this);
@@ -190,7 +185,7 @@ namespace PAD.Planner.SAS
         /// <returns>A copy of the operator.</returns>
         public Planner.IOperator Clone()
         {
-            return new Operator(Name, ID, Preconditions, Effects, Cost);
+            return new Operator(Name, Id, Preconditions, Effects, Cost);
         }
 
         /// <summary>
@@ -208,7 +203,7 @@ namespace PAD.Planner.SAS
         /// <returns>Hash code of the object.</returns>
         public override int GetHashCode()
         {
-            return ID.GetHashCode();
+            return Id.GetHashCode();
         }
 
         /// <summary>
@@ -229,7 +224,7 @@ namespace PAD.Planner.SAS
                 return false;
             }
 
-            return (Name == other.Name && ID == other.ID && Cost == other.Cost &&
+            return (Name == other.Name && Id == other.Id && Cost == other.Cost &&
                     Preconditions.Equals(other.Preconditions) && Effects.Equals(other.Effects));
         }
     }

@@ -1,8 +1,9 @@
 ﻿using PAD.Planner.Heuristics;
 using PAD.Planner.Heaps;
 using System.Collections.Generic;
-using System;
+using System.Globalization;
 using System.Linq;
+using System;
 
 namespace PAD.Planner.Search
 {
@@ -14,7 +15,7 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Open nodes of the A* search.
         /// </summary>
-        public IHeap OpenNodes { set; get; } = null;
+        public IHeap OpenNodes { set; get; }
 
         /// <summary>
         /// Information about already processed nodes (gValue, predecessor, open/closed).
@@ -31,7 +32,7 @@ namespace PAD.Planner.Search
         public AStarSearch(ISearchableProblem problem, ISearchableHeuristic heuristic = null, IHeap heap = null, bool loggingEnabled = false)
             : base(problem, heuristic, loggingEnabled)
         {
-            OpenNodes = (heap == null) ? GetDefaultHeap() : heap;
+            OpenNodes = heap ?? GetDefaultHeap();
         }
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace PAD.Planner.Search
         /// Specifies the default heap used, if not provided by the user.
         /// </summary>
         /// <returns>Default heap.</returns>
-        protected virtual IHeap GetDefaultHeap()
+        protected static IHeap GetDefaultHeap()
         {
             return new RedBlackTreeHeap();
         }
@@ -128,7 +129,7 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Checks whether there is any open node for the search available.
         /// </summary>
-        /// <returns>True if there is some open node availalbe. False otherwise.</returns>
+        /// <returns>True if there is some open node available. False otherwise.</returns>
         protected virtual bool HasAnyOpenNode()
         {
             return (OpenNodes.GetSize() > 0);
@@ -155,7 +156,7 @@ namespace PAD.Planner.Search
             foreach (var transition in Problem.GetTransitions(node))
             {
                 IOperator appliedOperator = transition.GetAppliedOperator();
-                int gValueNew = gValue + ((appliedOperator != null) ? appliedOperator.GetCost() : 0);
+                int gValueNew = gValue + (appliedOperator?.GetCost() ?? 0);
 
                 if (!transition.IsComplexTransition())
                 {
@@ -230,8 +231,8 @@ namespace PAD.Planner.Search
         protected double ComputeNewOpenNodeValueWithTieBreakingRule(double gValue, double hValue)
         {
             // Breaking ties in favor of nodes that have lesser heuristic estimates. Heuristic value needs to be lesser than the tie breaking factor!
-            const double TIE_BREAKING_SCALE_FACTOR = 10000.0;
-            return (gValue + hValue + hValue / TIE_BREAKING_SCALE_FACTOR);
+            const double tieBreakingScaleFactor = 10000.0;
+            return (gValue + hValue + hValue / tieBreakingScaleFactor);
         }
 
         /// <summary>
@@ -250,8 +251,7 @@ namespace PAD.Planner.Search
 
             if (isStatesSpecific) // no operators involved
             {
-                SolutionPlanViaStates solution = new SolutionPlanViaStates();
-                solution.Add(GoalNode);
+                SolutionPlanViaStates solution = new SolutionPlanViaStates {GoalNode};
 
                 while (predecessor != null)
                 {
@@ -341,10 +341,10 @@ namespace PAD.Planner.Search
                 {
                     message += $"\tHeuristic calls: {heuristic.GetCallsCount()}" +
                                $"\tMin heuristic: {heuristic.GetStatistics().BestHeuristicValue}" +
-                               $"\tAvg heuristic: {heuristic.GetStatistics().AverageHeuristicValue.ToString("0.###")}";
+                               $"\tAvg heuristic: {heuristic.GetStatistics().AverageHeuristicValue:0.###}";
                 }
 
-                message += $"\tCurrent time: {DateTime.Now.ToString()}";
+                message += $"\tCurrent time: {DateTime.Now.ToString(CultureInfo.InvariantCulture)}";
 
                 LogMessage(message);
             }

@@ -14,8 +14,8 @@ namespace PAD.Planner.SAS
         /// <param name="inputData">Input data.</param>
         public Variables(InputData.SAS.Variables inputData)
         {
-            int variableID = 0;
-            inputData.ForEach(variable => Add(new Variable(variable, variableID++)));
+            int variableId = 0;
+            inputData.ForEach(variable => Add(new Variable(variable, variableId++)));
         }
 
         /// <summary>

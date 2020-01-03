@@ -12,27 +12,27 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Terms grounder.
         /// </summary>
-        private Lazy<TermsGrounder> TermsGrounder { set; get; } = null;
+        private Lazy<TermsGrounder> TermsGrounder { get; }
 
         /// <summary>
         /// ID manager.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// Constructs the expressions grounder.
         /// </summary>
         /// <param name="termsGrounder">Terms grounder.</param>
         /// <param name="idManager">ID manager.</param>
-        public NumericExpressionsGrounder(Lazy<TermsGrounder> termsGrounder, IDManager idManager)
+        public NumericExpressionsGrounder(Lazy<TermsGrounder> termsGrounder, IdManager idManager)
         {
             TermsGrounder = termsGrounder;
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Transformed numeric expression.</returns>
         public INumericExpression Visit(NumericFunction expression)
         {
-            return new NumericFunction(TermsGrounder.Value.GroundAtom(expression.FunctionAtom, Substitution), IDManager);
+            return new NumericFunction(TermsGrounder.Value.GroundAtom(expression.FunctionAtom, Substitution), IdManager);
         }
     }
 }

@@ -48,12 +48,12 @@ namespace PAD.Planner.PDDL
         /// Checks whether the specified predicate is a rigid relation of the planning problem.
         /// </summary>
         /// <param name="predicateAtom">Predicate atom.</param>
-        /// <returns>Treu if the predicate is of rigid relation, false otherwise.</returns>
+        /// <returns>True if the predicate is of rigid relation, false otherwise.</returns>
         public bool IsPredicateRigidRelation(IAtom predicateAtom)
         {
             foreach (var item in this)
             {
-                if (item.GetNameID() == predicateAtom.GetNameID())
+                if (item.GetNameId() == predicateAtom.GetNameId())
                 {
                     return true;
                 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -11,15 +12,13 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Constants manager, handling available constants for types.
         /// </summary>
-        private Lazy<ConstantsManager> ConstantsManager { set; get; } = null;
+        private Lazy<ConstantsManager> ConstantsManager { get; }
 
         /// <summary>
         /// Constructs the substitution generator.
         /// </summary>
-        /// <param name="inputData">Input data.</param>
         /// <param name="constantsManager">Constants manager.</param>
-        /// <param name="idManager">ID manager.</param>
-        public SubstitutionGenerator(InputData.PDDLInputData inputData, Lazy<ConstantsManager> constantsManager, IDManager idManager)
+        public SubstitutionGenerator(Lazy<ConstantsManager> constantsManager)
         {
             ConstantsManager = constantsManager;
         }
@@ -34,18 +33,18 @@ namespace PAD.Planner.PDDL
             List<int> constructionList = new List<int>(parameters.Count);
             for (int i = 0; i < parameters.Count; ++i)
             {
-                constructionList.Add(IDManager.INVALID_ID);
+                constructionList.Add(IdManager.InvalidId);
             }
 
             return SubstituteParams(0, constructionList, parameters);
         }
 
         /// <summary>
-        /// Substitues the given parameter and recursively calls the function on the next parameters (divide and conquer). Lazy-evaluated.
+        /// Substitutes the given parameter and recursively calls the function on the next parameters (divide and conquer). Lazy-evaluated.
         /// </summary>
         /// <param name="currentIndex">Parameter index.</param>
-        /// <param name="constructionList">List of a substitution being constucted.</param>
-        /// <param name="parameters">Parameters being substitued.</param>
+        /// <param name="constructionList">List of a substitution being constructed.</param>
+        /// <param name="parameters">Parameters being substituted.</param>
         private IEnumerable<ISubstitution> SubstituteParams(int currentIndex, List<int> constructionList, Parameters parameters)
         {
             if (currentIndex >= parameters.Count)
@@ -55,11 +54,11 @@ namespace PAD.Planner.PDDL
             }
             else
             {
-                foreach (var typeID in parameters[currentIndex].TypeNamesIDs)
+                foreach (var typeId in parameters[currentIndex].TypeNamesIDs)
                 {
-                    foreach (var constantID in ConstantsManager.Value.GetAllConstantsOfType(typeID))
+                    foreach (var constantId in ConstantsManager.Value.GetAllConstantsOfType(typeId))
                     {
-                        constructionList[currentIndex] = constantID;
+                        constructionList[currentIndex] = constantId;
                         foreach (var deeperSubstitution in SubstituteParams(currentIndex + 1, constructionList, parameters))
                         {
                             yield return deeperSubstitution;

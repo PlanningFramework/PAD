@@ -37,7 +37,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Predicate terms (constants).
         /// </summary>
-        public List<string> Terms { get; private set; } = null;
+        public List<string> Terms { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -67,12 +67,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// First argument of the equals-operator,
         /// </summary>
-        public TermOrNumericAstNode Term1 { get; private set; } = null;
+        public TermOrNumericAstNode Term1 { get; private set; }
 
         /// <summary>
         /// Second argument of the equals-operator,
         /// </summary>
-        public TermOrNumericAstNode Term2 { get; private set; } = null;
+        public TermOrNumericAstNode Term2 { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -102,7 +102,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Argument of the not-expression.
         /// </summary>
-        public AtomicFormulaInitElemAstNode Argument { get; private set; } = null;
+        public AtomicFormulaInitElemAstNode Argument { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -131,12 +131,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Number of the expression.
         /// </summary>
-        public double Number { get; private set; } = 0.0;
+        public double Number { get; private set; }
 
         /// <summary>
         /// Literal argument of the expression.
         /// </summary>
-        public LiteralInitElemAstNode Argument { get; private set; } = null;
+        public LiteralInitElemAstNode Argument { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.

@@ -69,13 +69,13 @@ namespace PAD.InputData.PDDL
                 Requirements.ToString(), Objects.ToString(), Init.ToString(), Goal.ToString(), Constraints.ToString(),
                 Metric.ToString(), Length.ToString()
             };
-            sections.RemoveAll(x => string.IsNullOrEmpty(x));
+            sections.RemoveAll(string.IsNullOrEmpty);
 
             return string.Join(Environment.NewLine,
                 $"(define(problem {Name})",
                 $" (:domain {DomainName})",
                 $" {string.Join($"{Environment.NewLine} ", sections)}",
-                $")");
+                ")");
         }
 
         /// <summary>

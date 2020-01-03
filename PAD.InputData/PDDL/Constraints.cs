@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL
 {
@@ -46,15 +49,15 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Preference name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument constraint.
         /// </summary>
-        public Constraints Constraints { get; set; } = null;
+        public Constraints Constraints { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="name">Preference name.</param>
         /// <param name="constraints">Argument constraints.</param>
@@ -92,15 +95,15 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// List of expression parameters.
         /// </summary>
-        public Parameters Parameters { get; set; } = new Parameters();
+        public Parameters Parameters { get; set; }
 
         /// <summary>
         /// List of constraints for the expression to be applied.
         /// </summary>
-        public Constraints Constraints { get; set; } = new Constraints();
+        public Constraints Constraints { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="parameters">List of parameters.</param>
         /// <param name="constraints">List of constraints.</param>
@@ -140,10 +143,10 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="expression">Argument expression.</param>
         public AtEndConstraint(Expression expression)
@@ -179,10 +182,10 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="expression">Argument expression.</param>
         public AlwaysConstraint(Expression expression)
@@ -218,10 +221,10 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="expression">Argument expression.</param>
         public SometimeConstraint(Expression expression)
@@ -257,15 +260,15 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument number.
         /// </summary>
-        public double Number { get; set; } = 0.0;
+        public double Number { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="number">Argument number.</param>
         /// <param name="expression">Argument expression.</param>
@@ -303,10 +306,10 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="expression">Argument expression.</param>
         public AtMostOnceConstraint(Expression expression)
@@ -342,15 +345,15 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First argument expression.
         /// </summary>
-        public Expression Expression1 { get; set; } = null;
+        public Expression Expression1 { get; set; }
 
         /// <summary>
         /// Second argument expression.
         /// </summary>
-        public Expression Expression2 { get; set; } = null;
+        public Expression Expression2 { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="expression1">First argument expression.</param>
         /// <param name="expression2">Second argument expression.</param>
@@ -389,15 +392,15 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First argument expression.
         /// </summary>
-        public Expression Expression1 { get; set; } = null;
+        public Expression Expression1 { get; set; }
 
         /// <summary>
         /// Second argument expression.
         /// </summary>
-        public Expression Expression2 { get; set; } = null;
+        public Expression Expression2 { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="expression1">First argument expression.</param>
         /// <param name="expression2">Second argument expression.</param>
@@ -436,20 +439,20 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument number.
         /// </summary>
-        public double Number { get; set; } = 0.0;
+        public double Number { get; set; }
 
         /// <summary>
         /// First argument expression.
         /// </summary>
-        public Expression Expression1 { get; set; } = null;
+        public Expression Expression1 { get; set; }
 
         /// <summary>
         /// Second argument expression.
         /// </summary>
-        public Expression Expression2 { get; set; } = null;
+        public Expression Expression2 { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="number">Argument number.</param>
         /// <param name="expression1">First argument expression.</param>
@@ -490,24 +493,24 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First argument number.
         /// </summary>
-        public double Number1 { get; set; } = 0.0;
+        public double Number1 { get; set; }
 
         /// <summary>
         /// Second argument number.
         /// </summary>
-        public double Number2 { get; set; } = 0.0;
+        public double Number2 { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="number1">First argument number.</param>
         /// <param name="number2">Second argument number.</param>
-        /// <param name="expression">Agument expression.</param>
+        /// <param name="expression">Argument expression.</param>
         public HoldDuringConstraint(double number1, double number2, Expression expression)
         {
             Number1 = number1;
@@ -543,15 +546,15 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument number.
         /// </summary>
-        public double Number { get; set; } = 0.0;
+        public double Number { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
-        /// Constructs the contraint.
+        /// Constructs the constraint.
         /// </summary>
         /// <param name="number">Argument number.</param>
         /// <param name="expression">Argument expression.</param>

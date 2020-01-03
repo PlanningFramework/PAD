@@ -10,7 +10,7 @@ namespace PAD.Planner.Heuristics
         /// <summary>
         /// Relaxed planning graph.
         /// </summary>
-        private IRelaxedPlanningGraph RelaxedPlanningGraph { set; get; } = null;
+        private IRelaxedPlanningGraph RelaxedPlanningGraph { get; }
 
         /// <summary>
         /// Constructs the heuristic.

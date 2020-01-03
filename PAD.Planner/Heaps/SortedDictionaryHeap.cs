@@ -20,12 +20,12 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// ID holder, for a generation of unique keys.
         /// </summary>
-        private static uint IDHolder { set; get; } = 0;
+        private uint IdHolder { set; get; }
 
         /// <summary>
         /// Sorted dictionary container.
         /// </summary>
-        private SortedDictionary<KeyIDPair, Value> Dictionary { set; get; } = new SortedDictionary<KeyIDPair, Value>(new KeyIdPairComparer());
+        private SortedDictionary<KeyIdPair, Value> Dictionary { get; } = new SortedDictionary<KeyIdPair, Value>(new KeyIdPairComparer());
 
         /// <summary>
         /// Adds a new key-value pair into the collection.
@@ -34,7 +34,7 @@ namespace PAD.Planner.Heaps
         /// <param name="value">Value item.</param>
         public void Add(double key, Value value)
         {
-            Dictionary.Add(new KeyIDPair(key, IDHolder++), value);
+            Dictionary.Add(new KeyIdPair(key, IdHolder++), value);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace PAD.Planner.Heaps
         /// <returns>Minimal key.</returns>
         public double GetMinKey()
         {
-            return Dictionary.First().Key.key;
+            return Dictionary.First().Key.Key;
         }
 
         /// <summary>
@@ -86,39 +86,38 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Key-ID pair used in the sorted dictionary collection (to allow duplicated keys).
         /// </summary>
-        private struct KeyIDPair
+        private struct KeyIdPair
         {
             /// <summary>
             /// Key.
             /// </summary>
-            public double key;
+            public readonly double Key;
 
             /// <summary>
             /// ID.
             /// </summary>
-            public uint ID;
+            public readonly uint Id;
 
             /// <summary>
             /// Constructs the Key-ID pair.
             /// </summary>
             /// <param name="key">Key.</param>
-            /// <param name="ID">ID.</param>
-            public KeyIDPair(double key, uint ID)
+            /// <param name="id">ID.</param>
+            public KeyIdPair(double key, uint id)
             {
-                this.key = key;
-                this.ID = ID;
+                Key = key;
+                Id = id;
             }
         }
 
         /// <summary>
         /// Comparer for the sorted dictionary collection.
         /// </summary>
-        /// <typeparam name="V">Value type.</typeparam>
-        private class KeyIdPairComparer : IComparer<KeyIDPair>
+        private class KeyIdPairComparer : IComparer<KeyIdPair>
         {
-            public int Compare(KeyIDPair first, KeyIDPair second)
+            public int Compare(KeyIdPair first, KeyIdPair second)
             {
-                return (first.key == second.key) ? (int)(first.ID - second.ID) : Math.Sign(first.key - second.key);
+                return first.Key.Equals(second.Key) ? (int) (first.Id - second.Id) : Math.Sign(first.Key - second.Key);
             }
         }
     }

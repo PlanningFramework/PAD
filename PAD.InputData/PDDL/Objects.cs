@@ -10,7 +10,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Adds a new object. If the given object has been defined, then only the new possible object type is added to the definition.
         /// </summary>
-        /// <param name="object">Object definition to be added.</param>
+        /// <param name="newObject">Object definition to be added.</param>
         public new void Add(Object newObject)
         {
             var existingObject = Find(presentObject => presentObject.ObjectName.Equals(newObject.ObjectName));
@@ -57,7 +57,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Name of the object.
         /// </summary>
-        public string ObjectName { set; get; } = "";
+        public string ObjectName { set; get; }
 
         /// <summary>
         /// Name of the object type(s).
@@ -67,7 +67,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Specification of a default type.
         /// </summary>
-        public const string DEFAULT_TYPE = "object";
+        public const string DefaultType = "object";
 
         /// <summary>
         /// Constructs an object.
@@ -77,7 +77,7 @@ namespace PAD.InputData.PDDL
         public Object(string objectName, string[] typeNames)
         {
             ObjectName = objectName;
-            TypeNames.AddRange(typeNames.GetTypesOrDefault(DEFAULT_TYPE));
+            TypeNames.AddRange(typeNames.GetTypesOrDefault(DefaultType));
         }
 
         /// <summary>

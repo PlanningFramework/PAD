@@ -1,5 +1,7 @@
-﻿
-namespace PAD.Launcher.Tasks
+﻿// ReSharper disable StringLiteralTypo
+// ReSharper disable InconsistentNaming
+
+namespace PAD.Launcher.Tasks.DefinitionTypes
 {
     /// <summary>
     /// Heuristic used in the planning task.
@@ -16,7 +18,7 @@ namespace PAD.Launcher.Tasks
     }
 
     /// <summary>
-    /// Auxilliary class for converting heuristic parameters.
+    /// Auxiliary class for converting heuristic parameters.
     /// </summary>
     public static class HeuristicConverter
     {

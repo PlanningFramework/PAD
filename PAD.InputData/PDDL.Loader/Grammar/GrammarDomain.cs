@@ -1,5 +1,8 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -13,14 +16,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
         public Domain(MasterGrammar p) : base(p)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -52,7 +47,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             var typedListC = new TypedListC(p);
             var typedListV = new TypedList(p);
             var funcTypedList = new FunctionTypedList(p);
-            var conGD = new ConGD(p);
+            var conGd = new ConGd(p);
             
             var action = new Action(p, BForm.BASE);
             var durAction = new DurAction(p, BForm.BASE);
@@ -79,13 +74,13 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             functionsDef.Rule = p.ToTerm(":functions") + funcTypedList;
 
-            constraintsDef.Rule = p.ToTerm(":constraints") + conGD;
+            constraintsDef.Rule = p.ToTerm(":constraints") + conGd;
 
             structureDef.Rule = action | durAction | derivedPred;
 
             p.MarkTransient(domainSection, domainSectionBase, predicateSkeleton, structureDef);
 
-            return domain;
+            Rule = domain;
         }
     }
 }

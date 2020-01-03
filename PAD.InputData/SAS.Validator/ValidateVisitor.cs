@@ -13,12 +13,12 @@ namespace PAD.InputData.SAS.Validator
         /// <summary>
         /// Problem context.
         /// </summary>
-        Problem ProblemContext { set; get; } = null;
+        private Problem ProblemContext { set; get; }
 
         /// <summary>
         /// Location specification in the input data (in case of a validation failure).
         /// </summary>
-        string Location { set; get; } = "";
+        private string Location { set; get; } = "";
 
         /// <summary>
         /// Checks the given problem data.
@@ -198,7 +198,7 @@ namespace PAD.InputData.SAS.Validator
         }
 
         /// <summary>
-        /// Checks the used variable-value assignement. Throws ValidationException if the value cannot be assigned to the variable.
+        /// Checks the used variable-value assignment. Throws ValidationException if the value cannot be assigned to the variable.
         /// </summary>
         /// <param name="variable">Variable to be assigned.</param>
         /// <param name="value">Value to be checked.</param>

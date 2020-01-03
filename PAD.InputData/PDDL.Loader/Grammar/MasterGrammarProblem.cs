@@ -1,5 +1,4 @@
-﻿using Irony.Parsing;
-
+﻿
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
     /// <summary>
@@ -8,12 +7,11 @@ namespace PAD.InputData.PDDL.Loader.Grammar
     public class MasterGrammarProblem : MasterGrammar
     {
         /// <summary>
-        /// Factory method for the definition of root grammar rules.
+        /// Constructor for the problem master grammar class.
         /// </summary>
-        /// <returns>Grammar rules for this grammar.</returns>
-        protected override NonTerminal MakeGrammarRules()
+        public MasterGrammarProblem()
         {
-            return new Problem(this);
+            Root = new Problem(this);
         }
     }
 }

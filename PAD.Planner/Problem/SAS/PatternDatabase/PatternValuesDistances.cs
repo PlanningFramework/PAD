@@ -11,7 +11,7 @@ namespace PAD.Planner.SAS
         /// Maximal distance constant. Used when the database does not contain a computed distance for the specified pattern values
         /// (i.e. the evaluated state probably does not lead to goals, according to the chosen abstraction).
         /// </summary>
-        public const int MAX_DISTANCE = int.MaxValue;
+        public const double MaxDistance = double.MaxValue;
 
         /// <summary>
         /// Constructs an empty collection.
@@ -27,12 +27,11 @@ namespace PAD.Planner.SAS
         /// <returns>Distance to goals for the given pattern values.</returns>
         public double GetDistance(int[] values)
         {
-            double distance = 0;
-
+            double distance;
             if (!TryGetValue(values, out distance))
             {
                 // database does not contain a computed distance for the given pattern values (i.e. probably not leading to goals)
-                return MAX_DISTANCE;
+                return MaxDistance;
             }
 
             return distance;

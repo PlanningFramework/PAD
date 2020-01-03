@@ -1,5 +1,8 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -13,14 +16,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
         public DurConstr(MasterGrammar p) : base(p)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -64,7 +59,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(durationConstr, durationConstrBase, simpleDurationConstr, simpleDurationConstrBase, durCompareVal);
 
-            return durationConstr;
+            Rule = durationConstr;
         }
         
     }

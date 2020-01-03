@@ -11,76 +11,76 @@ namespace PAD.Planner.PDDL
         /// Adds the predicate to the state.
         /// </summary>
         /// <param name="predicate">Predicate to be added.</param>
-        void AddPredicate(IAtom predicateAtom);
+        void AddPredicate(IAtom predicate);
 
         /// <summary>
         /// Removes the predicate from the state.
         /// </summary>
         /// <param name="predicate">Predicate to be removed.</param>
-        void RemovePredicate(IAtom predicateAtom);
+        void RemovePredicate(IAtom predicate);
 
         /// <summary>
         /// Checks whether the state contains the given predicate.
         /// </summary>
         /// <param name="predicate">Predicate to be checked.</param>
         /// <returns>True if the state contains the predicate, false otherwise.</returns>
-        bool HasPredicate(IAtom predicateAtom);
+        bool HasPredicate(IAtom predicate);
 
         /// <summary>
         /// Returns the value of the given object function.
         /// </summary>
-        /// <param name="functionAtom">Grounded function atom.</param>
+        /// <param name="function">Grounded function atom.</param>
         /// <returns>Object value, i.e. constant name ID.</returns>
-        int GetObjectFunctionValue(IAtom functionAtom);
+        int GetObjectFunctionValue(IAtom function);
 
         /// <summary>
         /// Defines a new value for the requested function in the state.
         /// </summary>
-        /// <param name="functionAtom">Requested function.</param>
+        /// <param name="function">Requested function.</param>
         /// <param name="assignment">Value to be assigned.</param>
-        void AssignObjectFunction(IAtom functionAtom, int assignment);
+        void AssignObjectFunction(IAtom function, int assignment);
 
         /// <summary>
         /// Returns the value of the given numeric function.
         /// </summary>
-        /// <param name="functionAtom">Grounded function atom.</param>
+        /// <param name="function">Grounded function atom.</param>
         /// <returns>Numeric value.</returns>
-        double GetNumericFunctionValue(IAtom functionAtom);
+        double GetNumericFunctionValue(IAtom function);
 
         /// <summary>
         /// Defines a new value for the requested function in the state.
         /// </summary>
-        /// <param name="functionAtom">Requested function.</param>
+        /// <param name="function">Requested function.</param>
         /// <param name="assignment">Value to be assigned.</param>
-        void AssignNumericFunction(IAtom functionAtom, double assignment);
+        void AssignNumericFunction(IAtom function, double assignment);
 
         /// <summary>
         /// Increase the value of the requested numeric function by the specified value.
         /// </summary>
-        /// <param name="functionAtom">Requested numeric function.</param>
+        /// <param name="function">Requested numeric function.</param>
         /// <param name="value">Value to be increased by.</param>
-        void IncreaseNumericFunction(IAtom functionAtom, double value);
+        void IncreaseNumericFunction(IAtom function, double value);
 
         /// <summary>
         /// Decrease the value of the requested numeric function by the specified value.
         /// </summary>
-        /// <param name="functionAtom">Requested numeric function.</param>
+        /// <param name="function">Requested numeric function.</param>
         /// <param name="value">Value to be decreased by.</param>
-        void DecreaseNumericFunction(IAtom functionAtom, double value);
+        void DecreaseNumericFunction(IAtom function, double value);
 
         /// <summary>
         /// Scale-up the value of the requested numeric function by the specified value.
         /// </summary>
-        /// <param name="functionAtom">Requested numeric function.</param>
+        /// <param name="function">Requested numeric function.</param>
         /// <param name="value">Value to be scaled-up by.</param>
-        void ScaleUpNumericFunction(IAtom functionAtom, double value);
+        void ScaleUpNumericFunction(IAtom function, double value);
 
         /// <summary>
         /// Scale-down the value of the requested numeric function by the specified value.
         /// </summary>
-        /// <param name="functionAtom">Requested numeric function.</param>
+        /// <param name="function">Requested numeric function.</param>
         /// <param name="value">Value to be scaled-down by.</param>
-        void ScaleDownNumericFunction(IAtom functionAtom, double value);
+        void ScaleDownNumericFunction(IAtom function, double value);
 
         /// <summary>
         /// Enumerates the contained predicates.

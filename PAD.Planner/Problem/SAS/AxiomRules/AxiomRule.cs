@@ -9,12 +9,12 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Conditions to be met for the axiom rule to be applied ("axiom rule body").
         /// </summary>
-        public IConditions Conditions { set; get; } = null;
+        public IConditions Conditions { set; get; }
 
         /// <summary>
         /// Actual effect of the axiom rule ("axiom rule head").
         /// </summary>
-        public IAssignment Assignment { set; get; } = null;
+        public IAssignment Assignment { set; get; }
 
         /// <summary>
         /// Constructs a single SAS+ axiom rule from the input data.

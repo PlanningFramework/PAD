@@ -1,10 +1,12 @@
-﻿
-namespace PAD.Launcher
+﻿using System;
+
+namespace PAD.Launcher.Tasks
 {
     /// <summary>
     /// Exception specifying errors while loading the tasks.
     /// </summary>
-    public class TasksLoaderException : System.Exception
+    [Serializable]
+    public class TasksLoaderException : Exception
     {
         /// <summary>
         /// Creates a loading exception.

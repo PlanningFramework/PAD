@@ -9,12 +9,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Function atom.
         /// </summary>
-        public IAtom FunctionAtom { set; get; } = null;
+        public IAtom FunctionAtom { set; get; }
 
         /// <summary>
         /// Object value to be assigned.
         /// </summary>
-        public ITerm Value { get; set; } = null;
+        public ITerm Value { get; set; }
 
         /// <summary>
         /// Constructs the effect.

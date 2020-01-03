@@ -12,26 +12,26 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Stack of expression parts.
         /// </summary>
-        private Stack<IExpression> ExpressionStack { set; get; } = new Stack<IExpression>();
+        private Stack<IExpression> ExpressionStack { get; } = new Stack<IExpression>();
 
         /// <summary>
         /// Terms builder.
         /// </summary>
-        private Lazy<TermsBuilder> TermsBuilder { set; get; } = null;
+        private Lazy<TermsBuilder> TermsBuilder { get; }
 
         /// <summary>
         /// ID manager converting predicate, function, constant and type names to their corresponding IDs.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the expressions builder.
         /// </summary>
         /// <param name="idManager">ID manager.</param>
-        public ExpressionsBuilder(IDManager idManager)
+        public ExpressionsBuilder(IdManager idManager)
         {
-            IDManager = idManager;
-            TermsBuilder = new Lazy<TermsBuilder>(() => new TermsBuilder(IDManager));
+            IdManager = idManager;
+            TermsBuilder = new Lazy<TermsBuilder>(() => new TermsBuilder(IdManager));
         }
 
         /// <summary>
@@ -56,9 +56,9 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.PreferenceExpression data)
         {
-            var idManager = IDManager.Preferences;
-            int preferenceNameID = idManager.IsRegistered(data.Name) ? idManager.GetID(data.Name) : idManager.Register(data.Name);
-            ExpressionStack.Push(new PreferenceExpression(preferenceNameID, ExpressionStack.Pop(), IDManager));
+            var idManager = IdManager.Preferences;
+            int preferenceNameId = idManager.IsRegistered(data.Name) ? idManager.GetId(data.Name) : idManager.Register(data.Name);
+            ExpressionStack.Push(new PreferenceExpression(preferenceNameId, ExpressionStack.Pop(), IdManager));
         }
 
         /// <summary>
@@ -67,12 +67,12 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.PredicateExpression data)
         {
-            int predicateNameID = IDManager.Predicates.GetID(data.Name, data.Terms.Count);
+            int predicateNameId = IdManager.Predicates.GetId(data.Name, data.Terms.Count);
             List<ITerm> terms = new List<ITerm>();
 
             data.Terms.ForEach(term => terms.Add(TermsBuilder.Value.Build(term)));
 
-            ExpressionStack.Push(new PredicateExpression(new Atom(predicateNameID, terms), IDManager));
+            ExpressionStack.Push(new PredicateExpression(new Atom(predicateNameId, terms), IdManager));
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void Visit(InputData.PDDL.ForallExpression data)
         {
-            IDManager.Variables.RegisterLocalParameters(data.Parameters);
+            IdManager.Variables.RegisterLocalParameters(data.Parameters);
         }
 
         /// <summary>
@@ -152,8 +152,8 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.ForallExpression data)
         {
-            ExpressionStack.Push(new ForallExpression(new Parameters(data.Parameters, IDManager), ExpressionStack.Pop()));
-            IDManager.Variables.UnregisterLocalParameters(data.Parameters);
+            ExpressionStack.Push(new ForallExpression(new Parameters(data.Parameters, IdManager), ExpressionStack.Pop()));
+            IdManager.Variables.UnregisterLocalParameters(data.Parameters);
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void Visit(InputData.PDDL.ExistsExpression data)
         {
-            IDManager.Variables.RegisterLocalParameters(data.Parameters);
+            IdManager.Variables.RegisterLocalParameters(data.Parameters);
         }
 
         /// <summary>
@@ -171,8 +171,8 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.ExistsExpression data)
         {
-            ExpressionStack.Push(new ExistsExpression(new Parameters(data.Parameters, IDManager), ExpressionStack.Pop()));
-            IDManager.Variables.UnregisterLocalParameters(data.Parameters);
+            ExpressionStack.Push(new ExistsExpression(new Parameters(data.Parameters, IdManager), ExpressionStack.Pop()));
+            IdManager.Variables.UnregisterLocalParameters(data.Parameters);
         }
 
         /// <summary>
@@ -181,7 +181,7 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.NumericCompareExpression data)
         {
-            NumericExpressionsBuilder numericExpressionsBuilder = new NumericExpressionsBuilder(IDManager);
+            NumericExpressionsBuilder numericExpressionsBuilder = new NumericExpressionsBuilder(IdManager);
             INumericExpression firstArgument = numericExpressionsBuilder.Build(data.NumericExpression1);
             INumericExpression secondArgument = numericExpressionsBuilder.Build(data.NumericExpression2);
 

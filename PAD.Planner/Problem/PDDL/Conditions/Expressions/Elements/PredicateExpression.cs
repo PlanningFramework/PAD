@@ -10,22 +10,22 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Predicate atom.
         /// </summary>
-        public IAtom PredicateAtom { set; get; } = null;
+        public IAtom PredicateAtom { set; get; }
 
         /// <summary>
         /// ID manager of the corresponding planning problem.
         /// </summary>
-        public IDManager IDManager { set; get; } = null;
+        public IdManager IdManager { set; get; }
 
         /// <summary>
         /// Constructs the predicate expression.
         /// </summary>
         /// <param name="predicateAtom">Predicate atom.</param>
         /// <param name="idManager">ID manager.</param>
-        public PredicateExpression(IAtom predicateAtom, IDManager idManager)
+        public PredicateExpression(IAtom predicateAtom, IdManager idManager)
         {
             PredicateAtom = predicateAtom;
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace PAD.Planner.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            return PredicateAtom.ToString(IDManager.Predicates);
+            return PredicateAtom.ToString(IdManager.Predicates);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Expression clone.</returns>
         public IExpression Clone()
         {
-            return new PredicateExpression(PredicateAtom.Clone(), IDManager);
+            return new PredicateExpression(PredicateAtom.Clone(), IdManager);
         }
 
         /// <summary>

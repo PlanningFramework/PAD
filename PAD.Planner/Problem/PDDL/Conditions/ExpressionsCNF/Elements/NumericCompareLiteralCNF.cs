@@ -11,17 +11,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Compare operator.
         /// </summary>
-        public NumericCompareExpression.RelationalOperator Operator { set; get; } = NumericCompareExpression.RelationalOperator.EQ;
+        public NumericCompareExpression.RelationalOperator Operator { set; get; }
 
         /// <summary>
         /// Left numeric expression.
         /// </summary>
-        public INumericExpression LeftArgument { set; get; } = null;
+        public INumericExpression LeftArgument { set; get; }
 
         /// <summary>
         /// Right numeric expression.
         /// </summary>
-        public INumericExpression RightArgument { set; get; } = null;
+        public INumericExpression RightArgument { set; get; }
 
         /// <summary>
         /// Constructs the literal from the given expression.

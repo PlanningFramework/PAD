@@ -10,7 +10,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public Term TermData { get; private set; } = null;
+        public Term TermData { get; private set; }
 
         /// <summary>
         /// Handles the AST node visit.

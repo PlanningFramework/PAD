@@ -19,7 +19,7 @@ namespace PAD.Planner.SAS
         public PatternDatabase(Problem problem, bool findAdditivePatterns = true, List<HashSet<int>> patternHints = null)
         {
             PatternDatabaseBuilder builder = new PatternDatabaseBuilder(problem);
-            builder.BuildPatterns(findAdditivePatterns, patternHints).ForEach(entry => Add(entry));
+            builder.BuildPatterns(findAdditivePatterns, patternHints).ForEach(Add);
         }
 
         /// <summary>
@@ -35,9 +35,9 @@ namespace PAD.Planner.SAS
             foreach (var pattern in this)
             {
                 double distance = pattern.GetDistance(state);
-                if (distance == PatternValuesDistances.MAX_DISTANCE)
+                if (distance.Equals(PatternValuesDistances.MaxDistance))
                 {
-                    return PatternValuesDistances.MAX_DISTANCE;
+                    return PatternValuesDistances.MaxDistance;
                 }
 
                 result += distance;
@@ -53,7 +53,7 @@ namespace PAD.Planner.SAS
         /// <returns>Heuristic value for the conditions.</returns>
         public double GetValue(Planner.IConditions conditions)
         {
-            throw new NotSupportedException("PDB heuristic for the backward search is not supported, at the momement.");
+            throw new NotSupportedException("PDB heuristic for the backward search is not supported, at the moment.");
         }
     }
 }

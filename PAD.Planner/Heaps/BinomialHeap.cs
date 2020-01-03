@@ -25,7 +25,7 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Number of items in the heap.
         /// </summary>
-        private int Count { set; get; } = 0;
+        private int Count { set; get; }
 
         /// <summary>
         /// Adds a new key-value pair into the collection.
@@ -68,7 +68,7 @@ namespace PAD.Planner.Heaps
 
             byRank[min.Rank].Remove(min);
 
-            foreach (TreeNode item in min.Succesors)
+            foreach (TreeNode item in min.Successors)
             {
                 byRank[item.Rank].Add(item);
             }
@@ -121,28 +121,15 @@ namespace PAD.Planner.Heaps
         /// <param name="first">First tree node.</param>
         /// <param name="second">Second tree node.</param>
         /// <returns>Joined tree root.</returns>
-        private TreeNode Join(TreeNode first, TreeNode second)
+        private static TreeNode Join(TreeNode first, TreeNode second)
         {
             if (first.Key > second.Key)
             {
                 return Join(second, first);
             }
 
-            second.Ancestor = first;
-            first.Succesors.Add(second);
+            first.Successors.Add(second);
             first.Rank += 1;
-            return first;
-        }
-
-        /// <summary>
-        /// Merges two lists of trees.
-        /// </summary>
-        /// <param name="first">First list of trees.</param>
-        /// <param name="second">Second list of trees.</param>
-        /// <returns>Joined list of trees.</returns>
-        private LinkedList<TreeNode> Merge(LinkedList<TreeNode> first, LinkedList<TreeNode> second)
-        {
-            first.AddLast(second.First);
             return first;
         }
 
@@ -151,7 +138,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="list">List of binomial trees.</param>
         /// <returns>Repaired list of binomial trees.</returns>
-        private LinkedList<TreeNode> Repair(List<TreeNode>[] list)
+        private static LinkedList<TreeNode> Repair(List<TreeNode>[] list)
         {
             LinkedList<TreeNode> result = new LinkedList<TreeNode>();
             for (int i = 0; i < list.Length; i++)
@@ -181,27 +168,22 @@ namespace PAD.Planner.Heaps
             /// <summary>
             /// Value of the node.
             /// </summary>
-            public Value Value { get; set; } = default(Value);
+            public Value Value { get; }
 
             /// <summary>
             /// Key of the node.
             /// </summary>
-            public double Key { get; set; } = 0.0;
+            public double Key { get; }
 
             /// <summary>
             /// Rank of the node.
             /// </summary>
-            public int Rank { set; get; } = 0;
-
-            /// <summary>
-            /// Ancestor tree node.
-            /// </summary>
-            public TreeNode Ancestor { set; get; } = null;
+            public int Rank { set; get; }
 
             /// <summary>
             /// Successor tree nodes.
             /// </summary>
-            public List<TreeNode> Succesors { set; get; } = new List<TreeNode>();
+            public List<TreeNode> Successors { get; } = new List<TreeNode>();
 
             /// <summary>
             /// Constructs the tree node of the binomial heap.
@@ -214,24 +196,6 @@ namespace PAD.Planner.Heaps
                 Value = value;
                 Key = key;
                 Rank = rank;
-            }
-
-            /// <summary>
-            /// Is the node root node?
-            /// </summary>
-            /// <returns>True if the node is root node, false otherwise.</returns>
-            public bool IsRoot()
-            {
-                return Ancestor == null;
-            }
-
-            /// <summary>
-            /// Is the node leaf node?
-            /// </summary>
-            /// <returns>True if the node is leaf node, false otherwise.</returns>
-            public bool IsLeaf()
-            {
-                return Succesors.Count == 0;
             }
 
             /// <summary>

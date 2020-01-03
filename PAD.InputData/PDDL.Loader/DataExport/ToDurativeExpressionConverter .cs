@@ -1,4 +1,7 @@
 ﻿using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.DataExport
 {
@@ -10,13 +13,13 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public DurativeExpression ExpressionData { get; private set; } = null;
+        public DurativeExpression ExpressionData { get; private set; }
 
         /// <summary>
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(AndDaGDAstNode astNode)
+        public override void Visit(AndDaGdAstNode astNode)
         {
             AndDurativeExpression andExpression = new AndDurativeExpression();
             astNode.Arguments.ForEach(arg => andExpression.Arguments.Add(MasterExporter.ToDurativeExpression(arg)));
@@ -27,7 +30,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(ForallDaGDAstNode astNode)
+        public override void Visit(ForallDaGdAstNode astNode)
         {
             ExpressionData = new ForallDurativeExpression(MasterExporter.ToParameters(astNode.Parameters), MasterExporter.ToDurativeExpression(astNode.Expression));
         }
@@ -36,7 +39,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(AtTimedDaGDAstNode astNode)
+        public override void Visit(AtTimedDaGdAstNode astNode)
         {
             ExpressionData = new AtTimedExpression(astNode.TimeSpecifier, MasterExporter.ToExpression(astNode.Argument));
         }
@@ -45,7 +48,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(OverTimedDaGDAstNode astNode)
+        public override void Visit(OverTimedDaGdAstNode astNode)
         {
             ExpressionData = new OverTimedExpression(astNode.IntervalSpecifier, MasterExporter.ToExpression(astNode.Argument));
         }
@@ -54,7 +57,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(PreferenceDaGDAstNode astNode)
+        public override void Visit(PreferenceDaGdAstNode astNode)
         {
             ExpressionData = new PreferencedTimedExpression(astNode.Name, (TimedExpression)MasterExporter.ToDurativeExpression(astNode.Argument));
         }

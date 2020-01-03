@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.SAS
 {
@@ -113,17 +114,14 @@ namespace PAD.Planner.SAS
                 }
             }
 
-            if (newConditions.Count == 0)
+            switch (newConditions.Count)
             {
-                return new ConditionsContradiction();
-            }
-            else if (newConditions.Count == 1)
-            {
-                return newConditions[0];
-            }
-            else
-            {
-                return new ConditionsClause(newConditions.ToArray());
+                case 0:
+                    return new ConditionsContradiction();
+                case 1:
+                    return newConditions[0];
+                default:
+                    return new ConditionsClause(newConditions.ToArray());
             }
         }
 
@@ -254,7 +252,7 @@ namespace PAD.Planner.SAS
         }
 
         /// <summary>
-        /// Evaluates the relavance of a single effect assignment.
+        /// Evaluates the relevance of a single effect assignment.
         /// </summary>
         /// <param name="assignment">Effect assignment.</param>
         /// <returns>Effect relevance of the specified assignment.</returns>
@@ -279,12 +277,12 @@ namespace PAD.Planner.SAS
         /// </summary>
         /// <param name="mutexConstraints">Mutex constraints.</param>
         /// <returns>True if the conditions is compatible with the specified mutex constraints, false otherwise.</returns>
-        public bool IsCompatibleWithMutexContraints(IList<IAssignment> mutexConstraints)
+        public bool IsCompatibleWithMutexConstraints(IList<IAssignment> mutexConstraints)
         {
             // if at least one of the disjuncts is compatible, then the whole clause is compatible
             foreach (var conditions in this)
             {
-                if (conditions.IsCompatibleWithMutexContraints(mutexConstraints))
+                if (conditions.IsCompatibleWithMutexConstraints(mutexConstraints))
                 {
                     return true;
                 }
@@ -308,7 +306,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Gets the number of not accomplished condition constraints for the specified state.
         /// </summary>
-        /// <param name="state">State to be evalatuated.</param>
+        /// <param name="state">State to be evaluated.</param>
         /// <returns>Number of not accomplished condition constraints.</returns>
         public int GetNotAccomplishedConstraintsCount(IState state)
         {
@@ -364,7 +362,7 @@ namespace PAD.Planner.SAS
         /// Enumerates all possible relative states meeting the current conditions.
         /// </summary>
         /// <param name="problem">Parent planning problem.</param>
-        /// <returns>All possible realtive states meeting the conditions.</returns>
+        /// <returns>All possible relative states meeting the conditions.</returns>
         public IEnumerable<Planner.IRelativeState> GetCorrespondingRelativeStates(IProblem problem)
         {
             return StatesEnumerator.EnumerateRelativeStates(this, ((Problem)problem).Variables);

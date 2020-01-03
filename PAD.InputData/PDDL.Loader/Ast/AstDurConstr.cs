@@ -20,7 +20,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of simple-duration-constraints.
         /// </summary>
-        public List<SimpleDurationConstraintAstNode> Arguments { get; private set; } = null;
+        public List<SimpleDurationConstraintAstNode> Arguments { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -61,7 +61,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Argument duration constraint of the expression.
         /// </summary>
-        public SimpleDurationConstraintAstNode DurationConstraint { get; private set; } = null;
+        public SimpleDurationConstraintAstNode DurationConstraint { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -96,7 +96,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Duration argument of the expression.
         /// </summary>
-        public TermOrNumericAstNode DurationArgument { get; private set; } = null;
+        public TermOrNumericAstNode DurationArgument { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.

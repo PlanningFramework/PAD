@@ -1,4 +1,5 @@
 ﻿using PAD.InputData.SAS;
+// ReSharper disable UnusedMember.Global
 
 namespace PAD.InputData
 {

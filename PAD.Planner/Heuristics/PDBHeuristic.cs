@@ -11,12 +11,13 @@ namespace PAD.Planner.Heuristics
         /// <summary>
         /// Calculated pattern database.
         /// </summary>
-        IPatternDatabase PatternDatabase { set; get; } = null;
+        private IPatternDatabase PatternDatabase { get; }
 
         /// <summary>
         /// Constructs the heuristic.
         /// </summary>
         /// <param name="problem">Original planning problem.</param>
+        /// <param name="findAdditivePatterns">Should the additive pattern be automatically determined?</param>
         /// <param name="patternHints">Pattern hints for the database.</param>
         public PDBHeuristic(IProblem problem, bool findAdditivePatterns = true, List<HashSet<int>> patternHints = null) : base(problem)
         {

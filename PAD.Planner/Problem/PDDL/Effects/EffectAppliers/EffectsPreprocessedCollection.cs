@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -71,7 +73,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Is the current effect being negated?
         /// </summary>
-        private bool IsNegated { set; get; } = false;
+        private bool IsNegated { set; get; }
 
         /// <summary>
         /// Collects primitive effects used in the effects list into the containers.
@@ -121,7 +123,7 @@ namespace PAD.Planner.PDDL
             foreach (var numericFunc in NumericFunctionAssignmentEffects)
             {
                 var groundedFunction = operatorSubstitution.IsEmpty() ? numericFunc.FunctionAtom : groundingManager.GroundAtom(numericFunc.FunctionAtom, operatorSubstitution);
-                var groundedAssignment = operatorSubstitution.IsEmpty() ? numericFunc.GetBackwardsSubstituedValue() : groundingManager.GroundNumericExpression(numericFunc.GetBackwardsSubstituedValue(), operatorSubstitution);
+                var groundedAssignment = operatorSubstitution.IsEmpty() ? numericFunc.GetBackwardsSubstitutedValue() : groundingManager.GroundNumericExpression(numericFunc.GetBackwardsSubstitutedValue(), operatorSubstitution);
                 GroundedNumericFunctionAssignmentEffects.Add(groundedFunction, groundedAssignment);
                 if (!OriginalLiftedFunctions.ContainsKey(groundedFunction))
                 {

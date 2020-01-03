@@ -12,7 +12,7 @@ namespace PAD.Planner.PDDL
         /// Gets the name of the atom.
         /// </summary>
         /// <returns>Name ID of the atom.</returns>
-        int GetNameID();
+        int GetNameId();
 
         /// <summary>
         /// Gets the atom arity (number of arguments).
@@ -52,6 +52,6 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="idManager">ID manager.</param>
         /// <returns>String representation.</returns>
-        string ToString(EntityIDManager idManager);
+        string ToString(EntityIdManager idManager);
     }
 }

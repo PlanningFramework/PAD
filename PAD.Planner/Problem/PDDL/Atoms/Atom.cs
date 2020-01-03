@@ -11,46 +11,46 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Atom name ID.
         /// </summary>
-        public int NameID { set; get; } = IDManager.INVALID_ID;
+        public int NameId { set; get; }
 
         /// <summary>
         /// Argument terms.
         /// </summary>
-        public List<ITerm> Terms { set; get; } = null;
+        public List<ITerm> Terms { set; get; }
 
         /// <summary>
         /// Value for the term that is not grounded (see Atom.GetGroundedTerm(int)).
         /// </summary>
-        public const int NOT_GROUNDED_TERM = -1;
+        public const int NotGroundedTerm = -1;
 
         /// <summary>
         /// Constructs the atom.
         /// </summary>
-        /// <param name="nameID">Name ID.</param>
-        public Atom(int nameID)
+        /// <param name="nameId">Name ID.</param>
+        public Atom(int nameId)
         {
-            NameID = nameID;
+            NameId = nameId;
             Terms = new List<ITerm>();
         }
 
         /// <summary>
         /// Constructs the atom.
         /// </summary>
-        /// <param name="nameID">Name ID.</param>
+        /// <param name="nameId">Name ID.</param>
         /// <param name="terms">Argument terms</param>
-        public Atom(int nameID, List<ITerm> terms)
+        public Atom(int nameId, List<ITerm> terms)
         {
-            NameID = nameID;
-            Terms = terms;            
+            NameId = nameId;
+            Terms = terms;
         }
 
         /// <summary>
         /// Gets the name of the atom.
         /// </summary>
         /// <returns>Name ID of the atom.</returns>
-        public int GetNameID()
+        public int GetNameId()
         {
-            return NameID;
+            return NameId;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace PAD.Planner.PDDL
         public int GetGroundedTerm(int index)
         {
             ConstantTerm constantTerm = Terms[index] as ConstantTerm;
-            return (constantTerm != null) ? constantTerm.NameID : NOT_GROUNDED_TERM;
+            return constantTerm?.NameId ?? NotGroundedTerm;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Unification in the form of variable substitution.</returns>
         public ISubstitution GetUnificationWith(IAtom referenceAtom)
         {
-            Debug.Assert(GetNameID() == referenceAtom.GetNameID() && GetTerms().Count == referenceAtom.GetTerms().Count, "Unification of incompatible atoms!");
+            Debug.Assert(GetNameId() == referenceAtom.GetNameId() && GetTerms().Count == referenceAtom.GetTerms().Count, "Unification of incompatible atoms!");
 
             ISubstitution unification = new Substitution();
 
@@ -103,7 +103,7 @@ namespace PAD.Planner.PDDL
                     ConstantTerm valueTerm = referenceAtom.GetTerms()[termIndex] as ConstantTerm;
                     if (valueTerm != null)
                     {
-                        unification.Add(variableTerm.NameID, valueTerm.NameID);
+                        unification.Add(variableTerm.NameId, valueTerm.NameId);
                     }
                 }
                 ++termIndex;
@@ -118,7 +118,7 @@ namespace PAD.Planner.PDDL
         /// <returns>A copy of the atom.</returns>
         public IAtom Clone()
         {
-            return new Atom(NameID, new List<ITerm>(Terms));
+            return new Atom(NameId, new List<ITerm>(Terms));
         }
 
         /// <summary>
@@ -126,9 +126,9 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="idManager">ID manager.</param>
         /// <returns>Full atom name.</returns>
-        public string GetFullName(EntityIDManager idManager)
+        public string GetFullName(EntityIdManager idManager)
         {
-            return idManager.GetNameFromID(GetNameID());
+            return idManager.GetNameFromId(GetNameId());
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="idManager">ID manager.</param>
         /// <returns>String representation.</returns>
-        public string ToString(EntityIDManager idManager)
+        public string ToString(EntityIdManager idManager)
         {
             string atomName = GetFullName(idManager);
 
@@ -161,7 +161,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Hash code of the object.</returns>
         public override int GetHashCode()
         {
-            return HashHelper.GetHashCode(Terms).CombineHashCode(NameID);
+            return HashHelper.GetHashCode(Terms).CombineHashCode(NameId);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace PAD.Planner.PDDL
                 return false;
             }
 
-            return (NameID == other.NameID) && CollectionsEquality.Equals(Terms, other.Terms);
+            return (NameId == other.NameId) && CollectionsEquality.Equals(Terms, other.Terms);
         }
     }
 }

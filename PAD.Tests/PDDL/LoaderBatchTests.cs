@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using PAD.InputData;
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.Tests.PDDL
 {
@@ -9,17 +10,17 @@ namespace PAD.Tests.PDDL
     /// The tests consists of actual domains and problem from various years of International Planning Competition (IPC).
     /// </summary>
     [TestClass]
-    public class PDDLLoaderBatchTests
+    public class LoaderBatchTests
     {
         /// <summary>
-        /// Gets a pair of filepaths for the domain and problem files of the specified planning problem.
+        /// Gets a pair of file paths for the domain and problem files of the specified planning problem.
         /// </summary>
         /// <param name="subFolder">Test case subfolder.</param>
         /// <param name="problemName">Problem name.</param>
         /// <returns>Pair of paths to domain and problem files.</returns>
-        private FilePaths GetFilePaths(string subFolder, string problemName)
+        private static FilePaths GetFilePaths(string subFolder, string problemName)
         {
-            string rootFilePath = $@"..\..\Loader.PDDL\BatchTestCases\{subFolder}\{problemName}";
+            string rootFilePath = $@"..\..\PDDL\LoaderBatchTestCases\{subFolder}\{problemName}";
             return new FilePaths(problemName, $"{rootFilePath}_domain.pddl", $"{rootFilePath}_problem.pddl");
         }
 
@@ -88,7 +89,7 @@ namespace PAD.Tests.PDDL
         /// </summary>
         /// <param name="subFolder">Test cases subfolder.</param>
         /// <param name="problems">List of problem names.</param>
-        private void TestBatch(string subFolder, params string[] problems)
+        private static void TestBatch(string subFolder, params string[] problems)
         {
             List<FilePaths> filePathsList = new List<FilePaths>();
             foreach (var problem in problems)
@@ -107,7 +108,7 @@ namespace PAD.Tests.PDDL
                 }
                 catch (System.Exception e)
                 {
-                    throw new System.Exception($"{filePath.ProblemID}: {e.Message}");
+                    throw new System.Exception($"{filePath.ProblemId}: {e.Message}");
                 }
             }
         }

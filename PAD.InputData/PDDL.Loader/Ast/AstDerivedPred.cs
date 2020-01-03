@@ -1,4 +1,5 @@
 ﻿using Irony.Parsing;
+// ReSharper disable IdentifierTypo
 
 namespace PAD.InputData.PDDL.Loader.Ast
 {
@@ -10,12 +11,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Predicate specification (predicate name, list of typed arguments).
         /// </summary>
-        public PredicateSkeletonAstNode Predicate { get; private set; } = null;
+        public PredicateSkeletonAstNode Predicate { get; private set; }
 
         /// <summary>
         /// Expression for the derived predicate.
         /// </summary>
-        public GDAstNode Expression { get; private set; } = null;
+        public GdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -24,7 +25,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         public override void Init(ParseTreeNode treeNode)
         {
             Predicate = treeNode.GetChildAst<PredicateSkeletonAstNode>(1);
-            Expression = treeNode.GetChildAst<GDAstNode>(2);
+            Expression = treeNode.GetChildAst<GdAstNode>(2);
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of typed arguments.
         /// </summary>
-        public TypedListAstNode Arguments { get; private set; } = null;
+        public TypedListAstNode Arguments { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.

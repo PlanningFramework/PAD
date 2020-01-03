@@ -1,5 +1,9 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
+// ReSharper disable UnusedMember.Global
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -23,14 +27,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="bForm">Block form.</param>
         public DerivedPred(MasterGrammar p, BForm bForm) : base(p, bForm)
         {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
-        {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
             var derivedDef = new NonTerminal("Derived predicate definition", typeof(TransientAstNode));
@@ -43,20 +39,20 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             // USED SUB-TREES
 
-            var GD = new GD(p);
+            var gd = new Gd(p);
             var typedList = new TypedList(p);
 
             // RULES
 
             derivedDef.Rule = p.ToTerm("(") + derivedDefBase + ")";
-            derivedDefBase.Rule = p.ToTerm(":derived") + predicateSkeleton + GD;
+            derivedDefBase.Rule = p.ToTerm(":derived") + predicateSkeleton + gd;
 
             predicateSkeleton.Rule = p.ToTerm("(") + predicateSkeletonBase + ")";
             predicateSkeletonBase.Rule = predicateIdentifier + typedList;
 
             p.MarkTransient(derivedDef, predicateSkeleton);
 
-            return (bForm == BForm.BASE) ? derivedDefBase : derivedDef;
+            Rule = (bForm == BForm.BASE) ? derivedDefBase : derivedDef;
         }
     }
 }

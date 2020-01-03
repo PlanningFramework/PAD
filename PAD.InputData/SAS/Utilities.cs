@@ -48,7 +48,7 @@ namespace PAD.InputData.SAS
         /// <returns>Joined list of lines.</returns>
         private static string JoinLines(List<string> lines)
         {
-            lines.RemoveAll(x => string.IsNullOrEmpty(x));
+            lines.RemoveAll(string.IsNullOrEmpty);
             return string.Join(Environment.NewLine, lines);
         }
     }

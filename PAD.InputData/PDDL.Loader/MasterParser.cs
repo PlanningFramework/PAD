@@ -16,13 +16,13 @@ namespace PAD.InputData.PDDL.Loader
         /// <param name="inputFilePath">Input PDDL file.</param>
         /// <param name="grammar">Specific grammar to match the input data.</param>
         /// <returns>Root node of the created AST.</returns>
-        public static TargetAst ParseAndCreateAST<TargetAst>(string inputFilePath, Grammar.MasterGrammar grammar) where TargetAst : BaseAstNode
+        public static TargetAst ParseAndCreateAst<TargetAst>(string inputFilePath, Grammar.MasterGrammar grammar) where TargetAst : BaseAstNode
         {
             string loadedString = LoadFileIntoString(inputFilePath);
 
             if (string.IsNullOrEmpty(loadedString))
             {
-                throw new LoadingException(string.Format("Input file {0} is empty or corrupted.", Path.GetFileName(inputFilePath)));
+                throw new LoadingException($"Input file {Path.GetFileName(inputFilePath)} is empty or corrupted.");
             }
 
             Parser parser = new Parser(grammar);
@@ -31,7 +31,7 @@ namespace PAD.InputData.PDDL.Loader
             if (tree.HasErrors())
             {
                 var errorItem = tree.ParserMessages.Find(x => x.Level == Irony.ErrorLevel.Error);
-                string message = string.Format("{0} (file: {1}, line: {2}, column: {3})", errorItem.Message, Path.GetFileName(inputFilePath), errorItem.Location.Line+1, errorItem.Location.Column+1);
+                string message = $"{errorItem.Message} (file: {Path.GetFileName(inputFilePath)}, line: {errorItem.Location.Line + 1}, column: {errorItem.Location.Column + 1})";
 
                 throw new LoadingException(message);
             }
@@ -39,7 +39,7 @@ namespace PAD.InputData.PDDL.Loader
             var treeRoot = tree.Root.AstNode as TargetAst;
             if (treeRoot == null)
             {
-                throw new LoadingException(string.Format("AST tree creation failed during loading {0}.", Path.GetFileName(inputFilePath)));
+                throw new LoadingException($"AST tree creation failed during loading {Path.GetFileName(inputFilePath)}.");
             }
 
             return treeRoot;
@@ -52,8 +52,7 @@ namespace PAD.InputData.PDDL.Loader
         /// <returns>Loaded string.</returns>
         private static string LoadFileIntoString(string filePath)
         {
-            string loadedString = "";
-
+            string loadedString;
             try
             {
                 using (var reader = new StreamReader(filePath))
@@ -63,7 +62,7 @@ namespace PAD.InputData.PDDL.Loader
             }
             catch (IOException ex)
             {
-                throw new LoadingException(string.Format("I/O exception during loading {0}: {1}", Path.GetFileName(filePath), ex.Message));
+                throw new LoadingException($"I/O exception during loading {Path.GetFileName(filePath)}: {ex.Message}");
             }
 
             return loadedString;

@@ -1,4 +1,5 @@
-﻿
+﻿// ReSharper disable IdentifierTypo
+
 namespace PAD.Planner.PDDL
 {
     /// <summary>

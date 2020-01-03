@@ -16,7 +16,7 @@ namespace PAD.Launcher
         /// <param name="args">Program input arguments.</param>
         public static void ExecuteFromProgramArguments(string[] args)
         {
-            PlanningTasksWithExecutionParameters executionDetails = null;
+            PlanningTasksWithExecutionParameters executionDetails;
             try
             {
                 executionDetails = TasksLoader.FromProgramArguments(args);
@@ -46,12 +46,16 @@ namespace PAD.Launcher
         /// <param name="parameters">Execution parameters.</param>
         public static void Execute(IPlanningTask[] tasks, ExecutionParameters parameters)
         {
-            foreach (PlanningTaskBase task in tasks)
+            foreach (var task in tasks)
             {
-                task.OutputMutex = outputWriteMutex;
+                PlanningTaskBase taskBase = task as PlanningTaskBase;
+                if (taskBase != null)
+                {
+                    taskBase.OutputMutex = OutputWriteMutex;
+                }
             }
 
-            Action[] actions = Array.ConvertAll(tasks, task => new Action(() => task.Execute()));
+            Action[] actions = Array.ConvertAll(tasks, task => new Action(task.Execute));
 
             Parallel.Invoke(new ParallelOptions { MaxDegreeOfParallelism = parameters.MaxNumberOfParallelTasks }, actions);
         }
@@ -59,6 +63,6 @@ namespace PAD.Launcher
         /// <summary>
         /// Mutex for the concurrent output writing of tasks results.
         /// </summary>
-        private static readonly object outputWriteMutex = new object();
+        private static readonly object OutputWriteMutex = new object();
     }
 }

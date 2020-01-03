@@ -11,12 +11,12 @@ namespace PAD.Planner
         /// <summary>
         /// Transition result.
         /// </summary>
-        private ISearchNode TransitionResult { set; get; } = null;
+        private ISearchNode TransitionResult { get; }
 
         /// <summary>
         /// Grounded applied operator.
         /// </summary>
-        private IOperator AppliedOperator { set; get; } = null;
+        private IOperator AppliedOperator { get; }
 
         /// <summary>
         /// Constructs the transition entity directly with the transition result.

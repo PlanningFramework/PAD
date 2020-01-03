@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using PAD.InputData.PDDL.Traits;
 using PAD.InputData.PDDL;
 using PAD.InputData;
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.Tests.PDDL
 {
@@ -11,16 +13,16 @@ namespace PAD.Tests.PDDL
     /// Covers the entire phase of loading an input data from the given valid PDDL files into PDDLInputData structure.
     /// </summary>
     [TestClass]
-    public class PDDLLoaderFullUnitTests
+    public class LoaderFullUnitTests
     {
         /// <summary>
         /// Gets full filepath to the specified test case.
         /// </summary>
         /// <param name="fileName">Test case file name.</param>
         /// <returns>Filepath to the test case.</returns>
-        private string GetFilePath(string fileName)
+        private static string GetFilePath(string fileName)
         {
-            return $@"..\..\Loader.PDDL\FullTestCases\{fileName}";
+            return $@"..\..\PDDL\LoaderFullTestCases\{fileName}";
         }
 
         [TestMethod]
@@ -35,7 +37,7 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual("actionA", action0.Name);
             Assert.AreEqual(1, action0.Parameters.Count);
             Assert.AreEqual("?a", action0.Parameters[0].ParameterName);
-            Assert.AreEqual(Parameter.DEFAULT_TYPE, action0.Parameters[0].TypeNames[0]);
+            Assert.AreEqual(Parameter.DefaultType, action0.Parameters[0].TypeNames[0]);
             Assert.AreEqual(0, action0.Preconditions.Count);
             Assert.AreEqual(0, action0.Effects.Count);
 
@@ -87,12 +89,12 @@ namespace PAD.Tests.PDDL
             var const3 = data.Domain.Constants[3];
             Assert.AreEqual("constD", const3.ConstantName);
             Assert.AreEqual(1, const3.TypeNames.Count);
-            Assert.AreEqual(Constant.DEFAULT_TYPE, const3.TypeNames[0]);
+            Assert.AreEqual(Constant.DefaultType, const3.TypeNames[0]);
 
             var const4 = data.Domain.Constants[4];
             Assert.AreEqual("constE", const4.ConstantName);
             Assert.AreEqual(1, const4.TypeNames.Count);
-            Assert.AreEqual(Constant.DEFAULT_TYPE, const4.TypeNames[0]);
+            Assert.AreEqual(Constant.DefaultType, const4.TypeNames[0]);
         }
 
         [TestMethod]
@@ -107,7 +109,7 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(constr0);
             Assert.AreEqual(1, constr0.Parameters.Count);
             Assert.AreEqual("?a", constr0.Parameters[0].ParameterName);
-            Assert.AreEqual(Parameter.DEFAULT_TYPE, constr0.Parameters[0].TypeNames[0]);
+            Assert.AreEqual(Parameter.DefaultType, constr0.Parameters[0].TypeNames[0]);
 
             var argConstraints = constr0.Constraints;
             Assert.AreEqual(1, argConstraints.Count);
@@ -174,7 +176,7 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(constr0);
             Assert.AreEqual(1, constr0.Parameters.Count);
             Assert.AreEqual("?a", constr0.Parameters[0].ParameterName);
-            Assert.AreEqual(Parameter.DEFAULT_TYPE, constr0.Parameters[0].TypeNames[0]);
+            Assert.AreEqual(Parameter.DefaultType, constr0.Parameters[0].TypeNames[0]);
 
             var argConstraints = constr0.Constraints;
             Assert.AreEqual(1, argConstraints.Count);
@@ -281,7 +283,7 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual("actionA", durativeAction0.Name);
             Assert.AreEqual(1, durativeAction0.Parameters.Count);
             Assert.AreEqual("?a", durativeAction0.Parameters[0].ParameterName);
-            Assert.AreEqual(Parameter.DEFAULT_TYPE, durativeAction0.Parameters[0].TypeNames[0]);
+            Assert.AreEqual(Parameter.DefaultType, durativeAction0.Parameters[0].TypeNames[0]);
             Assert.AreEqual(0, durativeAction0.Durations.Count);
             Assert.AreEqual(0, durativeAction0.Conditions.Count);
             Assert.AreEqual(0, durativeAction0.Effects.Count);
@@ -520,7 +522,7 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual("typeA", func0.ReturnValueTypes[0]);
             Assert.AreEqual("typeB", func0.ReturnValueTypes[1]);
             Assert.AreEqual("?a", func0.Terms[0].TermName);
-            Assert.AreEqual(DefinitionTerm.DEFAULT_TYPE, func0.Terms[0].TypeNames[0]);
+            Assert.AreEqual(DefinitionTerm.DefaultType, func0.Terms[0].TypeNames[0]);
 
             var func1 = data.Domain.Functions[1];
             Assert.AreEqual("functionB", func1.Name);
@@ -541,7 +543,7 @@ namespace PAD.Tests.PDDL
             var func3 = data.Domain.Functions[3];
             Assert.AreEqual("functionD", func3.Name);
             Assert.AreEqual(1, func3.ReturnValueTypes.Count);
-            Assert.AreEqual(Function.DEFAULT_RETURN_TYPE, func3.ReturnValueTypes[0]);
+            Assert.AreEqual(Function.DefaultReturnType, func3.ReturnValueTypes[0]);
             Assert.AreEqual(0, func3.Terms.Count);
         }
 
@@ -767,12 +769,12 @@ namespace PAD.Tests.PDDL
             var object3 = data.Problem.Objects[3];
             Assert.AreEqual("objectD", object3.ObjectName);
             Assert.AreEqual(1, object3.TypeNames.Count);
-            Assert.AreEqual(Object.DEFAULT_TYPE, object3.TypeNames[0]);
+            Assert.AreEqual(Object.DefaultType, object3.TypeNames[0]);
 
             var object4 = data.Problem.Objects[4];
             Assert.AreEqual("objectE", object4.ObjectName);
             Assert.AreEqual(1, object4.TypeNames.Count);
-            Assert.AreEqual(Object.DEFAULT_TYPE, object4.TypeNames[0]);
+            Assert.AreEqual(Object.DefaultType, object4.TypeNames[0]);
         }
 
         [TestMethod]
@@ -810,7 +812,7 @@ namespace PAD.Tests.PDDL
             var param4 = action.Parameters[4];
             Assert.AreEqual("?e", param4.ParameterName);
             Assert.AreEqual(1, param4.TypeNames.Count);
-            Assert.AreEqual(Parameter.DEFAULT_TYPE, param4.TypeNames[0]);
+            Assert.AreEqual(Parameter.DefaultType, param4.TypeNames[0]);
         }
 
         [TestMethod]
@@ -824,7 +826,7 @@ namespace PAD.Tests.PDDL
             var pred0 = data.Domain.Predicates[0];
             Assert.AreEqual("predicateA", pred0.Name);
             Assert.AreEqual("?a", pred0.Terms[0].TermName);
-            Assert.AreEqual(DefinitionTerm.DEFAULT_TYPE, pred0.Terms[0].TypeNames[0]);
+            Assert.AreEqual(DefinitionTerm.DefaultType, pred0.Terms[0].TypeNames[0]);
 
             var pred1 = data.Domain.Predicates[1];
             Assert.AreEqual("predicateB", pred1.Name);
@@ -909,7 +911,7 @@ namespace PAD.Tests.PDDL
             var param4 = predicate.Terms[4];
             Assert.AreEqual("?e", param4.TermName);
             Assert.AreEqual(1, param4.TypeNames.Count);
-            Assert.AreEqual(Parameter.DEFAULT_TYPE, param4.TypeNames[0]);
+            Assert.AreEqual(Parameter.DefaultType, param4.TypeNames[0]);
         }
 
         [TestMethod]
@@ -945,12 +947,12 @@ namespace PAD.Tests.PDDL
             var type4 = data.Domain.Types[4];
             Assert.AreEqual("typeE", type4.TypeName);
             Assert.AreEqual(1, type4.BaseTypeNames.Count);
-            Assert.AreEqual(Type.DEFAULT_BASE_TYPE, type4.BaseTypeNames[0]);
+            Assert.AreEqual(Type.DefaultBaseType, type4.BaseTypeNames[0]);
 
             var type5 = data.Domain.Types[5];
             Assert.AreEqual("typeF", type5.TypeName);
             Assert.AreEqual(1, type5.BaseTypeNames.Count);
-            Assert.AreEqual(Type.DEFAULT_BASE_TYPE, type5.BaseTypeNames[0]);
+            Assert.AreEqual(Type.DefaultBaseType, type5.BaseTypeNames[0]);
         }
     }
 }

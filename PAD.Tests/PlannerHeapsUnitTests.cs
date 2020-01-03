@@ -12,16 +12,6 @@ namespace PAD.Tests
     [TestClass]
     public class PlannerHeapsUnitTests
     {
-        /// <summary>
-        /// Gets full filepath to the specified test case.
-        /// </summary>
-        /// <param name="fileName">Test case file name.</param>
-        /// <returns>Filepath to the test case.</returns>
-        private string GetFilePath(string fileName)
-        {
-            return $@"..\..\Planner\TestCases\{fileName}";
-        }
-
         [TestMethod]
         public void TC_BinomialHeap()
         {
@@ -171,7 +161,7 @@ namespace PAD.Tests
         /// Returns a test input for int heaps.
         /// </summary>
         /// <returns>Test input.</returns>
-        private List<int> GetIntTestList()
+        private static List<int> GetIntTestList()
         {
             return new List<int> { 5, 1, 9, 11, 2, 3, 5, 1, 4, 6, 12, 7, 0, 10, 8, 1, 20, 3, 9 };
         }
@@ -180,7 +170,7 @@ namespace PAD.Tests
         /// Returns a test input for double heaps.
         /// </summary>
         /// <returns>Test input.</returns>
-        private List<double> GetDoubleTestList()
+        private static List<double> GetDoubleTestList()
         {
             return new List<double> { 5.2, 1, 1.5, 1.2, 9, 11.1, 2, 3.0, 0, 5.2, 1.7, 4, 6.1, 12.8, 7.4, 0.2, 10.0, 8.9, 1.0, 20.8, 2.0, 9.1 };
         }
@@ -189,12 +179,13 @@ namespace PAD.Tests
         /// Does a generic heap test.
         /// </summary>
         /// <param name="heap">Heap to be checked.</param>
-        private void HeapTest<Value>(IHeap<Value, Value> heap, List<Value> input) where Value : IComparable
+        /// <param name="input">Input values.</param>
+        private static void HeapTest<Value>(IHeap<Value, Value> heap, List<Value> input) where Value : IComparable
         {
             List<Value> sortedInput = new List<Value>(input);
             sortedInput.Sort();
 
-            input.ForEach(number => heap.Add((number), number));
+            input.ForEach(number => heap.Add(number, number));
             Assert.AreEqual(input.Count, heap.GetSize());
 
             Assert.AreEqual(sortedInput[0], heap.GetMinKey());

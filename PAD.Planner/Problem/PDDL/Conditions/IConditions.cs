@@ -24,7 +24,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Gets the number of not accomplished condition constraints for the specified state.
         /// </summary>
-        /// <param name="state">State to be evalatuated.</param>
+        /// <param name="state">State to be evaluated.</param>
         /// <returns>Number of not accomplished condition constraints.</returns>
         int GetNotAccomplishedConstraintsCount(IState state);
 

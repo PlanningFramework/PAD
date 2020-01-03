@@ -60,7 +60,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Function name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument terms.
@@ -105,12 +105,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First argument term.
         /// </summary>
-        public ConstantTerm Term1 { get; set; } = null;
+        public ConstantTerm Term1 { get; set; }
 
         /// <summary>
         /// Second argument term.
         /// </summary>
-        public ConstantTerm Term2 { get; set; } = null;
+        public ConstantTerm Term2 { get; set; }
 
         /// <summary>
         /// Constructs an init element.
@@ -152,7 +152,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument element.
         /// </summary>
-        public AtomicFormulaInitElement Element { get; set; } = null;
+        public AtomicFormulaInitElement Element { get; set; }
 
         /// <summary>
         /// Constructs an init element.
@@ -191,12 +191,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument number.
         /// </summary>
-        public double Number { get; set; } = 0.0;
+        public double Number { get; set; }
 
         /// <summary>
         /// Argument element.
         /// </summary>
-        public LiteralInitElement Element { get; set; } = null;
+        public LiteralInitElement Element { get; set; }
 
         /// <summary>
         /// Constructs an init element.
@@ -237,12 +237,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Function term.
         /// </summary>
-        public BasicNumericFunctionTerm Function { get; set; } = null;
+        public BasicNumericFunctionTerm Function { get; set; }
 
         /// <summary>
         /// Argument number.
         /// </summary>
-        public double Number { get; set; } = 0.0;
+        public double Number { get; set; }
 
         /// <summary>
         /// Constructs an init element.
@@ -283,12 +283,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Function term.
         /// </summary>
-        public BasicObjectFunctionTerm Function { get; set; } = null;
+        public BasicObjectFunctionTerm Function { get; set; }
 
         /// <summary>
         /// Argument term.
         /// </summary>
-        public ConstantTerm Term { get; set; } = null;
+        public ConstantTerm Term { get; set; }
 
         /// <summary>
         /// Constructs an init element.
@@ -331,7 +331,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Function name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument terms.
@@ -376,7 +376,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Function name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument terms.

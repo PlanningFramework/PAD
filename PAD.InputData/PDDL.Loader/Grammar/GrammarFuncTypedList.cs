@@ -14,14 +14,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="p">Parent master grammar.</param>
         public FunctionTypedList(MasterGrammar p) : base(p)
         {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
-        {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
             var functionsTypedList = new NonTerminal("Functions typed list", typeof(FunctionTypedListAstNode));
@@ -33,7 +25,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             var singleFunctionBase = new NonTerminal("Single function base", typeof(TransientAstNode));
             var functionIdentifier = new IdentifierTerminal("Function identifier", IdentifierType.CONSTANT);
 
-            var singleTypedList = new NonTerminal("Single typed list", typeof(TransientAstNode));
             var typeDeclaration = new NonTerminal("Type declaration", typeof(TransientAstNode));
 
             var type = new NonTerminal("Type", typeof(TransientAstNode));
@@ -59,7 +50,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(singleFunction);
 
-            return functionsTypedList;
+            Rule = functionsTypedList;
         }
     }
 }

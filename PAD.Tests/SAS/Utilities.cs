@@ -14,7 +14,7 @@ namespace PAD.Tests.SAS
         /// <returns>True if the string representation of the data is a valid SAS+ input. False otherwise.</returns>
         public static bool CheckToStringExport(SASInputData data)
         {
-            string problemString = data.Problem != null ? data.Problem.ToString() : null;
+            string problemString = data.Problem?.ToString();
             string problemTempFile = CreateAndWriteToTemporaryFile(problemString);
 
             SASInputData exportedData = new SASInputData(problemTempFile);
@@ -42,8 +42,6 @@ namespace PAD.Tests.SAS
             }
 
             string fileName = System.IO.Path.GetTempFileName();
-            System.IO.FileInfo fileInfo = new System.IO.FileInfo(fileName);
-            fileInfo.Attributes = System.IO.FileAttributes.Temporary;
 
             System.IO.StreamWriter streamWriter = System.IO.File.AppendText(fileName);
             streamWriter.Write(fileContent);

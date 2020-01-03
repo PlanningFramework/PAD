@@ -10,12 +10,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public IExpression Expression { get; set; } = null;
+        public IExpression Expression { get; set; }
 
         /// <summary>
         /// List of effects for the expression to be applied.
         /// </summary>
-        public List<PrimitiveEffect> Effects { get; set; } = null;
+        public List<PrimitiveEffect> Effects { get; set; }
 
         /// <summary>
         /// Constructs the effect.

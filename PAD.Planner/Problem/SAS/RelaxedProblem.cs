@@ -9,23 +9,16 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Goal conditions for the relaxed planning problem.
         /// </summary>
-        public IConditions ComplexGoalConditions { set; get; } = null;
+        public IConditions ComplexGoalConditions { set; get; }
 
         /// <summary>
         /// Constructs the relaxed SAS+ planning problem.
         /// </summary>
         /// <param name="inputData">Input data.</param>
-        /// <param name="initialStateInit">Should the initial state be inited?</param>
+        /// <param name="initialStateInit">Should the initial state be initialized?</param>
         public RelaxedProblem(InputData.SASInputData inputData, bool initialStateInit = true) : base(inputData)
         {
-            if (initialStateInit)
-            {
-                InitialState = new RelaxedState((State)InitialState);
-            }
-            else
-            {
-                InitialState = null;
-            }
+            InitialState = (initialStateInit) ? new RelaxedState((State)InitialState) : null;
 
             MutexGroups.Clear();
         }
@@ -54,7 +47,7 @@ namespace PAD.Planner.SAS
         /// <returns>Goal conditions.</returns>
         public override Planner.IConditions GetGoalConditions()
         {
-            return (ComplexGoalConditions == null) ? GoalConditions : ComplexGoalConditions;
+            return ComplexGoalConditions ?? GoalConditions;
         }
 
         /// <summary>

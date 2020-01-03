@@ -9,20 +9,20 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Transition node.
         /// </summary>
-        public ISearchNode Node { set; get; } = null;
+        public ISearchNode Node { set; get; }
 
         /// <summary>
         /// Heuristic distance to a goal from the candidate.
         /// </summary>
-        public double HValue { set; get; } = 0;
+        public double HValue { set; get; }
 
         /// <summary>
         /// Corresponding applied operator.
         /// </summary>
-        public IOperator AppliedOperator { set; get; } = null;
+        public IOperator AppliedOperator { set; get; }
 
         /// <summary>
-        /// Constrtucts the successor candidate.
+        /// Constructs the successor candidate.
         /// </summary>
         /// <param name="node">Search node.</param>
         /// <param name="hValue">Heuristic distance to a goal.</param>

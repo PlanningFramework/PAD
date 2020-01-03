@@ -1,4 +1,5 @@
 ﻿using PAD.InputData.SAS.Loader;
+// ReSharper disable UnusedMember.Global
 
 namespace PAD.InputData
 {
@@ -14,8 +15,7 @@ namespace PAD.InputData
         /// <returns>Instance of master SAS+ input data structure.</returns>
         public static SASInputData LoadInputData(string problemFilePath)
         {
-            SASInputData inputData = new SASInputData();
-            inputData.Problem = LoadProblem(problemFilePath);
+            SASInputData inputData = new SASInputData {Problem = LoadProblem(problemFilePath)};
             return inputData;
         }
 

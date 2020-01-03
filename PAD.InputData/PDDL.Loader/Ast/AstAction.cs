@@ -15,17 +15,17 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Action parameters.
         /// </summary>
-        public TypedListAstNode Parameters { get; private set; } = null;
+        public TypedListAstNode Parameters { get; private set; }
 
         /// <summary>
         /// Action preconditions.
         /// </summary>
-        public GDAstNode Preconditions { get; private set; } = null;
+        public GdAstNode Preconditions { get; private set; }
 
         /// <summary>
         /// Action effects.
         /// </summary>
-        public EffectAstNode Effects { get; private set; } = null;
+        public EffectAstNode Effects { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -35,7 +35,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         {
             Name = treeNode.GetChildString(1);
             Parameters = treeNode.GetGrandChildAst<TypedListAstNode>(2, 1);
-            Preconditions = treeNode.GetGrandChildAst<GDAstNode>(3, 1);
+            Preconditions = treeNode.GetGrandChildAst<GdAstNode>(3, 1);
             Effects = treeNode.GetGrandChildAst<EffectAstNode>(4, 1);
         }
 

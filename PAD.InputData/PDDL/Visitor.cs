@@ -1,4 +1,7 @@
-﻿
+﻿// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
+
 namespace PAD.InputData.PDDL
 {
     /// <summary>
@@ -122,7 +125,7 @@ namespace PAD.InputData.PDDL
         void PostVisit(NumericAssignEffect data);
         void PostVisit(ObjectAssignEffect data);
 
-        // dereived from DurativeConstraint
+        // derived from DurativeConstraint
 
         void Visit(CompareDurativeConstraint data);
         void Visit(AtDurativeConstraint data);
@@ -285,7 +288,7 @@ namespace PAD.InputData.PDDL
         public virtual void PostVisit(NumericAssignEffect data) { }
         public virtual void PostVisit(ObjectAssignEffect data) { }
 
-        // dereived from DurativeConstraint
+        // derived from DurativeConstraint
 
         public virtual void Visit(CompareDurativeConstraint data) { }
         public virtual void Visit(AtDurativeConstraint data) { }

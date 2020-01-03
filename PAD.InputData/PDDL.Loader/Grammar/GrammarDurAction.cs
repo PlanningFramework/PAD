@@ -1,5 +1,9 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
+// ReSharper disable UnusedMember.Global
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -12,7 +16,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// Constructor of the grammar node.
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
-        /// <param name="bForm">Block form.</param>
         public DurAction(MasterGrammar p) : this(p, BForm.FULL)
         {
         }
@@ -24,14 +27,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="bForm">Block form.</param>
         public DurAction(MasterGrammar p, BForm bForm) : base(p, bForm)
         {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
-        {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
             var durActionDef = new NonTerminal("Durative action definition", typeof(TransientAstNode));
@@ -42,7 +37,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             var daEffects = new NonTerminal("Durative action effects", typeof(TransientAstNode));
 
             var emptyOrDurConstr = new NonTerminal("Empty or duration-constraint", typeof(TransientAstNode));
-            var emptyOrDaGD = new NonTerminal("Empty or da-GD", typeof(TransientAstNode));
+            var emptyOrDaGd = new NonTerminal("Empty or da-GD", typeof(TransientAstNode));
             var emptyOrDaEffect = new NonTerminal("Empty or da-effect", typeof(TransientAstNode));
             var emptyBlock = new NonTerminal("Empty block", typeof(TransientAstNode));
 
@@ -52,7 +47,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             var typedList = new TypedList(p);
             var durationConstr = new DurConstr(p);
-            var daGD = new DaGD(p);
+            var daGd = new DaGd(p);
             var daEffect = new DaEffect(p);
 
             // RULES
@@ -61,17 +56,17 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             durActionDefBase.Rule = p.ToTerm(":durative-action") + daName + daParameters + daDuration + daConditions + daEffects;
             daParameters.Rule = p.ToTerm(":parameters") + "(" + typedList + ")";
             daDuration.Rule = p.ToTerm(":duration") + emptyOrDurConstr;
-            daConditions.Rule = p.ToTerm(":condition") + emptyOrDaGD;
+            daConditions.Rule = p.ToTerm(":condition") + emptyOrDaGd;
             daEffects.Rule = p.ToTerm(":effect") + emptyOrDaEffect;
 
             emptyOrDurConstr.Rule = emptyBlock | durationConstr;
-            emptyOrDaGD.Rule = emptyBlock | daGD;
+            emptyOrDaGd.Rule = emptyBlock | daGd;
             emptyOrDaEffect.Rule = emptyBlock | daEffect;
             emptyBlock.Rule = p.ToTerm("(") + p.ToTerm(")");
 
-            p.MarkTransient(durActionDef, emptyOrDurConstr, emptyOrDaGD, emptyOrDaEffect);
+            p.MarkTransient(durActionDef, emptyOrDurConstr, emptyOrDaGd, emptyOrDaEffect);
 
-            return (bForm == BForm.BASE) ? durActionDefBase : durActionDef;
+            Rule = (bForm == BForm.BASE) ? durActionDefBase : durActionDef;
         }
     }
 }

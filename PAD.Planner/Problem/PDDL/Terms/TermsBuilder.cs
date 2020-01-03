@@ -11,20 +11,20 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Stack of term parts.
         /// </summary>
-        private Stack<ITerm> TermStack { set; get; } = new Stack<ITerm>();
+        private Stack<ITerm> TermStack { get; } = new Stack<ITerm>();
 
         /// <summary>
         /// ID manager converting predicate, function, constant and type names to their corresponding IDs.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the terms builder.
         /// </summary>
         /// <param name="idManager">ID manager.</param>
-        public TermsBuilder(IDManager idManager)
+        public TermsBuilder(IdManager idManager)
         {
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void Visit(InputData.PDDL.ConstantTerm data)
         {
-            int constantNameID = IDManager.Constants.GetID(data.Name);
-            TermStack.Push(new ConstantTerm(constantNameID, IDManager));
+            int constantNameId = IdManager.Constants.GetId(data.Name);
+            TermStack.Push(new ConstantTerm(constantNameId, IdManager));
         }
 
         /// <summary>
@@ -59,8 +59,8 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void Visit(InputData.PDDL.VariableTerm data)
         {
-            int variableNameID = IDManager.Variables.GetID(data.Name);
-            TermStack.Push(new VariableTerm(variableNameID));
+            int variableNameId = IdManager.Variables.GetId(data.Name);
+            TermStack.Push(new VariableTerm(variableNameId));
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.ObjectFunctionTerm data)
         {
-            int functionNameID = IDManager.Functions.GetID(data.Name, data.Terms.Count);
+            int functionNameId = IdManager.Functions.GetId(data.Name, data.Terms.Count);
 
             List<ITerm> argumentTerms = new List<ITerm>();
             for (int i = 0; i < data.Terms.Count; ++i)
@@ -77,7 +77,7 @@ namespace PAD.Planner.PDDL
                 argumentTerms.Add(TermStack.Pop());
             }
 
-            TermStack.Push(new ObjectFunctionTerm(new Atom(functionNameID, argumentTerms), IDManager));
+            TermStack.Push(new ObjectFunctionTerm(new Atom(functionNameId, argumentTerms), IdManager));
         }
     }
 }

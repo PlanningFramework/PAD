@@ -14,14 +14,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="p">Parent master grammar.</param>
         public InitElem(MasterGrammar p) : base(p)
         {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
-        {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
             var initElem = new NonTerminal("Init element", typeof(TransientAstNode));
@@ -90,7 +82,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(initElem, initElemBase, equalsFirstArg, equalsSecondArg, functionEqualsArg, notArgument, notArgumentBase, atArgument, atArgumentBase);
 
-            return initElem;
+            Rule = initElem;
         }
     }
 }

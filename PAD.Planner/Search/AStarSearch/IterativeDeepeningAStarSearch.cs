@@ -13,12 +13,12 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Currently used limit value.
         /// </summary>
-        private double LimitValue { set; get; } = 0.0;
+        private double LimitValue { set; get; }
 
         /// <summary>
         /// Lowest value f-value over limit, which will be used for the next iteration.
         /// </summary>
-        private double LowestValueOverLimit { set; get; } = 0.0;
+        private double LowestValueOverLimit { set; get; }
 
         /// <summary>
         /// Constructs the Iterative Deepening A* search procedure.

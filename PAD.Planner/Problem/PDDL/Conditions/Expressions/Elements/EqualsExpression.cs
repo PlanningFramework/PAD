@@ -10,12 +10,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Left argument of the expression.
         /// </summary>
-        public ITerm LeftArgument { set; get; } = null;
+        public ITerm LeftArgument { set; get; }
 
         /// <summary>
         /// Right argument of the expression.
         /// </summary>
-        public ITerm RightArgument { set; get; } = null;
+        public ITerm RightArgument { set; get; }
 
         /// <summary>
         /// Constructs the EQUALS expression.

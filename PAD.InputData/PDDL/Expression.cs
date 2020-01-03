@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using PAD.InputData.PDDL.Traits;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL
 {
@@ -47,12 +50,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Preference name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Argument { get; set; } = null;
+        public Expression Argument { get; set; }
 
         /// <summary>
         /// Constructs the expression.
@@ -101,7 +104,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Predicate name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument terms.
@@ -146,12 +149,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First argument term.
         /// </summary>
-        public Term Term1 { get; set; } = null;
+        public Term Term1 { get; set; }
 
         /// <summary>
         /// Second argument term.
         /// </summary>
-        public Term Term2 { get; set; } = null;
+        public Term Term2 { get; set; }
 
         /// <summary>
         /// Constructs the expression.
@@ -256,7 +259,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Argument { get; set; } = null;
+        public Expression Argument { get; set; }
 
         /// <summary>
         /// Constructs the expression.
@@ -296,12 +299,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First argument expression.
         /// </summary>
-        public Expression Argument1 { get; set; } = null;
+        public Expression Argument1 { get; set; }
 
         /// <summary>
         /// Second argument expression.
         /// </summary>
-        public Expression Argument2 { get; set; } = null;
+        public Expression Argument2 { get; set; }
 
         /// <summary>
         /// Constructs the expression.
@@ -344,12 +347,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// List of expression parameters.
         /// </summary>
-        public Parameters Parameters { get; set; } = new Parameters();
+        public Parameters Parameters { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
         /// Constructs the expression.
@@ -392,12 +395,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// List of expression parameters.
         /// </summary>
-        public Parameters Parameters { get; set; } = new Parameters();
+        public Parameters Parameters { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
         /// Constructs the expression.
@@ -440,17 +443,17 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Numeric comparer.
         /// </summary>
-        public NumericComparer NumericComparer { get; set; } = NumericComparer.EQ;
+        public NumericComparer NumericComparer { get; set; }
 
         /// <summary>
         /// First argument expression.
         /// </summary>
-        public NumericExpression NumericExpression1 { get; set; } = null;
+        public NumericExpression NumericExpression1 { get; set; }
 
         /// <summary>
         /// Second argument expression.
         /// </summary>
-        public NumericExpression NumericExpression2 { get; set; } = null;
+        public NumericExpression NumericExpression2 { get; set; }
 
         /// <summary>
         /// Constructs the expression.

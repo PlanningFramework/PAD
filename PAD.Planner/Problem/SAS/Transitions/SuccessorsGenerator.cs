@@ -6,7 +6,7 @@ namespace PAD.Planner.SAS
     /// Successors generator is a component handling preprocessing and storage of applicable operators and subsequent generation of forward
     /// transitions in SAS+ planning problem. The internal cache is implemented in a form of a decision tree, where every inner node has a decision
     /// variable - each subtree of this node represents a class of states where the decision variable has a specific value. The actual applicable
-    /// operators are in the leaf nodes of the decision tree. This preprocessing can build quite a large tree, but the subsequent traversioning of
+    /// operators are in the leaf nodes of the decision tree. This preprocessing can build quite a large tree, but the subsequent traversing of
     /// this tree can significantly decrease the time we need to find applicable operators for a specific state. The actual generation of successors
     /// is lazy evaluated in a form of IEnumerable collection of successors.
     /// </summary>
@@ -15,12 +15,12 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Root node of the applicable operators decision tree.
         /// </summary>
-        private IOperatorDecisionTreeNode TreeRoot { set; get; } = null;
+        private IOperatorDecisionTreeNode TreeRoot { get; }
 
         /// <summary>
         /// Collector traversing the applicable operators decision tree and returning the actual successors.
         /// </summary>
-        private SuccessorsCollector SuccessorsCollector { set; get; } = null;
+        private SuccessorsCollector SuccessorsCollector { get; }
 
         /// <summary>
         /// Builds the successors generator.

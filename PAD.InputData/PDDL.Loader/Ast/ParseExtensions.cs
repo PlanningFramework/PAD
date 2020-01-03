@@ -30,15 +30,8 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <returns>Child AST node, if it matches the expected type. Null otherwise.</returns>
         public static TargetAst GetChildAst<TargetAst>(this ParseTreeNode parseNode, int index) where TargetAst : BaseAstNode
         {
-            if (parseNode != null)
-            {
-                var childNode = parseNode.GetMappedChildNodes().GetSafeItem(index);
-                if (childNode != null)
-                {
-                    return childNode.AstNode as TargetAst;
-                }
-            }
-            return null;
+            var childNode = parseNode?.GetMappedChildNodes().GetSafeItem(index);
+            return childNode?.AstNode as TargetAst;
         }
 
         /// <summary>
@@ -52,18 +45,15 @@ namespace PAD.InputData.PDDL.Loader.Ast
         {
             List<TargetAst> retList = new List<TargetAst>();
 
-            if (parseNode != null)
+            var childNode = parseNode?.GetMappedChildNodes().GetSafeItem(index);
+            if (childNode != null)
             {
-                var childNode = parseNode.GetMappedChildNodes().GetSafeItem(index);
-                if (childNode != null)
+                foreach (var listItem in childNode.GetMappedChildNodes())
                 {
-                    foreach (var listItem in childNode.GetMappedChildNodes())
+                    var listItemAst = listItem.AstNode as TargetAst;
+                    if (listItemAst != null)
                     {
-                        var listItemAst = listItem.AstNode as TargetAst;
-                        if (listItemAst != null)
-                        {
-                            retList.Add(listItemAst);
-                        }
+                        retList.Add(listItemAst);
                     }
                 }
             }
@@ -81,19 +71,9 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <returns>Grand-child AST node, if it matches the expected type. Null otherwise.</returns>
         public static TargetAst GetGrandChildAst<TargetAst>(this ParseTreeNode parseNode, int childIndex, int grandChildIndex) where TargetAst : BaseAstNode
         {
-            if (parseNode != null)
-            {
-                var childNode = parseNode.GetMappedChildNodes().GetSafeItem(childIndex);
-                if (childNode != null)
-                {
-                    var grandChildNode = childNode.GetMappedChildNodes().GetSafeItem(grandChildIndex);
-                    if (grandChildNode != null)
-                    {
-                        return grandChildNode.AstNode as TargetAst;
-                    }
-                }
-            }
-            return null;
+            var childNode = parseNode?.GetMappedChildNodes().GetSafeItem(childIndex);
+            var grandChildNode = childNode?.GetMappedChildNodes().GetSafeItem(grandChildIndex);
+            return grandChildNode?.AstNode as TargetAst;
         }
 
         /// <summary>
@@ -104,19 +84,9 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <returns>String token of the child parse-node, if it has any. Empty string otherwise.</returns>
         public static string GetChildString(this ParseTreeNode parseNode, int index)
         {
-            if (parseNode != null)
-            {
-                var childNode = parseNode.GetMappedChildNodes().GetSafeItem(index);
-                if (childNode != null)
-                {
-                    string childNodeStr = childNode.FindTokenAndGetText();
-                    if (childNodeStr != null)
-                    {
-                        return childNodeStr;
-                    }
-                }
-            }
-            return "";
+            var childNode = parseNode?.GetMappedChildNodes().GetSafeItem(index);
+            string childNodeStr = childNode?.FindTokenAndGetText();
+            return childNodeStr ?? "";
         }
 
         /// <summary>
@@ -129,18 +99,15 @@ namespace PAD.InputData.PDDL.Loader.Ast
         {
             List<string> retList = new List<string>();
 
-            if (parseNode != null)
+            var childNode = parseNode?.GetMappedChildNodes().GetSafeItem(index);
+            if (childNode != null)
             {
-                var childNode = parseNode.GetMappedChildNodes().GetSafeItem(index);
-                if (childNode != null)
+                foreach (var listItem in childNode.GetMappedChildNodes())
                 {
-                    foreach (var listItem in childNode.GetMappedChildNodes())
+                    string childNodeStr = listItem.FindTokenAndGetText();
+                    if (childNodeStr != null)
                     {
-                        string childNodeStr = listItem.FindTokenAndGetText();
-                        if (childNodeStr != null)
-                        {
-                            retList.Add(childNodeStr);
-                        }
+                        retList.Add(childNodeStr);
                     }
                 }
             }
@@ -157,21 +124,10 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <returns>String token of the grand-child parse-node, if it has any. Empty string otherwise.</returns>
         public static string GetGrandChildString(this ParseTreeNode parseNode, int childIndex, int grandChildIndex)
         {
-            if (parseNode != null)
-            {
-                var childNode = parseNode.GetMappedChildNodes().GetSafeItem(childIndex);
-                if (childNode != null)
-                {
-                    var grandChildNode = childNode.GetMappedChildNodes().GetSafeItem(grandChildIndex);
-                    if (grandChildNode != null)
-                    {
-                        string grandChildNodeStr = grandChildNode.FindTokenAndGetText();
-                        if (grandChildNodeStr != null)
-                            return grandChildNodeStr;
-                    }
-                }
-            }
-            return "";
+            var childNode = parseNode?.GetMappedChildNodes().GetSafeItem(childIndex);
+            var grandChildNode = childNode?.GetMappedChildNodes().GetSafeItem(grandChildIndex);
+            string grandChildNodeStr = grandChildNode?.FindTokenAndGetText();
+            return grandChildNodeStr ?? "";
         }
 
         /// <summary>
@@ -182,15 +138,8 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <returns>Float value token of the child parse-node, if it has any. Zero value otherwise.</returns>
         public static double GetChildNumberVal(this ParseTreeNode parseNode, int index)
         {
-            if (parseNode != null)
-            {
-                var childNode = parseNode.GetMappedChildNodes().GetSafeItem(index);
-                if (childNode != null)
-                {
-                    return Convert.ToDouble(childNode.Token.Value);
-                }
-            }
-            return 0.0;
+            var childNode = parseNode?.GetMappedChildNodes().GetSafeItem(index);
+            return childNode != null ? Convert.ToDouble(childNode.Token.Value) : 0.0;
         }
     }
 }

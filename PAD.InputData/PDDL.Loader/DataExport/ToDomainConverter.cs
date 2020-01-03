@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using PAD.InputData.PDDL.Loader.Ast;
-using System;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.DataExport
 {
@@ -12,7 +14,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public Domain DomainData { get; private set; } = new Domain();
+        public Domain DomainData { get; } = new Domain();
 
         /// <summary>
         /// Handles the AST node visit.
@@ -122,11 +124,13 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <param name="astNode">AST node.</param>
         public override void Visit(DomainActionAstNode astNode)
         {
-            Action newAction = new Action();
-            newAction.Name = astNode.Name;
-            newAction.Parameters = MasterExporter.ToParameters(astNode.Parameters);
-            newAction.Preconditions = MasterExporter.ToPreconditions(astNode.Preconditions);
-            newAction.Effects = MasterExporter.ToEffects(astNode.Effects);
+            Action newAction = new Action
+            {
+                Name = astNode.Name,
+                Parameters = MasterExporter.ToParameters(astNode.Parameters),
+                Preconditions = MasterExporter.ToPreconditions(astNode.Preconditions),
+                Effects = MasterExporter.ToEffects(astNode.Effects)
+            };
             DomainData.Actions.Add(newAction);
         }
 
@@ -136,12 +140,14 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <param name="astNode">AST node.</param>
         public override void Visit(DomainDurActionAstNode astNode)
         {
-            DurativeAction newDurativeAction = new DurativeAction();
-            newDurativeAction.Name = astNode.Name;
-            newDurativeAction.Parameters = MasterExporter.ToParameters(astNode.Parameters);
-            newDurativeAction.Durations = MasterExporter.ToDurativeConstraints(astNode.DurationConstraint);
-            newDurativeAction.Conditions = MasterExporter.ToDurativeConditions(astNode.Condition);
-            newDurativeAction.Effects = MasterExporter.ToDurativeEffects(astNode.Effect);
+            DurativeAction newDurativeAction = new DurativeAction
+            {
+                Name = astNode.Name,
+                Parameters = MasterExporter.ToParameters(astNode.Parameters),
+                Durations = MasterExporter.ToDurativeConstraints(astNode.DurationConstraint),
+                Conditions = MasterExporter.ToDurativeConditions(astNode.Condition),
+                Effects = MasterExporter.ToDurativeEffects(astNode.Effect)
+            };
             DomainData.DurativeActions.Add(newDurativeAction);
         }
 
@@ -151,9 +157,11 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <param name="astNode">AST node.</param>
         public override void Visit(DomainDerivedPredAstNode astNode)
         {
-            DerivedPredicate newDerivedPredicate = new DerivedPredicate();
-            newDerivedPredicate.Expression = MasterExporter.ToExpression(astNode.Expression);
-            newDerivedPredicate.Predicate = new Predicate(astNode.Predicate.Name);
+            DerivedPredicate newDerivedPredicate = new DerivedPredicate
+            {
+                Expression = MasterExporter.ToExpression(astNode.Expression),
+                Predicate = new Predicate(astNode.Predicate.Name)
+            };
             astNode.Predicate.Arguments.TypedIdentifiers.ForEach(termElem => newDerivedPredicate.Predicate.Terms.Add(new DefinitionTerm(termElem.Item1, termElem.Item2.Split(';'))));
             DomainData.DerivedPredicates.Add(newDerivedPredicate);
         }

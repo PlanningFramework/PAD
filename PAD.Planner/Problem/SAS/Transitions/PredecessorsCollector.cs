@@ -33,7 +33,7 @@ namespace PAD.Planner.SAS
         /// <returns>List of predecessors.</returns>
         public IEnumerable<IPredecessor> Visit(OperatorDecisionTreeInnerNode treeNode, IConditions sourceConditions, ISimpleConditions currentSubConditions)
         {
-            int value = Assignment.INVALID_VALUE;
+            int value;
             if (currentSubConditions.IsVariableConstrained(treeNode.DecisionVariable, out value))
             {
                 // if constrained, collect the operators only in the corresponding subtree
@@ -45,9 +45,9 @@ namespace PAD.Planner.SAS
             else
             {
                 // if not constrained, collect operators from all the subtrees
-                for (int i = 0; i < treeNode.OperatorsByDecisionVariableValue.Length; ++i)
+                foreach (var subTree in treeNode.OperatorsByDecisionVariableValue)
                 {
-                    foreach (var predecessor in treeNode.OperatorsByDecisionVariableValue[i].Accept(this, sourceConditions, currentSubConditions))
+                    foreach (var predecessor in subTree.Accept(this, sourceConditions, currentSubConditions))
                     {
                         yield return predecessor;
                     }

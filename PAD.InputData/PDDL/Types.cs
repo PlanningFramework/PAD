@@ -57,7 +57,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Name of the type.
         /// </summary>
-        public string TypeName { set; get; } = "";
+        public string TypeName { set; get; }
 
         /// <summary>
         /// Name of the base types, from which the type is derived. Can be a single or multiple primitive types, e.g. the form
@@ -68,7 +68,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Specification of a default base type.
         /// </summary>
-        public const string DEFAULT_BASE_TYPE = "object";
+        public const string DefaultBaseType = "object";
 
         /// <summary>
         /// Constructs a type.
@@ -78,7 +78,7 @@ namespace PAD.InputData.PDDL
         public Type(string typeName, string[] baseTypeNames = null)
         {
             TypeName = typeName;
-            BaseTypeNames.AddRange(baseTypeNames.GetTypesOrDefault(DEFAULT_BASE_TYPE));
+            BaseTypeNames.AddRange(baseTypeNames.GetTypesOrDefault(DefaultBaseType));
         }
 
         /// <summary>

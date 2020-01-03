@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL
 {
@@ -74,12 +77,12 @@ namespace PAD.InputData.PDDL
                 Requirements.ToString(), Types.ToString(), Constants.ToString(), Predicates.ToString(), Functions.ToString(),
                 Constraints.ToString(), Actions.ToString(), DurativeActions.ToString(), DerivedPredicates.ToString()
             };
-            sections.RemoveAll(x => string.IsNullOrEmpty(x));
+            sections.RemoveAll(string.IsNullOrEmpty);
 
             return string.Join(Environment.NewLine,
                 $"(define(domain {Name})",
                 $" {string.Join($"{Environment.NewLine} ", sections)}",
-                $")");
+                ")");
         }
 
         /// <summary>

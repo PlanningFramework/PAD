@@ -29,56 +29,56 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="inputData">Input data.</param>
         /// <param name="idManager">ID manager.</param>
-        public AtomsManager(InputData.PDDLInputData inputData, IDManager idManager)
+        public AtomsManager(InputData.PDDLInputData inputData, IdManager idManager)
         {
-            Func<int, InputData.PDDL.DefinitionTerms, Tuple<IAtom, Parameters>> ProcessAtom = (int atomID, InputData.PDDL.DefinitionTerms inputTerms) =>
+            Func<int, InputData.PDDL.DefinitionTerms, Tuple<IAtom, Parameters>> processAtom = (atomId, inputTerms) =>
             {
                 List<ITerm> terms = new List<ITerm>();
                 Parameters parameters = new Parameters();
 
-                int freeVarID = 0;
+                int freeVarId = 0;
                 foreach (var term in inputTerms)
                 {
                     List<int> typeIDs = new List<int>();
                     foreach (var typeName in term.TypeNames)
                     {
-                        typeIDs.Add(idManager.Types.GetID(typeName));
+                        typeIDs.Add(idManager.Types.GetId(typeName));
                     }
 
-                    terms.Add(new VariableTerm(freeVarID));
-                    parameters.Add(new Parameter(freeVarID++, typeIDs, idManager));
+                    terms.Add(new VariableTerm(freeVarId));
+                    parameters.Add(new Parameter(freeVarId++, typeIDs, idManager));
                 }
 
-                IAtom atom = new Atom(atomID, terms);
+                IAtom atom = new Atom(atomId, terms);
                 return Tuple.Create(atom, parameters);
             };
 
             foreach (var predicate in inputData.Domain.Predicates)
             {
-                int atomName = idManager.Predicates.GetID(predicate.Name, predicate.Terms.Count);
-                var processedAtom = ProcessAtom(atomName, predicate.Terms);
+                int atomName = idManager.Predicates.GetId(predicate.Name, predicate.Terms.Count);
+                var processedAtom = processAtom(atomName, predicate.Terms);
 
                 LiftedPredicates.Add(processedAtom);
             }
 
             foreach (var function in inputData.Domain.Functions)
             {
-                int atomName = idManager.Functions.GetID(function.Name, function.Terms.Count);
-                var processedAtom = ProcessAtom(atomName, function.Terms);
+                int atomName = idManager.Functions.GetId(function.Name, function.Terms.Count);
+                var processedAtom = processAtom(atomName, function.Terms);
 
-                if (function.IsNumbericFunction())
+                if (function.IsNumericFunction())
                 {
                     LiftedNumericFunctions.Add(processedAtom);
                 }
                 else
                 {
-                    List<int> returnTypeIDs = new List<int>();
+                    List<int> returnTypeIds = new List<int>();
                     foreach (var typeName in function.ReturnValueTypes)
                     {
-                        returnTypeIDs.Add(idManager.Types.GetID(typeName));
+                        returnTypeIds.Add(idManager.Types.GetId(typeName));
                     }
 
-                    LiftedObjectFunctions.Add(Tuple.Create(processedAtom.Item1, returnTypeIDs, processedAtom.Item2));
+                    LiftedObjectFunctions.Add(Tuple.Create(processedAtom.Item1, returnTypeIds, processedAtom.Item2));
                 }
             }
         }

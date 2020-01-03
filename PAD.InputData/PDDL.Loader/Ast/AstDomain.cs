@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using Irony.Parsing;
 using PAD.InputData.PDDL.Traits;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Ast
 {
@@ -17,7 +20,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Domain sections.
         /// </summary>
-        public List<DomainSectionAstNode> DomainSections { get; private set; } = null;
+        public List<DomainSectionAstNode> DomainSections { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -56,7 +59,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of requirements.
         /// </summary>
-        public List<Requirement> RequirementsList { get; private set; } = null;
+        public List<Requirement> RequirementsList { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -91,7 +94,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of types, in the form of pairs (type, baseType).
         /// </summary>
-        public TypedListAstNode TypesList { get; private set; } = null;
+        public TypedListAstNode TypesList { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -121,7 +124,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of typed constants.
         /// </summary>
-        public TypedListAstNode ConstantsList { get; private set; } = null;
+        public TypedListAstNode ConstantsList { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -151,7 +154,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of predicate specifications (predicate name, list of typed arguments).
         /// </summary>
-        public List<PredicateSkeletonAstNode> PredicatesList { get; private set; } = null;
+        public List<PredicateSkeletonAstNode> PredicatesList { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -181,7 +184,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of function specifications (function name, list of typed arguments, return type).
         /// </summary>
-        public FunctionTypedListAstNode FunctionTypedList { get; private set; } = null;
+        public FunctionTypedListAstNode FunctionTypedList { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -211,7 +214,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Constraint expression for the domain.
         /// </summary>
-        public ConGDAstNode Expression { get; private set; } = null;
+        public ConGdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -219,7 +222,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Expression = treeNode.GetChildAst<ConGDAstNode>(1);
+            Expression = treeNode.GetChildAst<ConGdAstNode>(1);
         }
 
         /// <summary>

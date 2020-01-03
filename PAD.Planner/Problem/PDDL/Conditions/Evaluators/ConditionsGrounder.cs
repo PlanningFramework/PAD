@@ -4,14 +4,14 @@ namespace PAD.Planner.PDDL
 {
     /// <summary>
     /// Grounder object returning (partially) grounded conditions for the given substitution. All variable instances specified in the given
-    /// variable substitution are replaced by the substitued values (i.e. constants), others remain intact in the conditions parameters.
+    /// variable substitution are replaced by the substituted values (i.e. constants), others remain intact in the conditions parameters.
     /// </summary>
     public class ConditionsGrounder
     {
         /// <summary>
         /// Expressions grounder.
         /// </summary>
-        private Lazy<ExpressionsGrounder> ExpressionsGrounder { set; get; } = null;
+        private Lazy<ExpressionsGrounder> ExpressionsGrounder { get; }
 
         /// <summary>
         /// Constructs the conditions grounder.
@@ -45,7 +45,7 @@ namespace PAD.Planner.PDDL
                 newConditions.Parameters.Clear();
                 foreach (var parameter in conditions.Parameters)
                 {
-                    if (!substitution.Contains(parameter.ParameterNameID))
+                    if (!substitution.Contains(parameter.ParameterNameId))
                     {
                         newConditions.Parameters.Add(parameter.Clone());
                     }

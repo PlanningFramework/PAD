@@ -11,12 +11,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Predicate atom.
         /// </summary>
-        public IAtom PredicateAtom { set; get; } = null;
+        public IAtom PredicateAtom { set; get; }
 
         /// <summary>
         /// ID manager of the corresponding planning problem.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the literal from the given expression.
@@ -27,7 +27,7 @@ namespace PAD.Planner.PDDL
         {
             PredicateAtom = expression.PredicateAtom;
             IsNegated = isNegated;
-            IDManager = expression.IDManager;
+            IdManager = expression.IdManager;
         }
 
         /// <summary>
@@ -36,11 +36,11 @@ namespace PAD.Planner.PDDL
         /// <param name="predicateAtom">Source predicate expression atom.</param>
         /// <param name="isNegated">Is the literal negated?</param>
         /// <param name="idManager">ID manager.</param>
-        public PredicateLiteralCNF(IAtom predicateAtom, bool isNegated, IDManager idManager)
+        public PredicateLiteralCNF(IAtom predicateAtom, bool isNegated, IdManager idManager)
         {
             PredicateAtom = predicateAtom;
             IsNegated = isNegated;
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PAD.Planner.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            string predicateString = PredicateAtom.ToString(IDManager.Predicates);
+            string predicateString = PredicateAtom.ToString(IdManager.Predicates);
             return (IsNegated) ? $"(not {predicateString})" : predicateString;
         }
 
@@ -89,7 +89,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Expression clone.</returns>
         public override IConjunctCNF Clone()
         {
-            return new PredicateLiteralCNF(PredicateAtom.Clone(), IsNegated, IDManager);
+            return new PredicateLiteralCNF(PredicateAtom.Clone(), IsNegated, IdManager);
         }
 
         /// <summary>

@@ -10,14 +10,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// List of collected predicate atoms.
         /// </summary>
-        public HashSet<IAtom> Atoms { set; get; } = null;
-
-        /// <summary>
-        /// Constructs the collector.
-        /// </summary>
-        public ConditionsUsedPredicatesCollector()
-        {
-        }
+        public HashSet<IAtom> Atoms { set; get; }
 
         /// <summary>
         /// Gets a list of atoms used in the specified conditions.

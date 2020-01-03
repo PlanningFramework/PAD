@@ -9,12 +9,12 @@ namespace PAD.Launcher.Tasks
         /// <summary>
         /// Explicitly created heuristic search, used for the planning task execution.
         /// </summary>
-        public Planner.Search.IHeuristicSearch HeuristicSearch { set; get; } = null;
+        public Planner.Search.IHeuristicSearch HeuristicSearch { set; get; }
 
         /// <summary>
         /// Creates and returns the corresponding heuristic search engine.
         /// </summary>
-        /// <returns>Corrsponding heuristic search engine.</returns>
+        /// <returns>Corresponding heuristic search engine.</returns>
         protected override Planner.Search.IHeuristicSearch GetHeuristicSearch()
         {
             return HeuristicSearch;
@@ -26,7 +26,7 @@ namespace PAD.Launcher.Tasks
         /// <returns>Clone of the planning task.</returns>
         public PlanningTaskExplicit Clone()
         {
-            return new PlanningTaskExplicit()
+            return new PlanningTaskExplicit
             {
                 HeuristicSearch = HeuristicSearch,
                 OutputType = OutputType,

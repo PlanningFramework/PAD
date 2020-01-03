@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using PAD.InputData.PDDL.Traits;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL
 {
@@ -47,12 +50,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Duration comparer specifier.
         /// </summary>
-        public DurationComparer DurationComparer { get; set; } = DurationComparer.LTE;
+        public DurationComparer DurationComparer { get; set; }
 
         /// <summary>
         /// Numeric expression value to which the duration is compared.
         /// </summary>
-        public NumericExpression Value { get; set; } = null;
+        public NumericExpression Value { get; set; }
 
         /// <summary>
         /// Constructs the durative constraint.
@@ -93,12 +96,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Time specifier.
         /// </summary>
-        public TimeSpecifier TimeSpecifier { get; set; } = TimeSpecifier.START;
+        public TimeSpecifier TimeSpecifier { get; set; }
 
         /// <summary>
         /// Argument durative constraint to which the expression is applied.
         /// </summary>
-        public DurativeConstraint DurativeConstraint { get; set; } = null;
+        public DurativeConstraint DurativeConstraint { get; set; }
 
         /// <summary>
         /// Constructs the durative constraint.

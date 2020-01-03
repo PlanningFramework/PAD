@@ -19,17 +19,17 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Root nodes of the collection.
         /// </summary>
-        private List<TreeNode> Root = new List<TreeNode>();
+        private List<TreeNode> Root { set; get; } = new List<TreeNode>();
 
         /// <summary>
         /// Number of elements in the collection.
         /// </summary>
-        private int Count { set; get; } = 0;
+        private int Count { set; get; }
 
         /// <summary>
         /// Node with the minimal value.
         /// </summary>
-        private TreeNode MinNode { set; get; } = null;
+        private TreeNode MinNode { set; get; }
 
         /// <summary>
         /// Adds a new key-value pair into the collection.
@@ -68,7 +68,6 @@ namespace PAD.Planner.Heaps
 
             foreach (var child in MinNode.Children)
             {
-                child.Parent = null;
                 Root.Add(child);
             }
             Root.Remove(MinNode);
@@ -156,7 +155,6 @@ namespace PAD.Planner.Heaps
                     --i;
 
                     rootNode.AddChild(childNode);
-                    childNode.Mark = false;
                     controlNode[rootNodeChildCount] = null;
                     ++rootNodeChildCount;
                 }
@@ -164,9 +162,8 @@ namespace PAD.Planner.Heaps
             }
 
             MinNode = null;
-            for (int i = 0; i < controlNode.Length; ++i)
+            foreach (var controlNodeChild in controlNode)
             {
-                var controlNodeChild = controlNode[i];
                 if (controlNodeChild == null)
                 {
                     continue;
@@ -205,27 +202,17 @@ namespace PAD.Planner.Heaps
             /// <summary>
             /// Value of the node.
             /// </summary>
-            public Value Value { get; set; } = default(Value);
+            public Value Value { get; set; }
 
             /// <summary>
             /// Key of the node.
             /// </summary>
-            public double Key { get; set; } = 0.0;
-
-            /// <summary>
-            /// Parent node.
-            /// </summary>
-            public TreeNode Parent { get; set; } = null;
+            public double Key { get; set; }
 
             /// <summary>
             /// Children nodes.
             /// </summary>
-            public List<TreeNode> Children { get; set; } = new List<TreeNode>();
-
-            /// <summary>
-            /// Is node marked?
-            /// </summary>
-            public bool Mark { get; set; } = false;
+            public List<TreeNode> Children { get; } = new List<TreeNode>();
 
             /// <summary>
             /// Adds the child node.
@@ -233,7 +220,6 @@ namespace PAD.Planner.Heaps
             /// <param name="child">Child node.</param>
             public void AddChild(TreeNode child)
             {
-                child.Parent = this;
                 Children.Add(child);
             }
 

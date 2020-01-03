@@ -12,35 +12,35 @@ namespace PAD.Planner.Heuristics
         /// <summary>
         /// List of internal heuristics for evaluation with their corresponding weights.
         /// </summary>
-        private IEnumerable<Tuple<IHeuristic, double>> Heuristics { set; get; } = null;
+        private List<Tuple<IHeuristic, double>> Heuristics { get; }
 
         /// <summary>
         /// Random number generator.
         /// </summary>
-        private Random Random { set; get; } = new Random(123);
+        private Random Random { get; } = new Random(123);
 
         /// <summary>
         /// Constructs the heuristic.
         /// </summary>
         /// <param name="heuristics">List of heuristics with their corresponding weights.</param>
         /// <param name="normalize">Normalize the weights?</param>
-        public WeightedSumHeuristic(IEnumerable<Tuple<IHeuristic, double>> heuristics, bool normalize = true) : base(null)
+        public WeightedSumHeuristic(List<Tuple<IHeuristic, double>> heuristics, bool normalize = true)
         {
             Heuristics = heuristics;
 
             if (normalize)
             {
                 double sumOfWeights = Heuristics.Sum(heuristic => heuristic.Item2);
-                Heuristics = Heuristics.Select(heuristic => Tuple.Create(heuristic.Item1, heuristic.Item2 / sumOfWeights));
+                Heuristics = Heuristics.Select(heuristic => Tuple.Create(heuristic.Item1, heuristic.Item2 / sumOfWeights)).ToList();
             }
         }
 
         /// <summary>
         /// Constructs the heuristic.
         /// </summary>
-        /// <param name="heuristics">List of heuristics with their corresponding weights.</param>
         /// <param name="normalize">Normalize the weights?</param>
-        public WeightedSumHeuristic(bool normalize, params Tuple<IHeuristic, double>[] heuristics) : this(heuristics, normalize)
+        /// <param name="heuristics">List of heuristics with their corresponding weights.</param>
+        public WeightedSumHeuristic(bool normalize, params Tuple<IHeuristic, double>[] heuristics) : this(heuristics.ToList(), normalize)
         {
         }
 

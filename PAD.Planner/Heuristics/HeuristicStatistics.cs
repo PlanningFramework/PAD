@@ -3,7 +3,7 @@
 namespace PAD.Planner.Heuristics
 {
     /// <summary>
-    /// Auxiliary object encapsuling heuristic statistics.
+    /// Auxiliary object encapsulating heuristic statistics.
     /// </summary>
     public class HeuristicStatistics
     {
@@ -20,12 +20,12 @@ namespace PAD.Planner.Heuristics
         /// <summary>
         /// Sum of heuristic values.
         /// </summary>
-        public double SumOfHeuristicValues { set; get; } = 0.0;
+        public double SumOfHeuristicValues { set; get; }
 
         /// <summary>
         /// Number of heuristic calls.
         /// </summary>
-        public long HeuristicCallsCount { set; get; } = 0;
+        public long HeuristicCallsCount { set; get; }
 
         /// <summary>
         /// Should the statistics of the heuristic usage be measured?

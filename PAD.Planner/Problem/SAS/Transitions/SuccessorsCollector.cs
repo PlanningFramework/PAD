@@ -11,7 +11,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Checker of mutex constraints of the corresponding SAS+ planning problem.
         /// </summary>
-        private Lazy<MutexChecker> MutexChecker { set; get; } = null;
+        private Lazy<MutexChecker> MutexChecker { get; }
 
         /// <summary>
         /// Constructs the successors collector.

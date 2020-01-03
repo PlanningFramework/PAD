@@ -12,26 +12,26 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Stack of effect parts.
         /// </summary>
-        private Stack<IEffect> EffectsStack { set; get; } = new Stack<IEffect>();
+        private Stack<IEffect> EffectsStack { get; } = new Stack<IEffect>();
 
         /// <summary>
         /// Terms builder.
         /// </summary>
-        private Lazy<TermsBuilder> TermsBuilder { set; get; } = null;
+        private Lazy<TermsBuilder> TermsBuilder { get; }
 
         /// <summary>
         /// ID manager converting predicate, function, constant and type names to their corresponding IDs.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the effects builder.
         /// </summary>
         /// <param name="idManager">ID manager.</param>
-        public EffectsBuilder(IDManager idManager)
+        public EffectsBuilder(IdManager idManager)
         {
-            IDManager = idManager;
-            TermsBuilder = new Lazy<TermsBuilder>(() => new TermsBuilder(IDManager));
+            IdManager = idManager;
+            TermsBuilder = new Lazy<TermsBuilder>(() => new TermsBuilder(IdManager));
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void Visit(InputData.PDDL.ForallEffect data)
         {
-            IDManager.Variables.RegisterLocalParameters(data.Parameters);
+            IdManager.Variables.RegisterLocalParameters(data.Parameters);
         }
 
         /// <summary>
@@ -72,8 +72,8 @@ namespace PAD.Planner.PDDL
             }
             argumentEffects.Reverse();
 
-            EffectsStack.Push(new ForallEffect(new Parameters(data.Parameters, IDManager), argumentEffects));
-            IDManager.Variables.UnregisterLocalParameters(data.Parameters);
+            EffectsStack.Push(new ForallEffect(new Parameters(data.Parameters, IdManager), argumentEffects));
+            IdManager.Variables.UnregisterLocalParameters(data.Parameters);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace PAD.Planner.PDDL
             }
             argumentEffects.Reverse();
 
-            ExpressionsBuilder expressionsBuilder = new ExpressionsBuilder(IDManager);
+            ExpressionsBuilder expressionsBuilder = new ExpressionsBuilder(IdManager);
             IExpression argumentExpression = expressionsBuilder.Build(data.Expression);
 
             EffectsStack.Push(new WhenEffect(argumentExpression, argumentEffects));
@@ -101,12 +101,12 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.PredicateEffect data)
         {
-            int predicateNameID = IDManager.Predicates.GetID(data.Name, data.Terms.Count);
+            int predicateNameId = IdManager.Predicates.GetId(data.Name, data.Terms.Count);
             List<ITerm> terms = new List<ITerm>();
 
             data.Terms.ForEach(term => terms.Add(TermsBuilder.Value.Build(term)));
 
-            EffectsStack.Push(new PredicateEffect(new Atom(predicateNameID, terms)));
+            EffectsStack.Push(new PredicateEffect(new Atom(predicateNameId, terms)));
         }
 
         /// <summary>
@@ -136,48 +136,47 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.NumericAssignEffect data)
         {
-            int functionNameID = IDManager.Functions.GetID(data.Function.Name, data.Function.Terms.Count);
+            int functionNameId = IdManager.Functions.GetId(data.Function.Name, data.Function.Terms.Count);
             List<ITerm> terms = new List<ITerm>();
 
             data.Function.Terms.ForEach(term => terms.Add(TermsBuilder.Value.Build(term)));
 
-            NumericExpressionsBuilder numericExpressionsBuilder = new NumericExpressionsBuilder(IDManager);
+            NumericExpressionsBuilder numericExpressionsBuilder = new NumericExpressionsBuilder(IdManager);
             INumericExpression valueExpression = numericExpressionsBuilder.Build(data.Value);
 
-            IAtom functionAtom = new Atom(functionNameID, terms);
+            IAtom functionAtom = new Atom(functionNameId, terms);
 
             IEffect newEffect = null;
             switch (data.AssignOperator)
             {
                 case InputData.PDDL.Traits.AssignOperator.ASSIGN:
                 {
-                    newEffect = new NumericAssignEffect(functionAtom, valueExpression, IDManager);
+                    newEffect = new NumericAssignEffect(functionAtom, valueExpression, IdManager);
                     break;
                 }
                 case InputData.PDDL.Traits.AssignOperator.INCREASE:
                 {
-                    newEffect = new NumericIncreaseEffect(functionAtom, valueExpression, IDManager);
+                    newEffect = new NumericIncreaseEffect(functionAtom, valueExpression, IdManager);
                     break;
                 }
                 case InputData.PDDL.Traits.AssignOperator.DECREASE:
                 {
-                    newEffect = new NumericDecreaseEffect(functionAtom, valueExpression, IDManager);
+                    newEffect = new NumericDecreaseEffect(functionAtom, valueExpression, IdManager);
                     break;
                 }
                 case InputData.PDDL.Traits.AssignOperator.SCALE_UP:
                 {
-                    newEffect = new NumericScaleUpEffect(functionAtom, valueExpression, IDManager);
+                    newEffect = new NumericScaleUpEffect(functionAtom, valueExpression, IdManager);
                     break;
                 }
                 case InputData.PDDL.Traits.AssignOperator.SCALE_DOWN:
                 {
-                    newEffect = new NumericScaleDownEffect(functionAtom, valueExpression, IDManager);
+                    newEffect = new NumericScaleDownEffect(functionAtom, valueExpression, IdManager);
                     break;
                 }
                 default:
                 {
                     Debug.Assert(false);
-                    newEffect = new NumericAssignEffect(functionAtom, valueExpression, IDManager);
                     break;
                 }
             }
@@ -191,14 +190,14 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.ObjectAssignEffect data)
         {
-            int functionNameID = IDManager.Functions.GetID(data.Function.Name, data.Function.Terms.Count);
+            int functionNameId = IdManager.Functions.GetId(data.Function.Name, data.Function.Terms.Count);
             List<ITerm> terms = new List<ITerm>();
 
             data.Function.Terms.ForEach(term => terms.Add(TermsBuilder.Value.Build(term)));
 
             ITerm valueTerm = TermsBuilder.Value.Build(data.Value);
 
-            EffectsStack.Push(new ObjectAssignEffect(new Atom(functionNameID, terms), valueTerm));
+            EffectsStack.Push(new ObjectAssignEffect(new Atom(functionNameId, terms), valueTerm));
         }
     }
 }

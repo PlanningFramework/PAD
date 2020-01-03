@@ -1,5 +1,4 @@
 ﻿using PAD.Planner.Search;
-using PAD.Planner.Heaps;
 
 namespace PAD.Planner.Heuristics
 {
@@ -12,12 +11,12 @@ namespace PAD.Planner.Heuristics
         /// <summary>
         /// Relaxed planning problem.
         /// </summary>
-        private IRelaxedProblem RelaxedProblem { set; get; } = null;
+        private IRelaxedProblem RelaxedProblem { get; }
 
         /// <summary>
         /// Heuristic forward search procedure.
         /// </summary>
-        private IHeuristicSearch HeuristicSearch { set; get; } = null;
+        private IHeuristicSearch HeuristicSearch { get; }
 
         /// <summary>
         /// Constructs the heuristic.
@@ -26,7 +25,7 @@ namespace PAD.Planner.Heuristics
         public PerfectRelaxationHeuristic(IProblem problem) : base(problem)
         {
             RelaxedProblem = problem.GetRelaxedProblem();
-            HeuristicSearch = new AStarSearch(RelaxedProblem, new StateSizeHeuristic(), null, false);
+            HeuristicSearch = new AStarSearch(RelaxedProblem, new StateSizeHeuristic());
         }
 
         /// <summary>

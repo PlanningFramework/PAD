@@ -14,13 +14,17 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="p">Parent master grammar.</param>
         public ValueOrTerm(MasterGrammar p) : base(p)
         {
+            Rule = ConstructValueOrTermRule(p, new NumericExpr(p));
         }
 
         /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
+        /// Constructs the value or term rule from the specified parameters.
         /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
+        /// <param name="p">Parent master grammar.</param>
+        /// <param name="numericExpr">Numeric expression.</param>
+        /// <param name="durationVarExpr">Duration variable..</param>
+        /// <returns>Value or term grammar rule.</returns>
+        public static NonTerminal ConstructValueOrTermRule(MasterGrammar p, NonTerminal numericExpr, NonTerminal durationVarExpr = null)
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -38,8 +42,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             // USED SUB-TREES
 
-            var durationVarExpr = getDurationVarExpr();
-            var numericExpr = getNumericExpr();
             var numericOpBase = new NumericOp(p, numericExpr, BForm.BASE);
             var termFunctionBase = new FunctionTerm(p, BForm.BASE);
 
@@ -54,29 +56,13 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             valueOrTermNumericOp.Rule = numericOpBase;
 
             if (durationVarExpr != null)
-                valueOrTerm.Rule = valueOrTerm.Rule | durationVarExpr;
+            {
+                valueOrTerm.Rule |= durationVarExpr;
+            }
 
             p.MarkTransient(valueOrTerm, valueOrTermComplex, valueOrTermComplexBase, valueOrTermFunction, valueOrTermNumericOp, numericOpBase);
 
             return valueOrTerm;
-        }
-
-        /// <summary>
-        /// Factory method for specifying the type of numeric expression that is being used.
-        /// </summary>
-        /// <returns>Grammar node of the specific numeric expression.</returns>
-        protected virtual NonTerminal getNumericExpr()
-        {
-            return new NumericExpr(p);
-        }
-
-        /// <summary>
-        /// Factory method for an optional duration variable to be added into grammar rules.
-        /// </summary>
-        /// <returns>Duration variable rule.</returns>
-        protected virtual NonTerminal getDurationVarExpr()
-        {
-            return null;
         }
     }
 }

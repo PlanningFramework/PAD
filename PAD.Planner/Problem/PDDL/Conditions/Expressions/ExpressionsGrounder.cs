@@ -12,22 +12,22 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Terms grounder.
         /// </summary>
-        private Lazy<TermsGrounder> TermsGrounder { set; get; } = null;
+        private Lazy<TermsGrounder> TermsGrounder { get; }
 
         /// <summary>
         /// Numeric expressions grounder.
         /// </summary>
-        private Lazy<NumericExpressionsGrounder> NumericExpressionsGrounder { set; get; } = null;
+        private Lazy<NumericExpressionsGrounder> NumericExpressionsGrounder { get; }
 
         /// <summary>
         /// ID manager.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// Constructs the expressions grounder.
@@ -35,11 +35,11 @@ namespace PAD.Planner.PDDL
         /// <param name="termsGrounder">Terms grounder.</param>
         /// <param name="numericExpressionsGrounder">Numeric expressions grounder.</param>
         /// <param name="idManager">ID manager.</param>
-        public ExpressionsGrounder(Lazy<TermsGrounder> termsGrounder, Lazy<NumericExpressionsGrounder> numericExpressionsGrounder, IDManager idManager)
+        public ExpressionsGrounder(Lazy<TermsGrounder> termsGrounder, Lazy<NumericExpressionsGrounder> numericExpressionsGrounder, IdManager idManager)
         {
             TermsGrounder = termsGrounder;
             NumericExpressionsGrounder = numericExpressionsGrounder;
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Transformed expression.</returns>
         public IExpression Visit(PredicateExpression expression)
         {
-            return new PredicateExpression(GroundAtom(expression.PredicateAtom), IDManager);
+            return new PredicateExpression(GroundAtom(expression.PredicateAtom), IdManager);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Transformed expression.</returns>
         public IExpression Visit(PreferenceExpression expression)
         {
-            return new PreferenceExpression(expression.PreferenceNameID, expression.Accept(this), IDManager);
+            return new PreferenceExpression(expression.PreferenceNameId, expression.Accept(this), IdManager);
         }
 
         /// <summary>

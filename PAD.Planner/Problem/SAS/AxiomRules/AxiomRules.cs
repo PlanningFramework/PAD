@@ -11,7 +11,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// List of initial values for axiomatic variables.
         /// </summary>
-        private List<IAssignment> InitialValues { set; get; } = new List<IAssignment>();
+        private List<IAssignment> InitialValues { get; } = new List<IAssignment>();
 
         /// <summary>
         /// Constructs axiom rules from the input data.
@@ -58,7 +58,7 @@ namespace PAD.Planner.SAS
             {
                 if (variable.IsAxiomatic())
                 {
-                    InitialValues.Add(new Assignment(variable.ID, initialState.GetValue(variable.ID)));
+                    InitialValues.Add(new Assignment(variable.Id, initialState.GetValue(variable.Id)));
                 }
             }
         }

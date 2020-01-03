@@ -1,11 +1,9 @@
-﻿using System.Diagnostics;
-
+﻿
 namespace PAD.InputData.SAS
 {
     /// <summary>
     /// Input data structure for a SAS+ version.
     /// </summary>
-    [DebuggerDisplay("Version = {VersionNumber}")]
     public class Version : IVisitable
     {
         /// <summary>

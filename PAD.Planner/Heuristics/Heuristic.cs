@@ -10,7 +10,7 @@ namespace PAD.Planner.Heuristics
         /// <summary>
         /// Reference to the planning problem.
         /// </summary>
-        public IProblem Problem { set; get; } = null;
+        public IProblem Problem { set; get; }
 
         /// <summary>
         /// Heuristic statistics.
@@ -21,7 +21,7 @@ namespace PAD.Planner.Heuristics
         /// Constructs the heuristics.
         /// </summary>
         /// <param name="problem">Planning problem.</param>
-        public Heuristic(IProblem problem = null)
+        protected Heuristic(IProblem problem = null)
         {
             Problem = problem;
         }

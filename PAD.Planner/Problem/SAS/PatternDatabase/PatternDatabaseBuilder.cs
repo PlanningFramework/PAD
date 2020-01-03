@@ -16,7 +16,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Corresponding planning problem.
         /// </summary>
-        private Problem Problem { set; get; } = null;
+        private Problem Problem { get; }
 
         /// <summary>
         /// Constructs the builder.
@@ -112,6 +112,8 @@ namespace PAD.Planner.SAS
         /// for the rest of variables by the method divide-and-conquer.
         /// </summary>
         /// <param name="fringe">Fringe.</param>
+        /// <param name="goalConditions">Goal conditions.</param>
+        /// <param name="cost">Current cost.</param>
         /// <param name="pattern">Requested pattern.</param>
         /// <param name="currentVariableIndex">Current variable index.</param>
         /// <param name="values">Generated values.</param>
@@ -134,7 +136,7 @@ namespace PAD.Planner.SAS
 
             int currentVariable = pattern[currentVariableIndex];
 
-            int constrainedGoalValue = -1;
+            int constrainedGoalValue;
             if (goalConditions.IsVariableConstrained(currentVariable, out constrainedGoalValue))
             {
                 values.Add(constrainedGoalValue);

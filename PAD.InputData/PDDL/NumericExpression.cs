@@ -1,4 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL
 {
@@ -46,7 +50,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Number value.
         /// </summary>
-        public double Value { get; set; } = 0.0;
+        public double Value { get; set; }
 
         /// <summary>
         /// Constructs the numeric expression.
@@ -63,7 +67,7 @@ namespace PAD.InputData.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            return Value.ToString();
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -84,7 +88,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Function name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument terms.
@@ -160,7 +164,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Numeric arguments.
         /// </summary>
-        public NumericExpressions Arguments { get; set; } = new NumericExpressions();
+        public NumericExpressions Arguments { get; set; }
 
         /// <summary>
         /// Constructs the numeric operation.
@@ -200,7 +204,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Numeric arguments.
         /// </summary>
-        public NumericExpressions Arguments { get; set; } = new NumericExpressions();
+        public NumericExpressions Arguments { get; set; }
 
         /// <summary>
         /// Constructs the numeric operation.
@@ -240,12 +244,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First numeric argument.
         /// </summary>
-        public NumericExpression Argument1 { get; set; } = null;
+        public NumericExpression Argument1 { get; set; }
 
         /// <summary>
         /// Second numeric argument.
         /// </summary>
-        public NumericExpression Argument2 { get; set; } = null;
+        public NumericExpression Argument2 { get; set; }
 
         /// <summary>
         /// Constructs the numeric operation.
@@ -288,12 +292,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First numeric argument.
         /// </summary>
-        public NumericExpression Argument1 { get; set; } = null;
+        public NumericExpression Argument1 { get; set; }
 
         /// <summary>
         /// Second numeric argument.
         /// </summary>
-        public NumericExpression Argument2 { get; set; } = null;
+        public NumericExpression Argument2 { get; set; }
 
         /// <summary>
         /// Constructs the numeric operation.
@@ -336,7 +340,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Numeric argument.
         /// </summary>
-        public NumericExpression Argument { get; set; } = null;
+        public NumericExpression Argument { get; set; }
 
         /// <summary>
         /// Constructs the numeric operation.

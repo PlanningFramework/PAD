@@ -35,17 +35,17 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// The decision variable of for this tree node.
         /// </summary>
-        public int DecisionVariable { set; get; } = -1;
+        public int DecisionVariable { set; get; }
 
         /// <summary>
         /// The subtrees representing each possible value of the decision variable.
         /// </summary>
-        public IOperatorDecisionTreeNode[] OperatorsByDecisionVariableValue { set; get; } = null;
+        public IOperatorDecisionTreeNode[] OperatorsByDecisionVariableValue { set; get; }
 
         /// <summary>
-        /// The subtree for the operators where the decision varaible doesn't matter.
+        /// The subtree for the operators where the decision variable doesn't matter.
         /// </summary>
-        public IOperatorDecisionTreeNode OperatorsIndependentOnDecisionVariable { set; get; } = null;
+        public IOperatorDecisionTreeNode OperatorsIndependentOnDecisionVariable { set; get; }
 
         /// <summary>
         /// Constructs a new SAS+ operator decision tree inner node.
@@ -92,7 +92,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// The list of applicable operators.
         /// </summary>
-        public List<IOperator> Operators { set; get; } = null;
+        public List<IOperator> Operators { set; get; }
 
         /// <summary>
         /// Constructs a SAS+ operator decision tree leaf node.
@@ -132,14 +132,6 @@ namespace PAD.Planner.SAS
     /// </summary>
     public class OperatorDecisionTreeEmptyLeafNode : IOperatorDecisionTreeNode
     {
-        /// <summary>
-        /// Constructs a SAS+ operator decision tree leaf node.
-        /// </summary>
-        /// <param name="operators">List of operators for the node.</param>
-        public OperatorDecisionTreeEmptyLeafNode()
-        {
-        }
-
         /// <summary>
         /// Accepts evaluating visitor.
         /// </summary>

@@ -2,14 +2,14 @@
 namespace PAD.Planner.PDDL
 {
     /// <summary>
-    /// Numeric 'umary minus' expression.
+    /// Numeric 'unary minus' expression.
     /// </summary>
     public class UnaryMinus : INumericExpression
     {
         /// <summary>
         /// Child numeric expression.
         /// </summary>
-        public INumericExpression Child { set; get; } = null;
+        public INumericExpression Child { set; get; }
 
         /// <summary>
         /// Constructs the "unary minus" numeric expression.

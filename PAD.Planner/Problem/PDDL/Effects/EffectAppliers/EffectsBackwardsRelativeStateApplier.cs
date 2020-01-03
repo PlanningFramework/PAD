@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+// ReSharper disable IdentifierTypo
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -12,27 +13,27 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Structure for collecting and preprocessing of operator effects that are being evaluated.
         /// </summary>
-        private EffectsPreprocessedCollection Effects { set; get; } = new EffectsPreprocessedCollection();
+        private EffectsPreprocessedCollection Effects { get; } = new EffectsPreprocessedCollection();
 
         /// <summary>
         /// Operator preconditions.
         /// </summary>
-        private Conditions OperatorPreconditions { set; get; } = null;
+        private Conditions OperatorPreconditions { get; }
 
         /// <summary>
         /// Evaluation manager.
         /// </summary>
-        private EvaluationManager EvaluationManager { set; get; } = null;
+        private EvaluationManager EvaluationManager { get; }
 
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Variables substitution of the effects' parent operator.
         /// </summary>
-        private ISubstitution OperatorSubstitution { set; get; } = null;
+        private ISubstitution OperatorSubstitution { set; get; }
 
         /// <summary>
         /// Constructs the effects backwards applier.
@@ -112,9 +113,9 @@ namespace PAD.Planner.PDDL
                 ConstantTerm constantValue = groundedValue as ConstantTerm;
                 if (constantValue != null)
                 {
-                    if (relativeState.GetObjectFunctionValue(objectFunction.Key) == constantValue.NameID)
+                    if (relativeState.GetObjectFunctionValue(objectFunction.Key) == constantValue.NameId)
                     {
-                        relativeState.AssignObjectFunction(objectFunction.Key, ObjectFunctionTerm.UNDEFINED_VALUE);
+                        relativeState.AssignObjectFunction(objectFunction.Key, ObjectFunctionTerm.UndefinedValue);
                     }
                 }
             }
@@ -127,9 +128,9 @@ namespace PAD.Planner.PDDL
                 Number assignNumber = reducedAssignExpression as Number;
                 if (assignNumber != null)
                 {
-                    if (relativeState.GetNumericFunctionValue(numericFunction.Key) == assignNumber.Value)
+                    if (relativeState.GetNumericFunctionValue(numericFunction.Key).Equals(assignNumber.Value))
                     {
-                        relativeState.AssignNumericFunction(numericFunction.Key, NumericFunction.UNDEFINED_VALUE);
+                        relativeState.AssignNumericFunction(numericFunction.Key, NumericFunction.UndefinedValue);
                     }
                 }
             }
@@ -180,8 +181,7 @@ namespace PAD.Planner.PDDL
             List<WhenEffect> relevantWhenEffects = GetRelevantWhenEffectsForConditions(relativeState);
 
             // Each of the relevant when effect is either used or not (dynamic programming approach to get all combinations of when effects usage)
-            List<IRelativeState> applicationResults = new List<IRelativeState>();
-            applicationResults.Add(relativeState);
+            List<IRelativeState> applicationResults = new List<IRelativeState> {relativeState};
 
             foreach (var whenEffect in relevantWhenEffects)
             {
@@ -228,11 +228,11 @@ namespace PAD.Planner.PDDL
         /// <param name="operatorPreconditions">Grounded operator preconditions.</param>
         /// <param name="relativeState">Relative state.</param>
         /// <returns>Modified relative states.</returns>
-        private IEnumerable<IRelativeState> ProcessOperatorPreconditions(Conditions operatorPreconditions, IRelativeState relativeState)
+        private static IEnumerable<IRelativeState> ProcessOperatorPreconditions(Conditions operatorPreconditions, IRelativeState relativeState)
         {
             var conditionsCNF = (ConditionsCNF)operatorPreconditions.GetCNF();
 
-            HashSet<IRelativeState> states = new HashSet<IRelativeState>() { relativeState };
+            HashSet<IRelativeState> states = new HashSet<IRelativeState> { relativeState };
             foreach (var conjunct in conditionsCNF)
             {
                 // this block processes all possible combinations of applications in a single clause (even though it is a primitive clause of one literal)
@@ -274,7 +274,7 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="literal">CNF literal.</param>
         /// <param name="state">Relative state to be applied to.</param>
-        private void ProcessPreconditionLiteral(LiteralCNF literal, IRelativeState state)
+        private static void ProcessPreconditionLiteral(LiteralCNF literal, IRelativeState state)
         {
             PredicateLiteralCNF predicateLiteral = literal as PredicateLiteralCNF;
             if (predicateLiteral != null)
@@ -306,14 +306,14 @@ namespace PAD.Planner.PDDL
                 {
                     if (equalsLiteral.IsNegated)
                     {
-                        if (state.GetObjectFunctionValue(objFunc.FunctionAtom) == constTerm.NameID)
+                        if (state.GetObjectFunctionValue(objFunc.FunctionAtom) == constTerm.NameId)
                         {
-                            state.AssignObjectFunction(objFunc.FunctionAtom, IDManager.INVALID_ID);
+                            state.AssignObjectFunction(objFunc.FunctionAtom, IdManager.InvalidId);
                         }
                     }
                     else
                     {
-                        state.AssignObjectFunction(objFunc.FunctionAtom, constTerm.NameID);
+                        state.AssignObjectFunction(objFunc.FunctionAtom, constTerm.NameId);
                     }
                 }
                 return;
@@ -340,9 +340,9 @@ namespace PAD.Planner.PDDL
                 {
                     if (compareLiteral.IsNegated)
                     {
-                        if (state.GetNumericFunctionValue(numFunc.FunctionAtom) == number.Value)
+                        if (state.GetNumericFunctionValue(numFunc.FunctionAtom).Equals(number.Value))
                         {
-                            state.AssignNumericFunction(numFunc.FunctionAtom, NumericFunction.DEFAULT_VALUE);
+                            state.AssignNumericFunction(numFunc.FunctionAtom, NumericFunction.DefaultValue);
                         }
                     }
                     else
@@ -350,7 +350,6 @@ namespace PAD.Planner.PDDL
                         state.AssignNumericFunction(numFunc.FunctionAtom, number.Value);
                     }
                 }
-                return;
             }
         }
 

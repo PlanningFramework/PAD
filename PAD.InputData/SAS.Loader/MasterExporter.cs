@@ -12,12 +12,12 @@ namespace PAD.InputData.SAS.Loader
         /// <summary>
         /// SAS+ input problem currently being loaded.
         /// </summary>
-        private Problem Problem { set; get; } = null;
+        private Problem Problem { set; get; }
 
         /// <summary>
         /// Current input file reader.
         /// </summary>
-        private FileReader Reader { set; get; } = null;
+        private FileReader Reader { set; get; }
 
         /// <summary>
         /// Parses and loads the specified SAS+ input problem file into the input data structure.
@@ -26,9 +26,11 @@ namespace PAD.InputData.SAS.Loader
         /// <returns>Loaded SAS+ problem input data structure.</returns>
         public Problem LoadProblem(string problemFilePath)
         {
-            Problem = new Problem();
-            Problem.Name = Path.GetFileNameWithoutExtension(problemFilePath);
-            Problem.FilePath = problemFilePath;
+            Problem = new Problem
+            {
+                Name = Path.GetFileNameWithoutExtension(problemFilePath),
+                FilePath = problemFilePath
+            };
 
             Reader = new FileReader(problemFilePath);
 
@@ -195,8 +197,7 @@ namespace PAD.InputData.SAS.Loader
             {
                 CheckExpected(GetNextLine(), "begin_operator");
 
-                Operator newOperator = new Operator();
-                newOperator.Name = GetNextLine();
+                Operator newOperator = new Operator {Name = GetNextLine()};
 
                 int prevailConditionsCount = ParseAndCheckNumber(GetNextLine());
                 for (int j = 0; j < prevailConditionsCount; ++j)
@@ -229,7 +230,7 @@ namespace PAD.InputData.SAS.Loader
 
                     int effectVariable = effectParamList[parameterIdx++];
                     int effectPreconditionValue = effectParamList[parameterIdx++];
-                    int effectNewValue = effectParamList[parameterIdx++];
+                    int effectNewValue = effectParamList[parameterIdx];
 
                     if (effectPreconditionValue != -1)
                     {
@@ -432,7 +433,7 @@ namespace PAD.InputData.SAS.Loader
         /// </summary>
         /// <param name="text">String to be parsed.</param>
         /// <returns>List of string tokens.</returns>
-        private string[] SplitByWhiteSpaces(string text)
+        private static string[] SplitByWhiteSpaces(string text)
         {
             return text.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
         }

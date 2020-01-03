@@ -6,7 +6,7 @@ namespace PAD.Planner.PDDL
     /// Common interface for a relative state in the PDDL planning problem. Relative state is an extension of a standard state, representing
     /// a whole class of states. It is an alternative way to express conditions in the backwards planning (an alternative to the more general
     /// IConditions). Relative states in PDDL contain only the predicates and function values that are common for a group of states and
-    /// additionaly allow to explicitly express that something cannot be true, via "negated" predicates. Note the difference between a
+    /// additionally allow to explicitly express that something cannot be true, via "negated" predicates. Note the difference between a
     /// standard state and a relative state: everything not expressed in the state is implicitly not true, while everything not expressed
     /// in the relative state is implicitly both true and false - that's why the negated predicates have a good purpose here.
     /// </summary>

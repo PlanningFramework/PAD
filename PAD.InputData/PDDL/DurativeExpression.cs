@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using PAD.InputData.PDDL.Traits;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL
 {
@@ -77,12 +80,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// List of expression parameters.
         /// </summary>
-        public Parameters Parameters { get; set; } = new Parameters();
+        public Parameters Parameters { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public DurativeExpression Expression { get; set; } = null;
+        public DurativeExpression Expression { get; set; }
 
         /// <summary>
         /// Constructs the durative expression.
@@ -132,12 +135,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Preference name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public TimedExpression Expression { get; set; } = null;
+        public TimedExpression Expression { get; set; }
 
         /// <summary>
         /// Constructs the durative expression.
@@ -185,12 +188,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Time specifier.
         /// </summary>
-        public TimeSpecifier TimeSpecifier { get; set; } = TimeSpecifier.START;
+        public TimeSpecifier TimeSpecifier { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
         /// Constructs the durative expression.
@@ -231,12 +234,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Interval specifier.
         /// </summary>
-        public IntervalSpecifier IntervalSpecifier { get; set; } = IntervalSpecifier.ALL;
+        public IntervalSpecifier IntervalSpecifier { get; set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
         /// Constructs the durative expression.

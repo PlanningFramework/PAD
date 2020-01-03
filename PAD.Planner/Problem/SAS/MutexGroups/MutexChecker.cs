@@ -10,23 +10,23 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Currently locked reference state.
         /// </summary>
-        private IState LockedState { set; get; } = null;
+        private IState LockedState { set; get; }
 
         /// <summary>
         /// Current locks for each mutex group corresponding to the reference state. E.g. 'StateLocks[0] = 2' means that the first mutex
         /// group has a lock on the item with index 2.
         /// </summary>
-        private int[] CachedStateLocks { set; get; } = null;
+        private int[] CachedStateLocks { get; }
 
         /// <summary>
         /// Current locks for each mutex group. Cannot lock an item which is already locked.
         /// </summary>
-        private int[] Locks { set; get; } = null;
+        private int[] Locks { get; }
 
         /// <summary>
         /// Mutex groups of the SAS+ planning problem.
         /// </summary>
-        private MutexGroups MutexGroups { set; get; } = null;
+        private MutexGroups MutexGroups { get; }
 
         /// <summary>
         /// Constructs the mutex checker.
@@ -59,7 +59,7 @@ namespace PAD.Planner.SAS
         /// <returns>True, if the conditions complies with mutex constraints, false otherwise.</returns>
         public bool CheckConditions(IConditions conditions)
         {
-            return MutexGroups.TrueForAll(mutexGroup => conditions.IsCompatibleWithMutexContraints(mutexGroup));
+            return MutexGroups.TrueForAll(conditions.IsCompatibleWithMutexConstraints);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace PAD.Planner.SAS
                 {
                     if (effect.IsApplicable(LockedState)) // effect can be conditional
                     {
-                        int itemIndex = -1;
+                        int itemIndex;
                         if (mutexGroup.TryFindAffectedMutexItem(effect.GetAssignment(), out itemIndex))
                         {
                             if (!TryLockMutex(groupIndex, itemIndex))
@@ -195,8 +195,8 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Tries to lock the specified reference state mutex item in the given mutex group.
         /// </summary>
-        /// <param name="groupIdx">Mutex group index.</param>
-        /// <param name="itemIdx">Mutex item index.</param>
+        /// <param name="groupIndex">Mutex group index.</param>
+        /// <param name="itemIndex">Mutex item index.</param>
         /// <returns>True, if the specified item has been successfully locked, false otherwise (already locked).</returns>
         private bool TryLockCachedStateMutex(int groupIndex, int itemIndex)
         {
@@ -228,7 +228,7 @@ namespace PAD.Planner.SAS
                 var mutexGroup = MutexGroups[groupIndex];
                 if (mutexGroup[lockedGroupItem].GetVariable() == mutexGroup[itemIndex].GetVariable())
                 {
-                    // new asignment on the same variable (previously locked by state) -> continue and rewrite the previous one
+                    // new assignment on the same variable (previously locked by state) -> continue and rewrite the previous one
                 }
                 else
                 {
@@ -256,7 +256,7 @@ namespace PAD.Planner.SAS
         /// </summary>
         /// <param name="groupIndex">Mutex group index.</param>
         /// <param name="assignment">Effect assignment.</param>
-        /// <returns>True, if the specified group item was unclocked, false otherwise.</returns>
+        /// <returns>True, if the specified group item was unlocked, false otherwise.</returns>
         private bool TryUnlockAlteredMutexItem(int groupIndex, IAssignment assignment)
         {
             int lockedItem = Locks[groupIndex];
@@ -273,21 +273,6 @@ namespace PAD.Planner.SAS
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Tries to lock the specified operator mutex item in the given mutex group.
-        /// </summary>
-        /// <param name="groupIndex">Mutex group index.</param>
-        /// <param name="itemIndex">Mutex item index.</param>
-        /// <returns>True, if the specified item has been successfully locked (or had been locked before). False otherwise.</returns>
-        private void UnlockOperatorMutex(int groupIndex, int itemIndex)
-        {
-            int lockedGroupItem = Locks[groupIndex];
-            if (lockedGroupItem == itemIndex)
-            {
-                Locks[groupIndex] = -1;
-            }
         }
 
         /// <summary>

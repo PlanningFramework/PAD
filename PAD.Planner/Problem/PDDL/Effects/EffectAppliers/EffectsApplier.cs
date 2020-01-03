@@ -12,17 +12,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Evaluation manager.
         /// </summary>
-        private EvaluationManager EvaluationManager { set; get; } = null;
+        private EvaluationManager EvaluationManager { get; }
 
         /// <summary>
         /// Numeric evaluator.
         /// </summary>
-        private Lazy<NumericExpressionEvaluator> NumericEvaluator { set; get; } = null;
+        private Lazy<NumericExpressionEvaluator> NumericEvaluator { get; }
 
         /// <summary>
         /// Effects applier mode.
@@ -32,12 +32,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// State on which the effects are applied on.
         /// </summary>
-        private IState State { set; get; } = null;
+        private IState State { set; get; }
 
         /// <summary>
         /// Currently used variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// Constructs the effects applier.
@@ -167,8 +167,8 @@ namespace PAD.Planner.PDDL
         {
             IAtom groundedFunctionAtom = GroundingManager.GroundAtomDeep(effect.FunctionAtom, Substitution, State);
             ITerm value = GroundingManager.GroundTermDeep(effect.Value, Substitution, State);
-            ConstantTerm constantTermValue = value as ConstantTerm;
-            State.AssignObjectFunction(groundedFunctionAtom, constantTermValue.NameID);
+            ConstantTerm constantTermValue = (ConstantTerm)value;
+            State.AssignObjectFunction(groundedFunctionAtom, constantTermValue.NameId);
         }
     }
 }

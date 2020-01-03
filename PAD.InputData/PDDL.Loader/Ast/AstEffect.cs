@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using Irony.Parsing;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Ast
 {
@@ -18,7 +21,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of c-effects in the expression.
         /// </summary>
-        public List<CEffectAstNode> Arguments { get; private set; } = null;
+        public List<CEffectAstNode> Arguments { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -54,12 +57,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of typed parameters.
         /// </summary>
-        public TypedListAstNode Parameters { get; private set; } = null;
+        public TypedListAstNode Parameters { get; private set; }
 
         /// <summary>
         /// Argument effect.
         /// </summary>
-        public EffectAstNode Effect { get; private set; } = null;
+        public EffectAstNode Effect { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -89,12 +92,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Condition of the expression.
         /// </summary>
-        public GDAstNode Condition { get; private set; } = null;
+        public GdAstNode Condition { get; private set; }
 
         /// <summary>
         /// Effect of the expression.
         /// </summary>
-        public CondEffectAstNode Effect { get; private set; } = null;
+        public CondEffectAstNode Effect { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -102,7 +105,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Condition = treeNode.GetChildAst<GDAstNode>(1);
+            Condition = treeNode.GetChildAst<GdAstNode>(1);
             Effect = treeNode.GetChildAst<CondEffectAstNode>(2);  
         }
 

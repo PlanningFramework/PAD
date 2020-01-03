@@ -12,7 +12,7 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Initial state of the plan.
         /// </summary>
-        public ISearchNode InitialState { set; get; } = null;
+        public ISearchNode InitialState { set; get; }
 
         /// <summary>
         /// Constructs an empty solution plan.
@@ -76,7 +76,7 @@ namespace PAD.Planner.Search
         }
 
         /// <summary>
-        /// Gets the full string description of the solution plan, i.e. the full path of operartor applications
+        /// Gets the full string description of the solution plan, i.e. the full path of operator applications
         /// including all the intermediate states.
         /// </summary>
         /// <returns>Full description of the solution plan.</returns>

@@ -1,5 +1,5 @@
 ﻿
-namespace PAD.Launcher.Tasks
+namespace PAD.Launcher.Tasks.DefinitionTypes
 {
     /// <summary>
     /// Type of the task.
@@ -11,7 +11,7 @@ namespace PAD.Launcher.Tasks
     }
 
     /// <summary>
-    /// Auxilliary class for converting type parameters.
+    /// Auxiliary class for converting type parameters.
     /// </summary>
     public static class TypeConverter
     {

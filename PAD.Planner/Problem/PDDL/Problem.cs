@@ -11,52 +11,52 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Name of the PDDL domain.
         /// </summary>
-        public string DomainName { set; get; } = "";
+        public string DomainName { set; get; }
 
         /// <summary>
         /// Name of the PDDL problem.
         /// </summary>
-        public string ProblemName { set; get; } = "";
+        public string ProblemName { set; get; }
 
         /// <summary>
         /// List of operators in the PDDL planning problem.
         /// </summary>
-        public LiftedOperators Operators { set; get; } = null;
+        public LiftedOperators Operators { set; get; }
 
         /// <summary>
         /// Initial state of the PDDL problem.
         /// </summary>
-        public IState InitialState { set; get; } = null;
+        public IState InitialState { set; get; }
 
         /// <summary>
         /// Goal conditions of the PDDL problem.
         /// </summary>
-        public IConditions GoalConditions { set; get; } = null;
+        public IConditions GoalConditions { set; get; }
 
         /// <summary>
         /// Rigid relations (true in all states of the state space).
         /// </summary>
-        public RigidRelations RigidRelations { set; get; } = null;
+        public RigidRelations RigidRelations { set; get; }
 
         /// <summary>
         /// Generator of successors and predecessors (forward and backward transitions) in the PDDL planning problem.
         /// </summary>
-        private Lazy<TransitionsGenerator> TransitionsGenerator { set; get; } = null;
+        private Lazy<TransitionsGenerator> TransitionsGenerator { get; }
 
         /// <summary>
         /// Backup of the original input data, used e.g. for creation of a relaxed version of this planning problem.
         /// </summary>
-        private InputData.PDDLInputData OriginalInputData { set; get; } = null;
+        private InputData.PDDLInputData OriginalInputData { get; }
 
         /// <summary>
         /// ID manager of the planning problem.
         /// </summary>
-        public IDManager IDManager { set; get; } = null;
+        public IdManager IdManager { set; get; }
 
         /// <summary>
         /// Evaluation manager of the planning problem.
         /// </summary>
-        public EvaluationManager EvaluationManager { set; get; } = null;
+        public EvaluationManager EvaluationManager { set; get; }
 
         /// <summary>
         /// Constructs the PDDL planning problem from the input data.
@@ -68,12 +68,12 @@ namespace PAD.Planner.PDDL
             ProblemName = inputData.Problem.Name;
             OriginalInputData = inputData;
 
-            IDManager = new IDManager(inputData);
-            EvaluationManager = new EvaluationManager(new GroundingManager(inputData, IDManager));
+            IdManager = new IdManager(inputData);
+            EvaluationManager = new EvaluationManager(new GroundingManager(inputData, IdManager));
 
-            Operators = new LiftedOperators(inputData.Domain.Actions, IDManager, EvaluationManager);
-            InitialState = new State(inputData.Problem.Init, IDManager);
-            GoalConditions = new Conditions(inputData.Problem.Goal, null, IDManager, EvaluationManager);
+            Operators = new LiftedOperators(inputData.Domain.Actions, IdManager, EvaluationManager);
+            InitialState = new State(inputData.Problem.Init, IdManager);
+            GoalConditions = new Conditions(inputData.Problem.Goal, null, IdManager, EvaluationManager);
             RigidRelations = new RigidRelations(InitialState, Operators);
             TransitionsGenerator = new Lazy<TransitionsGenerator>(() => new TransitionsGenerator(this));
 
@@ -136,7 +136,7 @@ namespace PAD.Planner.PDDL
         {
             InitialState = (IState)state;
             
-            // note: RigidRelations shouldn't be reseted according to the new initial state - we assume that the new state
+            // note: RigidRelations shouldn't be reset according to the new initial state - we assume that the new state
             // is a correct state from this planning problem and such state shouldn't contain any initial rigid relations
         }
 
@@ -191,7 +191,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Gets the number of not accomplished goals for the specified state (forward search).
         /// </summary>
-        /// <param name="state">State to be evalatuated.</param>
+        /// <param name="state">State to be evaluated.</param>
         /// <returns>Number of not accomplished goals.</returns>
         public int GetNotAccomplishedGoalsCount(Planner.IState state)
         {
@@ -201,7 +201,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Gets the number of not accomplished goals for the specified conditions (backward search).
         /// </summary>
-        /// <param name="conditions">Conditions to be evalatuated.</param>
+        /// <param name="conditions">Conditions to be evaluated.</param>
         /// <returns>Number of not accomplished goals.</returns>
         public int GetNotAccomplishedGoalsCount(Planner.IConditions conditions)
         {
@@ -295,7 +295,7 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Gets a collection of all explicly enumerated successor states (created by forward applications) from the specified state. Lazy generated via yield return.
+        /// Gets a collection of all explicitly enumerated successor states (created by forward applications) from the specified state. Lazy generated via yield return.
         /// </summary>
         /// <param name="state">Original state.</param>
         /// <returns>Lazy generated collection of all successor states.</returns>
@@ -305,7 +305,7 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Gets a collection of all explicly enumerated predecessor states (created by relevant backwards applications) from the specified state. Lazy generated via yield return.
+        /// Gets a collection of all explicitly enumerated predecessor states (created by relevant backwards applications) from the specified state. Lazy generated via yield return.
         /// </summary>
         /// <param name="state">Original state.</param>
         /// <returns>Lazy generated collection of all predecessor states.</returns>

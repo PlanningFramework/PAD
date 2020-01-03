@@ -19,17 +19,17 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Minimal tree node.
         /// </summary>
-        private TreeNode MinNode { set; get; } = null;
+        private TreeNode MinNode { set; get; }
 
         /// <summary>
         /// Number of elements in the collection.
         /// </summary>
-        private int Count { set; get; } = 0;
+        private int Count { set; get; }
 
         /// <summary>
         /// Constant value used for heap consolidation.
         /// </summary>
-        private static readonly double OneOverLogPhi = 1.0 / Math.Log((1.0 + Math.Sqrt(5.0)) / 2.0);
+        private readonly double _oneOverLogPhi = 1.0 / Math.Log((1.0 + Math.Sqrt(5.0)) / 2.0);
 
         /// <summary>
         /// Adds a new key-value pair into the collection.
@@ -86,7 +86,6 @@ namespace PAD.Planner.Heaps
                     MinNode.Right = oldMinChild;
                     oldMinChild.Right.Left = oldMinChild;
 
-                    oldMinChild.Parent = null;
                     oldMinChild = tempRight;
                     --childrenCount;
                 }
@@ -105,9 +104,11 @@ namespace PAD.Planner.Heaps
                 }
 
                 --Count;
+
+                return minNode.Value;
             }
 
-            return minNode.Value;
+            throw new InvalidOperationException("Invalid operation on empty heap!");
         }
 
         /// <summary>
@@ -151,7 +152,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         private void Consolidate()
         {
-            int arraySize = ((int)Math.Floor(Math.Log(Count) * OneOverLogPhi)) + 1;
+            int arraySize = ((int)Math.Floor(Math.Log(Count) * _oneOverLogPhi)) + 1;
             var degreeArray = new List<TreeNode>(arraySize);
 
             // initialize degree array
@@ -174,46 +175,46 @@ namespace PAD.Planner.Heaps
                     numRoots++;
                     nodeX = nodeX.Right;
                 }
-            }
 
-            // for each node in root list
-            while (numRoots > 0)
-            {
-                // access this node's degree
-                int degree = nodeX.Degree;
-                TreeNode next = nodeX.Right;
-
-                // and see if there's another of the same degree
-                while (true)
+                // for each node in root list
+                while (numRoots > 0)
                 {
-                    TreeNode nodeY = degreeArray[degree];
-                    if (nodeY == null)
+                    // access this node's degree
+                    int degree = nodeX.Degree;
+                    TreeNode next = nodeX.Right;
+
+                    // and see if there's another of the same degree
+                    while (true)
                     {
-                        break;
+                        TreeNode nodeY = degreeArray[degree];
+                        if (nodeY == null)
+                        {
+                            break;
+                        }
+
+                        // if there is, make one of the nodes a child of the other (do this based on the key value)
+                        if (nodeX.Key > nodeY.Key)
+                        {
+                            TreeNode temp = nodeY;
+                            nodeY = nodeX;
+                            nodeX = temp;
+                        }
+
+                        // TreeNode<Value> newChild disappears from root list
+                        Link(nodeY, nodeX);
+
+                        // we've handled this degree, go to next one
+                        degreeArray[degree] = null;
+                        ++degree;
                     }
 
-                    // if there is, make one of the nodes a child of the other (do this based on the key value)
-                    if (nodeX.Key > nodeY.Key)
-                    {
-                        TreeNode temp = nodeY;
-                        nodeY = nodeX;
-                        nodeX = temp;
-                    }
+                    // save this node for later when we might encounter another of the same degree
+                    degreeArray[degree] = nodeX;
 
-                    // TreeNode<Value> newChild disappears from root list
-                    Link(nodeY, nodeX);
-
-                    // we've handled this degree, go to next one
-                    degreeArray[degree] = null;
-                    ++degree;
+                    // move forward through list
+                    nodeX = next;
+                    numRoots--;
                 }
-
-                // save this node for later when we might encounter another of the same degree
-                degreeArray[degree] = nodeX;
-
-                // move forward through list
-                nodeX = next;
-                numRoots--;
             }
 
             // set min to null (effectively losing the root list) and reconstruct the root list from the array entries
@@ -255,12 +256,10 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Links two tree nodes (makes newChild a child of node newParent).
         /// </summary>
-        private void Link(TreeNode newChild, TreeNode newParent)
+        private static void Link(TreeNode newChild, TreeNode newParent)
         {
             newChild.Left.Right = newChild.Right;
             newChild.Right.Left = newChild.Left;
-
-            newChild.Parent = newParent;
 
             if (newParent.Child == null)
             {
@@ -277,7 +276,6 @@ namespace PAD.Planner.Heaps
             }
 
             ++newParent.Degree;
-            newChild.Mark = false;
         }
 
         /// <summary>
@@ -288,42 +286,32 @@ namespace PAD.Planner.Heaps
             /// <summary>
             /// Value of the node.
             /// </summary>
-            public Value Value { get; private set; } = default(Value);
+            public Value Value { get; }
 
             /// <summary>
             /// Key of the node.
             /// </summary>
-            public double Key { get; set; } = 0.0;
+            public double Key { get; }
 
             /// <summary>
             /// Child node.
             /// </summary>
-            public TreeNode Child { get; set; } = null;
-
-            /// <summary>
-            /// Parent node.
-            /// </summary>
-            public TreeNode Parent { get; set; } = null;
+            public TreeNode Child { get; set; }
 
             /// <summary>
             /// Left node.
             /// </summary>
-            public TreeNode Left { get; set; } = null;
+            public TreeNode Left { get; set; }
 
             /// <summary>
             /// Right node.
             /// </summary>
-            public TreeNode Right { get; set; } = null;
-
-            /// <summary>
-            /// Mark of the node.
-            /// </summary>
-            public bool Mark { get; set; } = false;
+            public TreeNode Right { get; set; }
 
             /// <summary>
             /// Degree of the node.
             /// </summary>
-            public int Degree { get; set; } = 0;
+            public int Degree { get; set; }
 
             /// <summary>
             /// Constructs the tree node.

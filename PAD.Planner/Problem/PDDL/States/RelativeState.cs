@@ -6,7 +6,7 @@ namespace PAD.Planner.PDDL
     /// Implementation of a relative state in the PDDL planning problem. Relative state is an extension of a standard state, representing
     /// a whole class of states. It is an alternative way to express conditions in the backwards planning (an alternative to the more general
     /// IConditions). Relative states in PDDL contain only the predicates and function values that are common for a group of states and
-    /// additionaly allow to explicitly express that something cannot be true, via "negated" predicates. Note the difference between a
+    /// additionally allow to explicitly express that something cannot be true, via "negated" predicates. Note the difference between a
     /// standard state and a relative state: everything not expressed in the state is implicitly not true, while everything not expressed
     /// in the relative state is implicitly both true and false - that's why the negated predicates have a good purpose here.
     /// </summary>
@@ -15,13 +15,13 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Set of negated predicates, expressing the fact that something is not true in the relative state.
         /// </summary>
-        public HashSet<IAtom> NegatedPredicates { set; get; } = null;
+        public HashSet<IAtom> NegatedPredicates { set; get; }
 
         /// <summary>
         /// Constructs an empty relative state.
         /// </summary>
         /// <param name="idManager">ID manager.</param>
-        public RelativeState(IDManager idManager) : base(idManager)
+        public RelativeState(IdManager idManager) : base(idManager)
         {
         }
 
@@ -32,7 +32,8 @@ namespace PAD.Planner.PDDL
         /// <param name="negatedPredicates">Negated predicates of the state.</param>
         /// <param name="numericFunctions">Numeric function values.</param>
         /// <param name="objectFunctions">Object function values.</param>
-        public RelativeState(HashSet<IAtom> predicates, HashSet<IAtom> negatedPredicates, Dictionary<IAtom, double> numericFunctions, Dictionary<IAtom, int> objectFunctions, IDManager idManager)
+        /// <param name="idManager">ID manager.</param>
+        public RelativeState(HashSet<IAtom> predicates, HashSet<IAtom> negatedPredicates, Dictionary<IAtom, double> numericFunctions, Dictionary<IAtom, int> objectFunctions, IdManager idManager)
             : base(predicates, numericFunctions, objectFunctions, idManager)
         {
             NegatedPredicates = negatedPredicates;
@@ -57,10 +58,7 @@ namespace PAD.Planner.PDDL
         /// <param name="predicate">Predicate to be removed.</param>
         public void RemoveNegatedPredicate(IAtom predicate)
         {
-            if (NegatedPredicates != null)
-            {
-                NegatedPredicates.Remove(predicate);
-            }
+            NegatedPredicates?.Remove(predicate);
         }
 
         /// <summary>
@@ -129,7 +127,7 @@ namespace PAD.Planner.PDDL
             {
                 foreach (var numericFunction in NumericFunctions)
                 {
-                    if (evaluatedState.GetNumericFunctionValue(numericFunction.Key) != numericFunction.Value)
+                    if (!evaluatedState.GetNumericFunctionValue(numericFunction.Key).Equals(numericFunction.Value))
                     {
                         return false;
                     }
@@ -167,13 +165,13 @@ namespace PAD.Planner.PDDL
         /// <returns>Conditions describing the state.</returns>
         public override Planner.IConditions GetDescribingConditions(IProblem problem)
         {
-            Conditions newConditions = new Conditions(((Problem)problem).EvaluationManager, null);
+            Conditions newConditions = new Conditions(((Problem)problem).EvaluationManager);
 
             if (Predicates != null)
             {
                 foreach (var predicate in Predicates)
                 {
-                    newConditions.Add(new PredicateExpression(predicate.Clone(), IDManager));
+                    newConditions.Add(new PredicateExpression(predicate.Clone(), IdManager));
                 }
             }
 
@@ -181,7 +179,7 @@ namespace PAD.Planner.PDDL
             {
                 foreach (var predicate in NegatedPredicates)
                 {
-                    newConditions.Add(new NotExpression(new PredicateExpression(predicate.Clone(), IDManager)));
+                    newConditions.Add(new NotExpression(new PredicateExpression(predicate.Clone(), IdManager)));
                 }
             }
 
@@ -190,7 +188,7 @@ namespace PAD.Planner.PDDL
                 foreach (var numericFunction in NumericFunctions)
                 {
                     newConditions.Add(new NumericCompareExpression(NumericCompareExpression.RelationalOperator.EQ,
-                                                                   new NumericFunction(numericFunction.Key.Clone(), IDManager),
+                                                                   new NumericFunction(numericFunction.Key.Clone(), IdManager),
                                                                    new Number(numericFunction.Value)));
                 }
             }
@@ -199,7 +197,7 @@ namespace PAD.Planner.PDDL
             {
                 foreach (var objectFunction in ObjectFunctions)
                 {
-                    newConditions.Add(new EqualsExpression(new ObjectFunctionTerm(objectFunction.Key.Clone(), IDManager), new ConstantTerm(objectFunction.Value, IDManager)));
+                    newConditions.Add(new EqualsExpression(new ObjectFunctionTerm(objectFunction.Key.Clone(), IdManager), new ConstantTerm(objectFunction.Value, IdManager)));
                 }
             }
 
@@ -217,7 +215,7 @@ namespace PAD.Planner.PDDL
                 (NegatedPredicates == null) ? null : new HashSet<IAtom>(NegatedPredicates),
                 (NumericFunctions == null) ? null : new Dictionary<IAtom, double>(NumericFunctions),
                 (ObjectFunctions == null) ? null : new Dictionary<IAtom, int>(ObjectFunctions),
-                IDManager);
+                IdManager);
         }
 
         /// <summary>
@@ -275,7 +273,7 @@ namespace PAD.Planner.PDDL
             List<string> negatedPredicates = new List<string>();
             foreach (var predicateAtom in NegatedPredicates)
             {
-                negatedPredicates.Add($"(not {predicateAtom.ToString(IDManager.Predicates)})");
+                negatedPredicates.Add($"(not {predicateAtom.ToString(IdManager.Predicates)})");
             }
             
             return $"{baseDescription}, {string.Join(", ", negatedPredicates)}";

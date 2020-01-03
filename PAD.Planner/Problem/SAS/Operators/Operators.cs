@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable IdentifierTypo
 
 namespace PAD.Planner.SAS
 {
@@ -16,8 +17,8 @@ namespace PAD.Planner.SAS
         /// <param name="mutexGroups">Mutex groups of the SAS+ planning problem.</param>
         public Operators(InputData.SAS.Operators inputData, AxiomRules axiomRules, MutexGroups mutexGroups)
         {
-            int operIndex = 0;
-            inputData.ForEach(oper => Add(new Operator(oper, operIndex++, axiomRules, mutexGroups)));
+            int operatorIndex = 0;
+            inputData.ForEach(oper => Add(new Operator(oper, operatorIndex++, axiomRules, mutexGroups)));
         }
 
         /// <summary>

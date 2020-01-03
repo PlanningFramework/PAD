@@ -14,7 +14,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Pairs of identifiers (item,type)
         /// </summary>
-        public List<Tuple<string, string>> TypedIdentifiers { get; private set; } = null;
+        public List<Tuple<string, string>> TypedIdentifiers { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.

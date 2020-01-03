@@ -7,12 +7,12 @@ namespace PAD.Planner
     public enum ForwardCostEvaluationStrategy
     {
         /// <summary>
-        /// Max value strategy - maximum values of conjuncted atoms are taken into account.
+        /// Max value strategy - maximum values of conjunct atoms are taken into account.
         /// </summary>
         MAX_VALUE,
 
         /// <summary>
-        /// Additive value strategy - the values of conjuncted atoms are added together.
+        /// Additive value strategy - the values of conjunct atoms are added together.
         /// </summary>
         ADDITIVE_VALUE
     }

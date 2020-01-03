@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TasksLoader\TasksLoaderException.cs" />
+    <Compile Include="Tasks\TasksLoaderException.cs" />
     <Compile Include="Tasks\DefinitionTypes\OutputType.cs" />
     <Compile Include="Tasks\DefinitionTypes\Heap.cs" />
     <Compile Include="Tasks\DefinitionTypes\Heuristic.cs" />
@@ -53,9 +53,9 @@
     <Compile Include="Tasks\PlanningTaskExplicit.cs" />
     <Compile Include="Tasks\PlanningTaskBase.cs" />
     <Compile Include="Tasks\PlanningTask.cs" />
-    <Compile Include="TasksLoader\TasksLoader.cs" />
-    <Compile Include="TasksLauncher\ExecutionParameters.cs" />
-    <Compile Include="TasksLauncher\TasksLauncher.cs" />
+    <Compile Include="Tasks\TasksLoader.cs" />
+    <Compile Include="Tasks\ExecutionParameters.cs" />
+    <Compile Include="TasksLauncher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

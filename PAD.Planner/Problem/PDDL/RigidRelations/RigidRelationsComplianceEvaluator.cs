@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -10,17 +11,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Rigid relations of the planning problem.
         /// </summary>
-        private RigidRelations RigidRelations { set; get; } = null;
+        private RigidRelations RigidRelations { set; get; }
 
         /// <summary>
         /// Currently used variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// Constructs the evaluator.
@@ -30,7 +31,7 @@ namespace PAD.Planner.PDDL
         public RigidRelationsComplianceEvaluator(GroundingManager groundingManager, RigidRelations rigidRelations = null)
         {
             GroundingManager = groundingManager;
-            RigidRelations = (rigidRelations != null) ? rigidRelations : new RigidRelations();
+            RigidRelations = rigidRelations ?? new RigidRelations();
         }
 
         /// <summary>

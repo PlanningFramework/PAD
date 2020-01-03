@@ -10,7 +10,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public InitElement InitElementData { get; private set; } = null;
+        public InitElement InitElementData { get; private set; }
 
         /// <summary>
         /// Handles the AST node visit.
@@ -67,7 +67,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <param name="astNode">AST node.</param>
         public override void Visit(AtInitElemAstNode astNode)
         {
-            InitElementData = new AtInitElement(astNode.Number, ((LiteralInitElement)MasterExporter.ToInitElement(astNode.Argument)));
+            InitElementData = new AtInitElement(astNode.Number, (LiteralInitElement)MasterExporter.ToInitElement(astNode.Argument));
         }
     }
 }

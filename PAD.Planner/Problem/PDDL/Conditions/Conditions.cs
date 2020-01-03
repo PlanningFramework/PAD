@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
     /// <summary>
-    /// The standard implemetation of PDDL conditions, using simple logical expressions (single conditions is a conjunction of expressions).
+    /// The standard implementation of PDDL conditions, using simple logical expressions (single conditions is a conjunction of expressions).
     /// </summary>
     public class Conditions : List<IExpression>, IConditions
     {
@@ -12,22 +13,22 @@ namespace PAD.Planner.PDDL
         /// Parameters of the lifted arguments (for the partially lifted conditions). Variables in condition atoms refer to these typed
         /// parameters. If the parameters are null or empty, the conditions are fully grounded.
         /// </summary>
-        public Parameters Parameters { set; get; } = null;
+        public Parameters Parameters { set; get; }
 
         /// <summary>
         /// Evaluation manager.
         /// </summary>
-        private EvaluationManager EvaluationManager { set; get; } = null;
+        private EvaluationManager EvaluationManager { get; }
 
         /// <summary>
         /// Conditions CNF expressions builder.
         /// </summary>
-        private Lazy<ConditionsCNFBuilder> ConditionsCNFBuilder { set; get; } = null;
+        private Lazy<ConditionsCNFBuilder> ConditionsCNFBuilder { get; }
 
         /// <summary>
         /// Collector of actually used conditions parameters.
         /// </summary>
-        private Lazy<ConditionsParametersCollector> ConditionsParametersCollector { set; get; } = null;
+        private Lazy<ConditionsParametersCollector> ConditionsParametersCollector { get; }
 
         /// <summary>
         /// Constructs an empty conditions object.
@@ -62,7 +63,7 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="expression">Expression.</param>
         /// <param name="evaluationManager">Evaluation manager.</param>
-        public Conditions(IExpression expression, EvaluationManager evaluationManager) : this(evaluationManager, null)
+        public Conditions(IExpression expression, EvaluationManager evaluationManager) : this(evaluationManager)
         {
             Add(expression);
         }
@@ -74,7 +75,7 @@ namespace PAD.Planner.PDDL
         /// <param name="parameters">Parameters of the lifted arguments (null if fully grounded).</param>
         /// <param name="idManager">ID manager.</param>
         /// <param name="evaluationManager">Evaluation manager.</param>
-        public Conditions(List<InputData.PDDL.Expression> inputData, Parameters parameters, IDManager idManager, EvaluationManager evaluationManager) : this(evaluationManager, null)
+        public Conditions(List<InputData.PDDL.Expression> inputData, Parameters parameters, IdManager idManager, EvaluationManager evaluationManager) : this(evaluationManager)
         {
             ExpressionsBuilder expressionsBuilder = new ExpressionsBuilder(idManager);
             inputData.ForEach(inputExpression => Add(expressionsBuilder.Build(inputExpression)));
@@ -89,7 +90,7 @@ namespace PAD.Planner.PDDL
         /// Determine which parameters are actually used in the conditions. We can have e.g. parameters of operator which
         /// apply on several conditions and effects.
         /// </summary>
-        /// <returns>Paramaters.</returns>
+        /// <returns>Parameters.</returns>
         private Parameters DetermineUsedParameters(Parameters sourceParameters)
         {
             if (sourceParameters == null)
@@ -103,7 +104,7 @@ namespace PAD.Planner.PDDL
 
             foreach (var parameter in sourceParameters)
             {
-                if (usedParameters.Contains(parameter.ParameterNameID))
+                if (usedParameters.Contains(parameter.ParameterNameId))
                 {
                     newParameters.Add(parameter.Clone());
                 }
@@ -128,7 +129,7 @@ namespace PAD.Planner.PDDL
         /// <returns>True if all conditions are met in the given state, false otherwise.</returns>
         public bool Evaluate(Planner.IState state)
         {
-            return Evaluate((IState)state, null);
+            return Evaluate((IState)state);
         }
 
         /// <summary>
@@ -155,7 +156,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Gets the number of not accomplished condition constraints for the specified state.
         /// </summary>
-        /// <param name="state">State to be evalatuated.</param>
+        /// <param name="state">State to be evaluated.</param>
         /// <returns>Number of not accomplished condition constraints.</returns>
         public int GetNotAccomplishedConstraintsCount(IState state)
         {
@@ -198,7 +199,7 @@ namespace PAD.Planner.PDDL
         /// Gets a list of atoms from the specified state that are necessary to make these conditions true.
         /// </summary>
         /// <param name="substitution">Variable substitution.</param>
-        /// <param name="predecessorState">Predecessing state.</param>
+        /// <param name="predecessorState">Preceding state.</param>
         /// <returns>List of satisfying atoms.</returns>
         public List<IAtom> GetSatisfyingAtoms(ISubstitution substitution, IState predecessorState)
         {
@@ -225,15 +226,7 @@ namespace PAD.Planner.PDDL
                 return null;
             }
 
-            IExpression conditionsExpression = null;
-            if (Count > 1)
-            {
-                conditionsExpression = new AndExpression(this);
-            }
-            else
-            {
-                conditionsExpression = this[0];
-            }
+            var conditionsExpression = Count > 1 ? new AndExpression(this) : this[0];
 
             return conditionsExpression;
         }
@@ -261,19 +254,19 @@ namespace PAD.Planner.PDDL
         /// Enumerates all possible relative states meeting the current conditions.
         /// </summary>
         /// <param name="problem">Parent planning problem.</param>
-        /// <returns>All possible realtive states meeting the conditions.</returns>
+        /// <returns>All possible relative states meeting the conditions.</returns>
         public IEnumerable<Planner.IRelativeState> GetCorrespondingRelativeStates(IProblem problem)
         {
             return StatesEnumerator.EnumerateRelativeStates(this, (Problem)problem);
         }
 
         /// <summary>
-        /// Clones an empty conditions (only with inited inner util objects and parameters).
+        /// Clones an empty conditions (only with initialized inner util objects and parameters).
         /// </summary>
         /// <returns>Creates an empty conditions.</returns>
         public Conditions CloneEmpty()
         {
-            return new Conditions(EvaluationManager, ConditionsCNFBuilder, ConditionsParametersCollector,(Parameters != null) ? Parameters.Clone() : null);
+            return new Conditions(EvaluationManager, ConditionsCNFBuilder, ConditionsParametersCollector, Parameters?.Clone());
         }
 
         /// <summary>

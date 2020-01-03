@@ -15,22 +15,22 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Effects list.
         /// </summary>
-        private List<IEffect> Effects { set; get; } = null;
+        private List<IEffect> Effects { get; }
 
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Variable substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// Is the current effect being negated?
         /// </summary>
-        private bool IsNegated { set; get; } = false;
+        private bool IsNegated { set; get; }
 
         /// <summary>
         /// Constructs the collector.

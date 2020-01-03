@@ -1,21 +1,22 @@
 ﻿using PAD.Planner.Heuristics;
 using PAD.Planner.Heaps;
 using System.Collections.Generic;
-using System;
+using System.Globalization;
 using System.Linq;
+using System;
 
 namespace PAD.Planner.Search
 {
     /// <summary>
     /// Implementation of multi-heuristic A* search (MHA*) procedure. This search variant uses multiple lists of open nodes each corresponding to a different heuristic.
-    /// These heuristic with their open nodes are repetedly evaluated a processed, while the list of closed nodes is shared within the search procedure.
+    /// These heuristic with their open nodes are repeatedly evaluated a processed, while the list of closed nodes is shared within the search procedure.
     /// </summary>
     public class MultiHeuristicAStarSearch : AStarSearch
     {
         /// <summary>
         /// Index of currently used open list.
         /// </summary>
-        private int CurrentOpenListIndex { set; get; } = 0;
+        private int CurrentOpenListIndex { set; get; }
 
         /// <summary>
         /// Number of lists of open nodes.
@@ -25,17 +26,17 @@ namespace PAD.Planner.Search
         /// <summary>
         /// List of used heuristics.
         /// </summary>
-        private List<ISearchableHeuristic> Heuristics { set; get; } = null;
+        private List<ISearchableHeuristic> Heuristics { get; }
 
         /// <summary>
         /// List of used heaps with open nodes.
         /// </summary>
-        private List<IHeap> OpenLists { set; get; } = null;
+        private List<IHeap> OpenLists { get; }
 
         /// <summary>
         /// Number of all open nodes.
         /// </summary>
-        private long AllOpenNodesCount { set; get; } = 0;
+        private long AllOpenNodesCount { set; get; }
 
         /// <summary>
         /// Constructs the multi-heuristic A* search procedure.
@@ -51,12 +52,12 @@ namespace PAD.Planner.Search
         /// </summary>
         /// <param name="problem">Planning problem.</param>
         /// <param name="heuristics">Heuristics.</param>
-        public MultiHeuristicAStarSearch(ISearchableProblem problem, List<ISearchableHeuristic> heuristics) : base(problem, heuristics.First())
+        public MultiHeuristicAStarSearch(ISearchableProblem problem, List<ISearchableHeuristic> heuristics) : base(problem, heuristics.First(), GetDefaultHeap())
         {
             Heuristics = heuristics;
             OpenLists = new List<IHeap>(Heuristics.Count);
 
-            foreach (var item in Heuristics)
+            for (int i = 0; i < Heuristics.Count; ++i)
             {
                 OpenLists.Add(GetDefaultHeap());
             }
@@ -66,7 +67,7 @@ namespace PAD.Planner.Search
         /// Specifies the default heap used.
         /// </summary>
         /// <returns>Default heap.</returns>
-        protected override IHeap GetDefaultHeap()
+        protected new static IHeap GetDefaultHeap()
         {
             return new FibonacciHeap();
         }
@@ -101,7 +102,7 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Checks whether there is any open node for the search available.
         /// </summary>
-        /// <returns>True if there is some open node availalbe. False otherwise.</returns>
+        /// <returns>True if there is some open node available. False otherwise.</returns>
         protected override bool HasAnyOpenNode()
         {
             return (AllOpenNodesCount > 0);
@@ -184,7 +185,7 @@ namespace PAD.Planner.Search
                                $"\tMin heuristic: ({string.Join(", ", Heuristics.Select(h => ((IHeuristic)h).GetStatistics().BestHeuristicValue))})" +
                                $"\tAvg heuristic: ({string.Join(", ", Heuristics.Select(h => ((IHeuristic)h).GetStatistics().AverageHeuristicValue.ToString("0.###")))})";
                 }
-                message += $"\tCurrent time: {DateTime.Now.ToString()}";
+                message += $"\tCurrent time: {DateTime.Now.ToString(CultureInfo.InvariantCulture)}";
 
                 LogMessage(message);
             }

@@ -1,5 +1,6 @@
-﻿
-namespace PAD.Launcher.Tasks
+﻿// ReSharper disable StringLiteralTypo
+
+namespace PAD.Launcher.Tasks.DefinitionTypes
 {
     /// <summary>
     /// Search algorithm used in the planning task.
@@ -12,7 +13,7 @@ namespace PAD.Launcher.Tasks
     }
 
     /// <summary>
-    /// Auxilliary class for converting algorithms parameters.
+    /// Auxiliary class for converting algorithms parameters.
     /// </summary>
     public static class AlgorithmConverter
     {

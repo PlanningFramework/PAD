@@ -1,4 +1,7 @@
 ﻿using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.DataExport
 {
@@ -10,7 +13,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public DurativeEffects EffectsData { get; private set; } = new DurativeEffects();
+        public DurativeEffects EffectsData { get; } = new DurativeEffects();
 
         /// <summary>
         /// Handles the AST node visit.
@@ -62,7 +65,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// </summary>
         /// <param name="effects">List of effects.</param>
         /// <returns>List of primitive effects.</returns>
-        private PrimitiveEffects ToPrimitiveEffects(Effects effects)
+        private static PrimitiveEffects ToPrimitiveEffects(Effects effects)
         {
             PrimitiveEffects primitiveEffects = new PrimitiveEffects();
             effects.ForEach(x => primitiveEffects.Add((PrimitiveEffect)x));

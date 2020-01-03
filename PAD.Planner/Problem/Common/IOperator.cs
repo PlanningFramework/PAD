@@ -32,7 +32,7 @@ namespace PAD.Planner
         /// Checks whether the operator is relevant to the given target conditions.
         /// </summary>
         /// <param name="conditions">Target conditions.</param>
-        /// <returns>True if the operator is relevant to the given condititons, false otherwise.</returns>
+        /// <returns>True if the operator is relevant to the given conditions, false otherwise.</returns>
         bool IsRelevant(IConditions conditions);
 
         /// <summary>

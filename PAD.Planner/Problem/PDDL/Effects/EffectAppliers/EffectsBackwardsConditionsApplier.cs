@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable IdentifierTypo
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -11,47 +13,47 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Structure for collecting and preprocessing of operator effects that are being evaluated.
         /// </summary>
-        private EffectsPreprocessedCollection Effects { set; get; } = new EffectsPreprocessedCollection();
+        private EffectsPreprocessedCollection Effects { get; } = new EffectsPreprocessedCollection();
 
         /// <summary>
         /// Actually applied grounded predicate atoms.
         /// </summary>
-        private HashSet<IAtom> UsedGroundedPredicates { set; get; } = new HashSet<IAtom>();
+        private HashSet<IAtom> UsedGroundedPredicates { get; } = new HashSet<IAtom>();
 
         /// <summary>
         /// Actually applied grounded function atoms.
         /// </summary>
-        private HashSet<IAtom> UsedGroundedFunctions { set; get; } = new HashSet<IAtom>();
+        private HashSet<IAtom> UsedGroundedFunctions { get; } = new HashSet<IAtom>();
 
         /// <summary>
         /// Operator preconditions.
         /// </summary>
-        private Conditions OperatorPreconditions { set; get; } = null;
+        private Conditions OperatorPreconditions { get; }
 
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Evaluation manager.
         /// </summary>
-        private EvaluationManager EvaluationManager { set; get; } = null;
+        private EvaluationManager EvaluationManager { get; }
 
         /// <summary>
         /// Variables substitution of the effects' parent operator.
         /// </summary>
-        private ISubstitution OperatorSubstitution { set; get; } = null;
+        private ISubstitution OperatorSubstitution { set; get; }
 
         /// <summary>
         /// Variables substitution of the expression (expression can be lifted e.g. in forall subexpressions).
         /// </summary>
-        private ISubstitution ExpressionSubstitution { set; get; } = null;
+        private ISubstitution ExpressionSubstitution { set; get; }
 
         /// <summary>
         /// Is the backwards application lifted (i.e. only the minimal required operator substitution is used).
         /// </summary>
-        private bool IsApplicationLifted { set; get; } = false;
+        private bool IsApplicationLifted { get; }
 
         /// <summary>
         /// Constructs the effects backwards applier.
@@ -77,7 +79,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Preceding conditions.</returns>
         public IConditions ApplyBackwards(IConditions conditions, ISubstitution operatorSubstitution)
         {
-            ConditionsCNF expression = (conditions != null) ? (ConditionsCNF)conditions.GetCNF() : null;
+            ConditionsCNF expression = (ConditionsCNF)conditions?.GetCNF();
 
             if (expression == null)
             {
@@ -188,8 +190,7 @@ namespace PAD.Planner.PDDL
             List<WhenEffect> relevantWhenEffects = GetRelevantWhenEffectsForConditions(expression);
 
             // Each of the relevant when effect is either used or not (dynamic programming approach to get all combinations of when effects usage)
-            List<ConditionsCNF> applicationResults = new List<ConditionsCNF>();
-            applicationResults.Add(expression);
+            List<ConditionsCNF> applicationResults = new List<ConditionsCNF> {expression};
 
             foreach (var whenEffect in relevantWhenEffects)
             {
@@ -226,8 +227,8 @@ namespace PAD.Planner.PDDL
 
             IAtom atom = GroundAtom(expression.PredicateAtom);
 
-            bool positivelyContibuting = (expression.IsNegated) ? negativePredicateEffects.Contains(atom) : positivePredicateEffects.Contains(atom);
-            if (positivelyContibuting)
+            bool positivelyContributing = (expression.IsNegated) ? negativePredicateEffects.Contains(atom) : positivePredicateEffects.Contains(atom);
+            if (positivelyContributing)
             {
                 UsedGroundedPredicates.Add(atom);
                 return null;
@@ -248,24 +249,24 @@ namespace PAD.Planner.PDDL
                 return expression.Clone();
             }
 
-            Func<ITerm, ITerm> TransformArgument = null;
-            TransformArgument = (ITerm term) =>
+            Func<ITerm, ITerm> transformArgument = null;
+            transformArgument = (term) =>
             {
                 ObjectFunctionTerm objectFunction = term as ObjectFunctionTerm;
                 if (objectFunction != null)
                 {
-                    ITerm assignmentValue = null;
+                    ITerm assignmentValue;
                     if (objectAssignEffects.TryGetValue(GroundAtom(objectFunction.FunctionAtom), out assignmentValue))
                     {
                         UsedGroundedFunctions.Add(objectFunction.FunctionAtom);
-                        return TransformArgument(assignmentValue);
+                        return transformArgument(assignmentValue);
                     }
                 }
                 return term.Clone();
             };
 
-            ITerm transformedLeftTerm = TransformArgument(expression.LeftArgument);
-            ITerm transformedRightTerm = TransformArgument(expression.RightArgument);
+            ITerm transformedLeftTerm = transformArgument(expression.LeftArgument);
+            ITerm transformedRightTerm = transformArgument(expression.RightArgument);
 
             bool termsEqual = transformedLeftTerm.Equals(transformedRightTerm);
             if ((termsEqual && !expression.IsNegated) || (!termsEqual && expression.IsNegated))
@@ -329,16 +330,6 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Grounds the specified term.
-        /// </summary>
-        /// <param name="term">Term.</param>
-        /// <returns>Grounded term.</returns>
-        private ITerm GroundTerm(ITerm term)
-        {
-            return GroundingManager.GroundTerm(term, ExpressionSubstitution);
-        }
-
-        /// <summary>
         /// Grounds the specified conditions by a minimal needed operator substitution.
         /// </summary>
         /// <param name="conditions">Conditions.</param>
@@ -360,7 +351,7 @@ namespace PAD.Planner.PDDL
 
             foreach (var predicate in UsedGroundedPredicates)
             {
-                IAtom liftedPredicate = null;
+                IAtom liftedPredicate;
                 if (Effects.OriginalLiftedPredicates.TryGetValue(predicate, out liftedPredicate))
                 {
                     var unification = liftedPredicate.GetUnificationWith(predicate);
@@ -370,7 +361,7 @@ namespace PAD.Planner.PDDL
 
             foreach (var function in UsedGroundedFunctions)
             {
-                IAtom liftedFunction = null;
+                IAtom liftedFunction;
                 if (Effects.OriginalLiftedFunctions.TryGetValue(function, out liftedFunction))
                 {
                     var unification = liftedFunction.GetUnificationWith(function);
@@ -445,9 +436,10 @@ namespace PAD.Planner.PDDL
                 foreach (var andElem in andExpr)
                 {
                     HashSet<LiteralCNF> andElemItems = new HashSet<LiteralCNF>();
-                    if (andElem is ClauseCNF)
+
+                    ClauseCNF orExpr = andElem as ClauseCNF;
+                    if (orExpr != null)
                     {
-                        ClauseCNF orExpr = andElem as ClauseCNF;
                         foreach (var child in orExpr)
                         {
                             andElemItems.Add(child);
@@ -466,9 +458,9 @@ namespace PAD.Planner.PDDL
                     {
                         foreach (var conjunct in conjuncts)
                         {
-                            if (conjunct is ClauseCNF)
+                            ClauseCNF clause = conjunct as ClauseCNF;
+                            if (clause != null)
                             {
-                                ClauseCNF clause = conjunct as ClauseCNF;
                                 HashSet<LiteralCNF> newOrChildren = new HashSet<LiteralCNF>();
                                 foreach (var child in clause)
                                 {
@@ -480,14 +472,7 @@ namespace PAD.Planner.PDDL
                             else
                             {
                                 andElemItems.Add((LiteralCNF)conjunct);
-                                if (andElemItems.Count > 1)
-                                {
-                                    newConjuncts.Add(new ClauseCNF(andElemItems));
-                                }
-                                else
-                                {
-                                    newConjuncts.Add(conjunct);
-                                }
+                                newConjuncts.Add(andElemItems.Count > 1 ? new ClauseCNF(andElemItems) : conjunct);
                             }
                         }
                     }
@@ -503,12 +488,12 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="cnfList">List of CNFs.</param>
         /// <param name="mergedParameters">Output merged parameters.</param>
-        private void MakeUniqueParametersForCNFList(List<ConditionsCNF> cnfList, out Parameters mergedParameters)
+        private static void MakeUniqueParametersForCNFList(List<ConditionsCNF> cnfList, out Parameters mergedParameters)
         {
             mergedParameters = new Parameters();
 
             ConditionsParametersRenamer renamer = new ConditionsParametersRenamer();
-            int firstFreeParameterID = 0;
+            int firstFreeParameterId = 0;
             bool first = true;
 
             foreach (var cnf in cnfList)
@@ -520,13 +505,13 @@ namespace PAD.Planner.PDDL
 
                 if (first)
                 {
-                    firstFreeParameterID = cnf.Parameters.GetMaxUsedParameterID() + 1;
+                    firstFreeParameterId = cnf.Parameters.GetMaxUsedParameterId() + 1;
                     first = false;
                     continue;
                 }
 
-                renamer.Rename(cnf, firstFreeParameterID);
-                firstFreeParameterID = cnf.Parameters.GetMaxUsedParameterID() + 1;
+                renamer.Rename(cnf, firstFreeParameterId);
+                firstFreeParameterId = cnf.Parameters.GetMaxUsedParameterId() + 1;
 
                 mergedParameters.Add(cnf.Parameters);
             }

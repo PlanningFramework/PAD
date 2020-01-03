@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -12,62 +14,62 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Evaluator of PDDL logical expressions.
         /// </summary>
-        private Lazy<ExpressionEvaluator> ExpressionEvaluator { set; get; } = null;
+        private Lazy<ExpressionEvaluator> ExpressionEvaluator { set; get; }
 
         /// <summary>
         /// Evaluator of condition expressions in conjunctive-normal-form.
         /// </summary>
-        private Lazy<ConditionsCNFEvaluator> ConditionsCNFEvaluator { set; get; } = null;
+        private Lazy<ConditionsCNFEvaluator> ConditionsCNFEvaluator { set; get; }
 
         /// <summary>
         /// Rigid relations compliance evaluator.
         /// </summary>
-        private Lazy<RigidRelationsComplianceEvaluator> RigidRelationsComplianceEvaluator { set; get; } = null;
+        private Lazy<RigidRelationsComplianceEvaluator> RigidRelationsComplianceEvaluator { set; get; }
 
         /// <summary>
         /// Counter of not accomplished condition constraints for given states.
         /// </summary>
-        private Lazy<NotAccomplishedConstraintsCounter> NotAccomplishedConstraintsCounter { set; get; } = null;
+        private Lazy<NotAccomplishedConstraintsCounter> NotAccomplishedConstraintsCounter { get; }
 
         /// <summary>
         /// Counter of not accomplished condition constraints (in CNF form) for given states.
         /// </summary>
-        private Lazy<NotAccomplishedConstraintsCounterCNF> NotAccomplishedConstraintsCounterCNF { set; get; } = null;
+        private Lazy<NotAccomplishedConstraintsCounterCNF> NotAccomplishedConstraintsCounterCNF { get; }
 
         /// <summary>
         /// Evaluator of operators labels in relaxed planning graphs.
         /// </summary>
-        private Lazy<PlanningGraphOperatorLabelEvaluator> PlanningGraphOperatorLabelEvaluator { set; get; } = null;
+        private Lazy<PlanningGraphOperatorLabelEvaluator> PlanningGraphOperatorLabelEvaluator { get; }
 
         /// <summary>
         /// Evaluator of operators labels in relaxed planning graphs.
         /// </summary>
-        private Lazy<PlanningGraphOperatorLabelEvaluatorCNF> PlanningGraphOperatorLabelEvaluatorCNF { set; get; } = null;
+        private Lazy<PlanningGraphOperatorLabelEvaluatorCNF> PlanningGraphOperatorLabelEvaluatorCNF { get; }
 
         /// <summary>
         /// Evaluator/collector of satisfying atoms for specified conditions.
         /// </summary>
-        private Lazy<SatisfyingAtomsEvaluator> SatisfyingAtomsEvaluator { set; get; } = null;
+        private Lazy<SatisfyingAtomsEvaluator> SatisfyingAtomsEvaluator { get; }
 
         /// <summary>
         /// Renamer of the conditions parameters (renames occupied parameters with new parameter IDs).
         /// </summary>
-        private Lazy<ConditionsParametersRenamer> ConditionsParametersRenamer { set; get; } = null;
+        private Lazy<ConditionsParametersRenamer> ConditionsParametersRenamer { get; }
 
         /// <summary>
         /// Collector of used predicates in the conditions.
         /// </summary>
-        private Lazy<ConditionsUsedPredicatesCollector> ConditionsUsedPredicatesCollector { set; get; } = null;
+        private Lazy<ConditionsUsedPredicatesCollector> ConditionsUsedPredicatesCollector { get; }
 
         /// <summary>
         /// Rigid relations of the planning problem.
         /// </summary>
-        private RigidRelations RigidRelations { set; get; } = null;
+        private RigidRelations RigidRelations { set; get; }
 
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        public GroundingManager GroundingManager { set; get; } = null;
+        public GroundingManager GroundingManager { set; get; }
 
         /// <summary>
         /// Constructs the evaluation manager.
@@ -80,7 +82,7 @@ namespace PAD.Planner.PDDL
             ConditionsCNFEvaluator = new Lazy<ConditionsCNFEvaluator>(() => new ConditionsCNFEvaluator(groundingManager, rigidRelations));
             RigidRelationsComplianceEvaluator = new Lazy<RigidRelationsComplianceEvaluator>(() => new RigidRelationsComplianceEvaluator(groundingManager, rigidRelations));
             NotAccomplishedConstraintsCounter = new Lazy<NotAccomplishedConstraintsCounter>(() => new NotAccomplishedConstraintsCounter(groundingManager, ExpressionEvaluator));
-            NotAccomplishedConstraintsCounterCNF = new Lazy<NotAccomplishedConstraintsCounterCNF>(() => new NotAccomplishedConstraintsCounterCNF(groundingManager, ConditionsCNFEvaluator));
+            NotAccomplishedConstraintsCounterCNF = new Lazy<NotAccomplishedConstraintsCounterCNF>(() => new NotAccomplishedConstraintsCounterCNF(ConditionsCNFEvaluator));
             PlanningGraphOperatorLabelEvaluator = new Lazy<PlanningGraphOperatorLabelEvaluator>(() => new PlanningGraphOperatorLabelEvaluator(groundingManager));
             PlanningGraphOperatorLabelEvaluatorCNF = new Lazy<PlanningGraphOperatorLabelEvaluatorCNF>(() => new PlanningGraphOperatorLabelEvaluatorCNF(groundingManager));
             SatisfyingAtomsEvaluator = new Lazy<SatisfyingAtomsEvaluator>(() => new SatisfyingAtomsEvaluator(groundingManager, rigidRelations));
@@ -141,7 +143,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Evaluates the conditions with the given reference state and variable substitution.
         /// </summary>
-        /// <param name="conditionsCNF">Conditions to be evaluated.</param>
+        /// <param name="conditions">Conditions to be evaluated.</param>
         /// <param name="substitution">Used variables substitution.</param>
         /// <param name="referenceState">Reference state.</param>
         /// <returns>True if all conditions are met in the given state, false otherwise.</returns>
@@ -279,7 +281,7 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="conditions">Conditions to evaluate.</param>
         /// <param name="substitution">Variable substitution.</param>
-        /// <param name="predecessorState">Predecessing state.</param>
+        /// <param name="predecessorState">Preceding state.</param>
         /// <returns>List of satisfying atoms.</returns>
         public List<IAtom> GetSatisfyingAtoms(IConditions conditions, ISubstitution substitution, IState predecessorState)
         {
@@ -290,10 +292,10 @@ namespace PAD.Planner.PDDL
         /// Renames the parameters (and the corresponding occurences in the conditions), starting from the given free parameter ID.
         /// </summary>
         /// <param name="conditions">Conditions to be edited.</param>
-        /// <param name="firstFreeParameterID">First free parameter ID.</param>
-        public void RenameConditionParameters(ConditionsCNF conditions, int firstFreeParameterID)
+        /// <param name="firstFreeParameterId">First free parameter ID.</param>
+        public void RenameConditionParameters(ConditionsCNF conditions, int firstFreeParameterId)
         {
-            ConditionsParametersRenamer.Value.Rename(conditions, firstFreeParameterID);
+            ConditionsParametersRenamer.Value.Rename(conditions, firstFreeParameterId);
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Traits
 {
@@ -36,7 +38,7 @@ namespace PAD.InputData.PDDL.Traits
     }
 
     /// <summary>
-    /// Interval specififer.
+    /// Interval specifier.
     /// </summary>
     public enum IntervalSpecifier
     {
@@ -106,7 +108,7 @@ namespace PAD.InputData.PDDL.Traits
 
 namespace PAD.InputData.PDDL
 {
-    using PAD.InputData.PDDL.Traits;
+    using Traits;
 
     /// <summary>
     /// Static class for string conversion extensions.
@@ -361,8 +363,8 @@ namespace PAD.InputData.PDDL
                 blockSuffix = ")";
             }
 
-            string andPrefix = (listWithinAndExpression && (list.Count >= 2)) ? "(and " : "";
-            string andSuffix = (listWithinAndExpression && (list.Count >= 2)) ? ")" : "";
+            string andPrefix = (listWithinAndExpression && list.Count >= 2) ? "(and " : "";
+            string andSuffix = (listWithinAndExpression && list.Count >= 2) ? ")" : "";
 
             return $"{blockPrefix}{andPrefix}{string.Join(" ", list)}{andSuffix}{blockSuffix}";
         }
@@ -377,7 +379,7 @@ namespace PAD.InputData.PDDL
         {
             if (types == null || types.Length == 0 || (types.Length == 1 && string.IsNullOrEmpty(types[0])))
             {
-                return new string[]{ defaultType };
+                return new[] {defaultType};
             }
 
             return types;
@@ -390,17 +392,15 @@ namespace PAD.InputData.PDDL
         /// <returns>String representation of type specification.</returns>
         public static string ToTypeSpecString(this List<string> types)
         {
-            if (types.Count == 0)
+            switch (types.Count)
             {
-                return "";
+                case 0:
+                    return "";
+                case 1:
+                    return $" - {types[0]}";
+                default:
+                    return $" - (either {string.Join(" ", types)})";
             }
-
-            if (types.Count == 1)
-            {
-                return $" - {types[0]}";
-            }
-
-            return $" - (either {string.Join(" ", types)})";
         }
 
         /// <summary>

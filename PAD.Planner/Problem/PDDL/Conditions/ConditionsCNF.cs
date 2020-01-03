@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -15,12 +16,12 @@ namespace PAD.Planner.PDDL
         /// Parameters of the lifted arguments (for the partially lifted conditions). Variables in condition atoms refer to these typed
         /// parameters. If the parameters are null or empty, the conditions are fully grounded.
         /// </summary>
-        public Parameters Parameters { set; get; } = null;
+        public Parameters Parameters { set; get; }
 
         /// <summary>
         /// Evaluation manager.
         /// </summary>
-        private EvaluationManager EvaluationManager { set; get; } = null;
+        private EvaluationManager EvaluationManager { get; }
 
         /// <summary>
         /// Constructs an empty CNF expression.
@@ -38,10 +39,11 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="conjuncts">Conjuncts.</param>
         /// <param name="evaluationManager">Evaluation manager.</param>
-        // <param name="parameters">Condition parameters.</param>
+        /// <param name="parameters">Condition parameters.</param>
         public ConditionsCNF(HashSet<IConjunctCNF> conjuncts, EvaluationManager evaluationManager, Parameters parameters) : base(conjuncts)
         {
             EvaluationManager = evaluationManager;
+            Parameters = parameters;
         }
 
         /// <summary>
@@ -66,7 +68,7 @@ namespace PAD.Planner.PDDL
 
             if (Parameters.AreConflictedWith(other.Parameters))
             {
-                EvaluationManager.RenameConditionParameters(other, Parameters.GetMaxUsedParameterID() + 1);
+                EvaluationManager.RenameConditionParameters(other, Parameters.GetMaxUsedParameterId() + 1);
             }
 
             if (other.Parameters != null)
@@ -92,7 +94,7 @@ namespace PAD.Planner.PDDL
         /// <returns>True if all conditions are met in the given state, false otherwise.</returns>
         public bool Evaluate(Planner.IState state)
         {
-            return Evaluate((IState)state, null);
+            return Evaluate((IState)state);
         }
 
         /// <summary>
@@ -109,7 +111,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Gets the number of not accomplished condition constraints for the specified state.
         /// </summary>
-        /// <param name="state">State to be evalatuated.</param>
+        /// <param name="state">State to be evaluated.</param>
         /// <returns>Number of not accomplished condition constraints.</returns>
         public int GetNotAccomplishedConstraintsCount(IState state)
         {
@@ -189,7 +191,7 @@ namespace PAD.Planner.PDDL
         /// Enumerates all possible relative states meeting the current conditions.
         /// </summary>
         /// <param name="problem">Parent planning problem.</param>
-        /// <returns>All possible realtive states meeting the conditions.</returns>
+        /// <returns>All possible relative states meeting the conditions.</returns>
         public IEnumerable<Planner.IRelativeState> GetCorrespondingRelativeStates(IProblem problem)
         {
             return StatesEnumerator.EnumerateRelativeStates(this, (Problem)problem);
@@ -210,12 +212,12 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Clones an empty conditions (only with inited inner util objects and parameters).
+        /// Clones an empty conditions (only with initialized inner util objects and parameters).
         /// </summary>
         /// <returns>Creates an empty conditions.</returns>
         public ConditionsCNF CloneEmpty()
         {
-            return new ConditionsCNF(EvaluationManager, (Parameters != null) ? Parameters.Clone() : null);
+            return new ConditionsCNF(EvaluationManager, Parameters?.Clone());
         }
 
         /// <summary>

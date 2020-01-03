@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
     /// <summary>
-    /// Transformer converting the given expression into the conjuctive-normal-form (CNF), i.e. strictly a form of a conjuntion of clauses (which are a disjunction of
+    /// Transformer converting the given expression into the conjunctive-normal-form (CNF), i.e. strictly a form of a conjunction of clauses (which are a disjunction of
     /// literals, or literals itselves). The transformation into NNF is done at first, then a distribution of disjunctions (via deMorgan laws) is performed. The literals
     /// are either predicate expressions, equals expressions or numeric compare expressions, and negations of these. CNF expression is a convenient form for further
     /// processing (e.g. evaluating conditions against operator effects to determine relevant operators).
@@ -13,7 +14,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Expression NNF transformer.
         /// </summary>
-        private ExpressionToNNFTransformer ExpressionToNNFTransformer { set; get; } = null;
+        private ExpressionToNNFTransformer ExpressionToNNFTransformer { get; }
 
         /// <summary>
         /// Creates the expression CNF transformer.
@@ -46,10 +47,11 @@ namespace PAD.Planner.PDDL
             foreach (var child in expression.Children)
             {
                 IExpression element = child.Accept(this);
-                if (element is AndExpression)
+
+                AndExpression andExpr = element as AndExpression;
+                if (andExpr != null)
                 {
                     // unfold inner AND expression and remove duplicates
-                    AndExpression andExpr = element as AndExpression;
                     foreach (var andExprElem in andExpr.Children)
                     {
                         children.Add(andExprElem);
@@ -81,13 +83,16 @@ namespace PAD.Planner.PDDL
 
             foreach (var element in children)
             {
-                if (element is AndExpression)
+                AndExpression andExpression = element as AndExpression;
+                if (andExpression != null)
                 {
-                    andExpressions.Add((AndExpression)element);
+                    andExpressions.Add(andExpression);
+                    continue;
                 }
-                else if (element is OrExpression)
+
+                OrExpression orExpression = element as OrExpression;
+                if (orExpression != null)
                 {
-                    OrExpression orExpression = element as OrExpression;
                     foreach (var orChild in orExpression.Children)
                     {
                         primitives.Add(orChild);
@@ -123,7 +128,7 @@ namespace PAD.Planner.PDDL
         /// <param name="andExpressions">Conjunctions on the given level.</param>
         /// <param name="clauses">Disjunctions on the given level.</param>
         /// <returns>List of clauses or literals.</returns>
-        private List<IExpression> DistributeDisjunctions(List<AndExpression> andExpressions, List<OrExpression> clauses)
+        private static List<IExpression> DistributeDisjunctions(List<AndExpression> andExpressions, List<OrExpression> clauses)
         {
             foreach (var andExpr in andExpressions)
             {
@@ -131,9 +136,10 @@ namespace PAD.Planner.PDDL
                 foreach (var andElem in andExpr.Children)
                 {
                     HashSet<IExpression> andElemItems = new HashSet<IExpression>();
-                    if (andElem is OrExpression)
+
+                    OrExpression orExpr = andElem as OrExpression;
+                    if (orExpr != null)
                     {
-                        OrExpression orExpr = andElem as OrExpression;
                         orExpr.Children.ForEach(child => andElemItems.Add(child));
                     }
                     else

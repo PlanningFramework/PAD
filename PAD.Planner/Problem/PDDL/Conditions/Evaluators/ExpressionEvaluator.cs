@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -11,27 +12,27 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Numeric evaluator.
         /// </summary>
-        private Lazy<NumericExpressionEvaluator> NumericEvaluator { set; get; } = null;
+        private Lazy<NumericExpressionEvaluator> NumericEvaluator { get; }
 
         /// <summary>
         /// Rigid relations of the planning problem.
         /// </summary>
-        private RigidRelations RigidRelations { set; get; } = null;
+        private RigidRelations RigidRelations { set; get; }
 
         /// <summary>
         /// Currently used variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// Reference state for the evaluation.
         /// </summary>
-        private IState ReferenceState { set; get; } = null;
+        private IState ReferenceState { set; get; }
 
         /// <summary>
         /// Constructs the logical evaluator.
@@ -42,7 +43,7 @@ namespace PAD.Planner.PDDL
         {
             GroundingManager = groundingManager;
             NumericEvaluator = new Lazy<NumericExpressionEvaluator>(() => new NumericExpressionEvaluator(groundingManager));
-            RigidRelations = (rigidRelations != null) ? rigidRelations : new RigidRelations();
+            RigidRelations = rigidRelations ?? new RigidRelations();
         }
 
         /// <summary>

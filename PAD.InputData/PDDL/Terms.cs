@@ -34,7 +34,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Name of the term.
         /// </summary>
-        public string TermName { set; get; } = "";
+        public string TermName { set; get; }
 
         /// <summary>
         /// Name of the term type(s).
@@ -44,7 +44,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Specification of a default term type.
         /// </summary>
-        public const string DEFAULT_TYPE = "object";
+        public const string DefaultType = "object";
 
         /// <summary>
         /// Constructs a term.
@@ -54,7 +54,7 @@ namespace PAD.InputData.PDDL
         public DefinitionTerm(string termName, string[] typeNames)
         {
             TermName = termName;
-            TypeNames.AddRange(typeNames.GetTypesOrDefault(DEFAULT_TYPE));
+            TypeNames.AddRange(typeNames.GetTypesOrDefault(DefaultType));
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Constant name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Constructs the term.
@@ -158,7 +158,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Variable name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Constructs the term.
@@ -196,7 +196,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Function name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument terms.

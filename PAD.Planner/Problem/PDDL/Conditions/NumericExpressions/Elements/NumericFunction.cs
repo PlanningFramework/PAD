@@ -9,33 +9,33 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Function atom.
         /// </summary>
-        public IAtom FunctionAtom { set; get; } = null;
+        public IAtom FunctionAtom { set; get; }
 
         /// <summary>
         /// ID manager of the corresponding planning problem.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the numeric function.
         /// </summary>
         /// <param name="functionAtom">Function atom.</param>
         /// <param name="idManager">ID manager.</param>
-        public NumericFunction(IAtom functionAtom, IDManager idManager)
+        public NumericFunction(IAtom functionAtom, IdManager idManager)
         {
             FunctionAtom = functionAtom;
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
         /// Undefined numeric value fro the numeric function.
         /// </summary>
-        public const double UNDEFINED_VALUE = double.NaN;
+        public const double UndefinedValue = double.NaN;
 
         /// <summary>
         /// Default numeric function value, if not stated in the initial state.
         /// </summary>
-        public const double DEFAULT_VALUE = UNDEFINED_VALUE;
+        public const double DefaultValue = UndefinedValue;
 
         /// <summary>
         /// Checks whether the assigned value for the numeric function is undefined.
@@ -50,7 +50,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Numeric expression clone.</returns>
         public INumericExpression Clone()
         {
-            return new NumericFunction(FunctionAtom.Clone(), IDManager);
+            return new NumericFunction(FunctionAtom.Clone(), IdManager);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace PAD.Planner.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            return FunctionAtom.ToString(IDManager.Functions);
+            return FunctionAtom.ToString(IdManager.Functions);
         }
 
         /// <summary>

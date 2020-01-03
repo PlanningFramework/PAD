@@ -10,12 +10,12 @@ namespace PAD.InputData.SAS.Loader
         /// <summary>
         /// Current line number of the input file.
         /// </summary>
-        public int LineNumber { set; get; } = 0;
+        public int LineNumber { set; get; }
 
         /// <summary>
         /// Buffered line from the input file. Used for the line peeking.
         /// </summary>
-        private string BufferedLine { set; get; } = null;
+        private string BufferedLine { set; get; }
 
         /// <summary>
         /// Constructs the file reader.
@@ -31,12 +31,7 @@ namespace PAD.InputData.SAS.Loader
         /// <returns>Next line from the input file.</returns>
         public string PeekNextLine()
         {
-            if (BufferedLine == null)
-            {
-                BufferedLine = ReadLine();
-            }            
-
-            return BufferedLine;
+            return BufferedLine ?? (BufferedLine = ReadLine());
         }
 
         /// <summary>

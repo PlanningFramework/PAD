@@ -14,14 +14,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="p">Parent master grammar.</param>
         public MetricExpr(MasterGrammar p) : base(p)
         {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
-        {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
             var metricExpr = new NonTerminal("Metric expression", typeof(TransientAstNode));
@@ -60,7 +52,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(metricExpr, metricExprComplex, metricExprComplexBase, metricExprFunctionBase, metricOpBase);
 
-            return metricExpr;
+            Rule = metricExpr;
         }
     }
 }

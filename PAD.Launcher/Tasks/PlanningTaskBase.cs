@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PAD.Launcher.Tasks.DefinitionTypes;
+using System;
 
 namespace PAD.Launcher.Tasks
 {
@@ -18,7 +19,7 @@ namespace PAD.Launcher.Tasks
         public string OutputFile { set; get; } = "";
 
         /// <summary>
-        /// Mutex for output writting. Needed if the output is writen to console or the same file.
+        /// Mutex for output writing. Needed if the output is written to console or the same file.
         /// </summary>
         public object OutputMutex { set; get; } = new object();
 
@@ -47,14 +48,14 @@ namespace PAD.Launcher.Tasks
         {
             if (OutputType == OutputType.Unspecified)
             {
-                OutputType = (ResultsProcessor != null) ? OutputType.CustomResultsProcessor : OutputType.ToConsole;
+                OutputType = ResultsProcessor != null ? OutputType.CustomResultsProcessor : OutputType.ToConsole;
             }
 
             switch (OutputType)
             {
                 case OutputType.CustomResultsProcessor:
                 {
-                    ResultsProcessor(results);
+                    ResultsProcessor?.Invoke(results);
                     break;
                 }
                 case OutputType.ToConsole:
@@ -80,6 +81,10 @@ namespace PAD.Launcher.Tasks
                     }
                     break;
                 }
+                case OutputType.Unspecified:
+                {
+                    throw new InvalidOperationException("Unspecified output type!");
+                }
                 default:
                 {
                     throw new NotImplementedException("Unknown output type!");
@@ -90,7 +95,7 @@ namespace PAD.Launcher.Tasks
         /// <summary>
         /// Creates and returns the corresponding heuristic search engine.
         /// </summary>
-        /// <returns>Corrsponding heuristic search engine.</returns>
+        /// <returns>Corresponding heuristic search engine.</returns>
         protected abstract Planner.Search.IHeuristicSearch GetHeuristicSearch();
     }
 }

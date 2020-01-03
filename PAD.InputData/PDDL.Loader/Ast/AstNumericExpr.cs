@@ -96,7 +96,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Float value of the number term.
         /// </summary>
-        public double Number { get; private set; } = 0.0;
+        public double Number { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -141,7 +141,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
     }
 
     /// <summary>
-    /// AST node representing preference violation within the metric expression. Agreggates the name of the preference.
+    /// AST node representing preference violation within the metric expression. Aggregates the name of the preference.
     /// </summary>
     public class MetricPreferenceViolationAstNode : TermOrNumericAstNode
     {
@@ -200,12 +200,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Is the expression in product form (i.e. "* #t numExpr" or "* numExpr #t")? Otherwise only "#t".
         /// </summary>
-        public bool IsProductExpression { get; private set; } = false;
+        public bool IsProductExpression { get; private set; }
 
         /// <summary>
         /// The numeric factor in case of product expression.
         /// </summary>
-        public TermOrNumericAstNode ProductExprNumericFactor { get; private set; } = null;
+        public TermOrNumericAstNode ProductExprNumericFactor { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.

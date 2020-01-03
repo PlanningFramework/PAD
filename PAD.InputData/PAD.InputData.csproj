@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="InputData.cs" />
     <Compile Include="PDDL.Loader\LoadingException.cs" />
     <Compile Include="SAS.Loader\LineReader.cs" />

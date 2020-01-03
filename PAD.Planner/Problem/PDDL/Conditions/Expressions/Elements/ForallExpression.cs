@@ -1,4 +1,7 @@
 ﻿using System;
+// ReSharper disable StringLiteralTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -10,12 +13,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Expression parameters.
         /// </summary>
-        public Parameters Parameters { set; get; } = null;
+        public Parameters Parameters { set; get; }
 
         /// <summary>
         /// Child expression.
         /// </summary>
-        public IExpression Child { set; get; } = null;
+        public IExpression Child { set; get; }
 
         /// <summary>
         /// Constructs the FORALL expression.

@@ -5,14 +5,14 @@ using PAD.InputData.PDDL.Traits;
 namespace PAD.InputData.PDDL.Loader.Ast
 {
     /// <summary>
-    /// AST node representing and-expression of p-effects. Agreggates the list of p-effects.
+    /// AST node representing and-expression of p-effects. Aggregates the list of p-effects.
     /// </summary>
     public class AndPEffectsAstNode : CondEffectAstNode
     {
         /// <summary>
         /// List of p-effects.
         /// </summary>
-        public List<PEffectAstNode> Arguments { get; private set; } = null;
+        public List<PEffectAstNode> Arguments { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -48,7 +48,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
     }
 
     /// <summary>
-    /// AST node representing predicate p-effect. Aggragates the predicate name and the list of terms.
+    /// AST node representing predicate p-effect. Aggregates the predicate name and the list of terms.
     /// </summary>
     public class PredicatePEffectAstNode : AtomicFormulaPEffectAstNode
     {
@@ -60,7 +60,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of terms.
         /// </summary>
-        public List<TermAstNode> Terms { get; private set; } = null;
+        public List<TermAstNode> Terms { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -90,12 +90,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// First operand of the expression.
         /// </summary>
-        public TermOrNumericAstNode Term1 { get; private set; } = null;
+        public TermOrNumericAstNode Term1 { get; private set; }
 
         /// <summary>
         /// Second operand of the expression.
         /// </summary>
-        public TermOrNumericAstNode Term2 { get; private set; } = null;
+        public TermOrNumericAstNode Term2 { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -125,7 +125,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Atomic formula to be negated.
         /// </summary>
-        public AtomicFormulaPEffectAstNode Argument { get; private set; } = null;
+        public AtomicFormulaPEffectAstNode Argument { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -159,12 +159,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Function term for the assignment.
         /// </summary>
-        public FunctionTermAstNode Argument1 { get; private set; } = null;
+        public FunctionTermAstNode Argument1 { get; private set; }
 
         /// <summary>
         /// Term or expression to be assigned.
         /// </summary>
-        public TermOrNumericAstNode Argument2 { get; private set; } = null;
+        public TermOrNumericAstNode Argument2 { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.

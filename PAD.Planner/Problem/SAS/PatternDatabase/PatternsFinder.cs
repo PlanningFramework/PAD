@@ -7,14 +7,14 @@ namespace PAD.Planner.SAS
     /// Implementation of a patterns finder, automatically generating additive patterns for a pattern database. These patterns are
     /// derived from the graph of variables affected by operator effects: two variables are connected in this graph when there is
     /// an operator changing them both at once. The constructed patterns are the (connection) components in this graph, i.e. the
-    /// variable groups corresponding to these components. Additionaly, the components not affecting the goals are omitted.
+    /// variable groups corresponding to these components. Additionally, the components not affecting the goals are omitted.
     /// </summary>
     public class PatternsFinder
     {
         /// <summary>
         /// Corresponding planning problem.
         /// </summary>
-        private Problem Problem { set; get; } = null;
+        private Problem Problem { get; }
 
         /// <summary>
         /// Constructs the finder.
@@ -28,7 +28,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Finds the list of additive patterns for the pattern database.
         /// </summary>
-        /// <returns>Lsit of additive patterns.</returns>
+        /// <returns>List of additive patterns.</returns>
         public List<HashSet<int>> FindAdditivePatterns()
         {
             var components = FindComponents(BuildAffectionGraph());
@@ -38,7 +38,7 @@ namespace PAD.Planner.SAS
 
         /// <summary>
         /// Builds the 'affection' graph where variables are vertices, that connected iff there is an operator in the planning
-        /// problem changing them both at once. The result is a graph in the form of [vertex, [vertexNeighbours]].
+        /// problem changing them both at once. The result is a graph in the form of [vertex, [vertexNeighbors]].
         /// </summary>
         /// <returns>Affection graph base on the planning problem.</returns>
         private Dictionary<int, HashSet<int>> BuildAffectionGraph()
@@ -49,14 +49,14 @@ namespace PAD.Planner.SAS
                 edges.Add(i, new HashSet<int>());
             }
 
-            foreach (Operator op in Problem.Operators)
+            foreach (var op in Problem.Operators)
             {
-                for (int i = 0; i < op.Effects.Count; ++i)
+                for (int i = 0; i < op.GetEffects().Count; ++i)
                 {
-                    for (int j = i + 1; j < op.Effects.Count; ++j)
+                    for (int j = i + 1; j < op.GetEffects().Count; ++j)
                     {
-                        int firstVariable = op.Effects[i].GetAssignment().GetVariable();
-                        int secondVariable = op.Effects[j].GetAssignment().GetVariable();
+                        int firstVariable = op.GetEffects()[i].GetAssignment().GetVariable();
+                        int secondVariable = op.GetEffects()[j].GetAssignment().GetVariable();
 
                         edges[firstVariable].Add(secondVariable);
                         edges[secondVariable].Add(firstVariable);
@@ -77,8 +77,8 @@ namespace PAD.Planner.SAS
             bool[] visited = new bool[Problem.Variables.Count];
             List<HashSet<int>> components = new List<HashSet<int>>();
 
-            Action<int, int> AddReachable = null;
-            AddReachable = (int variable, int componentNumber) =>
+            Action<int, int> addReachable = null;
+            addReachable = (variable, componentNumber) =>
             {
                 if (!visited[variable])
                 {
@@ -86,7 +86,7 @@ namespace PAD.Planner.SAS
                     components[componentNumber].Add(variable);
                     foreach (var item in graph[variable])
                     {
-                        AddReachable(item, componentNumber);
+                        addReachable(item, componentNumber);
                     }
                 }
             };
@@ -96,7 +96,7 @@ namespace PAD.Planner.SAS
                 if (!visited[variable])
                 {
                     components.Add(new HashSet<int>());
-                    AddReachable(variable, components.Count - 1);
+                    addReachable(variable, components.Count - 1);
                 }
             }
 

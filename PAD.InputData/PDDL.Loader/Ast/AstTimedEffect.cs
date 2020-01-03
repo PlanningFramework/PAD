@@ -23,7 +23,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Effect.
         /// </summary>
-        public CondEffectAstNode Effect { get; private set; } = null;
+        public CondEffectAstNode Effect { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -58,12 +58,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Function term for the assignment.
         /// </summary>
-        public FunctionTermAstNode Function { get; private set; } = null;
+        public FunctionTermAstNode Function { get; private set; }
 
         /// <summary>
         /// Timed numeric expression to be assigned.
         /// </summary>
-        public TimedNumericExpressionAstNode Expression { get; private set; } = null;
+        public TimedNumericExpressionAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.

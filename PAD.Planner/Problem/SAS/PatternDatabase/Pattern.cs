@@ -10,12 +10,12 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Variables of the pattern (i.e. chosen non-abstracted variables in the corresponding abstracted planning problem).
         /// </summary>
-        public int[] PatternVariables { set; get; } = null;
+        public int[] PatternVariables { set; get; }
 
         /// <summary>
         /// Mapping of pattern values to their computed distances in the abstracted planning problem.
         /// </summary>
-        public PatternValuesDistances PatternValuesDistances { set; get; } = null;
+        public PatternValuesDistances PatternValuesDistances { set; get; }
 
         /// <summary>
         /// Constructs the pattern.

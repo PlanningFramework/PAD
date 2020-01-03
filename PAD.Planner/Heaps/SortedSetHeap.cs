@@ -19,12 +19,12 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// ID holder, for a generation of unique keys.
         /// </summary>
-        private static uint IDHolder { set; get; } = 0;
+        private uint IdHolder { set; get; }
 
         /// <summary>
         /// Sorted set container.
         /// </summary>
-        private SortedSet<KeyValuePair<KeyIDPair, Value>> SortedSet { set; get; } = new SortedSet<KeyValuePair<KeyIDPair, Value>>(new KeyValueComparer<Value>());
+        private SortedSet<KeyValuePair<KeyIdPair, Value>> SortedSet { get; } = new SortedSet<KeyValuePair<KeyIdPair, Value>>(new KeyValueComparer<Value>());
 
         /// <summary>
         /// Adds a new key-value pair into the collection.
@@ -33,7 +33,7 @@ namespace PAD.Planner.Heaps
         /// <param name="value">Value item.</param>
         public void Add(double key, Value value)
         {
-            SortedSet.Add(new KeyValuePair<KeyIDPair, Value>(new KeyIDPair(key, IDHolder++), value));
+            SortedSet.Add(new KeyValuePair<KeyIdPair, Value>(new KeyIdPair(key, IdHolder++), value));
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace PAD.Planner.Heaps
         /// <returns>Minimal key.</returns>
         public double GetMinKey()
         {
-            return SortedSet.Min.Key.key;
+            return SortedSet.Min.Key.Key;
         }
 
         /// <summary>
@@ -85,27 +85,27 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Key-ID pair used in the sorted set collection (to allow duplicated keys).
         /// </summary>
-        private struct KeyIDPair : IComparable
+        private struct KeyIdPair : IComparable
         {
             /// <summary>
             /// Key.
             /// </summary>
-            public double key;
+            public readonly double Key;
 
             /// <summary>
             /// ID.
             /// </summary>
-            public uint ID;
+            public readonly uint Id;
 
             /// <summary>
             /// Constructs the Key-ID pair.
             /// </summary>
             /// <param name="key">Key.</param>
-            /// <param name="ID">ID.</param>
-            public KeyIDPair(double key, uint ID)
+            /// <param name="id">ID.</param>
+            public KeyIdPair(double key, uint id)
             {
-                this.key = key;
-                this.ID = ID;
+                Key = key;
+                Id = id;
             }
 
             /// <summary>
@@ -115,10 +115,10 @@ namespace PAD.Planner.Heaps
             /// <returns></returns>
             public int CompareTo(object obj)
             {
-                if (obj is KeyIDPair)
+                if (obj is KeyIdPair)
                 {
-                    KeyIDPair p = (KeyIDPair)obj;
-                    return (key == p.key) ? (int)(ID - p.ID) : Math.Sign(key - p.key);
+                    KeyIdPair p = (KeyIdPair)obj;
+                    return Key.Equals(p.Key) ? (int)(Id - p.Id) : Math.Sign(Key - p.Key);
                 }
                 return 0;
             }
@@ -128,7 +128,7 @@ namespace PAD.Planner.Heaps
         /// Comparer for the sorted set collection.
         /// </summary>
         /// <typeparam name="V">Value type.</typeparam>
-        private class KeyValueComparer<V> : IComparer<KeyValuePair<KeyIDPair, V>>
+        private class KeyValueComparer<V> : IComparer<KeyValuePair<KeyIdPair, V>>
         {
             /// <summary>
             /// Compares two items of the collection.
@@ -136,9 +136,9 @@ namespace PAD.Planner.Heaps
             /// <param name="first">First item.</param>
             /// <param name="second">Second item.</param>
             /// <returns></returns>
-            public int Compare(KeyValuePair<KeyIDPair, V> first, KeyValuePair<KeyIDPair, V> second)
+            public int Compare(KeyValuePair<KeyIdPair, V> first, KeyValuePair<KeyIdPair, V> second)
             {
-                return (first.Key.key == second.Key.key) ? (int)(first.Key.ID - second.Key.ID) : Math.Sign(first.Key.key - second.Key.key);
+                return first.Key.Key.Equals(second.Key.Key) ? (int)(first.Key.Id - second.Key.Id) : Math.Sign(first.Key.Key - second.Key.Key);
             }
         }
     }

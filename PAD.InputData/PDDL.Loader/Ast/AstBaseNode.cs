@@ -6,7 +6,7 @@ using Irony.Interpreter.Ast;
 namespace PAD.InputData.PDDL.Loader.Ast
 {
     /// <summary>
-    /// Base AST node used by all our AST nodes. Encapsules the Irony's AstNode and provides methods for safe acceptation of the visitors.
+    /// Base AST node used by all our AST nodes. Encapsulates the Irony's AstNode and provides methods for safe acceptation of the visitors.
     /// </summary>
     public abstract class BaseAstNode : AstNode, IAstVisitableNode
     {
@@ -38,21 +38,18 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// </summary>
         /// <param name="astNode">AST node.</param>
         /// <param name="visitor">AST visitor.</param>
-        static public void SafeAccept(BaseAstNode astNode, IAstVisitor visitor)
+        public static void SafeAccept(BaseAstNode astNode, IAstVisitor visitor)
         {
-            if (astNode != null)
-            {
-                astNode.Accept(visitor);
-            }
+            astNode?.Accept(visitor);
         }
 
         /// <summary>
-        /// Method for a safe nodes acceptation of the visitor, cheking the validity of the given list of nodes.
+        /// Method for a safe nodes acceptation of the visitor, checking the validity of the given list of nodes.
         /// </summary>
         /// <typeparam name="T">Type of the given AST nodes.</typeparam>
         /// <param name="astNodesList">List of AST nodes.</param>
         /// <param name="visitor">AST visitor.</param>
-        static public void SafeAcceptList<T>(List<T> astNodesList, IAstVisitor visitor) where T : BaseAstNode
+        public static void SafeAcceptList<T>(List<T> astNodesList, IAstVisitor visitor) where T : BaseAstNode
         {
             if (astNodesList != null)
             {

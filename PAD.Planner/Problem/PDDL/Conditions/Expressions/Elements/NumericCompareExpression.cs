@@ -16,17 +16,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Compare operator.
         /// </summary>
-        public RelationalOperator Operator { set; get; } = RelationalOperator.EQ;
+        public RelationalOperator Operator { set; get; }
 
         /// <summary>
         /// Left numeric expression.
         /// </summary>
-        public INumericExpression LeftArgument { set; get; } = null;
+        public INumericExpression LeftArgument { set; get; }
 
         /// <summary>
         /// Right numeric expression.
         /// </summary>
-        public INumericExpression RightArgument { set; get; } = null;
+        public INumericExpression RightArgument { set; get; }
 
         /// <summary>
         /// Constructs the relation operator expression.
@@ -168,15 +168,15 @@ namespace PAD.Planner.PDDL
             switch (relOperator)
             {
                 case RelationalOperator.LT:
-                    return (leftValue < rightValue);
+                    return leftValue < rightValue;
                 case RelationalOperator.LTE:
-                    return (leftValue <= rightValue);
+                    return leftValue <= rightValue;
                 case RelationalOperator.GT:
-                    return (leftValue > rightValue);
+                    return leftValue > rightValue;
                 case RelationalOperator.GTE:
-                    return (leftValue >= rightValue);
+                    return leftValue >= rightValue;
                 case RelationalOperator.EQ:
-                    return (leftValue == rightValue);
+                    return leftValue.Equals(rightValue);
                 default:
                     Debug.Assert(false, "Unknown operator!");
                     return false;

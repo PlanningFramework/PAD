@@ -10,7 +10,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Collection of used parameters/variables.
         /// </summary>
-        private HashSet<int> CollectedParameters { set; get; } = new HashSet<int>();
+        private HashSet<int> CollectedParameters { get; } = new HashSet<int>();
 
         /// <summary>
         /// Collects the parameters used in the specified conditions.
@@ -110,9 +110,9 @@ namespace PAD.Planner.PDDL
 
             foreach (var parameter in expression.Parameters)
             {
-                if (CollectedParameters.Contains(parameter.ParameterNameID))
+                if (CollectedParameters.Contains(parameter.ParameterNameId))
                 {
-                    CollectedParameters.Remove(parameter.ParameterNameID);
+                    CollectedParameters.Remove(parameter.ParameterNameId);
                 }
             }
         }
@@ -127,9 +127,9 @@ namespace PAD.Planner.PDDL
 
             foreach (var parameter in expression.Parameters)
             {
-                if (CollectedParameters.Contains(parameter.ParameterNameID))
+                if (CollectedParameters.Contains(parameter.ParameterNameId))
                 {
-                    CollectedParameters.Remove(parameter.ParameterNameID);
+                    CollectedParameters.Remove(parameter.ParameterNameId);
                 }
             }
         }
@@ -174,7 +174,7 @@ namespace PAD.Planner.PDDL
             VariableTerm variableTerm = term as VariableTerm;
             if (variableTerm != null)
             {
-                CollectedParameters.Add(variableTerm.NameID);
+                CollectedParameters.Add(variableTerm.NameId);
                 return;
             }
 

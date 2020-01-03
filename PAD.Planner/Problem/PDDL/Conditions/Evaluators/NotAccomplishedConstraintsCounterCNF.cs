@@ -9,35 +9,22 @@ namespace PAD.Planner.PDDL
     public class NotAccomplishedConstraintsCounterCNF : IConditionsCNFPropCountVisitor
     {
         /// <summary>
-        /// Grounding manager.
-        /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
-
-        /// <summary>
         /// CNF evaluator.
         /// </summary>
-        private Lazy<ConditionsCNFEvaluator> ConditionsCNFEvaluator { set; get; } = null;
-
-        /// <summary>
-        /// Variables substitution.
-        /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private Lazy<ConditionsCNFEvaluator> ConditionsCNFEvaluator { get; }
 
         /// <summary>
         /// Reference state for the evaluation.
         /// </summary>
-        private IState ReferenceState { set; get; } = null;
+        private IState ReferenceState { set; get; }
 
         /// <summary>
         /// Constructs the counter.
         /// </summary>
-        /// <param name="groundingManager">Grounding manager.</param>
-        /// <param name="expressionEvaluator">Expression evaluator.</param>
-        public NotAccomplishedConstraintsCounterCNF(GroundingManager groundingManager, Lazy<ConditionsCNFEvaluator> conditionsCNFEvaluator)
+        /// <param name="conditionsCNFEvaluator">Conditions evaluator.</param>
+        public NotAccomplishedConstraintsCounterCNF(Lazy<ConditionsCNFEvaluator> conditionsCNFEvaluator)
         {
-            GroundingManager = groundingManager;
             ConditionsCNFEvaluator = conditionsCNFEvaluator;
-            Substitution = new Substitution();
         }
 
         /// <summary>

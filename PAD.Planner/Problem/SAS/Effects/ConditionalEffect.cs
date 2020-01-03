@@ -9,7 +9,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Conditions to be met for the effect (in case of conditional effect).
         /// </summary>
-        public ISimpleConditions Conditions { set; get; } = null;
+        public ISimpleConditions Conditions { set; get; }
 
         /// <summary>
         /// Constructs the SAS+ operator conditional effect from the input data.
@@ -82,7 +82,7 @@ namespace PAD.Planner.SAS
                     }
 
                     int value = relativeState.GetValue(constraint.GetVariable());
-                    if (value == RelativeState.WILD_CARD_VALUE)
+                    if (value == RelativeState.WildCardValue)
                     {
                         continue;
                     }
@@ -127,7 +127,7 @@ namespace PAD.Planner.SAS
             {
                 var newState = (IRelativeState)relativeState.Clone();
 
-                newState.SetValue(Assignment.GetVariable(), RelativeState.WILD_CARD_VALUE);
+                newState.SetValue(Assignment.GetVariable(), RelativeState.WildCardValue);
                 foreach (var constraint in Conditions)
                 {
                     newState.SetValue(constraint.GetVariable(), constraint.GetValue());

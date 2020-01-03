@@ -14,14 +14,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="p">Parent master grammar.</param>
         public Term(MasterGrammar p) : base(p)
         {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
-        {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
             var term = new NonTerminal("Term", typeof(TransientAstNode));
@@ -45,7 +37,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(term, termFunction);
 
-            return term;
+            Rule = term;
         }
     }
 }

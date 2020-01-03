@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
 using PAD.InputData.PDDL.Loader.Ast;
 using PAD.InputData.PDDL.Loader.DataExport;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader
 {
@@ -12,7 +15,7 @@ namespace PAD.InputData.PDDL.Loader
         /// <summary>
         /// Context of the current domain. Helps to determine semantics of some AST parts (e.g. function type).
         /// </summary>
-        private static Domain DomainContext { set; get; } = null;
+        private static Domain DomainContext { set; get; }
 
         /// <summary>
         /// Sets the current domain context.
@@ -46,13 +49,13 @@ namespace PAD.InputData.PDDL.Loader
         /// <summary>
         /// Converts the given GD into preconditions. A root AND-expression is split into a list of precondition expressions.
         /// </summary>
-        /// <param name="GDAstNode">AST node.</param>
+        /// <param name="gdAstNode">AST node.</param>
         /// <returns>Converted preconditions.</returns>
-        public static Preconditions ToPreconditions(GDAstNode GDAstNode)
+        public static Preconditions ToPreconditions(GdAstNode gdAstNode)
         {
             Preconditions preconditions = new Preconditions();
 
-            Expression expression = ToExpression(GDAstNode);
+            Expression expression = ToExpression(gdAstNode);
 
             var andExpression = expression as AndExpression;
             if (andExpression != null)
@@ -70,12 +73,12 @@ namespace PAD.InputData.PDDL.Loader
         /// <summary>
         /// Converts the given GD into a expression.
         /// </summary>
-        /// <param name="GDAstNode">AST node.</param>
+        /// <param name="gdAstNode">AST node.</param>
         /// <returns>Converted expression.</returns>
-        public static Expression ToExpression(GDAstNode GDAstNode)
+        public static Expression ToExpression(GdAstNode gdAstNode)
         {
             ToExpressionConverter converter = new ToExpressionConverter();
-            converter.Evaluate(GDAstNode);
+            converter.Evaluate(gdAstNode);
             return converter.ExpressionData;
         }
 
@@ -170,16 +173,15 @@ namespace PAD.InputData.PDDL.Loader
             {
                 return true;
             }
-            else if (termAstNode is FunctionTermAstNode)
+
+            var functionTermAstNode = termAstNode as FunctionTermAstNode;
+            if (functionTermAstNode != null)
             {
-                return IsNumericFunction((FunctionTermAstNode)termAstNode);
-            }
-            else if (termAstNode is IdentifierTermAstNode)
-            {
-                return IsIdentifierTermNumericFunction((IdentifierTermAstNode)termAstNode);
+                return IsNumericFunction(functionTermAstNode);
             }
 
-            return false;
+            var identifierTermAstNode = termAstNode as IdentifierTermAstNode;
+            return identifierTermAstNode != null && IsIdentifierTermNumericFunction(identifierTermAstNode);
         }
 
         /// <summary>
@@ -190,12 +192,7 @@ namespace PAD.InputData.PDDL.Loader
         public static ConstantTerm ToConstantTerm(TermOrNumericAstNode termAstNode)
         {
             var identifier = termAstNode as IdentifierTermAstNode;
-            if (identifier != null)
-            {
-                return new ConstantTerm(identifier.Name);
-            }
-
-            return null;
+            return identifier != null ? new ConstantTerm(identifier.Name) : null;
         }
 
         /// <summary>
@@ -269,12 +266,12 @@ namespace PAD.InputData.PDDL.Loader
         /// <summary>
         /// Converts the given con-GD into constraints.
         /// </summary>
-        /// <param name="conGDAstNode">AST node.</param>
+        /// <param name="conGdAstNode">AST node.</param>
         /// <returns>Converted constraints.</returns>
-        public static Constraints ToConstraints(ConGDAstNode conGDAstNode)
+        public static Constraints ToConstraints(ConGdAstNode conGdAstNode)
         {
             ToConstraintsConverter converter = new ToConstraintsConverter();
-            converter.Evaluate(conGDAstNode);
+            converter.Evaluate(conGdAstNode);
             return converter.ConstraintsData;
         }
 
@@ -282,7 +279,7 @@ namespace PAD.InputData.PDDL.Loader
         /// Convert the given effects AST into an effects structure. A root AND-expression is split into a list of effects.
         /// </summary>
         /// <param name="effectAstNode">AST node.</param>
-        /// <returns>COnverted effects.</returns>
+        /// <returns>Converted effects.</returns>
         public static Effects ToEffects(EffectAstNode effectAstNode)
         {
             ToEffectsConverter converter = new ToEffectsConverter();
@@ -305,13 +302,13 @@ namespace PAD.InputData.PDDL.Loader
         /// <summary>
         /// Convert the given da-GD into durative conditions. A root AND-expression is split into a list of condition expressions.
         /// </summary>
-        /// <param name="daGDAstNode">AST node.</param>
+        /// <param name="daGdAstNode">AST node.</param>
         /// <returns>Converted durative conditions.</returns>
-        public static DurativeConditions ToDurativeConditions(DaGDAstNode daGDAstNode)
+        public static DurativeConditions ToDurativeConditions(DaGdAstNode daGdAstNode)
         {
             DurativeConditions conditions = new DurativeConditions();
 
-            DurativeExpression expression = ToDurativeExpression(daGDAstNode);
+            DurativeExpression expression = ToDurativeExpression(daGdAstNode);
 
             var andExpression = expression as AndDurativeExpression;
             if (andExpression != null)
@@ -329,12 +326,12 @@ namespace PAD.InputData.PDDL.Loader
         /// <summary>
         /// Converts the given da-GD into a durative expression.
         /// </summary>
-        /// <param name="daGDAstNode">AST node.</param>
+        /// <param name="daGdAstNode">AST node.</param>
         /// <returns>Converted durative expression.</returns>
-        public static DurativeExpression ToDurativeExpression(DaGDAstNode daGDAstNode)
+        public static DurativeExpression ToDurativeExpression(DaGdAstNode daGdAstNode)
         {
             ToDurativeExpressionConverter converter = new ToDurativeExpressionConverter();
-            converter.Evaluate(daGDAstNode);
+            converter.Evaluate(daGdAstNode);
             return converter.ExpressionData;
         }
 
@@ -361,10 +358,8 @@ namespace PAD.InputData.PDDL.Loader
             {
                 return new PrimitiveTimedNumericExpression();
             }
-            else
-            {
-                return new CompoundTimedNumericExpression(ToNumericExpression(timedNumericExpressionAstNode.ProductExprNumericFactor));
-            }
+
+            return new CompoundTimedNumericExpression(ToNumericExpression(timedNumericExpressionAstNode.ProductExprNumericFactor));
         }
 
         /// <summary>

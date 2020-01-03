@@ -1,5 +1,8 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -12,24 +15,21 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// Constructor of the grammar node.
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
-        public PEffect(MasterGrammar p) : this(p, BForm.FULL)
-        {
-        }
-
-        /// <summary>
-        /// Constructor of the grammar node.
-        /// </summary>
-        /// <param name="p">Parent master grammar.</param>
         /// <param name="bForm">Block form.</param>
         public PEffect(MasterGrammar p, BForm bForm) : base(p, bForm)
         {
+            Rule = ConstructPEffectRule(p, bForm, new ValueOrTerm(p), new NumericExpr(p));
         }
 
         /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
+        /// Constructs the primitive effect rule from the specified parameters.
         /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
+        /// <param name="p">Parent master grammar.</param>
+        /// <param name="bForm">Block form.</param>
+        /// <param name="valueOrTermForAssign">Value or term for an assignment.</param>
+        /// <param name="numericExprForAssign">Numeric expression for an assignment.</param>
+        /// <returns>Primitive effect grammar rule.</returns>
+        public static NonTerminal ConstructPEffectRule(MasterGrammar p, BForm bForm, NonTerminal valueOrTermForAssign, NonTerminal numericExprForAssign)
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -62,8 +62,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             // USED SUB-TREES
 
             var valueOrTerm = new ValueOrTerm(p);
-            var valueOrTermForAssign = getValueOrTerm();
-            var numericExprForAssign = getNumericExpr();
             var predFuncTermFunction = new FunctionTerm(p);
             var term = new Term(p);
 
@@ -96,24 +94,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             p.MarkTransient(pEffect, pEffectBase, atomicFormulaPEffect, atomicFormulaPEffectBase, assignPEffectBase, assignOpArg1, assignOpArg2, assignOpArg2Num);
 
             return (bForm == BForm.BASE) ? pEffectBase : pEffect;
-        }
-
-        /// <summary>
-        /// Factory method for specifying a numeric expression type being used within this grammar node.
-        /// </summary>
-        /// <returns>Numeric expression type.</returns>
-        protected virtual NonTerminal getNumericExpr()
-        {
-            return new NumericExpr(p);
-        }
-
-        /// <summary>
-        /// Factory method specifying a value/term entity type being used within this grammar node.
-        /// </summary>
-        /// <returns>Value/term type.</returns>
-        protected virtual NonTerminal getValueOrTerm()
-        {
-            return new ValueOrTerm(p);
         }
     }
 }

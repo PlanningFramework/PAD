@@ -1,4 +1,5 @@
 ﻿using PAD.InputData.PDDL;
+// ReSharper disable UnusedMember.Global
 
 namespace PAD.InputData
 {

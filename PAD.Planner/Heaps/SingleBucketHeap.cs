@@ -13,18 +13,18 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Buckets collections.
         /// </summary>
-        private List<TreeNode<int, Value>>[] Buckets { set; get; } = null;
+        private List<TreeNode<int>>[] Buckets { set; get; }
 
         /// <summary>
         /// Size of the hash array, i.e. range of the elements.
         /// Must be greater than the difference between the highest possible key and the lowest possible key!
         /// </summary>
-        private int C { set; get; } = 0;
+        private int C { set; get; }
 
         /// <summary>
         /// Initial value of C.
         /// </summary>
-        private int InitialC { set; get; } = 0;
+        private int InitialC { get; }
 
         /// <summary>
         /// The minimum key stored in the structure.
@@ -39,7 +39,7 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Number of elements in the structure.
         /// </summary>
-        private int Count { set; get; } = 0;
+        private int Count { set; get; }
 
         /// <summary>
         /// Constructs the single bucket heap.
@@ -50,10 +50,10 @@ namespace PAD.Planner.Heaps
             C = hashArraySize;
             InitialC = C;
 
-            Buckets = new List<TreeNode<int, Value>>[C + 1];
+            Buckets = new List<TreeNode<int>>[C + 1];
             for (int i = 0; i < C + 1; ++i)
             {
-                Buckets[i] = new List<TreeNode<int, Value>>();
+                Buckets[i] = new List<TreeNode<int>>();
             }
         }
 
@@ -66,7 +66,7 @@ namespace PAD.Planner.Heaps
         {
             while (Count > 0 && key > MinKey + C)
             {
-                // insuficient heap limit - rebuilding the heap
+                // insufficient heap limit - rebuilding the heap
                 ReHashWithLargerSize();
             }
 
@@ -98,7 +98,7 @@ namespace PAD.Planner.Heaps
                 }
             }
 
-            Count = Count - 1;
+            Count -= 1;
             if (Count > 0)
             {
                 while (Buckets[MinPos].Count == 0)
@@ -143,10 +143,10 @@ namespace PAD.Planner.Heaps
             MinPos = -1;
             MinKey = int.MaxValue;
 
-            Buckets = new List<TreeNode<int, Value>>[C + 1];
+            Buckets = new List<TreeNode<int>>[C + 1];
             for (int i = 0; i < C + 1; ++i)
             {
-                Buckets[i] = new List<TreeNode<int, Value>>();
+                Buckets[i] = new List<TreeNode<int>>();
             }
         }
 
@@ -165,7 +165,7 @@ namespace PAD.Planner.Heaps
         private void ReHashWithLargerSize()
         {
             var oldBuckets = Buckets;
-            C = C * 2;
+            C *= 2;
             if (C >= 32000000)
             {
                 throw new OutOfMemoryException();
@@ -174,11 +174,11 @@ namespace PAD.Planner.Heaps
             Count = 0;
             MinPos = -1;
             MinKey = int.MaxValue;
-            Buckets = new List<TreeNode<int, Value>>[C + 1];
+            Buckets = new List<TreeNode<int>>[C + 1];
 
             for (int i = 0; i < C + 1; i++)
             {
-                Buckets[i] = new List<TreeNode<int, Value>>();
+                Buckets[i] = new List<TreeNode<int>>();
             }
 
             foreach (var bucket in oldBuckets)
@@ -198,7 +198,7 @@ namespace PAD.Planner.Heaps
         /// <param name="value">Value item.</param>
         private void InsertTo(int bucket, int key, Value value)
         {
-            Buckets[bucket].Add(new TreeNode<int, Value>(value, key));
+            Buckets[bucket].Add(new TreeNode<int>(value, key));
         }
 
         /// <summary>
@@ -206,7 +206,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="bucket">Bucket number.</param>
         /// <param name="node">Tree node.</param>
-        private void InsertTo(int bucket, TreeNode<int, Value> node)
+        private void InsertTo(int bucket, TreeNode<int> node)
         {
             Buckets[bucket].Add(node);
         }
@@ -215,7 +215,7 @@ namespace PAD.Planner.Heaps
         /// Auxiliary method for inserting an item into buckets.
         /// </summary>
         /// <param name="node">Tree node.</param>
-        private void Insert(TreeNode<int, Value> node)
+        private void Insert(TreeNode<int> node)
         {
             ++Count;
             int pos = node.Key % (C + 1);
@@ -231,25 +231,24 @@ namespace PAD.Planner.Heaps
         /// Tree node to be used in the buckets collection.
         /// </summary>
         /// <typeparam name="KeyType">Key type.</typeparam>
-        /// <typeparam name="ValueType">Value type.</typeparam>
-        private class TreeNode<KeyType, ValueType> where KeyType : IComparable
+        private class TreeNode<KeyType> where KeyType : IComparable
         {
             /// <summary>
             /// Value item.
             /// </summary>
-            public ValueType Value { get; set; } = default(ValueType);
+            public Value Value { get; }
 
             /// <summary>
             /// Key item.
             /// </summary>
-            public KeyType Key { get; set; } = default(KeyType);
+            public KeyType Key { get; }
 
             /// <summary>
             /// Constructs the tree node.
             /// </summary>
             /// <param name="value">Value item.</param>
             /// <param name="key">Key item.</param>
-            public TreeNode(ValueType value, KeyType key)
+            public TreeNode(Value value, KeyType key)
             {
                 Value = value;
                 Key = key;

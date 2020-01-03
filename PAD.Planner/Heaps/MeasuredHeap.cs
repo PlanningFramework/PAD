@@ -14,32 +14,29 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Internal heap collection.
         /// </summary>
-        private IHeap<double, HeapNode> InternalHeap { set; get; } = new RegularBinaryHeap<HeapNode>();
+        private IHeap<double, HeapNode> InternalHeap { get; } = new RegularBinaryHeap<HeapNode>();
 
         /// <summary>
         /// Writer object for message logging.
         /// </summary>
-        private StreamWriter Logger { set; get; } = null;
+        private StreamWriter Logger { set; get; }
 
         /// <summary>
         /// Time stamp.
         /// </summary>
-        private int TimeStamp { set; get; } = 0;
+        private int TimeStamp { set; get; }
 
         /// <summary>
         /// Heap statistics.
         /// </summary>
-        private HeapStatistics Stats { set; get; } = new HeapStatistics();
+        private HeapStatistics Stats { get; } = new HeapStatistics();
 
         /// <summary>
         /// Destructor for the object.
         /// </summary>
         ~MeasuredHeap()
         {
-            if (Logger != null)
-            {
-                Logger.Close();
-            }
+            Logger?.Close();
         }
 
         /// <summary>
@@ -52,10 +49,7 @@ namespace PAD.Planner.Heaps
             var newElement = new HeapNode(key, value, TimeStamp++);
             InternalHeap.Add(newElement.Key, newElement);
 
-            if (Logger != null)
-            {
-                Logger.WriteLine("i\t" + key);
-            }
+            Logger?.WriteLine("i\t" + key);
             Stats.UpdateAfterInsert(newElement);
         }
 
@@ -66,10 +60,7 @@ namespace PAD.Planner.Heaps
         public Value RemoveMin()
         {
             var result = InternalHeap.RemoveMin();
-            if (Logger != null)
-            {
-                Logger.WriteLine("r\t" + result.Key);
-            }
+            Logger?.WriteLine("r\t" + result.Key);
             Stats.UpdateAfterRemove(result);
             return result.Value;
         }
@@ -119,6 +110,11 @@ namespace PAD.Planner.Heaps
         {
             string directory = Path.GetDirectoryName(filePath);
 
+            if (string.IsNullOrEmpty(directory))
+            {
+                return;
+            }
+
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
@@ -132,10 +128,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         public void ClearStats()
         {
-            if (Logger != null)
-            {
-                Logger.Close();
-            }
+            Logger?.Close();
             Stats.Clear();
         }
 
@@ -147,16 +140,16 @@ namespace PAD.Planner.Heaps
             Stats.PrintStats();
 
             long totalAgesSum = 0;
-            int oldesElement = 0;
+            int oldestElement = 0;
             int numberOfElementsGreaterThanExtractionLimit = 0;
 
             while (InternalHeap.GetSize() > 0)
             {
                 var element = InternalHeap.RemoveMin();
                 var age = TimeStamp - element.TimeStamp;
-                if (oldesElement < age)
+                if (oldestElement < age)
                 {
-                    oldesElement = age;
+                    oldestElement = age;
                 }
                 totalAgesSum += age;
 
@@ -169,7 +162,7 @@ namespace PAD.Planner.Heaps
             totalAgesSum += Stats.ExtractedElementsAgeTotalSum;
             Console.WriteLine("\t\tAverage element's age (all):\t" + totalAgesSum / (Stats.ElementsAges.Count + Stats.CurrentHeapSize));
             Console.WriteLine("\t\tOldest extracted:\t\t" + Stats.OldestExtractedElement);
-            Console.WriteLine("\t\tOldest not extracted:\t\t" + oldesElement);
+            Console.WriteLine("\t\tOldest not extracted:\t\t" + oldestElement);
             Console.WriteLine("\t\tElements beyond extraction limit:\t" + numberOfElementsGreaterThanExtractionLimit);
         }
 
@@ -181,17 +174,17 @@ namespace PAD.Planner.Heaps
             /// <summary>
             /// Key.
             /// </summary>
-            public int Key;
+            public readonly int Key;
 
             /// <summary>
             /// Value.
             /// </summary>
-            public Value Value;
+            public readonly Value Value;
 
             /// <summary>
             /// Time stamp.
             /// </summary>
-            public int TimeStamp;
+            public readonly int TimeStamp;
 
             /// <summary>
             /// Creates the heap node.
@@ -225,67 +218,67 @@ namespace PAD.Planner.Heaps
             /// <summary>
             /// Highest added element.
             /// </summary>
-            public int HighestAddedElement { set; get; } = int.MinValue;
+            private int HighestAddedElement { set; get; } = int.MinValue;
 
             /// <summary>
             /// Lowest added element.
             /// </summary>
-            public int LowestAddedElement { set; get; } = int.MaxValue;
+            private int LowestAddedElement { set; get; } = int.MaxValue;
 
             /// <summary>
             /// Highest removed element.
             /// </summary>
-            public int HighestExtractedElement { set; get; } = int.MinValue;
+            public int HighestExtractedElement { private set; get; } = int.MinValue;
 
             /// <summary>
             /// Oldest removed element.
             /// </summary>
-            public int OldestExtractedElement { set; get; } = 0;
+            public int OldestExtractedElement { private set; get; }
 
             /// <summary>
             /// Number of inserts.
             /// </summary>
-            public int NumberOfInserts { set; get; } = 0;
+            private int NumberOfInserts { set; get; }
 
             /// <summary>
             /// Number of removals.
             /// </summary>
-            public int NumberOfExtracts { set; get; } = 0;
+            private int NumberOfExtracts { set; get; }
 
             /// <summary>
             /// Maximal number of elements.
             /// </summary>
-            public int MaxNumberOfElements { set; get; } = 0;
+            private int MaxNumberOfElements { set; get; }
 
             /// <summary>
-            /// Currenct heap size.
+            /// Current heap size.
             /// </summary>
-            public int CurrentHeapSize { set; get; } = 0;
+            public int CurrentHeapSize { private set; get; }
 
             /// <summary>
             /// Total sum of removed elements.
             /// </summary>
-            public long ExtractedElementsAgeTotalSum { set; get; } = 0;
+            public long ExtractedElementsAgeTotalSum { private set; get; }
 
             /// <summary>
             /// Size of gaps.
             /// </summary>
-            public Dictionary<int, int> GapsCountsBySize { set; get; } = new Dictionary<int, int>();
+            private Dictionary<int, int> GapsCountsBySize { get; } = new Dictionary<int, int>();
 
             /// <summary>
             /// Current time.
             /// </summary>
-            public int CurrentTime = 0;
+            private int CurrentTime { set; get; }
 
             /// <summary>
             /// Element ages.
             /// </summary>
-            public List<int> ElementsAges { set; get; } = new List<int>();
+            public List<int> ElementsAges { get; } = new List<int>();
 
             /// <summary>
             /// Used keys.
             /// </summary>
-            public HashSet<int> KeysUsed { set; get; } = new HashSet<int>();
+            private HashSet<int> KeysUsed { get; } = new HashSet<int>();
 
             /// <summary>
             /// Clears the stats.
@@ -369,7 +362,7 @@ namespace PAD.Planner.Heaps
                 {
                     HighestExtractedElement = removedElement.Key;
                 }
-                int elementAge = this.CurrentTime - removedElement.TimeStamp;
+                int elementAge = CurrentTime - removedElement.TimeStamp;
                 if (OldestExtractedElement < elementAge)
                 {
                     OldestExtractedElement = elementAge;
@@ -396,8 +389,8 @@ namespace PAD.Planner.Heaps
 
                 Console.WriteLine("\t\tElements range:\t\t\t" + (HighestAddedElement - LowestAddedElement));
                 Console.WriteLine("\t\tTotal keys used:\t\t" + KeysUsed.Count);
-                Console.WriteLine("\t\tNumber of elements / range:\t" + (MaxNumberOfElements / ((double)(HighestAddedElement - LowestAddedElement))));
-                Console.WriteLine("\t\tNumber of elements / keys used:\t" + (MaxNumberOfElements / ((double)(KeysUsed.Count))));
+                Console.WriteLine("\t\tNumber of elements / range:\t" + (MaxNumberOfElements / (double)(HighestAddedElement - LowestAddedElement)));
+                Console.WriteLine("\t\tNumber of elements / keys used:\t" + (MaxNumberOfElements / (double)KeysUsed.Count));
 
                 Console.WriteLine("\t\tGaps sizes:");
                 ComputeGaps();
@@ -406,7 +399,7 @@ namespace PAD.Planner.Heaps
                     Console.WriteLine("\t\t\tSize: " + gapSize + " Count: " + GapsCountsBySize[gapSize]);
                 }
 
-                Console.WriteLine("\t\tAdditions / extractions:\t" + (NumberOfInserts / ((double)(NumberOfExtracts))));
+                Console.WriteLine("\t\tAdditions / extractions:\t" + (NumberOfInserts / (double)NumberOfExtracts));
                 Console.WriteLine("\t\tAverage element's age (extracted only):\t" + ExtractedElementsAgeTotalSum / ElementsAges.Count);
             }
         }

@@ -9,17 +9,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Function atom.
         /// </summary>
-        public IAtom FunctionAtom { set; get; } = null;
+        public IAtom FunctionAtom { set; get; }
 
         /// <summary>
         /// Numeric value to be assigned.
         /// </summary>
-        public INumericExpression Value { get; set; } = null;
+        public INumericExpression Value { get; set; }
 
         /// <summary>
         /// ID manager of the corresponding planning problem.
         /// </summary>
-        protected IDManager IDManager { set; get; } = null;
+        protected IdManager IdManager { set; get; }
 
         /// <summary>
         /// Constructs the effect.
@@ -27,11 +27,11 @@ namespace PAD.Planner.PDDL
         /// <param name="functionAtom">Numeric function atom.</param>
         /// <param name="value">Numeric value to be assigned.</param>
         /// <param name="idManager">ID manager.</param>
-        public NumericAssignEffect(IAtom functionAtom, INumericExpression value, IDManager idManager)
+        public NumericAssignEffect(IAtom functionAtom, INumericExpression value, IdManager idManager)
         {
             FunctionAtom = functionAtom;
             Value = value;
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -55,10 +55,10 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Gets the substitued value from the backwards application of the assignment.
+        /// Gets the substituted value from the backwards application of the assignment.
         /// </summary>
         /// <returns>Backwards applied assignment.</returns>
-        public virtual INumericExpression GetBackwardsSubstituedValue()
+        public virtual INumericExpression GetBackwardsSubstitutedValue()
         {
             return Value;
         }

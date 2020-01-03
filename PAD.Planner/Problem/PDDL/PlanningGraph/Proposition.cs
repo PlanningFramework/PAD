@@ -9,7 +9,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Predicate atom.
         /// </summary>
-        public IAtom Atom { set; get; } = null;
+        public IAtom Atom { set; get; }
 
         /// <summary>
         /// Creates the proposition.

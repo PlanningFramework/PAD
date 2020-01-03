@@ -12,26 +12,26 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Stack of expression parts.
         /// </summary>
-        private Stack<INumericExpression> ExpressionStack { set; get; } = new Stack<INumericExpression>();
+        private Stack<INumericExpression> ExpressionStack { get; } = new Stack<INumericExpression>();
 
         /// <summary>
         /// Terms builder.
         /// </summary>
-        private Lazy<TermsBuilder> TermsBuilder { set; get; } = null;
+        private Lazy<TermsBuilder> TermsBuilder { get; }
 
         /// <summary>
         /// ID manager converting predicate, function, constant and type names to their corresponding IDs.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the numeric expressions builder.
         /// </summary>
         /// <param name="idManager">ID manager.</param>
-        public NumericExpressionsBuilder(IDManager idManager)
+        public NumericExpressionsBuilder(IdManager idManager)
         {
-            IDManager = idManager;
-            TermsBuilder = new Lazy<TermsBuilder>(() => new TermsBuilder(IDManager));
+            IdManager = idManager;
+            TermsBuilder = new Lazy<TermsBuilder>(() => new TermsBuilder(IdManager));
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void PostVisit(InputData.PDDL.NumericFunction data)
         {
-            int functionNameID = IDManager.Functions.GetID(data.Name, data.Terms.Count);
+            int functionNameId = IdManager.Functions.GetId(data.Name, data.Terms.Count);
             List<ITerm> argumentTerms = new List<ITerm>();
 
             foreach (var term in data.Terms)
@@ -82,7 +82,7 @@ namespace PAD.Planner.PDDL
                 argumentTerms.Add(TermsBuilder.Value.Build(term));
             }
 
-            ExpressionStack.Push(new NumericFunction(new Atom(functionNameID, argumentTerms), IDManager));
+            ExpressionStack.Push(new NumericFunction(new Atom(functionNameId, argumentTerms), IdManager));
         }
 
         /// <summary>

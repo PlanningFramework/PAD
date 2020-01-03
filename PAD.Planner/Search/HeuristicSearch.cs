@@ -13,12 +13,12 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Instance of the planning problem.
         /// </summary>
-        protected ISearchableProblem Problem { set; get; } = null;
+        protected ISearchableProblem Problem { set; get; }
 
         /// <summary>
         /// Heuristic function.
         /// </summary>
-        protected ISearchableHeuristic Heuristic { set; get; } = null;
+        protected ISearchableHeuristic Heuristic { set; get; }
 
         /// <summary>
         /// Search type used (forward/backward search).
@@ -28,17 +28,17 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Are logging messages enabled?
         /// </summary>
-        public bool LoggingEnabled { set; get; } = false;
+        public bool LoggingEnabled { set; get; }
 
         /// <summary>
         /// Time limit of the search.
         /// </summary>
-        public TimeSpan TimeLimitOfSearch { set; get; } = TimeSpan.FromMinutes(DEFAULT_TIME_LIMIT_MINUTES);
+        public TimeSpan TimeLimitOfSearch { set; get; } = TimeSpan.FromMinutes(DefaultTimeLimitMinutes);
 
         /// <summary>
         /// Memory limit of searched nodes.
         /// </summary>
-        public long MemoryLimitOfStates { set; get; } = DEFAULT_MEMORY_LIMIT_NODES;
+        public long MemoryLimitOfStates { set; get; } = DefaultMemoryLimitNodes;
 
         /// <summary>
         /// Result status.
@@ -48,7 +48,7 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Number of currently closed nodes.
         /// </summary>
-        protected long ClosedNodesCount { set; get; } = 0;
+        protected long ClosedNodesCount { set; get; }
 
         /// <summary>
         /// Maximal g-value encountered during the search.
@@ -58,27 +58,27 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Found goal node (used for extraction of solution plan and solution cost).
         /// </summary>
-        protected ISearchNode GoalNode { set; get; } = null;
+        protected ISearchNode GoalNode { set; get; }
 
         /// <summary>
         /// Timer for calculation measurements.
         /// </summary>
-        protected Stopwatch Timer { set; get; } = null;
+        protected Stopwatch Timer { set; get; }
 
         /// <summary>
         /// Is a complex heuristic used? (i.e. uses predecessors and operators to determine the heuristic value)
         /// </summary>
-        protected bool IsComplexHeuristic { set; get; } = false;
+        protected bool IsComplexHeuristic { set; get; }
 
         /// <summary>
         /// Default time limit for the search procedure, in minutes.
         /// </summary>
-        public const int DEFAULT_TIME_LIMIT_MINUTES = 30;
+        public const int DefaultTimeLimitMinutes = 30;
 
         /// <summary>
         /// Default memory limit of searched nodes.
         /// </summary>
-        public const long DEFAULT_MEMORY_LIMIT_NODES = 1000000;
+        public const long DefaultMemoryLimitNodes = 1000000;
 
         /// <summary>
         /// Constructs the heuristic search procedure for the given planning problem.
@@ -86,10 +86,10 @@ namespace PAD.Planner.Search
         /// <param name="problem">Planning problem.</param>
         /// <param name="heuristic">Heuristic (if not specified, blind heuristic will be used).</param>
         /// <param name="loggingEnabled">Is logging of the search enabled?.</param>
-        public HeuristicSearch(ISearchableProblem problem, ISearchableHeuristic heuristic = null, bool loggingEnabled = false)
+        protected HeuristicSearch(ISearchableProblem problem, ISearchableHeuristic heuristic = null, bool loggingEnabled = false)
         {
             Problem = problem;
-            Heuristic = (heuristic == null) ? new BlindHeuristic() : heuristic;
+            Heuristic = heuristic ?? new BlindHeuristic();
             LoggingEnabled = loggingEnabled;
             IsComplexHeuristic = Heuristic is ComplexHeuristic;
         }
@@ -102,7 +102,7 @@ namespace PAD.Planner.Search
         /// <param name="loggingEnabled">Is logging of the search enabled?.</param>
         /// <param name="timeLimitOfSearch">Time limit of the search.</param>
         /// <param name="memoryLimitOfStates">Memory limit of searched nodes.</param>
-        public HeuristicSearch(ISearchableProblem problem, ISearchableHeuristic heuristic, bool loggingEnabled, TimeSpan timeLimitOfSearch, long memoryLimitOfStates)
+        protected HeuristicSearch(ISearchableProblem problem, ISearchableHeuristic heuristic, bool loggingEnabled, TimeSpan timeLimitOfSearch, long memoryLimitOfStates)
             : this(problem, heuristic, loggingEnabled)
         {
             TimeLimitOfSearch = timeLimitOfSearch;
@@ -170,8 +170,8 @@ namespace PAD.Planner.Search
                 ClosedNodes = GetClosedNodesCount(),
                 OpenNodes = GetOpenNodesCount(),
                 MaxGValue = MaxGValue,
-                BestHeuristicValue = (heuristic != null) ? heuristic.GetStatistics().BestHeuristicValue : double.MaxValue,
-                AverageHeuristicValue = (heuristic != null) ? heuristic.GetStatistics().AverageHeuristicValue : double.MaxValue,
+                BestHeuristicValue = heuristic?.GetStatistics().BestHeuristicValue ?? double.MaxValue,
+                AverageHeuristicValue = heuristic?.GetStatistics().AverageHeuristicValue ?? double.MaxValue,
                 SolutionPlan = null,
                 SolutionCost = GetSolutionCost()
             };

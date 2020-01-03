@@ -1,5 +1,6 @@
-﻿
-namespace PAD.Launcher.Tasks
+﻿// ReSharper disable StringLiteralTypo
+
+namespace PAD.Launcher.Tasks.DefinitionTypes
 {
     /// <summary>
     /// Output type of the planning task.
@@ -13,7 +14,7 @@ namespace PAD.Launcher.Tasks
     }
 
     /// <summary>
-    /// Auxilliary class for converting output type parameters.
+    /// Auxiliary class for converting output type parameters.
     /// </summary>
     public static class OutputTypeConverter
     {

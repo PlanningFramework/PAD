@@ -67,14 +67,14 @@ namespace PAD.Planner
         /// <summary>
         /// Gets the number of not accomplished goals for the specified state (forward search).
         /// </summary>
-        /// <param name="state">State to be evalatuated.</param>
+        /// <param name="state">State to be evaluated.</param>
         /// <returns>Number of not accomplished goals.</returns>
         int GetNotAccomplishedGoalsCount(IState state);
 
         /// <summary>
         /// Gets the number of not accomplished goals for the specified conditions (backward search).
         /// </summary>
-        /// <param name="conditions">Conditions to be evalatuated.</param>
+        /// <param name="conditions">Conditions to be evaluated.</param>
         /// <returns>Number of not accomplished goals.</returns>
         int GetNotAccomplishedGoalsCount(IConditions conditions);
 
@@ -141,14 +141,14 @@ namespace PAD.Planner
         IPredecessor GetRandomPredecessor(IConditions conditions);
 
         /// <summary>
-        /// Gets a collection of all explicly enumerated successor states (created by forward applications) from the specified state. Lazy generated via yield return.
+        /// Gets a collection of all explicitly enumerated successor states (created by forward applications) from the specified state. Lazy generated via yield return.
         /// </summary>
         /// <param name="state">Original state.</param>
         /// <returns>Lazy generated collection of all successor states.</returns>
         IEnumerable<IState> GetSuccessorStates(IState state);
 
         /// <summary>
-        /// Gets a collection of all explicly enumerated predecessor states (created by relevant backwards applications) from the specified state. Lazy generated via yield return.
+        /// Gets a collection of all explicitly enumerated predecessor states (created by relevant backwards applications) from the specified state. Lazy generated via yield return.
         /// </summary>
         /// <param name="state">Original state.</param>
         /// <returns>Lazy generated collection of all predecessor states.</returns>

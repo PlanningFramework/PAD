@@ -1,5 +1,6 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable UnusedMember.Global
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -22,14 +23,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="p">Parent master grammar.</param>
         /// <param name="bForm">Block form.</param>
         public TimedEffect(MasterGrammar p, BForm bForm) : base(p, bForm)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -85,7 +78,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(timedEffect, timedEffectBase, timedCondEffect, timedCondEffectBase, assignTimedEffectFuncHead);
 
-            return (bForm == BForm.BASE) ? timedEffectBase : timedEffect;
+            Rule = (bForm == BForm.BASE) ? timedEffectBase : timedEffect;
         }
     }
 }

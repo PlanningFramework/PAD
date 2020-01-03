@@ -19,7 +19,7 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Internal collection for the values.
         /// </summary>
-        private LinkedList<Value> Queue = new LinkedList<Value>();
+        private LinkedList<Value> Queue { get; } = new LinkedList<Value>();
 
         /// <summary>
         /// Adds a new key-value pair into the collection.

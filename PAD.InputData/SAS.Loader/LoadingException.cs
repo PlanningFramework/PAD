@@ -1,9 +1,11 @@
-﻿
+﻿using System;
+
 namespace PAD.InputData.SAS.Loader
 {
     /// <summary>
     /// Exception specifying errors while loading the input files.
     /// </summary>
+    [Serializable]
     public class LoadingException : InputDataException
     {
         /// <summary>

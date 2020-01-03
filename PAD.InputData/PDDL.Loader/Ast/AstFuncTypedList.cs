@@ -14,7 +14,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of function definitions, in the form of tuples (function-name, function-args, function-return-type).
         /// </summary>
-        public List<Tuple<string, TypedListAstNode, string>> FunctionsList { get; private set; } = null;
+        public List<Tuple<string, TypedListAstNode, string>> FunctionsList { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -68,12 +68,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
                             var singleFuncParts = singleFunction.GetMappedChildNodes();
 
                             var funcName = (singleFuncParts.Count > 0) ? singleFuncParts[0] : null;
-                            var pararamsTypedList = (singleFuncParts.Count > 1) ? singleFuncParts[1] : null;
+                            var paramsTypedList = (singleFuncParts.Count > 1) ? singleFuncParts[1] : null;
 
                             string funcNameStr = (funcName != null) ? funcName.FindTokenAndGetText() : "";
-                            var pararamsTypedListAstNode = (pararamsTypedList != null) ? pararamsTypedList.AstNode as TypedListAstNode : null;
+                            var paramsTypedListAstNode = paramsTypedList?.AstNode as TypedListAstNode;
 
-                            FunctionsList.Add(Tuple.Create(funcNameStr, pararamsTypedListAstNode, type));
+                            FunctionsList.Add(Tuple.Create(funcNameStr, paramsTypedListAstNode, type));
                         }
                     }
 

@@ -1,10 +1,13 @@
 ﻿using System.Diagnostics;
 using PAD.InputData.PDDL.Traits;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Ast
 {
     /// <summary>
-    /// Auxilliary class for mapping string tokens to enum values used within AST.
+    /// Auxiliary class for mapping string tokens to enum values used within AST.
     /// </summary>
     public static class EnumMapper
     {

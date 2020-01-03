@@ -1,4 +1,7 @@
 ﻿using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.DataExport
 {
@@ -10,7 +13,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public DurativeConstraints ConstraintsData { get; private set; } = new DurativeConstraints();
+        public DurativeConstraints ConstraintsData { get; } = new DurativeConstraints();
 
         /// <summary>
         /// Handles the AST node visit.

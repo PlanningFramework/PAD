@@ -10,13 +10,13 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public Expression ExpressionData { get; private set; } = null;
+        public Expression ExpressionData { get; private set; }
 
         /// <summary>
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(AndGDAstNode astNode)
+        public override void Visit(AndGdAstNode astNode)
         {
             AndExpression andExpression = new AndExpression();
             astNode.Arguments.ForEach(arg => andExpression.Arguments.Add(MasterExporter.ToExpression(arg)));
@@ -27,7 +27,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(OrGDAstNode astNode)
+        public override void Visit(OrGdAstNode astNode)
         {
             OrExpression orExpression = new OrExpression();
             astNode.Arguments.ForEach(arg => orExpression.Arguments.Add(MasterExporter.ToExpression(arg)));
@@ -38,7 +38,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(NotGDAstNode astNode)
+        public override void Visit(NotGdAstNode astNode)
         {
             ExpressionData = new NotExpression(MasterExporter.ToExpression(astNode.Argument));
         }
@@ -47,7 +47,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(ImplyGDAstNode astNode)
+        public override void Visit(ImplyGdAstNode astNode)
         {
             ExpressionData = new ImplyExpression(MasterExporter.ToExpression(astNode.Argument1), MasterExporter.ToExpression(astNode.Argument2));
         }
@@ -56,7 +56,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(ExistsGDAstNode astNode)
+        public override void Visit(ExistsGdAstNode astNode)
         {
             ExpressionData = new ExistsExpression(MasterExporter.ToParameters(astNode.Parameters), MasterExporter.ToExpression(astNode.Expression));
         }
@@ -65,7 +65,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(ForallGDAstNode astNode)
+        public override void Visit(ForallGdAstNode astNode)
         {
             ExpressionData = new ForallExpression(MasterExporter.ToParameters(astNode.Parameters), MasterExporter.ToExpression(astNode.Expression));
         }
@@ -74,7 +74,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(PredicateGDAstNode astNode)
+        public override void Visit(PredicateGdAstNode astNode)
         {
             PredicateExpression predicate = new PredicateExpression(astNode.Name);
             astNode.Terms.ForEach(term => predicate.Terms.Add(MasterExporter.ToTerm(term)));
@@ -85,7 +85,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(EqualsOpGDAstNode astNode)
+        public override void Visit(EqualsOpGdAstNode astNode)
         {
             if (MasterExporter.IsNumericExpression(astNode.Argument1) && MasterExporter.IsNumericExpression(astNode.Argument2))
             {
@@ -101,7 +101,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(NumCompGDAstNode astNode)
+        public override void Visit(NumCompGdAstNode astNode)
         {
             ExpressionData = new NumericCompareExpression(astNode.Operator, MasterExporter.ToNumericExpression(astNode.Argument1), MasterExporter.ToNumericExpression(astNode.Argument2));
         }
@@ -110,7 +110,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// Handles the AST node visit.
         /// </summary>
         /// <param name="astNode">AST node.</param>
-        public override void Visit(PreferenceGDAstNode astNode)
+        public override void Visit(PreferenceGdAstNode astNode)
         {
             ExpressionData = new PreferenceExpression(astNode.Name, MasterExporter.ToExpression(astNode.Argument));
         }

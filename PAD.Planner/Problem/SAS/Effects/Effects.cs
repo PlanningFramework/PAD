@@ -3,19 +3,19 @@
 namespace PAD.Planner.SAS
 {
     /// <summary>
-    /// Implementation of SAS+ operator effects, containing individual effects and encapsuling the required functionality.
+    /// Implementation of SAS+ operator effects, containing individual effects and encapsulating the required functionality.
     /// </summary>
     public class Effects : List<IEffect>
     {
         /// <summary>
         /// Axiom rules of the SAS+ planning problem (implicit effects for any operator application).
         /// </summary>
-        private AxiomRules AxiomRules { set; get; } = null;
+        private AxiomRules AxiomRules { get; }
 
         /// <summary>
         /// Cached item for collecting of used variables in the effects (optimization for IsRelevant() method).
         /// </summary>
-        private HashSet<int> CashedVariablesCollector = new HashSet<int>();
+        private HashSet<int> CashedVariablesCollector { get; } = new HashSet<int>();
 
         /// <summary>
         /// Constructs effects from the input data.
@@ -56,7 +56,7 @@ namespace PAD.Planner.SAS
         /// </summary>
         /// <param name="conditions">Conditions for the application.</param>
         /// <param name="operatorPreconditions">Operator preconditions.</param>
-        /// <returns>True if the operator effects are relevant to the given condititons, false otherwise.</returns>
+        /// <returns>True if the operator effects are relevant to the given conditions, false otherwise.</returns>
         public bool IsRelevant(IConditions conditions, ISimpleConditions operatorPreconditions)
         {
             // Besides the effects relevance, we need to check whether the operator preconditions are not in conflict with the resulting
@@ -82,7 +82,7 @@ namespace PAD.Planner.SAS
                 }
             }
 
-            return (anyRelevant) ? !nonAffectedPreconditions.IsConflictedWith(conditions) : false;
+            return anyRelevant && !nonAffectedPreconditions.IsConflictedWith(conditions);
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace PAD.Planner.SAS
                 if (!CashedVariablesCollector.Contains(variable))
                 {
                     int value = relativeState.GetValue(variable);
-                    if (value == RelativeState.WILD_CARD_VALUE)
+                    if (value == RelativeState.WildCardValue)
                     {
                         continue;
                     }
@@ -202,7 +202,7 @@ namespace PAD.Planner.SAS
             }
             else
             {
-                List<IRelativeState> states = new List<IRelativeState>() { result };
+                List<IRelativeState> states = new List<IRelativeState> { result };
 
                 foreach (var effect in this)
                 {
@@ -245,7 +245,7 @@ namespace PAD.Planner.SAS
                     return true;
                 }
             }
-            value = Assignment.INVALID_VALUE;
+            value = Assignment.InvalidValue;
             return false;
         }
 

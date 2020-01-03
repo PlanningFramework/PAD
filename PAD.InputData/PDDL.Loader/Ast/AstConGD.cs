@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using Irony.Parsing;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Ast
 {
@@ -7,14 +10,14 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// AST node representing a general con-GD expression. Can be one of the specific con-GD expressions (preference, and, forall, at-end,
     /// always, sometimes, within, at-most-once, sometime-after, sometime-before, always-within, hold-during, hold-after).
     /// </summary>
-    public abstract class ConGDAstNode : BaseAstNode
+    public abstract class ConGdAstNode : BaseAstNode
     {
     }
 
     /// <summary>
     /// AST node representing a preference-expression for con-GD.
     /// </summary>
-    public class PreferenceConGDAstNode : ConGDAstNode
+    public class PreferenceConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// Preference name.
@@ -24,7 +27,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Preference argument.
         /// </summary>
-        public ConGDAstNode Argument { get; private set; } = null;
+        public ConGdAstNode Argument { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -33,7 +36,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         public override void Init(ParseTreeNode treeNode)
         {
             Name = treeNode.GetChildString(1);
-            Argument = treeNode.GetChildAst<ConGDAstNode>(2);
+            Argument = treeNode.GetChildAst<ConGdAstNode>(2);
         }
 
         /// <summary>
@@ -49,12 +52,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing an and-expression for con-GD.
     /// </summary>
-    public class AndConGDAstNode : ConGDAstNode
+    public class AndConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// List of arguments for the expression.
         /// </summary>
-        public List<ConGDAstNode> Arguments { get; private set; } = null;
+        public List<ConGdAstNode> Arguments { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -62,7 +65,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Arguments = treeNode.GetChildAstList<ConGDAstNode>(1);
+            Arguments = treeNode.GetChildAstList<ConGdAstNode>(1);
         }
 
         /// <summary>
@@ -78,17 +81,17 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a forall-expression for con-GD.
     /// </summary>
-    public class ForallConGDAstNode : ConGDAstNode
+    public class ForallConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// List of typed parameters.
         /// </summary>
-        public TypedListAstNode Parameters { get; private set; } = null;
+        public TypedListAstNode Parameters { get; private set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public ConGDAstNode Expression { get; private set; } = null;
+        public ConGdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -97,7 +100,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         public override void Init(ParseTreeNode treeNode)
         {
             Parameters = treeNode.GetChildAst<TypedListAstNode>(1);
-            Expression = treeNode.GetChildAst<ConGDAstNode>(2);
+            Expression = treeNode.GetChildAst<ConGdAstNode>(2);
         }
 
         /// <summary>
@@ -113,12 +116,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a at-end-expression for con-GD.
     /// </summary>
-    public class AtEndConGDAstNode : ConGDAstNode
+    public class AtEndConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public GDAstNode Expression { get; private set; } = null;
+        public GdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -126,7 +129,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Expression = treeNode.GetChildAst<GDAstNode>(2);
+            Expression = treeNode.GetChildAst<GdAstNode>(2);
         }
 
         /// <summary>
@@ -142,12 +145,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a always-expression for con-GD.
     /// </summary>
-    public class AlwaysConGDAstNode : ConGDAstNode
+    public class AlwaysConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public GDAstNode Expression { get; private set; } = null;
+        public GdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -155,7 +158,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Expression = treeNode.GetChildAst<GDAstNode>(1);
+            Expression = treeNode.GetChildAst<GdAstNode>(1);
         }
 
         /// <summary>
@@ -171,12 +174,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a sometime-expression for con-GD.
     /// </summary>
-    public class SometimeConGDAstNode : ConGDAstNode
+    public class SometimeConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public GDAstNode Expression { get; private set; } = null;
+        public GdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -184,7 +187,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Expression = treeNode.GetChildAst<GDAstNode>(1);
+            Expression = treeNode.GetChildAst<GdAstNode>(1);
         }
 
         /// <summary>
@@ -200,17 +203,17 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a within-expression for con-GD.
     /// </summary>
-    public class WithinConGDAstNode : ConGDAstNode
+    public class WithinConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// Argument number.
         /// </summary>
-        public double Number { get; private set; } = 0.0;
+        public double Number { get; private set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public GDAstNode Expression { get; private set; } = null;
+        public GdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -219,7 +222,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         public override void Init(ParseTreeNode treeNode)
         {
             Number = treeNode.GetChildNumberVal(1);
-            Expression = treeNode.GetChildAst<GDAstNode>(2);
+            Expression = treeNode.GetChildAst<GdAstNode>(2);
         }
 
         /// <summary>
@@ -235,12 +238,12 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a at-most-once-expression for con-GD.
     /// </summary>
-    public class AtMostOnceConGDAstNode : ConGDAstNode
+    public class AtMostOnceConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public GDAstNode Expression { get; private set; } = null;
+        public GdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -248,7 +251,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Expression = treeNode.GetChildAst<GDAstNode>(1);
+            Expression = treeNode.GetChildAst<GdAstNode>(1);
         }
 
         /// <summary>
@@ -264,17 +267,17 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a sometime-after-expression for con-GD.
     /// </summary>
-    public class SometimeAfterConGDAstNode : ConGDAstNode
+    public class SometimeAfterConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// First argument expression.
         /// </summary>
-        public GDAstNode Expression1 { get; private set; } = null;
+        public GdAstNode Expression1 { get; private set; }
 
         /// <summary>
         /// Second argument expression.
         /// </summary>
-        public GDAstNode Expression2 { get; private set; } = null;
+        public GdAstNode Expression2 { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -282,8 +285,8 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Expression1 = treeNode.GetChildAst<GDAstNode>(1);
-            Expression2 = treeNode.GetChildAst<GDAstNode>(2);
+            Expression1 = treeNode.GetChildAst<GdAstNode>(1);
+            Expression2 = treeNode.GetChildAst<GdAstNode>(2);
         }
 
         /// <summary>
@@ -299,17 +302,17 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a sometime-before-expression for con-GD.
     /// </summary>
-    public class SometimeBeforeConGDAstNode : ConGDAstNode
+    public class SometimeBeforeConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// First argument expression.
         /// </summary>
-        public GDAstNode Expression1 { get; private set; } = null;
+        public GdAstNode Expression1 { get; private set; }
 
         /// <summary>
         /// Second argument expression.
         /// </summary>
-        public GDAstNode Expression2 { get; private set; } = null;
+        public GdAstNode Expression2 { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -317,8 +320,8 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Expression1 = treeNode.GetChildAst<GDAstNode>(1);
-            Expression2 = treeNode.GetChildAst<GDAstNode>(2);
+            Expression1 = treeNode.GetChildAst<GdAstNode>(1);
+            Expression2 = treeNode.GetChildAst<GdAstNode>(2);
         }
 
         /// <summary>
@@ -334,22 +337,22 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a always-within-expression for con-GD.
     /// </summary>
-    public class AlwaysWithinConGDAstNode : ConGDAstNode
+    public class AlwaysWithinConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// Argument number.
         /// </summary>
-        public double Number { get; private set; } = 0.0;
+        public double Number { get; private set; }
 
         /// <summary>
         /// First argument expression.
         /// </summary>
-        public GDAstNode Expression1 { get; private set; } = null;
+        public GdAstNode Expression1 { get; private set; }
 
         /// <summary>
         /// Second argument expression.
         /// </summary>
-        public GDAstNode Expression2 { get; private set; } = null;
+        public GdAstNode Expression2 { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -358,8 +361,8 @@ namespace PAD.InputData.PDDL.Loader.Ast
         public override void Init(ParseTreeNode treeNode)
         {
             Number = treeNode.GetChildNumberVal(1);
-            Expression1 = treeNode.GetChildAst<GDAstNode>(2);
-            Expression2 = treeNode.GetChildAst<GDAstNode>(3);
+            Expression1 = treeNode.GetChildAst<GdAstNode>(2);
+            Expression2 = treeNode.GetChildAst<GdAstNode>(3);
         }
 
         /// <summary>
@@ -375,22 +378,22 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a hold-during-expression for con-GD.
     /// </summary>
-    public class HoldDuringConGDAstNode : ConGDAstNode
+    public class HoldDuringConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// First argument number.
         /// </summary>
-        public double Number1 { get; private set; } = 0.0;
+        public double Number1 { get; private set; }
 
         /// <summary>
         /// Second argument number.
         /// </summary>
-        public double Number2 { get; private set; } = 0.0;
+        public double Number2 { get; private set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public GDAstNode Expression { get; private set; } = null;
+        public GdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -400,7 +403,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         {
             Number1 = treeNode.GetChildNumberVal(1);
             Number2 = treeNode.GetChildNumberVal(2);
-            Expression = treeNode.GetChildAst<GDAstNode>(3);
+            Expression = treeNode.GetChildAst<GdAstNode>(3);
         }
 
         /// <summary>
@@ -416,17 +419,17 @@ namespace PAD.InputData.PDDL.Loader.Ast
     /// <summary>
     /// AST node representing a hold-after-expression for con-GD.
     /// </summary>
-    public class HoldAfterConGDAstNode : ConGDAstNode
+    public class HoldAfterConGdAstNode : ConGdAstNode
     {
         /// <summary>
         /// Argument number.
         /// </summary>
-        public double Number { get; private set; } = 0.0;
+        public double Number { get; private set; }
 
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public GDAstNode Expression { get; private set; } = null;
+        public GdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -435,7 +438,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         public override void Init(ParseTreeNode treeNode)
         {
             Number = treeNode.GetChildNumberVal(1);
-            Expression = treeNode.GetChildAst<GDAstNode>(2);
+            Expression = treeNode.GetChildAst<GdAstNode>(2);
         }
 
         /// <summary>

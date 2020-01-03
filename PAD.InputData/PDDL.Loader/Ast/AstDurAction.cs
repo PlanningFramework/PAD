@@ -15,22 +15,22 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Action parameters.
         /// </summary>
-        public TypedListAstNode Parameters { get; private set; } = null;
+        public TypedListAstNode Parameters { get; private set; }
 
         /// <summary>
         /// Action duration constraints.
         /// </summary>
-        public DurationConstraintAstNode DurationConstraint { get; private set; } = null;
+        public DurationConstraintAstNode DurationConstraint { get; private set; }
 
         /// <summary>
         /// Action condition.
         /// </summary>
-        public DaGDAstNode Condition { get; private set; } = null;
+        public DaGdAstNode Condition { get; private set; }
 
         /// <summary>
         /// Action effect.
         /// </summary>
-        public DaEffectAstNode Effect { get; private set; } = null;
+        public DaEffectAstNode Effect { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -41,7 +41,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
             Name = treeNode.GetChildString(1);
             Parameters = treeNode.GetGrandChildAst<TypedListAstNode>(2, 1);
             DurationConstraint = treeNode.GetGrandChildAst<DurationConstraintAstNode>(3, 1);
-            Condition = treeNode.GetGrandChildAst<DaGDAstNode>(4, 1);
+            Condition = treeNode.GetGrandChildAst<DaGdAstNode>(4, 1);
             Effect = treeNode.GetGrandChildAst<DaEffectAstNode>(5, 1);
         }
 

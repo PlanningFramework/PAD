@@ -16,52 +16,52 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Name of the SAS+ problem (extracted from input filename).
         /// </summary>
-        public string ProblemName { set; get; } = "";
+        public string ProblemName { set; get; }
 
         /// <summary>
         /// List of operators in the SAS+ planning problem.
         /// </summary>
-        public Operators Operators { set; get; } = null;
+        public Operators Operators { set; get; }
 
         /// <summary>
         /// Initial state of the SAS+ problem.
         /// </summary>
-        public IState InitialState { get; protected set; } = null;
+        public IState InitialState { get; protected set; }
 
         /// <summary>
         /// Goal conditions of the SAS+ problem.
         /// </summary>
-        public ISimpleConditions GoalConditions { get; protected set; } = null;
+        public ISimpleConditions GoalConditions { get; protected set; }
 
         /// <summary>
         /// Info about variables used in the SAS+ planning problem.
         /// </summary>
-        public Variables Variables { set; get; } = null;
+        public Variables Variables { set; get; }
 
         /// <summary>
         /// Mutually exclusive constraints in the SAS+ planning problem.
         /// </summary>
-        public MutexGroups MutexGroups { set; get; } = null;
+        public MutexGroups MutexGroups { set; get; }
 
         /// <summary>
         /// Axiom rules in the SAS+ planning problem.
         /// </summary>
-        public AxiomRules AxiomRules { set; get; } = null;
+        public AxiomRules AxiomRules { set; get; }
 
         /// <summary>
         /// Generator of successors and predecessors (forward and backward transitions) in the SAS+ planning problem.
         /// </summary>
-        private Lazy<TransitionsGenerator> TransitionsGenerator { set; get; } = null;
+        private Lazy<TransitionsGenerator> TransitionsGenerator { get; }
 
         /// <summary>
         /// Checker of the mutex constraints in the SAS+ planning problem.
         /// </summary>
-        private Lazy<MutexChecker> MutexChecker { set; get; } = null;
+        private Lazy<MutexChecker> MutexChecker { get; }
 
         /// <summary>
         /// Backup of the original input data, used e.g. for creation of a relaxed version of this planning problem.
         /// </summary>
-        public InputData.SASInputData OriginalInputData { set; get; } = null;
+        public InputData.SASInputData OriginalInputData { set; get; }
 
         /// <summary>
         /// Constructs the SAS+ planning problem from the input data.
@@ -192,7 +192,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Gets the number of not accomplished goals for the specified state (forward search).
         /// </summary>
-        /// <param name="state">State to be evalatuated.</param>
+        /// <param name="state">State to be evaluated.</param>
         /// <returns>Number of not accomplished goals.</returns>
         public int GetNotAccomplishedGoalsCount(Planner.IState state)
         {
@@ -202,7 +202,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Gets the number of not accomplished goals for the specified conditions (backward search).
         /// </summary>
-        /// <param name="conditions">Conditions to be evalatuated.</param>
+        /// <param name="conditions">Conditions to be evaluated.</param>
         /// <returns>Number of not accomplished goals.</returns>
         public int GetNotAccomplishedGoalsCount(Planner.IConditions conditions)
         {
@@ -296,7 +296,7 @@ namespace PAD.Planner.SAS
         }
 
         /// <summary>
-        /// Gets a collection of all explicly enumerated successor states (created by forward applications) from the specified state. Lazy generated via yield return.
+        /// Gets a collection of all explicitly enumerated successor states (created by forward applications) from the specified state. Lazy generated via yield return.
         /// </summary>
         /// <param name="state">Original state.</param>
         /// <returns>Lazy generated collection of all successor states.</returns>
@@ -306,7 +306,7 @@ namespace PAD.Planner.SAS
         }
 
         /// <summary>
-        /// Gets a collection of all explicly enumerated predecessor states (created by backwards applications) from the specified state. Lazy generated via yield return.
+        /// Gets a collection of all explicitly enumerated predecessor states (created by backwards applications) from the specified state. Lazy generated via yield return.
         /// </summary>
         /// <param name="state">Original state.</param>
         /// <returns>Lazy generated collection of all predecessor states.</returns>

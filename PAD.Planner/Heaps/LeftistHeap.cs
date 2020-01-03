@@ -18,12 +18,12 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Root tree node.
         /// </summary>
-        private TreeNode<double, Value> Root { set; get; } = null;
+        private TreeNode<double> Root { set; get; }
 
         /// <summary>
         /// Number of elements.
         /// </summary>
-        private int Count { set; get; } = 0;
+        private int Count { set; get; }
 
         /// <summary>
         /// Adds a new key-value pair into the collection.
@@ -32,7 +32,7 @@ namespace PAD.Planner.Heaps
         /// <param name="value">Value item.</param>
         public void Add(double key, Value value)
         {
-            TreeNode<double, Value> newNode = new TreeNode<double, Value>(value, key, 0);
+            TreeNode<double> newNode = new TreeNode<double>(value, key, 0);
             Root = Merge(Root, newNode);
             ++Count;
         }
@@ -45,7 +45,7 @@ namespace PAD.Planner.Heaps
         {
             Value result = Root.Value;
 
-            Root = Merge(Root.LeftSuccesor, Root.RightSuccesor);
+            Root = Merge(Root.LeftSuccessor, Root.RightSuccessor);
             --Count;
 
             return result;
@@ -92,9 +92,9 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>NPL of the specified tree node.</returns>
-        private int GetNPL(TreeNode<double, Value> node)
+        private static int GetNPL(TreeNode<double> node)
         {
-            return (node == null) ? -1 : node.NPL;
+            return node?.NPL ?? -1;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace PAD.Planner.Heaps
         /// <param name="first">First tree.</param>
         /// <param name="second">Second tree.</param>
         /// <returns>Merged tree node.</returns>
-        private TreeNode<double, Value> Merge(TreeNode<double, Value> first, TreeNode<double, Value> second)
+        private static TreeNode<double> Merge(TreeNode<double> first, TreeNode<double> second)
         {
             if (first == null)
             {
@@ -118,17 +118,16 @@ namespace PAD.Planner.Heaps
                 return Merge(second, first);
             }
 
-            TreeNode<double, Value> newRight = Merge(first.RightSuccesor, second);
-            first.RightSuccesor = newRight;
-            newRight.Ancestor = first;
+            TreeNode<double> newRight = Merge(first.RightSuccessor, second);
+            first.RightSuccessor = newRight;
 
-            if (GetNPL(first.RightSuccesor) > GetNPL(first.LeftSuccesor))
+            if (GetNPL(first.RightSuccessor) > GetNPL(first.LeftSuccessor))
             {
-                TreeNode<double, Value> stored = first.LeftSuccesor;
-                first.LeftSuccesor = first.RightSuccesor;
-                first.RightSuccesor = stored;
+                TreeNode<double> stored = first.LeftSuccessor;
+                first.LeftSuccessor = first.RightSuccessor;
+                first.RightSuccessor = stored;
             }
-            first.NPL = GetNPL(first.RightSuccesor) + 1;
+            first.NPL = GetNPL(first.RightSuccessor) + 1;
 
             return first;
         }
@@ -137,46 +136,40 @@ namespace PAD.Planner.Heaps
         /// Tree node used in the heap collection.
         /// </summary>
         /// <typeparam name="KeyType">Key type.</typeparam>
-        /// <typeparam name="ValueType">Value type.</typeparam>
-        private class TreeNode<KeyType, ValueType> where KeyType : IComparable
+        private class TreeNode<KeyType> where KeyType : IComparable
         {
             /// <summary>
             /// Value item.
             /// </summary>
-            public ValueType Value { get; set; } = default(ValueType);
+            public Value Value { get; }
 
             /// <summary>
             /// Key item.
             /// </summary>
-            public KeyType Key { get; set; } = default(KeyType);
+            public KeyType Key { get; }
 
             /// <summary>
             /// NPL (null path length).
             /// </summary>
-            public int NPL { get; set; } = -1;
-            
-            /// <summary>
-            /// Ancestor node.
-            /// </summary>
-            public TreeNode<KeyType, ValueType> Ancestor { set; get; } = null;
+            public int NPL { get; set; }
 
             /// <summary>
             /// Left successor node.
             /// </summary>
-            public TreeNode<KeyType, ValueType> LeftSuccesor { set; get; } = null;
+            public TreeNode<KeyType> LeftSuccessor { set; get; }
 
             /// <summary>
             /// Right successor node.
             /// </summary>
-            public TreeNode<KeyType, ValueType> RightSuccesor { set; get; } = null;
+            public TreeNode<KeyType> RightSuccessor { set; get; }
 
             /// <summary>
             /// Constructs the tree node.
             /// </summary>
             /// <param name="value">Value item.</param>
             /// <param name="key">Key item.</param>
-            /// <param name="index">Node index.</param>
-            public TreeNode(ValueType value, KeyType key, int npl)
+            /// <param name="npl">NPL value.</param>
+            public TreeNode(Value value, KeyType key, int npl)
             {
                 Value = value;
                 Key = key;

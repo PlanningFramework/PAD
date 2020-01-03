@@ -19,7 +19,7 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Tree structure stored in the linear collection.
         /// </summary>
-        private IList<TreeNode<double, Value>> Tree { set; get; } = new List<TreeNode<double, Value>>();
+        private IList<TreeNode<double>> Tree { set; get; } = new List<TreeNode<double>>();
 
         /// <summary>
         /// Adds a new key-value pair into the collection.
@@ -28,7 +28,7 @@ namespace PAD.Planner.Heaps
         /// <param name="value">Value item.</param>
         public void Add(double key, Value value)
         {
-            TreeNode<double, Value> newNode = new TreeNode<double, Value>(value, key, Tree.Count);
+            TreeNode<double> newNode = new TreeNode<double>(value, key, Tree.Count);
             Tree.Add(newNode);
             Up(newNode);
         }
@@ -73,7 +73,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         public void Clear()
         {
-            Tree = new List<TreeNode<double, Value>>();
+            Tree = new List<TreeNode<double>>();
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>True if the node a root, false otherwise.</returns>
-        private bool IsRoot(TreeNode<double, Value> node)
+        private static bool IsRoot(TreeNode<double> node)
         {
             return (node.Index == 0);
         }
@@ -100,9 +100,9 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>True if the node a leaf, false otherwise.</returns>
-        private bool IsLeaf(TreeNode<double, Value> node)
+        private bool IsLeaf(TreeNode<double> node)
         {
-            return GetLeftSuccesor(node) == null;
+            return GetLeftSuccessor(node) == null;
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>Node predecessor, if exists.</returns>
-        private TreeNode<double, Value> GetPredecessor(TreeNode<double, Value> node)
+        private TreeNode<double> GetPredecessor(TreeNode<double> node)
         {
             return (node.Index == 0) ? null : Tree[(node.Index - 1) / 2];
         }
@@ -120,7 +120,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>Left successor, if exists.</returns>
-        private TreeNode<double, Value> GetLeftSuccesor(TreeNode<double, Value> node)
+        private TreeNode<double> GetLeftSuccessor(TreeNode<double> node)
         {
             int index = node.Index * 2 + 1;
             return (Tree.Count > index) ? Tree[index] : null;
@@ -131,7 +131,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>Right successor, if exists.</returns>
-        private TreeNode<double, Value> GetRightSuccesor(TreeNode<double, Value> node)
+        private TreeNode<double> GetRightSuccessor(TreeNode<double> node)
         {
             int index = node.Index * 2 + 2;
             return (Tree.Count > index) ? Tree[index] : null;
@@ -150,10 +150,10 @@ namespace PAD.Planner.Heaps
         /// Auxiliary "up" operation.
         /// </summary>
         /// <param name="node">Tree node.</param>
-        private void Up(TreeNode<double, Value> node)
+        private void Up(TreeNode<double> node)
         {
-            TreeNode<double, Value> current = node;
-            TreeNode<double, Value> predecessor = GetPredecessor(current);
+            TreeNode<double> current = node;
+            TreeNode<double> predecessor = GetPredecessor(current);
 
             while (!IsRoot(current) && current.Key < predecessor.Key)
             {
@@ -166,11 +166,11 @@ namespace PAD.Planner.Heaps
         /// Auxiliary "down" operation.
         /// </summary>
         /// <param name="node">Tree node.</param>
-        private void Down(TreeNode<double, Value> node)
+        private void Down(TreeNode<double> node)
         {
             while (!IsLeaf(node))
             {
-                var successor = GetSmallestSuccesor(node);
+                var successor = GetSmallestSuccessor(node);
                 if (successor.Key >= node.Key)
                 {
                     break;
@@ -184,9 +184,9 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="current">Current node.</param>
         /// <param name="predecessor">Predecessor node.</param>
-        private void Swap(TreeNode<double, Value> current, TreeNode<double, Value> predecessor)
+        private void Swap(TreeNode<double> current, TreeNode<double> predecessor)
         {
-            TreeNode<double, Value> stored = Tree[current.Index];
+            TreeNode<double> stored = Tree[current.Index];
 
             Tree[current.Index] = Tree[predecessor.Index];
             Tree[predecessor.Index] = stored;
@@ -201,15 +201,15 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="current">Current node.</param>
         /// <returns>Smallest successor to the specified node.</returns>
-        private TreeNode<double, Value> GetSmallestSuccesor(TreeNode<double, Value> current)
+        private TreeNode<double> GetSmallestSuccessor(TreeNode<double> current)
         {
-            TreeNode<double, Value> left = GetLeftSuccesor(current);
+            TreeNode<double> left = GetLeftSuccessor(current);
             if (left == null)
             {
                 return null;
             }
 
-            TreeNode<double, Value> right = GetRightSuccesor(current);
+            TreeNode<double> right = GetRightSuccessor(current);
             if (right == null)
             {
                 return left;
@@ -222,23 +222,22 @@ namespace PAD.Planner.Heaps
         /// Tree node used in the heap collection.
         /// </summary>
         /// <typeparam name="KeyType">Key type.</typeparam>
-        /// <typeparam name="ValueType">Value type.</typeparam>
-        private class TreeNode<KeyType, ValueType> where KeyType : IComparable
+        private class TreeNode<KeyType> where KeyType : IComparable
         {
             /// <summary>
             /// Value item.
             /// </summary>
-            public ValueType Value { get; set; } = default(ValueType);
+            public Value Value { get; }
 
             /// <summary>
             /// Key item.
             /// </summary>
-            public KeyType Key { get; set; } = default(KeyType);
+            public KeyType Key { get; }
 
             /// <summary>
             /// Node index.
             /// </summary>
-            public int Index { get; set; } = 0;
+            public int Index { get; set; }
 
             /// <summary>
             /// Constructs the tree node.
@@ -246,7 +245,7 @@ namespace PAD.Planner.Heaps
             /// <param name="value">Value item.</param>
             /// <param name="key">Key item.</param>
             /// <param name="index">Node index.</param>
-            public TreeNode(ValueType value, KeyType key, int index)
+            public TreeNode(Value value, KeyType key, int index)
             {
                 Value = value;
                 Key = key;

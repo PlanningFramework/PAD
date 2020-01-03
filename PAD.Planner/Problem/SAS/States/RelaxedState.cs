@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.SAS
 {
@@ -10,7 +11,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Values of the state.
         /// </summary>
-        protected List<int>[] Values { set; get; } = null;
+        protected List<int>[] Values { set; get; }
 
         /// <summary>
         /// Constructs the relaxed state from the given standard state.
@@ -22,7 +23,7 @@ namespace PAD.Planner.SAS
 
             for (int variable = 0; variable < state.GetSize(); ++variable)
             {
-                Values[variable] = new List<int>() { state.GetValue(variable) };
+                Values[variable] = new List<int> { state.GetValue(variable) };
             }
         }
 
@@ -244,8 +245,8 @@ namespace PAD.Planner.SAS
         /// <returns>String representation of the state.</returns>
         public string GetInfoString(IProblem problem)
         {
-            var splitted = problem.GetInputFilePath().Split(System.IO.Path.DirectorySeparatorChar);
-            string stateInfo = splitted[splitted.Length - 2] + "_" + splitted[splitted.Length - 1] + "_" + ToString();
+            var split = problem.GetInputFilePath().Split(System.IO.Path.DirectorySeparatorChar);
+            string stateInfo = split[split.Length - 2] + "_" + split[split.Length - 1] + "_" + ToString();
             return stateInfo;
         }
 

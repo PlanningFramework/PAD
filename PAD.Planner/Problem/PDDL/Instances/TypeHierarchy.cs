@@ -1,26 +1,26 @@
 ﻿using System.Collections.Generic;
-using TypeID = System.Int32;
+using TypeId = System.Int32;
 
 namespace PAD.Planner.PDDL
 {
     /// <summary>
     /// Structure representing type hierarchy of the PDDL planning problem.
     /// </summary>
-    public class TypeHierarchy : Dictionary<TypeID, TypeIDCollection>
+    public class TypeHierarchy : Dictionary<TypeId, TypeIdCollection>
     {
         /// <summary>
         /// ID manager.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Gets the collection of direct children types for the specified type.
         /// </summary>
-        /// <param name="typeID">Type ID.</param>
+        /// <param name="typeId">Type ID.</param>
         /// <returns>Direct children types of the given type.</returns>
-        public IEnumerable<TypeID> GetChildrenTypes(TypeID typeID)
+        public IEnumerable<TypeId> GetChildrenTypes(TypeId typeId)
         {
-            return this[typeID];
+            return this[typeId];
         }
 
         /// <summary>
@@ -28,32 +28,31 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="inputData">Input data.</param>
         /// <param name="idManager">ID manager.</param>
-        public TypeHierarchy(InputData.PDDLInputData inputData, IDManager idManager)
+        public TypeHierarchy(InputData.PDDLInputData inputData, IdManager idManager)
         {
-            IDManager = idManager;
+            IdManager = idManager;
 
-            Add(idManager.Types.GetID("object"), new TypeIDCollection());
+            Add(idManager.Types.GetId("object"), new TypeIdCollection());
 
             foreach (var type in inputData.Domain.Types)
             {
-                TypeID typeID = idManager.Types.GetID(type.TypeName);
-                if (!ContainsKey(typeID))
+                TypeId typeId = idManager.Types.GetId(type.TypeName);
+                if (!ContainsKey(typeId))
                 {
-                    Add(typeID, new TypeIDCollection());
+                    Add(typeId, new TypeIdCollection());
                 }
 
                 foreach (var baseType in type.BaseTypeNames)
                 {
-                    TypeID baseTypeID = idManager.Types.GetID(baseType);
-                    if (ContainsKey(baseTypeID))
+                    TypeId baseTypeId = idManager.Types.GetId(baseType);
+                    if (ContainsKey(baseTypeId))
                     {
-                        this[baseTypeID].Add(typeID);
+                        this[baseTypeId].Add(typeId);
                     }
                     else
                     {
-                        TypeIDCollection newChildrenSet = new TypeIDCollection();
-                        newChildrenSet.Add(typeID);
-                        Add(baseTypeID, newChildrenSet);
+                        TypeIdCollection newChildrenSet = new TypeIdCollection {typeId};
+                        Add(baseTypeId, newChildrenSet);
                     }
                 }
             }
@@ -68,33 +67,26 @@ namespace PAD.Planner.PDDL
             List<string> returnList = new List<string>();
             foreach (var item in this)
             {
-                string typeName = IDManager.Types.GetNameFromID(item.Key);
+                string typeName = IdManager.Types.GetNameFromId(item.Key);
 
                 List<string> childrenTypes = new List<string>();
                 foreach (var childType in item.Value)
                 {
-                    string childTypeName = IDManager.Types.GetNameFromID(childType);
+                    string childTypeName = IdManager.Types.GetNameFromId(childType);
                     childrenTypes.Add(childTypeName);
                 }
 
-                string childrenTypesList = string.Join($", ", childrenTypes);
-                if (childrenTypes.Count == 0)
-                {
-                    returnList.Add($"({typeName})");
-                }
-                else
-                {
-                    returnList.Add($"({typeName} >> {childrenTypesList})");
-                }
+                string childrenTypesList = string.Join(", ", childrenTypes);
+                returnList.Add(childrenTypes.Count == 0 ? $"({typeName})" : $"({typeName} >> {childrenTypesList})");
             }
-            return string.Join($", ", returnList);
+            return string.Join(", ", returnList);
         }
     }
 
     /// <summary>
     /// Collection of type IDs.
     /// </summary>
-    public class TypeIDCollection : HashSet<TypeID>
+    public class TypeIdCollection : HashSet<TypeId>
     {
         /// <summary>
         /// String representation.
@@ -107,7 +99,7 @@ namespace PAD.Planner.PDDL
             {
                 items.Add(type.ToString());
             }
-            return $"{{{string.Join($", ", items)}}}";
+            return $"{{{string.Join(", ", items)}}}";
         }
     }
 }

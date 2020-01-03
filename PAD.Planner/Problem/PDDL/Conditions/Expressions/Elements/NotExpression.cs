@@ -10,7 +10,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Child expression to be negated.
         /// </summary>
-        public IExpression Child { set; get; } = null;
+        public IExpression Child { set; get; }
 
         /// <summary>
         /// Constructs the NOT expression.

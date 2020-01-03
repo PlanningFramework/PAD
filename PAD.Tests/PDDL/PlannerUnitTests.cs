@@ -4,6 +4,12 @@ using System.Linq;
 using System;
 using PAD.InputData;
 using PAD.Planner.PDDL;
+// ReSharper disable CommentTypo
+// ReSharper disable PossibleUnintendedReferenceComparison
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
+// ReSharper disable CollectionNeverUpdated.Local
+// ReSharper disable ImplicitlyCapturedClosure
 
 namespace PAD.Tests.PDDL
 {
@@ -11,16 +17,16 @@ namespace PAD.Tests.PDDL
     /// Testing suite for the PDDL planner. Testing all components of the planning problem and the searching engine.
     /// </summary>
     [TestClass]
-    public class PDDLPlannerUnitTests
+    public class PlannerUnitTests
     {
         /// <summary>
         /// Gets full filepath to the specified test case.
         /// </summary>
         /// <param name="fileName">Test case file name.</param>
         /// <returns>Filepath to the test case.</returns>
-        private string GetFilePath(string fileName)
+        private static string GetFilePath(string fileName)
         {
-            return $@"..\..\Planner.PDDL\TestCases\{fileName}";
+            return $@"..\..\PDDL\PlannerTestCases\{fileName}";
         }
 
         [TestMethod]
@@ -29,13 +35,13 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_Atom.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             var preconditions = problem.Operators[0].Preconditions;
 
-            PredicateExpression pred0 = preconditions[0] as PredicateExpression;
+            PredicateExpression pred0 = (PredicateExpression)preconditions[0];
             IAtom atom0 = pred0.PredicateAtom;
-            Assert.AreEqual(factory.CreatePredicate("pred0").GetNameID(), atom0.GetNameID());
+            Assert.AreEqual(factory.CreatePredicate("pred0").GetNameId(), atom0.GetNameId());
             Assert.AreEqual(0, atom0.GetArity());
             Assert.AreEqual(0, atom0.GetTerms().Count);
             Assert.AreEqual("pred0", ((Atom)atom0).GetFullName(idManager.Predicates));
@@ -45,13 +51,13 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(atom0.GetHashCode() == atom0Clone.GetHashCode());
             Assert.IsTrue(atom0.Equals(atom0Clone));
 
-            PredicateExpression pred1 = preconditions[1] as PredicateExpression;
+            PredicateExpression pred1 = (PredicateExpression)preconditions[1];
             IAtom atom1 = pred1.PredicateAtom;
-            Assert.AreEqual(factory.CreatePredicate("pred1", "constA", "constA", "constA").GetNameID(), atom1.GetNameID());
+            Assert.AreEqual(factory.CreatePredicate("pred1", "constA", "constA", "constA").GetNameId(), atom1.GetNameId());
             Assert.AreEqual(3, atom1.GetArity());
-            Assert.AreEqual(Atom.NOT_GROUNDED_TERM, atom1.GetGroundedTerm(0));
-            Assert.AreEqual(idManager.Constants.GetID("constA"), atom1.GetGroundedTerm(1));
-            Assert.AreEqual(Atom.NOT_GROUNDED_TERM, atom1.GetGroundedTerm(2));
+            Assert.AreEqual(Atom.NotGroundedTerm, atom1.GetGroundedTerm(0));
+            Assert.AreEqual(idManager.Constants.GetId("constA"), atom1.GetGroundedTerm(1));
+            Assert.AreEqual(Atom.NotGroundedTerm, atom1.GetGroundedTerm(2));
             Assert.AreEqual(3, atom1.GetTerms().Count);
             Assert.IsTrue(atom1.GetTerms()[0] is VariableTerm);
             Assert.IsTrue(atom1.GetTerms()[1] is ConstantTerm);
@@ -63,10 +69,10 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(atom1.GetHashCode() == atom1Clone.GetHashCode());
             Assert.IsTrue(atom1.Equals(atom1Clone));
 
-            EqualsExpression equals2 = preconditions[2] as EqualsExpression;
-            ObjectFunctionTerm objFunc2 = equals2.LeftArgument as ObjectFunctionTerm;
+            EqualsExpression equals2 = (EqualsExpression)preconditions[2];
+            ObjectFunctionTerm objFunc2 = (ObjectFunctionTerm)equals2.LeftArgument;
             IAtom atom2 = objFunc2.FunctionAtom;
-            Assert.AreEqual(factory.CreateFunction("objFunc").GetNameID(), atom2.GetNameID());
+            Assert.AreEqual(factory.CreateFunction("objFunc").GetNameId(), atom2.GetNameId());
             Assert.AreEqual(0, atom2.GetArity());
             Assert.AreEqual(0, atom2.GetTerms().Count);
             Assert.AreEqual("objFunc", ((Atom)atom2).GetFullName(idManager.Functions));
@@ -76,12 +82,12 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(atom2.GetHashCode() == atom2Clone.GetHashCode());
             Assert.IsTrue(atom2.Equals(atom2Clone));
 
-            NumericCompareExpression compare3 = preconditions[3] as NumericCompareExpression;
-            NumericFunction numFunc3 = compare3.LeftArgument as NumericFunction;
+            NumericCompareExpression compare3 = (NumericCompareExpression)preconditions[3];
+            NumericFunction numFunc3 = (NumericFunction)compare3.LeftArgument;
             IAtom atom3 = numFunc3.FunctionAtom;
-            Assert.AreEqual(factory.CreateFunction("numFunc", "constA").GetNameID(), atom3.GetNameID());
+            Assert.AreEqual(factory.CreateFunction("numFunc", "constA").GetNameId(), atom3.GetNameId());
             Assert.AreEqual(1, atom3.GetArity());
-            Assert.AreEqual(idManager.Constants.GetID("constA"), atom3.GetGroundedTerm(0));
+            Assert.AreEqual(idManager.Constants.GetId("constA"), atom3.GetGroundedTerm(0));
             Assert.AreEqual(1, atom3.GetTerms().Count);
             Assert.IsTrue(atom3.GetTerms()[0] is ConstantTerm);
             Assert.AreEqual("numFunc", ((Atom)atom3).GetFullName(idManager.Functions));
@@ -91,11 +97,11 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(atom3.GetHashCode() == atom3Clone.GetHashCode());
             Assert.IsTrue(atom3.Equals(atom3Clone));
 
-            PredicateExpression pred4 = preconditions[4] as PredicateExpression;
+            PredicateExpression pred4 = (PredicateExpression)preconditions[4];
             IAtom atom4 = pred4.PredicateAtom;
             idManager.Variables.Register("?var66");
             var unification1 = atom4.GetUnificationWith(factory.CreatePredicate("pred1", "constB", "?var66", "constA"));
-            int value = -1;
+            int value;
             Assert.IsTrue(unification1.TryGetValue(0, out value) && value == factory.CreateConstant("constB"));
             Assert.IsFalse(unification1.TryGetValue(1, out value));
             Assert.IsTrue(unification1.TryGetValue(2, out value) && value == factory.CreateConstant("constA"));
@@ -106,8 +112,7 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_AtomsManager.pddl"), GetFilePath("Dummy_P.pddl"));
 
-            Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             AtomsManager manager = new AtomsManager(data, idManager);
 
@@ -115,9 +120,9 @@ namespace PAD.Tests.PDDL
             idManager.Variables.Register("?b");
 
             Parameters parameters0 = new Parameters();
-            Parameters parameters1 = new Parameters(new Parameter(idManager.Variables.GetID("?a"), new HashSet<int> { idManager.Types.GetID("typeA") }, idManager));
-            Parameters parameters2 = new Parameters(new Parameter(idManager.Variables.GetID("?a"), new HashSet<int> { idManager.Types.GetID("typeA") }, idManager),
-                                                    new Parameter(idManager.Variables.GetID("?b"), new HashSet<int> { idManager.Types.GetID("typeB") }, idManager));
+            Parameters parameters1 = new Parameters(new Parameter(idManager.Variables.GetId("?a"), new HashSet<int> { idManager.Types.GetId("typeA") }, idManager));
+            Parameters parameters2 = new Parameters(new Parameter(idManager.Variables.GetId("?a"), new HashSet<int> { idManager.Types.GetId("typeA") }, idManager),
+                                                    new Parameter(idManager.Variables.GetId("?b"), new HashSet<int> { idManager.Types.GetId("typeB") }, idManager));
 
             Assert.AreEqual(3, manager.LiftedPredicates.Count);
             Assert.IsTrue(manager.LiftedPredicates[0].Item1.Equals(factory.CreatePredicate("predA")));
@@ -153,7 +158,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_Conditions_D.pddl"), GetFilePath("TC_Conditions_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var predA = factory.CreatePredicate("predA");
@@ -205,9 +210,7 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(conditions2.GetUsedPredicates().Contains(factory.CreatePredicate("predD", "?a")));
             idManager.Variables.Unregister("?a");
 
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(predA, 7);
-            stateLabels.Add(predB, 4);
+            StateLabels stateLabels = new StateLabels {{predA, 7}, {predB, 4}};
             Assert.AreEqual(11, goalConditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.ADDITIVE_VALUE));
             Assert.AreEqual(7, goalConditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.MAX_VALUE));
 
@@ -232,8 +235,8 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(2, conditions0.GetSize());
             Assert.AreEqual(1, conditions1.GetSize());
 
-            var states3 = conditions3.GetCorrespondingStates(problem);
-            Assert.AreEqual(16, states3.Count());
+            var states3 = conditions3.GetCorrespondingStates(problem).ToList();
+            Assert.AreEqual(16, states3.Count);
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC)));
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC, predEConstA)));
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC, predEConstB)));
@@ -251,8 +254,8 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC, predDConstA, predDConstB, predEConstB)));
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC, predDConstA, predDConstB, predEConstA, predEConstB)));
 
-            var relativeStates3 = conditions3.GetCorrespondingRelativeStates(problem);
-            Assert.AreEqual(1, relativeStates3.Count());
+            var relativeStates3 = conditions3.GetCorrespondingRelativeStates(problem).ToList();
+            Assert.AreEqual(1, relativeStates3.Count);
             Assert.IsTrue(relativeStates3.Contains(factory.CreateRelativeState(new HashSet<int> { 2 }, predA, predC, predB))); // (predA), (predC), (not (predB))
 
             var emptyClone1 = conditions1.CloneEmpty();
@@ -271,7 +274,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ConditionsCNF_D.pddl"), GetFilePath("TC_ConditionsCNF_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var predA = factory.CreatePredicate("predA");
@@ -315,9 +318,7 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(usedPredicates.Contains(predA));
             Assert.IsTrue(usedPredicates.Contains(predB));
 
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(predA, 7);
-            stateLabels.Add(predB, 4);
+            StateLabels stateLabels = new StateLabels {{predA, 7}, {predB, 4}};
             Assert.AreEqual(11, goalConditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.ADDITIVE_VALUE));
             Assert.AreEqual(7, goalConditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.MAX_VALUE));
 
@@ -331,8 +332,8 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(2, conditions0.GetSize());
             Assert.AreEqual(1, conditions1.GetSize());
 
-            var states3 = conditions3.GetCorrespondingStates(problem);
-            Assert.AreEqual(16, states3.Count());
+            var states3 = conditions3.GetCorrespondingStates(problem).ToList();
+            Assert.AreEqual(16, states3.Count);
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC)));
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC, predEConstA)));
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC, predEConstB)));
@@ -350,8 +351,8 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC, predDConstA, predDConstB, predEConstB)));
             Assert.IsTrue(states3.Contains(factory.CreateState(predA, predC, predDConstA, predDConstB, predEConstA, predEConstB)));
 
-            var relativeStates3 = conditions3.GetCorrespondingRelativeStates(problem);
-            Assert.AreEqual(1, relativeStates3.Count());
+            var relativeStates3 = conditions3.GetCorrespondingRelativeStates(problem).ToList();
+            Assert.AreEqual(1, relativeStates3.Count);
             Assert.IsTrue(relativeStates3.Contains(factory.CreateRelativeState(new HashSet<int> { 2 }, predA, predC, predB))); // (predA), (predC), (not (predB))
 
             var emptyClone1 = conditions1.CloneEmpty();
@@ -369,15 +370,15 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(2, conditions1.Count);
             PredicateLiteralCNF pred1 = conditions1.First() as PredicateLiteralCNF;
             Assert.IsNotNull(pred1);
-            Assert.IsTrue(!pred1.IsNegated && pred1.PredicateAtom.GetNameID() == predEConstA.GetNameID());
-            VariableTerm varTerm1 = pred1.PredicateAtom.GetTerms()[0] as VariableTerm;
-            Assert.IsTrue(varTerm1.NameID == conditions1.Parameters[0].ParameterNameID);
+            Assert.IsTrue(!pred1.IsNegated && pred1.PredicateAtom.GetNameId() == predEConstA.GetNameId());
+            VariableTerm varTerm1 = (VariableTerm)pred1.PredicateAtom.GetTerms()[0];
+            Assert.IsTrue(varTerm1.NameId == conditions1.Parameters[0].ParameterNameId);
 
-            PredicateLiteralCNF pred2 = conditions1.Last() as PredicateLiteralCNF;
+            PredicateLiteralCNF pred2 = (PredicateLiteralCNF)conditions1.Last();
             Assert.IsNotNull(pred2);
-            Assert.IsTrue(pred2.IsNegated && pred2.PredicateAtom.GetNameID() == predDConstA.GetNameID());
-            VariableTerm varTerm2 = pred2.PredicateAtom.GetTerms()[0] as VariableTerm;
-            Assert.IsTrue(varTerm2.NameID == conditions1.Parameters[1].ParameterNameID);
+            Assert.IsTrue(pred2.IsNegated && pred2.PredicateAtom.GetNameId() == predDConstA.GetNameId());
+            VariableTerm varTerm2 = (VariableTerm)pred2.PredicateAtom.GetTerms()[0];
+            Assert.IsTrue(varTerm2.NameId == conditions1.Parameters[1].ParameterNameId);
         }
 
         [TestMethod]
@@ -386,7 +387,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ConditionsCNFBuilder.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            GroundingManager groundingManager = new GroundingManager(data, new IDManager(data));
+            GroundingManager groundingManager = new GroundingManager(data, new IdManager(data));
             EvaluationManager evaluationManager = new EvaluationManager(groundingManager);
             ConditionsCNFBuilder transformer = new ConditionsCNFBuilder(evaluationManager);
 
@@ -418,40 +419,41 @@ namespace PAD.Tests.PDDL
 
             ConditionsCNF expression3 = transformer.Build(problem.Operators[3].Preconditions);
             Assert.AreEqual(2, expression3.Count);
-            PredicateLiteralCNF pred3_0 = expression3.Last() as PredicateLiteralCNF;
-            Assert.IsNotNull(pred3_0);
-            Assert.IsFalse(pred3_0.IsNegated);
-            PredicateLiteralCNF pred3_1 = expression3.First() as PredicateLiteralCNF;
-            Assert.IsNotNull(pred3_1);
-            Assert.IsTrue(pred3_1.IsNegated);
+            PredicateLiteralCNF pred30 = expression3.Last() as PredicateLiteralCNF;
+            Assert.IsNotNull(pred30);
+            Assert.IsFalse(pred30.IsNegated);
+            PredicateLiteralCNF pred31 = expression3.First() as PredicateLiteralCNF;
+            Assert.IsNotNull(pred31);
+            Assert.IsTrue(pred31.IsNegated);
 
             ConditionsCNF expression4 = transformer.Build(problem.Operators[4].Preconditions);
             Assert.AreEqual(3, expression4.Count);
             var enumerator = expression4.GetEnumerator();
             enumerator.MoveNext();
-            PredicateLiteralCNF pred4_2 = enumerator.Current as PredicateLiteralCNF;
-            Assert.IsNotNull(pred4_2);
-            Assert.IsFalse(pred4_2.IsNegated);
+            PredicateLiteralCNF pred42 = enumerator.Current as PredicateLiteralCNF;
+            Assert.IsNotNull(pred42);
+            Assert.IsFalse(pred42.IsNegated);
             enumerator.MoveNext();
-            PredicateLiteralCNF pred4_1 = enumerator.Current as PredicateLiteralCNF;
-            Assert.IsNotNull(pred4_1);
-            Assert.IsFalse(pred4_1.IsNegated);
+            PredicateLiteralCNF pred41 = enumerator.Current as PredicateLiteralCNF;
+            Assert.IsNotNull(pred41);
+            Assert.IsFalse(pred41.IsNegated);
             enumerator.MoveNext();
-            PredicateLiteralCNF pred4_0 = enumerator.Current as PredicateLiteralCNF;
-            Assert.IsNotNull(pred4_0);
-            Assert.IsTrue(pred4_0.IsNegated);
+            PredicateLiteralCNF pred40 = enumerator.Current as PredicateLiteralCNF;
+            Assert.IsNotNull(pred40);
+            Assert.IsTrue(pred40.IsNegated);
+            enumerator.Dispose();
 
             ConditionsCNF expression5 = transformer.Build(problem.Operators[5].Preconditions);
             Assert.AreEqual(1, expression5.Count);
             ClauseCNF clause5 = expression5.First() as ClauseCNF;
             Assert.IsNotNull(clause5);
             Assert.AreEqual(2, clause5.Count);
-            PredicateLiteralCNF pred5_0 = clause5.First() as PredicateLiteralCNF;
-            Assert.IsNotNull(pred5_0);
-            Assert.IsFalse(pred5_0.IsNegated);
-            PredicateLiteralCNF pred5_1 = clause5.Last() as PredicateLiteralCNF;
-            Assert.IsNotNull(pred5_1);
-            Assert.IsFalse(pred5_1.IsNegated);
+            PredicateLiteralCNF pred50 = clause5.First() as PredicateLiteralCNF;
+            Assert.IsNotNull(pred50);
+            Assert.IsFalse(pred50.IsNegated);
+            PredicateLiteralCNF pred51 = clause5.Last() as PredicateLiteralCNF;
+            Assert.IsNotNull(pred51);
+            Assert.IsFalse(pred51.IsNegated);
         }
 
         [TestMethod]
@@ -460,7 +462,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ConditionsCNFEvaluator_D.pddl"), GetFilePath("TC_ConditionsCNFEvaluator_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             ConditionsCNFEvaluator evaluator = new ConditionsCNFEvaluator(new GroundingManager(data, idManager), problem.RigidRelations);
 
@@ -479,7 +481,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ConditionsGrounder.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             Lazy<TermsGrounder> termsGrounder = new Lazy<TermsGrounder>(() => new TermsGrounder(idManager));
@@ -490,27 +492,27 @@ namespace PAD.Tests.PDDL
             var substitution0 = factory.CreateSubstitution(problem.Operators[0].Parameters, "", "constA");
             var grounded0 = grounder.Ground(problem.Operators[0].Preconditions, substitution0);
             Assert.AreEqual(1, grounded0.Parameters.Count);
-            Assert.AreEqual(0, grounded0.Parameters[0].ParameterNameID);
+            Assert.AreEqual(0, grounded0.Parameters[0].ParameterNameId);
 
-            PredicateExpression predicate0 = grounded0[0] as PredicateExpression;
-            VariableTerm variableTerm0 = predicate0.PredicateAtom.GetTerms()[0] as VariableTerm;
+            PredicateExpression predicate0 = (PredicateExpression)grounded0[0];
+            VariableTerm variableTerm0 = (VariableTerm)predicate0.PredicateAtom.GetTerms()[0];
             Assert.IsNotNull(variableTerm0);
-            Assert.IsTrue(problem.Operators[0].Parameters[0].ParameterNameID == variableTerm0.NameID);
-            ConstantTerm constantTerm0 = predicate0.PredicateAtom.GetTerms()[1] as ConstantTerm;
+            Assert.IsTrue(problem.Operators[0].Parameters[0].ParameterNameId == variableTerm0.NameId);
+            ConstantTerm constantTerm0 = (ConstantTerm)predicate0.PredicateAtom.GetTerms()[1];
             Assert.IsNotNull(constantTerm0);
-            Assert.IsTrue(factory.CreateConstant("constA") == constantTerm0.NameID);
+            Assert.IsTrue(factory.CreateConstant("constA") == constantTerm0.NameId);
 
             var substitution1 = factory.CreateSubstitution(problem.Operators[0].Parameters, "constB", "constB");
             var grounded1 = grounder.Ground(problem.Operators[0].Preconditions, substitution1);
             Assert.IsNull(grounded1.Parameters);
 
-            PredicateExpression predicate1 = grounded1[0] as PredicateExpression;
-            ConstantTerm constantTerm11 = predicate1.PredicateAtom.GetTerms()[0] as ConstantTerm;
+            PredicateExpression predicate1 = (PredicateExpression)grounded1[0];
+            ConstantTerm constantTerm11 = (ConstantTerm)predicate1.PredicateAtom.GetTerms()[0];
             Assert.IsNotNull(constantTerm11);
-            Assert.IsTrue(factory.CreateConstant("constB") == constantTerm11.NameID);
-            ConstantTerm constantTerm12 = predicate1.PredicateAtom.GetTerms()[1] as ConstantTerm;
+            Assert.IsTrue(factory.CreateConstant("constB") == constantTerm11.NameId);
+            ConstantTerm constantTerm12 = (ConstantTerm)predicate1.PredicateAtom.GetTerms()[1];
             Assert.IsNotNull(constantTerm12);
-            Assert.IsTrue(factory.CreateConstant("constB") == constantTerm12.NameID);
+            Assert.IsTrue(factory.CreateConstant("constB") == constantTerm12.NameId);
         }
 
         [TestMethod]
@@ -527,15 +529,15 @@ namespace PAD.Tests.PDDL
             var usedVariables = collector.Collect(preconds);
             Assert.AreEqual(6, usedVariables.Count);
 
-            Assert.IsFalse(usedVariables.Contains(parameters[0].ParameterNameID));
-            Assert.IsFalse(usedVariables.Contains(parameters[1].ParameterNameID));
-            Assert.IsTrue(usedVariables.Contains(parameters[2].ParameterNameID));
-            Assert.IsTrue(usedVariables.Contains(parameters[3].ParameterNameID));
-            Assert.IsTrue(usedVariables.Contains(parameters[4].ParameterNameID));
-            Assert.IsTrue(usedVariables.Contains(parameters[5].ParameterNameID));
-            Assert.IsTrue(usedVariables.Contains(parameters[6].ParameterNameID));
-            Assert.IsTrue(usedVariables.Contains(parameters[7].ParameterNameID));
-            Assert.IsFalse(usedVariables.Contains(parameters[8].ParameterNameID));
+            Assert.IsFalse(usedVariables.Contains(parameters[0].ParameterNameId));
+            Assert.IsFalse(usedVariables.Contains(parameters[1].ParameterNameId));
+            Assert.IsTrue(usedVariables.Contains(parameters[2].ParameterNameId));
+            Assert.IsTrue(usedVariables.Contains(parameters[3].ParameterNameId));
+            Assert.IsTrue(usedVariables.Contains(parameters[4].ParameterNameId));
+            Assert.IsTrue(usedVariables.Contains(parameters[5].ParameterNameId));
+            Assert.IsTrue(usedVariables.Contains(parameters[6].ParameterNameId));
+            Assert.IsTrue(usedVariables.Contains(parameters[7].ParameterNameId));
+            Assert.IsFalse(usedVariables.Contains(parameters[8].ParameterNameId));
         }
 
         [TestMethod]
@@ -549,15 +551,15 @@ namespace PAD.Tests.PDDL
             var precond0 = (ConditionsCNF)problem.Operators[0].Preconditions.GetCNF();
             var precond1 = (ConditionsCNF)problem.Operators[1].Preconditions.GetCNF();
 
-            Assert.AreEqual(0, precond0.Parameters[0].ParameterNameID);
-            PredicateLiteralCNF pred0 = precond0.First() as PredicateLiteralCNF;
-            VariableTerm varTerm0 = pred0.PredicateAtom.GetTerms()[0] as VariableTerm;
-            Assert.AreEqual(0, varTerm0.NameID);
+            Assert.AreEqual(0, precond0.Parameters[0].ParameterNameId);
+            PredicateLiteralCNF pred0 = (PredicateLiteralCNF)precond0.First();
+            VariableTerm varTerm0 = (VariableTerm)pred0.PredicateAtom.GetTerms()[0];
+            Assert.AreEqual(0, varTerm0.NameId);
 
-            Assert.AreEqual(0, precond1.Parameters[0].ParameterNameID);
-            PredicateLiteralCNF pred1 = precond1.First() as PredicateLiteralCNF;
-            VariableTerm varTerm1 = pred1.PredicateAtom.GetTerms()[0] as VariableTerm;
-            Assert.AreEqual(0, varTerm1.NameID);
+            Assert.AreEqual(0, precond1.Parameters[0].ParameterNameId);
+            PredicateLiteralCNF pred1 = (PredicateLiteralCNF)precond1.First();
+            VariableTerm varTerm1 = (VariableTerm)pred1.PredicateAtom.GetTerms()[0];
+            Assert.AreEqual(0, varTerm1.NameId);
 
             Assert.IsTrue(precond0.Parameters.AreConflictedWith(precond1.Parameters));
 
@@ -565,25 +567,25 @@ namespace PAD.Tests.PDDL
 
             Assert.IsFalse(precond0.Parameters.AreConflictedWith(precond1.Parameters));
 
-            Assert.AreEqual(4, precond1.Parameters[0].ParameterNameID);
-            PredicateLiteralCNF pred1_ = precond1.First() as PredicateLiteralCNF;
-            VariableTerm varTerm1_ = pred1_.PredicateAtom.GetTerms()[0] as VariableTerm;
-            Assert.AreEqual(4, varTerm1_.NameID);
+            Assert.AreEqual(4, precond1.Parameters[0].ParameterNameId);
+            PredicateLiteralCNF pred1P = (PredicateLiteralCNF)precond1.First();
+            VariableTerm varTerm1P = (VariableTerm)pred1P.PredicateAtom.GetTerms()[0];
+            Assert.AreEqual(4, varTerm1P.NameId);
 
             precond0.Merge(precond1);
 
             Assert.AreEqual(2, precond0.Parameters.Count);
-            Assert.AreEqual(0, precond0.Parameters[0].ParameterNameID);
-            Assert.AreEqual(4, precond0.Parameters[1].ParameterNameID);
-            Assert.AreEqual(4, precond0.Parameters.GetMaxUsedParameterID());
+            Assert.AreEqual(0, precond0.Parameters[0].ParameterNameId);
+            Assert.AreEqual(4, precond0.Parameters[1].ParameterNameId);
+            Assert.AreEqual(4, precond0.Parameters.GetMaxUsedParameterId());
 
             Assert.AreEqual(2, precond0.Count);
-            PredicateLiteralCNF mergedPred1 = precond0.First() as PredicateLiteralCNF;
-            VariableTerm mergedVarTerm1 = mergedPred1.PredicateAtom.GetTerms()[0] as VariableTerm;
-            Assert.AreEqual(0, mergedVarTerm1.NameID);
-            PredicateLiteralCNF mergedPred2 = precond0.Last() as PredicateLiteralCNF;
-            VariableTerm mergedVarTerm2 = mergedPred2.PredicateAtom.GetTerms()[0] as VariableTerm;
-            Assert.AreEqual(4, mergedVarTerm2.NameID);
+            PredicateLiteralCNF mergedPred1 = (PredicateLiteralCNF)precond0.First();
+            VariableTerm mergedVarTerm1 = (VariableTerm)mergedPred1.PredicateAtom.GetTerms()[0];
+            Assert.AreEqual(0, mergedVarTerm1.NameId);
+            PredicateLiteralCNF mergedPred2 = (PredicateLiteralCNF)precond0.Last();
+            VariableTerm mergedVarTerm2 = (VariableTerm)mergedPred2.PredicateAtom.GetTerms()[0];
+            Assert.AreEqual(4, mergedVarTerm2.NameId);
         }
 
         [TestMethod]
@@ -592,11 +594,10 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ConditionsUsedPredicatesCollector.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             idManager.Variables.Register("?a");
-            var parameters = problem.Operators[0].Parameters;
             var conditions = problem.Operators[0].Preconditions;
 
             ConditionsUsedPredicatesCollector collector = new ConditionsUsedPredicatesCollector();
@@ -614,7 +615,7 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ConstantsManager_D.pddl"), GetFilePath("TC_ConstantsManager_P.pddl"));
 
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             ConstantsManager constantsManager = new ConstantsManager(data, idManager);
 
@@ -622,51 +623,51 @@ namespace PAD.Tests.PDDL
 
             var objectConstants = constantsManager[factory.CreateType("object")];
             Assert.AreEqual(6, objectConstants.Count);
-            objectConstants.Contains(factory.CreateConstant("object1"));
-            objectConstants.Contains(factory.CreateConstant("object2"));
-            objectConstants.Contains(factory.CreateConstant("constAB"));
-            objectConstants.Contains(factory.CreateConstant("constC"));
-            objectConstants.Contains(factory.CreateConstant("constD"));
-            objectConstants.Contains(factory.CreateConstant("constF"));
+            Assert.IsTrue(objectConstants.Contains(factory.CreateConstant("object1")));
+            Assert.IsTrue(objectConstants.Contains(factory.CreateConstant("object2")));
+            Assert.IsTrue(objectConstants.Contains(factory.CreateConstant("constAB")));
+            Assert.IsTrue(objectConstants.Contains(factory.CreateConstant("constC")));
+            Assert.IsTrue(objectConstants.Contains(factory.CreateConstant("constD")));
+            Assert.IsTrue(objectConstants.Contains(factory.CreateConstant("constF")));
             Assert.IsTrue(Planner.CollectionsEquality.Equals(objectConstants, constantsManager.GetAllConstantsOfType(factory.CreateType("object"))));
 
             var typeAConstants = constantsManager[factory.CreateType("typeA")];
             Assert.AreEqual(2, typeAConstants.Count);
-            typeAConstants.Contains(factory.CreateConstant("constAB"));
-            typeAConstants.Contains(factory.CreateConstant("constD"));
+            Assert.IsTrue(typeAConstants.Contains(factory.CreateConstant("constAB")));
+            Assert.IsTrue(typeAConstants.Contains(factory.CreateConstant("constD")));
 
             var typeBConstants = constantsManager[factory.CreateType("typeB")];
             Assert.AreEqual(2, typeBConstants.Count);
-            typeBConstants.Contains(factory.CreateConstant("constAB"));
-            typeBConstants.Contains(factory.CreateConstant("constD"));
+            Assert.IsTrue(typeBConstants.Contains(factory.CreateConstant("constAB")));
+            Assert.IsTrue(typeBConstants.Contains(factory.CreateConstant("constD")));
 
             var typeCConstants = constantsManager[factory.CreateType("typeC")];
             Assert.AreEqual(3, typeCConstants.Count);
-            typeCConstants.Contains(factory.CreateConstant("constAB"));
-            typeCConstants.Contains(factory.CreateConstant("constC"));
-            typeCConstants.Contains(factory.CreateConstant("constD"));
+            Assert.IsTrue(typeCConstants.Contains(factory.CreateConstant("constAB")));
+            Assert.IsTrue(typeCConstants.Contains(factory.CreateConstant("constC")));
+            Assert.IsTrue(typeCConstants.Contains(factory.CreateConstant("constD")));
 
             var typeDConstants = constantsManager[factory.CreateType("typeD")];
             Assert.AreEqual(1, typeDConstants.Count);
-            typeDConstants.Contains(factory.CreateConstant("constD"));
+            Assert.IsTrue(typeDConstants.Contains(factory.CreateConstant("constD")));
 
             var typeEConstants = constantsManager[factory.CreateType("typeE")];
             Assert.AreEqual(3, typeEConstants.Count);
-            typeEConstants.Contains(factory.CreateConstant("constAB"));
-            typeEConstants.Contains(factory.CreateConstant("constC"));
-            typeEConstants.Contains(factory.CreateConstant("constD"));
+            Assert.IsTrue(typeEConstants.Contains(factory.CreateConstant("constAB")));
+            Assert.IsTrue(typeEConstants.Contains(factory.CreateConstant("constC")));
+            Assert.IsTrue(typeEConstants.Contains(factory.CreateConstant("constD")));
 
             var typeFConstants = constantsManager[factory.CreateType("typeF")];
             Assert.AreEqual(4, typeFConstants.Count);
-            typeFConstants.Contains(factory.CreateConstant("constAB"));
-            typeFConstants.Contains(factory.CreateConstant("constC"));
-            typeFConstants.Contains(factory.CreateConstant("constD"));
-            typeFConstants.Contains(factory.CreateConstant("constF"));
+            Assert.IsTrue(typeFConstants.Contains(factory.CreateConstant("constAB")));
+            Assert.IsTrue(typeFConstants.Contains(factory.CreateConstant("constC")));
+            Assert.IsTrue(typeFConstants.Contains(factory.CreateConstant("constD")));
+            Assert.IsTrue(typeFConstants.Contains(factory.CreateConstant("constF")));
 
-            var constABTypes = constantsManager.GetTypesForConstant(factory.CreateConstant("constAB"));
-            Assert.AreEqual(2, constABTypes.Count);
-            Assert.IsTrue(constABTypes.Contains(factory.CreateType("typeA")));
-            Assert.IsTrue(constABTypes.Contains(factory.CreateType("typeB")));
+            var constAbTypes = constantsManager.GetTypesForConstant(factory.CreateConstant("constAB"));
+            Assert.AreEqual(2, constAbTypes.Count);
+            Assert.IsTrue(constAbTypes.Contains(factory.CreateType("typeA")));
+            Assert.IsTrue(constAbTypes.Contains(factory.CreateType("typeB")));
 
             var constCTypes = constantsManager.GetTypesForConstant(factory.CreateConstant("constC"));
             Assert.AreEqual(1, constCTypes.Count);
@@ -676,13 +677,13 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(1, object2Types.Count);
             Assert.IsTrue(object2Types.Contains(factory.CreateType("object")));
 
-            var childrenTypesC = constantsManager.GetChildrenTypes(factory.CreateType("typeC"));
-            Assert.AreEqual(2, childrenTypesC.Count());
+            var childrenTypesC = constantsManager.GetChildrenTypes(factory.CreateType("typeC")).ToList();
+            Assert.AreEqual(2, childrenTypesC.Count);
             Assert.IsTrue(childrenTypesC.Contains(factory.CreateType("typeA")));
             Assert.IsTrue(childrenTypesC.Contains(factory.CreateType("typeB")));
 
-            var childrenTypesObject = constantsManager.GetChildrenTypes(factory.CreateType("object"));
-            Assert.AreEqual(2, childrenTypesObject.Count());
+            var childrenTypesObject = constantsManager.GetChildrenTypes(factory.CreateType("object")).ToList();
+            Assert.AreEqual(2, childrenTypesObject.Count);
             Assert.IsTrue(childrenTypesObject.Contains(factory.CreateType("typeE")));
             Assert.IsTrue(childrenTypesObject.Contains(factory.CreateType("typeF")));
         }
@@ -693,9 +694,8 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_Effects_D.pddl"), GetFilePath("TC_Effects_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
-            GroundingManager groundingManager = new GroundingManager(data, idManager);
 
             // effects structure
 
@@ -737,8 +737,8 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(newStateA.HasPredicate(predC));
             Assert.IsTrue(newStateA.HasPredicate(predDConstA));
             Assert.IsTrue(newStateA.HasPredicate(predDConstB));
-            Assert.IsTrue(newStateA.GetNumericFunctionValue(numFunc) == 9);
-            Assert.IsTrue(newStateA.GetObjectFunctionValue(objFunc) == constA);
+            Assert.AreEqual(9, newStateA.GetNumericFunctionValue(numFunc));
+            Assert.AreEqual(constA, newStateA.GetObjectFunctionValue(objFunc));
 
             var substitutionB = factory.CreateSubstitution(problem.Operators[1].Parameters, "constB");
             var newStateB = effects1.Apply(state, substitutionB);
@@ -747,8 +747,8 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(newStateB.HasPredicate(predC));
             Assert.IsTrue(newStateB.HasPredicate(predDConstA));
             Assert.IsTrue(newStateB.HasPredicate(predDConstB));
-            Assert.IsTrue(newStateB.GetNumericFunctionValue(numFunc) == 9);
-            Assert.IsTrue(newStateB.GetObjectFunctionValue(objFunc) == constB);
+            Assert.AreEqual(9, newStateB.GetNumericFunctionValue(numFunc));
+            Assert.AreEqual(constB, newStateB.GetObjectFunctionValue(objFunc));
 
             effects1.SetDeleteRelaxation();
             newStateB = effects1.Apply(state, substitutionB);
@@ -772,8 +772,8 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(newConditions.Contains(new PredicateLiteralCNF(new PredicateExpression(predAConstB, idManager), true)));
             Assert.IsTrue(newConditions.Contains(new PredicateLiteralCNF(new PredicateExpression(predC, idManager), false)));
 
-            var newRelativeStates = effects1.ApplyBackwards(goalRelativeState, substitutionA);
-            Assert.AreEqual(1, newRelativeStates.Count());
+            var newRelativeStates = effects1.ApplyBackwards(goalRelativeState, substitutionA).ToList();
+            Assert.AreEqual(1, newRelativeStates.Count);
             var newRelativeState = (IRelativeState)newRelativeStates.First();
             Assert.IsTrue(newRelativeState.HasNegatedPredicate(predAConstB));
             Assert.IsTrue(newRelativeState.HasPredicate(predC));
@@ -787,7 +787,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EffectsApplier_D.pddl"), GetFilePath("TC_EffectsApplier_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
             EvaluationManager evaluationManager = new EvaluationManager(groundingManager, problem.RigidRelations);
@@ -810,8 +810,8 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(state.HasPredicate(pred0));
             Assert.IsTrue(state.HasPredicate(pred1ConstA));
             Assert.IsTrue(!state.HasPredicate(pred1ConstB));
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 0);
-            Assert.IsTrue(state.GetObjectFunctionValue(objectFunc) == constA);
+            Assert.AreEqual(0, state.GetNumericFunctionValue(numericFunc));
+            Assert.AreEqual(constA, state.GetObjectFunctionValue(objectFunc));
 
             effectsApplier.Apply(effects[0], state, substitution);
             Assert.IsTrue(state.HasPredicate(pred1ConstB));
@@ -824,28 +824,28 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(!state.HasPredicate(pred1ConstB));
 
             effectsApplier.Apply(effects[3], state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 5);
+            Assert.AreEqual(5, state.GetNumericFunctionValue(numericFunc));
 
             effectsApplier.Apply(effects[4], state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 12);
+            Assert.AreEqual(12, state.GetNumericFunctionValue(numericFunc));
 
             effectsApplier.Apply(effects[5], state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 10);
+            Assert.AreEqual(10, state.GetNumericFunctionValue(numericFunc));
 
             effectsApplier.Apply(effects[6], state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 30);
+            Assert.AreEqual(30, state.GetNumericFunctionValue(numericFunc));
 
             effectsApplier.Apply(effects[7], state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 15);
+            Assert.AreEqual(15, state.GetNumericFunctionValue(numericFunc));
 
             effectsApplier.Apply(effects[8], state, substitution);
-            Assert.IsTrue(state.GetObjectFunctionValue(objectFunc) == constB);
+            Assert.AreEqual(constB, state.GetObjectFunctionValue(objectFunc));
 
             effectsApplier.Apply(effects[9], state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 0);
+            Assert.AreEqual(0, state.GetNumericFunctionValue(numericFunc));
 
             effectsApplier.Apply(effects[10], state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 0);
+            Assert.AreEqual(0, state.GetNumericFunctionValue(numericFunc));
         }
 
         [TestMethod]
@@ -853,7 +853,7 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EffectsBuilder.pddl"), GetFilePath("Dummy_P.pddl"));
 
-            EffectsBuilder builder = new EffectsBuilder(new IDManager(data));
+            EffectsBuilder builder = new EffectsBuilder(new IdManager(data));
 
             var effects = data.Domain.Actions[0].Effects;
             Assert.IsTrue(builder.Build(effects[0]) is PredicateEffect);
@@ -876,40 +876,40 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EffectsBackwardsConditionsApplier_D.pddl"), GetFilePath("TC_EffectsBackwardsConditionsApplier_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
             EvaluationManager evaluationManager = new EvaluationManager(groundingManager, problem.RigidRelations);
             Conditions goalConds = (Conditions)problem.GoalConditions;
 
-            Func<string, PredicateLiteralCNF> GetPredicate = (string predicateName) => new PredicateLiteralCNF(factory.CreatePredicate(predicateName), false, idManager);
+            Func<string, PredicateLiteralCNF> getPredicate = predicateName => new PredicateLiteralCNF(factory.CreatePredicate(predicateName), false, idManager);
 
             EffectsBackwardsConditionsApplier backwardsApplier0 = new EffectsBackwardsConditionsApplier(problem.Operators[0].Preconditions, problem.Operators[0].Effects, evaluationManager);
             IConditions resultConditions0 = backwardsApplier0.ApplyBackwards(new Conditions(goalConds[0], evaluationManager), new Substitution());
-            ConditionsCNF resultConditionsCNF0 = resultConditions0 as ConditionsCNF;
-            Assert.AreEqual(2, resultConditionsCNF0.Count);
-            Assert.IsTrue(resultConditionsCNF0.Contains(GetPredicate("predE")));
-            Assert.IsTrue(resultConditionsCNF0.Contains(GetPredicate("predZ")));
+            ConditionsCNF resultConditionsCnf0 = (ConditionsCNF)resultConditions0;
+            Assert.AreEqual(2, resultConditionsCnf0.Count);
+            Assert.IsTrue(resultConditionsCnf0.Contains(getPredicate("predE")));
+            Assert.IsTrue(resultConditionsCnf0.Contains(getPredicate("predZ")));
 
             EffectsBackwardsConditionsApplier backwardsApplier1 = new EffectsBackwardsConditionsApplier(problem.Operators[1].Preconditions, problem.Operators[1].Effects, evaluationManager);
             ISubstitution operatorSubstitution1 = factory.CreateSubstitution(problem.Operators[1].Parameters, "constA");
             IConditions resultConditions1 = backwardsApplier1.ApplyBackwards(new Conditions(goalConds[1], evaluationManager), operatorSubstitution1);
-            ConditionsCNF resultConditionsCNF1 = resultConditions1 as ConditionsCNF;
-            Assert.AreEqual(1, resultConditionsCNF1.Count);
-            EqualsLiteralCNF equals10 = resultConditionsCNF1.First() as EqualsLiteralCNF;
+            ConditionsCNF resultConditionsCnf1 = (ConditionsCNF)resultConditions1;
+            Assert.AreEqual(1, resultConditionsCnf1.Count);
+            EqualsLiteralCNF equals10 = resultConditionsCnf1.First() as EqualsLiteralCNF;
             Assert.IsNotNull(equals10);
             ConstantTerm const10 = equals10.LeftArgument as ConstantTerm;
             Assert.IsNotNull(const10);
-            Assert.AreEqual(factory.CreateConstant("constB"), const10.NameID);
+            Assert.AreEqual(factory.CreateConstant("constB"), const10.NameId);
             ObjectFunctionTerm objFunc10 = equals10.RightArgument as ObjectFunctionTerm;
             Assert.IsNotNull(objFunc10);
-            Assert.AreEqual(factory.CreateFunction("objFunc6").GetNameID(), objFunc10.FunctionAtom.GetNameID());
+            Assert.AreEqual(factory.CreateFunction("objFunc6").GetNameId(), objFunc10.FunctionAtom.GetNameId());
 
             EffectsBackwardsConditionsApplier backwardsApplier2 = new EffectsBackwardsConditionsApplier(problem.Operators[2].Preconditions, problem.Operators[2].Effects, evaluationManager);
             IConditions resultConditions2 = backwardsApplier2.ApplyBackwards(new Conditions(goalConds[2], evaluationManager), new Substitution());
-            ConditionsCNF resultConditionsCNF2 = resultConditions2 as ConditionsCNF;
-            Assert.AreEqual(1, resultConditionsCNF2.Count);
-            NumericCompareLiteralCNF numComp20 = resultConditionsCNF2.First() as NumericCompareLiteralCNF;
+            ConditionsCNF resultConditionsCnf2 = (ConditionsCNF)resultConditions2;
+            Assert.AreEqual(1, resultConditionsCnf2.Count);
+            NumericCompareLiteralCNF numComp20 = resultConditionsCnf2.First() as NumericCompareLiteralCNF;
             Assert.IsNotNull(numComp20);
             Assert.AreEqual(NumericCompareExpression.RelationalOperator.EQ, numComp20.Operator);
             Minus minusExpr20 = numComp20.LeftArgument as Minus;
@@ -921,27 +921,27 @@ namespace PAD.Tests.PDDL
             EffectsBackwardsConditionsApplier backwardsApplier3 = new EffectsBackwardsConditionsApplier(problem.Operators[3].Preconditions, problem.Operators[3].Effects, evaluationManager);
             ISubstitution substitution3 = factory.CreateSubstitution(problem.Operators[3].Parameters, "constA");
             IConditions resultConditions3 = backwardsApplier3.ApplyBackwards(new Conditions(goalConds[3], evaluationManager), substitution3);
-            ConditionsCNF resultConditionsCNF3 = resultConditions3 as ConditionsCNF;
-            Assert.AreEqual(2, resultConditionsCNF3.Count);
-            PredicateLiteralCNF pred30 = resultConditionsCNF3.First() as PredicateLiteralCNF;
+            ConditionsCNF resultConditionsCnf3 = (ConditionsCNF)resultConditions3;
+            Assert.AreEqual(2, resultConditionsCnf3.Count);
+            PredicateLiteralCNF pred30 = resultConditionsCnf3.First() as PredicateLiteralCNF;
             Assert.IsNotNull(pred30);
-            Assert.AreEqual(factory.CreatePredicate("predF", "constA", "constB").GetNameID(), pred30.PredicateAtom.GetNameID());
-            PredicateLiteralCNF pred31 = resultConditionsCNF3.Last() as PredicateLiteralCNF;
+            Assert.AreEqual(factory.CreatePredicate("predF", "constA", "constB").GetNameId(), pred30.PredicateAtom.GetNameId());
+            PredicateLiteralCNF pred31 = resultConditionsCnf3.Last() as PredicateLiteralCNF;
             Assert.IsNotNull(pred31);
-            Assert.AreEqual(factory.CreatePredicate("predF", "constA", "constB").GetNameID(), pred31.PredicateAtom.GetNameID());
+            Assert.AreEqual(factory.CreatePredicate("predF", "constA", "constB").GetNameId(), pred31.PredicateAtom.GetNameId());
 
             EffectsBackwardsConditionsApplier backwardsApplier4 = new EffectsBackwardsConditionsApplier(problem.Operators[4].Preconditions, problem.Operators[4].Effects, evaluationManager);
             IConditions resultConditions4 = backwardsApplier4.ApplyBackwards(new Conditions(goalConds[4], evaluationManager), new Substitution());
-            ConditionsCNF resultConditionsCNF4 = resultConditions4 as ConditionsCNF;
-            Assert.AreEqual(8, resultConditionsCNF4.Count);
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predA"), GetPredicate("predB"), GetPredicate("pred1") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predA"), GetPredicate("pred1") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predB"), GetPredicate("pred1"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predA"), GetPredicate("predB"), GetPredicate("pred1"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predA"), GetPredicate("pred1"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predA"), GetPredicate("predB"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predB"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(GetPredicate("predZ")));
+            ConditionsCNF resultConditionsCnf4 = (ConditionsCNF)resultConditions4;
+            Assert.AreEqual(8, resultConditionsCnf4.Count);
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predA"), getPredicate("predB"), getPredicate("pred1") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predA"), getPredicate("pred1") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predB"), getPredicate("pred1"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predA"), getPredicate("predB"), getPredicate("pred1"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predA"), getPredicate("pred1"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predA"), getPredicate("predB"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predB"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(getPredicate("predZ")));
         }
 
         [TestMethod]
@@ -950,7 +950,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EffectsBackwardsConditionsApplierLifted_D.pddl"), GetFilePath("TC_EffectsBackwardsConditionsApplierLifted_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
             EvaluationManager evaluationManager = new EvaluationManager(groundingManager, problem.RigidRelations);
@@ -964,16 +964,16 @@ namespace PAD.Tests.PDDL
 
             var minimalSubstitution = backwardsApplier1.ExtractMinimalOperatorSubstitution();
             Assert.AreEqual(1, minimalSubstitution.Count());
-            int value = -1;
+            int value;
             Assert.IsTrue(minimalSubstitution.TryGetValue(1, out value) && value == factory.CreateConstant("y1"));
             Assert.IsFalse(minimalSubstitution.TryGetValue(0, out value));
 
             Assert.AreEqual(1, newConditions.Parameters.Count);
-            PredicateLiteralCNF predicate0 = newConditions.First() as PredicateLiteralCNF;
-            Assert.AreEqual(factory.CreatePredicate("pred", "x1").GetNameID(), predicate0.PredicateAtom.GetNameID());
+            PredicateLiteralCNF predicate0 = (PredicateLiteralCNF)newConditions.First();
+            Assert.AreEqual(factory.CreatePredicate("pred", "x1").GetNameId(), predicate0.PredicateAtom.GetNameId());
             VariableTerm variableTerm0 = predicate0.PredicateAtom.GetTerms()[0] as VariableTerm;
             Assert.IsNotNull(variableTerm0);
-            Assert.IsTrue(variableTerm0.NameID == newConditions.Parameters[0].ParameterNameID);
+            Assert.IsTrue(variableTerm0.NameId == newConditions.Parameters[0].ParameterNameId);
             Assert.IsTrue(newConditions.Evaluate(factory.CreateState(factory.CreatePredicate("pred", "x1"))));
             Assert.IsTrue(newConditions.Evaluate(factory.CreateState(factory.CreatePredicate("pred", "x2"))));
             Assert.IsFalse(newConditions.Evaluate(factory.CreateState(factory.CreatePredicate("pred", "y1"))));
@@ -981,14 +981,14 @@ namespace PAD.Tests.PDDL
             var substitutionX1 = factory.CreateSubstitution(problem.Operators[0].Parameters, "x1");
             var newConditionsX1 = (ConditionsCNF)backwardsApplier0.ApplyBackwards(newConditions, substitutionX1);
             Assert.IsNull(newConditionsX1.Parameters);
-            PredicateLiteralCNF predicateX1 = newConditionsX1.First() as PredicateLiteralCNF;
+            PredicateLiteralCNF predicateX1 = (PredicateLiteralCNF)newConditionsX1.First();
             Assert.IsTrue(factory.CreatePredicate("predStart").Equals(predicateX1.PredicateAtom));
             Assert.IsTrue(problem.IsStartConditions(newConditionsX1));
 
             var substitutionX2 = factory.CreateSubstitution(problem.Operators[0].Parameters, "x2");
             var newConditionsX2 = (ConditionsCNF)backwardsApplier0.ApplyBackwards(newConditions, substitutionX2);
             Assert.IsNull(newConditionsX2.Parameters);
-            PredicateLiteralCNF predicateX2 = newConditionsX2.First() as PredicateLiteralCNF;
+            PredicateLiteralCNF predicateX2 = (PredicateLiteralCNF)newConditionsX2.First();
             Assert.IsTrue(factory.CreatePredicate("predStart").Equals(predicateX2.PredicateAtom));
             Assert.IsTrue(problem.IsStartConditions(newConditionsX2));
         }
@@ -999,14 +999,13 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EffectsBackwardsRelativeStateApplier_D.pddl"), GetFilePath("TC_EffectsBackwardsRelativeStateApplier_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
             EvaluationManager evaluationManager = new EvaluationManager(groundingManager, problem.RigidRelations);
             Conditions goalConds = (Conditions)problem.GoalConditions;
 
-            Func<string, PredicateLiteralCNF> GetPredicate = (string predicateName) => new PredicateLiteralCNF(factory.CreatePredicate(predicateName), false, idManager);
-            Func<Conditions, int, IEnumerable<Planner.IRelativeState>> GetRelativeStates = (Conditions conditions, int index) => new Conditions(conditions[index], evaluationManager).GetCorrespondingRelativeStates(problem);
+            Func<Conditions, int, IEnumerable<Planner.IRelativeState>> getRelativeStates = (conditions, index) => new Conditions(conditions[index], evaluationManager).GetCorrespondingRelativeStates(problem);
 
             var predA = factory.CreatePredicate("predA");
             var predB = factory.CreatePredicate("predB");
@@ -1022,13 +1021,13 @@ namespace PAD.Tests.PDDL
 
             HashSet<IRelativeState> resultRelativeStates0 = new HashSet<IRelativeState>();
             EffectsBackwardsRelativeStateApplier backwardsApplier0 = new EffectsBackwardsRelativeStateApplier(problem.Operators[0].Preconditions, problem.Operators[0].Effects, evaluationManager);
-            foreach (IRelativeState relativeState in GetRelativeStates(goalConds, 0))
+            foreach (var relativeState in getRelativeStates(goalConds, 0))
             {
-                var resultRelativeStates = backwardsApplier0.ApplyBackwards(relativeState, new Substitution());
-                Assert.AreEqual(1, resultRelativeStates.Count());
+                var resultRelativeStates = backwardsApplier0.ApplyBackwards((IRelativeState)relativeState, new Substitution()).ToList();
+                Assert.AreEqual(1, resultRelativeStates.Count);
                 resultRelativeStates0.Add((IRelativeState)resultRelativeStates.First());
             }
-            Assert.AreEqual(2, resultRelativeStates0.Count());
+            Assert.AreEqual(2, resultRelativeStates0.Count);
             Assert.IsTrue(resultRelativeStates0.Contains(factory.CreateRelativeState(new HashSet<int> { 2 }, predE, predZ, pred1))); // (predE), (predZ), (not (pred1))
             Assert.IsTrue(resultRelativeStates0.Contains(factory.CreateRelativeState(new HashSet<int> { 3 }, predD, predE, predZ, pred1))); // (predD), (predE), (predZ), (not (pred1))
 
@@ -1036,26 +1035,26 @@ namespace PAD.Tests.PDDL
 
             HashSet<IRelativeState> resultRelativeStates1 = new HashSet<IRelativeState>();
             EffectsBackwardsRelativeStateApplier backwardsApplier1 = new EffectsBackwardsRelativeStateApplier(problem.Operators[1].Preconditions, problem.Operators[1].Effects, evaluationManager);
-            foreach (IRelativeState relativeState in GetRelativeStates(goalConds, 1))
+            foreach (var relativeState in getRelativeStates(goalConds, 1))
             {
-                var resultRelativeStates = backwardsApplier1.ApplyBackwards(relativeState, new Substitution());
-                Assert.AreEqual(1, resultRelativeStates.Count());
+                var resultRelativeStates = backwardsApplier1.ApplyBackwards((IRelativeState)relativeState, new Substitution()).ToList();
+                Assert.AreEqual(1, resultRelativeStates.Count);
                 resultRelativeStates1.Add((IRelativeState)resultRelativeStates.First());
             }
-            Assert.AreEqual(1, resultRelativeStates1.Count());
+            Assert.AreEqual(1, resultRelativeStates1.Count);
             Assert.IsTrue(resultRelativeStates1.Contains(new RelativeState(null, null, null, new Dictionary<IAtom, int> {{ factory.CreateFunction("objFunc2"), factory.CreateConstant("constB") }}, idManager)));
 
             // numeric assign effects
 
             HashSet<IRelativeState> resultRelativeStates2 = new HashSet<IRelativeState>();
             EffectsBackwardsRelativeStateApplier backwardsApplier2 = new EffectsBackwardsRelativeStateApplier(problem.Operators[2].Preconditions, problem.Operators[2].Effects, evaluationManager);
-            foreach (IRelativeState relativeState in GetRelativeStates(goalConds, 2))
+            foreach (var relativeState in getRelativeStates(goalConds, 2))
             {
-                var resultRelativeStates = backwardsApplier2.ApplyBackwards(relativeState, new Substitution());
-                Assert.AreEqual(1, resultRelativeStates.Count());
+                var resultRelativeStates = backwardsApplier2.ApplyBackwards((IRelativeState)relativeState, new Substitution()).ToList();
+                Assert.AreEqual(1, resultRelativeStates.Count);
                 resultRelativeStates2.Add((IRelativeState)resultRelativeStates.First());
             }
-            Assert.AreEqual(1, resultRelativeStates2.Count());
+            Assert.AreEqual(1, resultRelativeStates2.Count);
             Assert.IsTrue(resultRelativeStates2.Contains(new RelativeState(null, null, new Dictionary<IAtom, double> { { factory.CreateFunction("numFunc2"), 22.3 } }, null, idManager)));
 
             // forall effects
@@ -1063,28 +1062,28 @@ namespace PAD.Tests.PDDL
             HashSet<IRelativeState> resultRelativeStates3 = new HashSet<IRelativeState>();
             EffectsBackwardsRelativeStateApplier backwardsApplier3 = new EffectsBackwardsRelativeStateApplier(problem.Operators[3].Preconditions, problem.Operators[3].Effects, evaluationManager);
             ISubstitution substitution3 = factory.CreateSubstitution(problem.Operators[3].Parameters, "constA");
-            foreach (IRelativeState relativeState in GetRelativeStates(goalConds, 3))
+            foreach (var relativeState in getRelativeStates(goalConds, 3))
             {
-                var resultRelativeStates = backwardsApplier3.ApplyBackwards(relativeState, substitution3);
-                Assert.AreEqual(1, resultRelativeStates.Count());
+                var resultRelativeStates = backwardsApplier3.ApplyBackwards((IRelativeState)relativeState, substitution3).ToList();
+                Assert.AreEqual(1, resultRelativeStates.Count);
                 resultRelativeStates3.Add((IRelativeState)resultRelativeStates.First());
             }
-            Assert.AreEqual(1, resultRelativeStates3.Count());
+            Assert.AreEqual(1, resultRelativeStates3.Count);
             Assert.IsTrue(resultRelativeStates3.Contains(factory.CreateRelativeState(predFConstBConstA, predFConstBConstB)));
 
             // when effects
 
             HashSet<IRelativeState> resultRelativeStates4 = new HashSet<IRelativeState>();
             EffectsBackwardsRelativeStateApplier backwardsApplier4 = new EffectsBackwardsRelativeStateApplier(problem.Operators[4].Preconditions, problem.Operators[4].Effects, evaluationManager);
-            foreach (IRelativeState relativeState in GetRelativeStates(goalConds, 4))
+            foreach (var relativeState in getRelativeStates(goalConds, 4))
             {
-                var resultRelativeStates = backwardsApplier4.ApplyBackwards(relativeState, new Substitution());
-                foreach (IRelativeState resultRelativeState in resultRelativeStates)
+                var resultRelativeStates = backwardsApplier4.ApplyBackwards((IRelativeState)relativeState, new Substitution());
+                foreach (var resultRelativeState in resultRelativeStates)
                 {
-                    resultRelativeStates4.Add(resultRelativeState);
+                    resultRelativeStates4.Add((IRelativeState)resultRelativeState);
                 }
             }
-            Assert.AreEqual(4, resultRelativeStates4.Count());
+            Assert.AreEqual(4, resultRelativeStates4.Count);
             Assert.IsTrue(resultRelativeStates4.Contains(factory.CreateRelativeState(predZ, predA, predB)));
             Assert.IsTrue(resultRelativeStates4.Contains(factory.CreateRelativeState(predZ, predA, pred2)));
             Assert.IsTrue(resultRelativeStates4.Contains(factory.CreateRelativeState(predZ, pred1, predB)));
@@ -1097,7 +1096,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EffectsPreprocessedCollection.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
 
@@ -1110,10 +1109,10 @@ namespace PAD.Tests.PDDL
             // collected effects
 
             Assert.AreEqual(1, effects.PositivePredicateEffects.Count);
-            effects.PositivePredicateEffects.Contains(factory.CreatePredicate("pred", "?a"));
+            Assert.IsTrue(effects.PositivePredicateEffects.Contains(factory.CreatePredicate("pred", "?a")));
 
             Assert.AreEqual(1, effects.NegativePredicateEffects.Count);
-            effects.NegativePredicateEffects.Contains(factory.CreatePredicate("pred", "?a"));
+            Assert.IsTrue(effects.NegativePredicateEffects.Contains(factory.CreatePredicate("pred", "?a")));
 
             Assert.AreEqual(5, effects.NumericFunctionAssignmentEffects.Count);
             Assert.IsTrue(effects.NumericFunctionAssignmentEffects.Contains(new NumericAssignEffect(factory.CreateFunction("numFunc1", "?a"), new Number(5), idManager)));
@@ -1133,25 +1132,25 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(effects.WhenEffects.Contains(new WhenEffect(new PredicateExpression(factory.CreatePredicate("pred", "?a"), idManager),
                                                                       new List<PrimitiveEffect> { new PredicateEffect(factory.CreatePredicate("pred", "?a")) })));
 
-            Assert.AreEqual(0, effects.GroundedPositivePredicateEffects.Count());
-            Assert.AreEqual(0, effects.GroundedNegativePredicateEffects.Count());
-            Assert.AreEqual(0, effects.GroundedNumericFunctionAssignmentEffects.Count());
-            Assert.AreEqual(0, effects.GroundedObjectFunctionAssignmentEffects.Count());
+            Assert.AreEqual(0, effects.GroundedPositivePredicateEffects.Count);
+            Assert.AreEqual(0, effects.GroundedNegativePredicateEffects.Count);
+            Assert.AreEqual(0, effects.GroundedNumericFunctionAssignmentEffects.Count);
+            Assert.AreEqual(0, effects.GroundedObjectFunctionAssignmentEffects.Count);
 
             // first grounding
 
             ISubstitution substitutionA = factory.CreateSubstitution(problem.Operators[0].Parameters, "constA");
             effects.GroundEffectsByCurrentOperatorSubstitution(groundingManager, substitutionA);
 
-            Assert.AreEqual(1, effects.GroundedPositivePredicateEffects.Count());
-            effects.GroundedPositivePredicateEffects.Contains(factory.CreatePredicate("pred", "constA"));
-            effects.PositivePredicateEffects.Contains(factory.CreatePredicate("pred", "?a"));
+            Assert.AreEqual(1, effects.GroundedPositivePredicateEffects.Count);
+            Assert.IsTrue(effects.GroundedPositivePredicateEffects.Contains(factory.CreatePredicate("pred", "constA")));
+            Assert.IsTrue(effects.PositivePredicateEffects.Contains(factory.CreatePredicate("pred", "?a")));
 
-            Assert.AreEqual(1, effects.GroundedNegativePredicateEffects.Count());
-            effects.GroundedNegativePredicateEffects.Contains(factory.CreatePredicate("pred", "constA"));
-            effects.NegativePredicateEffects.Contains(factory.CreatePredicate("pred", "?a"));
+            Assert.AreEqual(1, effects.GroundedNegativePredicateEffects.Count);
+            Assert.IsTrue(effects.GroundedNegativePredicateEffects.Contains(factory.CreatePredicate("pred", "constA")));
+            Assert.IsTrue(effects.NegativePredicateEffects.Contains(factory.CreatePredicate("pred", "?a")));
 
-            Assert.AreEqual(5, effects.GroundedNumericFunctionAssignmentEffects.Count());
+            Assert.AreEqual(5, effects.GroundedNumericFunctionAssignmentEffects.Count);
             var numFunc1A = factory.CreateFunction("numFunc1", "constA");
             Assert.IsTrue(effects.GroundedNumericFunctionAssignmentEffects.Contains(new KeyValuePair<IAtom, INumericExpression>(numFunc1A, new Number(5))));
             var numFunc2A = factory.CreateFunction("numFunc2", "constA");
@@ -1168,11 +1167,11 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(effects.NumericFunctionAssignmentEffects.Contains(new NumericScaleUpEffect(factory.CreateFunction("numFunc4", "?a"), new Number(5), idManager)));
             Assert.IsTrue(effects.NumericFunctionAssignmentEffects.Contains(new NumericScaleDownEffect(factory.CreateFunction("numFunc5", "?a"), new Number(5), idManager)));
 
-            Assert.AreEqual(1, effects.GroundedObjectFunctionAssignmentEffects.Count());
+            Assert.AreEqual(1, effects.GroundedObjectFunctionAssignmentEffects.Count);
             Assert.IsTrue(effects.GroundedObjectFunctionAssignmentEffects.Contains(new KeyValuePair<IAtom, ITerm>(factory.CreateFunction("objFunc", "constA"), factory.CreateTerm("constA"))));
             Assert.IsTrue(effects.ObjectFunctionAssignmentEffects.Contains(new ObjectAssignEffect(factory.CreateFunction("objFunc", "?a"), factory.CreateTerm("?a"))));
 
-            Assert.AreEqual(6, effects.OriginalLiftedFunctions.Count());
+            Assert.AreEqual(6, effects.OriginalLiftedFunctions.Count);
             Assert.IsTrue(effects.OriginalLiftedFunctions.Contains(new KeyValuePair<IAtom, IAtom>(factory.CreateFunction("numFunc1", "constA"), factory.CreateFunction("numFunc1", "?a"))));
             Assert.IsTrue(effects.OriginalLiftedFunctions.Contains(new KeyValuePair<IAtom, IAtom>(factory.CreateFunction("numFunc2", "constA"), factory.CreateFunction("numFunc2", "?a"))));
             Assert.IsTrue(effects.OriginalLiftedFunctions.Contains(new KeyValuePair<IAtom, IAtom>(factory.CreateFunction("numFunc3", "constA"), factory.CreateFunction("numFunc3", "?a"))));
@@ -1185,13 +1184,13 @@ namespace PAD.Tests.PDDL
             ISubstitution substitutionB = factory.CreateSubstitution(problem.Operators[0].Parameters, "constB");
             effects.GroundEffectsByCurrentOperatorSubstitution(groundingManager, substitutionB);
 
-            Assert.AreEqual(1, effects.GroundedPositivePredicateEffects.Count());
-            effects.GroundedPositivePredicateEffects.Contains(factory.CreatePredicate("pred", "constB"));
+            Assert.AreEqual(1, effects.GroundedPositivePredicateEffects.Count);
+            Assert.IsTrue(effects.GroundedPositivePredicateEffects.Contains(factory.CreatePredicate("pred", "constB")));
 
-            Assert.AreEqual(1, effects.GroundedNegativePredicateEffects.Count());
-            effects.GroundedNegativePredicateEffects.Contains(factory.CreatePredicate("pred", "constB"));
+            Assert.AreEqual(1, effects.GroundedNegativePredicateEffects.Count);
+            Assert.IsTrue(effects.GroundedNegativePredicateEffects.Contains(factory.CreatePredicate("pred", "constB")));
 
-            Assert.AreEqual(6, effects.OriginalLiftedFunctions.Count());
+            Assert.AreEqual(6, effects.OriginalLiftedFunctions.Count);
             Assert.IsTrue(effects.OriginalLiftedFunctions.Contains(new KeyValuePair<IAtom, IAtom>(factory.CreateFunction("numFunc1", "constB"), factory.CreateFunction("numFunc1", "?a"))));
             Assert.IsTrue(effects.OriginalLiftedFunctions.Contains(new KeyValuePair<IAtom, IAtom>(factory.CreateFunction("objFunc", "constB"), factory.CreateFunction("objFunc", "?a"))));
         }
@@ -1202,7 +1201,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EffectsRelevanceConditionsEvaluator_D.pddl"), GetFilePath("TC_EffectsRelevanceConditionsEvaluator_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
 
@@ -1240,8 +1239,8 @@ namespace PAD.Tests.PDDL
             List<int> relevantContionalEffects = new List<int>();
             Assert.IsTrue(new EffectsRelevanceConditionsEvaluator(problem.Operators[13].Effects, groundingManager).Evaluate(goalExpr, emptySubstitution, null, relevantContionalEffects));
             Assert.AreEqual(2, relevantContionalEffects.Count);
-            relevantContionalEffects.Contains(0);
-            relevantContionalEffects.Contains(2);
+            Assert.IsTrue(relevantContionalEffects.Contains(0));
+            Assert.IsTrue(relevantContionalEffects.Contains(2));
 
             relevantContionalEffects.Clear();
             Assert.IsFalse(new EffectsRelevanceConditionsEvaluator(problem.Operators[14].Effects, groundingManager).Evaluate(goalExpr, emptySubstitution, null, relevantContionalEffects));
@@ -1250,7 +1249,7 @@ namespace PAD.Tests.PDDL
             relevantContionalEffects.Clear();
             Assert.IsTrue(new EffectsRelevanceConditionsEvaluator(problem.Operators[15].Effects, groundingManager).Evaluate(goalExpr, emptySubstitution, null, relevantContionalEffects));
             Assert.AreEqual(1, relevantContionalEffects.Count);
-            relevantContionalEffects.Contains(0);
+            Assert.IsTrue(relevantContionalEffects.Contains(0));
 
             relevantContionalEffects.Clear();
             Assert.IsFalse(new EffectsRelevanceConditionsEvaluator(problem.Operators[16].Effects, groundingManager).Evaluate(goalExpr, emptySubstitution, null, relevantContionalEffects));
@@ -1263,7 +1262,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EffectsRelevanceRelativeStateEvaluator_D.pddl"), GetFilePath("TC_EffectsRelevanceRelativeStateEvaluator_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
 
@@ -1296,8 +1295,8 @@ namespace PAD.Tests.PDDL
             List<int> relevantContionalEffects = new List<int>();
             Assert.IsTrue(new EffectsRelevanceRelativeStateEvaluator(problem.Operators[12].Effects, groundingManager).Evaluate(relativeState, emptySubstitution, relevantContionalEffects));
             Assert.AreEqual(2, relevantContionalEffects.Count);
-            relevantContionalEffects.Contains(0);
-            relevantContionalEffects.Contains(2);
+            Assert.IsTrue(relevantContionalEffects.Contains(0));
+            Assert.IsTrue(relevantContionalEffects.Contains(2));
 
             relevantContionalEffects.Clear();
             Assert.IsFalse(new EffectsRelevanceRelativeStateEvaluator(problem.Operators[13].Effects, groundingManager).Evaluate(relativeState, emptySubstitution, relevantContionalEffects));
@@ -1306,7 +1305,7 @@ namespace PAD.Tests.PDDL
             relevantContionalEffects.Clear();
             Assert.IsTrue(new EffectsRelevanceRelativeStateEvaluator(problem.Operators[14].Effects, groundingManager).Evaluate(relativeState, emptySubstitution, relevantContionalEffects));
             Assert.AreEqual(1, relevantContionalEffects.Count);
-            relevantContionalEffects.Contains(0);
+            Assert.IsTrue(relevantContionalEffects.Contains(0));
 
             relevantContionalEffects.Clear();
             Assert.IsFalse(new EffectsRelevanceRelativeStateEvaluator(problem.Operators[15].Effects, groundingManager).Evaluate(relativeState, emptySubstitution, relevantContionalEffects));
@@ -1319,7 +1318,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EffectsResultAtomsCollector.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
 
@@ -1348,7 +1347,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_EvaluationManager_D.pddl"), GetFilePath("TC_EvaluationManager_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             EvaluationManager evaluationManager = new EvaluationManager(new GroundingManager(data, idManager), problem.RigidRelations);
 
@@ -1385,9 +1384,11 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(3, evaluationManager.GetNotAccomplishedConstraintsCount((Conditions)problem.GoalConditions, problem.InitialState));
             Assert.AreEqual(3, evaluationManager.GetNotAccomplishedConstraintsCount((ConditionsCNF)problem.GoalConditions.GetCNF(), problem.InitialState));
 
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(factory.CreatePredicate("predTrue"), 5);
-            stateLabels.Add(factory.CreatePredicate("predFalse"), 3);
+            StateLabels stateLabels = new StateLabels
+            {
+                {factory.CreatePredicate("predTrue"), 5},
+                {factory.CreatePredicate("predFalse"), 3}
+            };
             Assert.AreEqual(5, evaluationManager.EvaluateOperatorPlanningGraphLabel((Conditions)problem.GoalConditions, new Substitution(), stateLabels, Planner.ForwardCostEvaluationStrategy.MAX_VALUE));
             Assert.AreEqual(8, evaluationManager.EvaluateOperatorPlanningGraphLabel((Conditions)problem.GoalConditions, new Substitution(), stateLabels, Planner.ForwardCostEvaluationStrategy.ADDITIVE_VALUE));
 
@@ -1398,17 +1399,17 @@ namespace PAD.Tests.PDDL
 
             var precond4 = (ConditionsCNF)problem.Operators[3].Preconditions.GetCNF();
             evaluationManager.RenameConditionParameters(precond4, 7);
-            Assert.AreEqual(7, precond4.Parameters[0].ParameterNameID);
-            PredicateLiteralCNF pred4 = precond4.Last() as PredicateLiteralCNF;
-            VariableTerm var4 = pred4.PredicateAtom.GetTerms()[0] as VariableTerm;
-            Assert.AreEqual(7, var4.NameID);
+            Assert.AreEqual(7, precond4.Parameters[0].ParameterNameId);
+            PredicateLiteralCNF pred4 = (PredicateLiteralCNF)precond4.Last();
+            VariableTerm var4 = (VariableTerm)pred4.PredicateAtom.GetTerms()[0];
+            Assert.AreEqual(7, var4.NameId);
 
             var usedPredicates = evaluationManager.CollectUsedPredicates(problem.Operators[0].Preconditions);
             Assert.AreEqual(4, usedPredicates.Count);
-            usedPredicates.Contains(factory.CreatePredicate("predTrue"));
-            usedPredicates.Contains(factory.CreatePredicate("predFalse"));
-            usedPredicates.Contains(factory.CreatePredicate("pred", "constA"));
-            usedPredicates.Contains(factory.CreatePredicate("pred", "constB"));
+            Assert.IsTrue(usedPredicates.Contains(factory.CreatePredicate("predTrue")));
+            Assert.IsTrue(usedPredicates.Contains(factory.CreatePredicate("predFalse")));
+            Assert.IsTrue(usedPredicates.Contains(factory.CreatePredicate("pred", "constA")));
+            Assert.IsTrue(usedPredicates.Contains(factory.CreatePredicate("pred", "constB")));
         }
 
         [TestMethod]
@@ -1416,7 +1417,7 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ExpressionsBuilder.pddl"), GetFilePath("Dummy_P.pddl"));
 
-            ExpressionsBuilder builder = new ExpressionsBuilder(new IDManager(data));
+            ExpressionsBuilder builder = new ExpressionsBuilder(new IdManager(data));
 
             var preconditions = data.Domain.Actions[0].Preconditions;
             Assert.IsTrue(builder.Build(preconditions[0]) is PreferenceExpression);
@@ -1437,7 +1438,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ExpressionEvaluator_D.pddl"), GetFilePath("TC_ExpressionEvaluator_P.pddl"));
 
             Problem problem = new Problem(data);
-            ExpressionEvaluator evaluator = new ExpressionEvaluator(new GroundingManager(data, new IDManager(data)), problem.RigidRelations);
+            ExpressionEvaluator evaluator = new ExpressionEvaluator(new GroundingManager(data, new IdManager(data)), problem.RigidRelations);
 
             foreach (IExpression expression in problem.Operators[0].Preconditions)
             {
@@ -1456,7 +1457,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ExpressionsGrounder.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             Lazy<TermsGrounder> termsGrounder = new Lazy<TermsGrounder>(() => new TermsGrounder(idManager));
             ExpressionsGrounder expressionsGrounder = new ExpressionsGrounder(termsGrounder, new Lazy<NumericExpressionsGrounder>(() => new NumericExpressionsGrounder(termsGrounder, idManager)), idManager);
@@ -1476,10 +1477,10 @@ namespace PAD.Tests.PDDL
             var pred0Terms = pred0.PredicateAtom.GetTerms();
             ConstantTerm pred0ConstTerm0 = pred0Terms[0] as ConstantTerm;
             Assert.IsNotNull(pred0ConstTerm0);
-            Assert.AreEqual(constB, pred0ConstTerm0.NameID);
+            Assert.AreEqual(constB, pred0ConstTerm0.NameId);
             ConstantTerm pred0ConstTerm1 = pred0Terms[1] as ConstantTerm;
             Assert.IsNotNull(pred0ConstTerm1);
-            Assert.AreEqual(constB, pred0ConstTerm1.NameID);
+            Assert.AreEqual(constB, pred0ConstTerm1.NameId);
 
             EqualsExpression equals1 = andExpr.Children[1] as EqualsExpression;
             Assert.IsNotNull(equals1);
@@ -1487,10 +1488,10 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(objFunc1);
             ConstantTerm objFunc1ConstTerm = objFunc1.FunctionAtom.GetTerms()[0] as ConstantTerm;
             Assert.IsNotNull(objFunc1ConstTerm);
-            Assert.AreEqual(constB, objFunc1ConstTerm.NameID);
+            Assert.AreEqual(constB, objFunc1ConstTerm.NameId);
             ConstantTerm constTerm1 = equals1.RightArgument as ConstantTerm;
             Assert.IsNotNull(constTerm1);
-            Assert.AreEqual(constB, constTerm1.NameID);
+            Assert.AreEqual(constB, constTerm1.NameId);
 
             NumericCompareExpression compare2 = andExpr.Children[2] as NumericCompareExpression;
             Assert.IsNotNull(compare2);
@@ -1498,7 +1499,7 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(numFunc2);
             ConstantTerm numFuncFunc2ConstTerm = numFunc2.FunctionAtom.GetTerms()[0] as ConstantTerm;
             Assert.IsNotNull(numFuncFunc2ConstTerm);
-            Assert.AreEqual(constB, numFuncFunc2ConstTerm.NameID);
+            Assert.AreEqual(constB, numFuncFunc2ConstTerm.NameId);
 
             ForallExpression forall3 = andExpr.Children[3] as ForallExpression;
             Assert.IsNotNull(forall3);
@@ -1506,7 +1507,7 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(pred3);
             ConstantTerm pred3ConstTerm = pred3.PredicateAtom.GetTerms()[0] as ConstantTerm;
             Assert.IsNotNull(pred3ConstTerm);
-            Assert.AreEqual(constB, pred3ConstTerm.NameID);
+            Assert.AreEqual(constB, pred3ConstTerm.NameId);
             VariableTerm pred3VariableTerm = pred3.PredicateAtom.GetTerms()[1] as VariableTerm;
             Assert.IsNotNull(pred3VariableTerm);
         }
@@ -1516,21 +1517,21 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_TermsBuilder.pddl"), GetFilePath("Dummy_P.pddl"));
 
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             TermsBuilder builder = new TermsBuilder(idManager);
             var preconditions = data.Domain.Actions[0].Preconditions;
             var parameters = data.Domain.Actions[0].Parameters;
 
             idManager.Variables.RegisterLocalParameters(parameters);
 
-            InputData.PDDL.PredicateExpression pred0 = preconditions[0] as InputData.PDDL.PredicateExpression;
+            InputData.PDDL.PredicateExpression pred0 = (InputData.PDDL.PredicateExpression)preconditions[0];
             Assert.IsTrue(builder.Build(pred0.Terms[0]) is ConstantTerm);
 
-            InputData.PDDL.EqualsExpression equals1 = preconditions[1] as InputData.PDDL.EqualsExpression;
+            InputData.PDDL.EqualsExpression equals1 = (InputData.PDDL.EqualsExpression)preconditions[1];
             Assert.IsTrue(builder.Build(equals1.Term1) is VariableTerm);
             Assert.IsTrue(builder.Build(equals1.Term2) is VariableTerm);
 
-            InputData.PDDL.EqualsExpression equals2 = preconditions[2] as InputData.PDDL.EqualsExpression;
+            InputData.PDDL.EqualsExpression equals2 = (InputData.PDDL.EqualsExpression)preconditions[2];
             Assert.IsTrue(builder.Build(equals2.Term1) is ObjectFunctionTerm);
             Assert.IsTrue(builder.Build(equals2.Term2) is ConstantTerm);
 
@@ -1543,10 +1544,9 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_Terms.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
             var preconditions = problem.Operators[0].Preconditions;
 
-            EqualsExpression equals0 = preconditions[0] as EqualsExpression;
+            EqualsExpression equals0 = (EqualsExpression)preconditions[0];
             VariableTerm variable0 = equals0.LeftArgument as VariableTerm;
             Assert.IsNotNull(variable0);
             ITerm var0Clone = variable0.Clone();
@@ -1561,7 +1561,7 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(const0.GetHashCode() == const0Clone.GetHashCode());
             Assert.IsTrue(const0.Equals(const0Clone));
 
-            EqualsExpression equals1 = preconditions[1] as EqualsExpression;
+            EqualsExpression equals1 = (EqualsExpression)preconditions[1];
             ObjectFunctionTerm objFunc1 = equals1.LeftArgument as ObjectFunctionTerm;
             Assert.IsNotNull(objFunc1);
             ITerm objFunc1Clone = objFunc1.Clone();
@@ -1576,7 +1576,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_TermsGrounder_D.pddl"), GetFilePath("TC_TermsGrounder_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             TermsGrounder termsGrounder = new TermsGrounder(idManager);
 
@@ -1591,11 +1591,11 @@ namespace PAD.Tests.PDDL
             ITerm pred0GroundedTerm0 = termsGrounder.GroundTerm(pred0.PredicateAtom.GetTerms()[0], substitution0);
             ConstantTerm pred0ConstTerm0 = pred0GroundedTerm0 as ConstantTerm;
             Assert.IsNotNull(pred0ConstTerm0);
-            Assert.AreEqual(constB, pred0ConstTerm0.NameID);
+            Assert.AreEqual(constB, pred0ConstTerm0.NameId);
             ITerm pred0GroundedTerm1 = termsGrounder.GroundTerm(pred0.PredicateAtom.GetTerms()[1], substitution0);
             ConstantTerm pred0ConstTerm1 = pred0GroundedTerm1 as ConstantTerm;
             Assert.IsNotNull(pred0ConstTerm1);
-            Assert.AreEqual(constA, pred0ConstTerm1.NameID);
+            Assert.AreEqual(constA, pred0ConstTerm1.NameId);
 
             IAtom groundedAtom0 = termsGrounder.GroundAtom(pred0.PredicateAtom, substitution0);
             Assert.AreEqual(pred0GroundedTerm0, groundedAtom0.GetTerms()[0]);
@@ -1608,11 +1608,11 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(pred1ObjFuncTerm);
             ConstantTerm pred1ConstTerm = pred1ObjFuncTerm.FunctionAtom.GetTerms()[0] as ConstantTerm;
             Assert.IsNotNull(pred1ConstTerm);
-            Assert.AreEqual(constB, pred1ConstTerm.NameID);
+            Assert.AreEqual(constB, pred1ConstTerm.NameId);
             ITerm pred1GroundedTermDeep = termsGrounder.GroundTermDeep(pred1.PredicateAtom.GetTerms()[0], substitution0, refState);
             ConstantTerm pred1ConstTermDeep = pred1GroundedTermDeep as ConstantTerm;
             Assert.IsNotNull(pred1ConstTermDeep);
-            Assert.AreEqual(constA, pred1ConstTermDeep.NameID);
+            Assert.AreEqual(constA, pred1ConstTermDeep.NameId);
 
             IAtom groundedAtom1Deep = termsGrounder.GroundAtomDeep(pred1.PredicateAtom, substitution0, refState);
             Assert.AreEqual(pred1GroundedTermDeep, groundedAtom1Deep.GetTerms()[0]);
@@ -1624,7 +1624,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ExpressionToCNFTransformer.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            EvaluationManager evaluationManager = new EvaluationManager(new GroundingManager(data, new IDManager(data)));
+            EvaluationManager evaluationManager = new EvaluationManager(new GroundingManager(data, new IdManager(data)));
             ExpressionToCNFTransformer transformer = new ExpressionToCNFTransformer(evaluationManager);
 
             IExpression expression0 = transformer.Transform(problem.Operators[0].Preconditions.GetWrappedConditions());
@@ -1685,7 +1685,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_ExpressionToNNFTransformer.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            EvaluationManager evaluationManager = new EvaluationManager(new GroundingManager(data, new IDManager(data)));
+            EvaluationManager evaluationManager = new EvaluationManager(new GroundingManager(data, new IdManager(data)));
             IExpression expression = problem.Operators[0].Preconditions[0];
 
             ExpressionToNNFTransformer transformer = new ExpressionToNNFTransformer(evaluationManager);
@@ -1729,7 +1729,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_Grounder_D.pddl"), GetFilePath("TC_Grounder_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             Grounder grounder = new Grounder(idManager);
 
@@ -1763,10 +1763,10 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(groundedPrecond0);
             VariableTerm variableTerm0 = groundedPrecond0.PredicateAtom.GetTerms()[0] as VariableTerm;
             Assert.IsNotNull(variableTerm0);
-            Assert.IsTrue(problem.Operators[0].Parameters[0].ParameterNameID == variableTerm0.NameID);
+            Assert.IsTrue(problem.Operators[0].Parameters[0].ParameterNameId == variableTerm0.NameId);
             ConstantTerm constantTerm0 = groundedPrecond0.PredicateAtom.GetTerms()[1] as ConstantTerm;
             Assert.IsNotNull(constantTerm0);
-            Assert.IsTrue(factory.CreateConstant("constB") == constantTerm0.NameID);
+            Assert.IsTrue(factory.CreateConstant("constB") == constantTerm0.NameId);
 
             NumericCompareExpression numCompare2 = precond[2] as NumericCompareExpression;
             Assert.IsNotNull(numCompare2);
@@ -1786,7 +1786,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_GroundingManager_D.pddl"), GetFilePath("TC_GroundingManager_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager manager = new GroundingManager(data, idManager);
 
@@ -1796,45 +1796,45 @@ namespace PAD.Tests.PDDL
             var precond1 = (PredicateExpression)precond[1];
             var precond2 = (NumericCompareExpression)precond[2];
 
-            var substitutionABC = factory.CreateSubstitution(parameters, "constA", "constB", "constC");
-            var pred1AC = factory.CreatePredicate("pred1", "constA", "constC");
+            var substitutionAbc = factory.CreateSubstitution(parameters, "constA", "constB", "constC");
+            var pred1Ac = factory.CreatePredicate("pred1", "constA", "constC");
             var pred2B = factory.CreatePredicate("pred2", "constB");
             var objFuncA = factory.CreateFunction("objFunc", "constA");
             var numFuncB = factory.CreateFunction("numFunc", "constB");
             var constA = factory.CreateConstant("constA");
             var constB = factory.CreateConstant("constB");
 
-            Assert.AreEqual(pred1AC, manager.GroundAtom(precond0.PredicateAtom, substitutionABC));
-            Assert.AreEqual(pred2B, manager.GroundAtomDeep(precond1.PredicateAtom, substitutionABC, problem.InitialState));
+            Assert.AreEqual(pred1Ac, manager.GroundAtom(precond0.PredicateAtom, substitutionAbc));
+            Assert.AreEqual(pred2B, manager.GroundAtomDeep(precond1.PredicateAtom, substitutionAbc, problem.InitialState));
 
-            Assert.AreEqual(new ObjectFunctionTerm(objFuncA, idManager), manager.GroundTerm(precond1.PredicateAtom.GetTerms()[0], substitutionABC));
-            Assert.AreEqual(new ConstantTerm(constB, idManager), manager.GroundTermDeep(precond1.PredicateAtom.GetTerms()[0], substitutionABC, problem.InitialState));
+            Assert.AreEqual(new ObjectFunctionTerm(objFuncA, idManager), manager.GroundTerm(precond1.PredicateAtom.GetTerms()[0], substitutionAbc));
+            Assert.AreEqual(new ConstantTerm(constB, idManager), manager.GroundTermDeep(precond1.PredicateAtom.GetTerms()[0], substitutionAbc, problem.InitialState));
 
-            Assert.AreEqual(new PredicateExpression(pred1AC, idManager), manager.GroundExpression(precond0, substitutionABC));
-            Assert.AreEqual(new NumericFunction(numFuncB, idManager), manager.GroundNumericExpression(precond2.LeftArgument, substitutionABC));
+            Assert.AreEqual(new PredicateExpression(pred1Ac, idManager), manager.GroundExpression(precond0, substitutionAbc));
+            Assert.AreEqual(new NumericFunction(numFuncB, idManager), manager.GroundNumericExpression(precond2.LeftArgument, substitutionAbc));
 
-            var groundedConditions = manager.GroundConditions(precond, substitutionABC);
+            var groundedConditions = manager.GroundConditions(precond, substitutionAbc);
             Assert.AreEqual(3, groundedConditions.Count);
-            Assert.IsTrue(groundedConditions.Contains(new PredicateExpression(pred1AC, idManager)));
+            Assert.IsTrue(groundedConditions.Contains(new PredicateExpression(pred1Ac, idManager)));
 
-            var localSubstitutions = manager.GenerateAllLocalSubstitutions(parameters);
-            Assert.AreEqual(4, localSubstitutions.Count());
+            var localSubstitutions = manager.GenerateAllLocalSubstitutions(parameters).ToList();
+            Assert.AreEqual(4, localSubstitutions.Count);
             Assert.IsTrue(localSubstitutions.Contains(factory.CreateSubstitution(parameters, "constA", "constA", "constC")));
             Assert.IsTrue(localSubstitutions.Contains(factory.CreateSubstitution(parameters, "constA", "constB", "constC")));
             Assert.IsTrue(localSubstitutions.Contains(factory.CreateSubstitution(parameters, "constB", "constA", "constC")));
             Assert.IsTrue(localSubstitutions.Contains(factory.CreateSubstitution(parameters, "constB", "constB", "constC")));
 
-            var constantsOfType = manager.GetAllConstantsOfType(factory.CreateType("typeA"));
-            Assert.AreEqual(2, constantsOfType.Count());
+            var constantsOfType = manager.GetAllConstantsOfType(factory.CreateType("typeA")).ToList();
+            Assert.AreEqual(2, constantsOfType.Count);
             Assert.IsTrue(constantsOfType.Contains(constA));
             Assert.IsTrue(constantsOfType.Contains(constB));
 
             var typesForConstant = manager.GetTypesForConstant(constA);
-            Assert.AreEqual(1, typesForConstant.Count());
+            Assert.AreEqual(1, typesForConstant.Count);
             Assert.IsTrue(typesForConstant.Contains(factory.CreateType("typeA")));
 
-            var childrenTypes = manager.GetChildrenTypes(factory.CreateType("typeB"));
-            Assert.AreEqual(1, childrenTypes.Count());
+            var childrenTypes = manager.GetChildrenTypes(factory.CreateType("typeB")).ToList();
+            Assert.AreEqual(1, childrenTypes.Count);
             Assert.IsTrue(childrenTypes.Contains(factory.CreateType("typeA")));
 
             var liftedPredicates = manager.GetAllLiftedPredicates();
@@ -1857,25 +1857,24 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_IDManager_D.pddl"), GetFilePath("TC_IDManager_P.pddl"));
 
-            Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
 
             Assert.AreEqual(3, idManager.Predicates.Count());
-            Assert.AreEqual("predA", idManager.Predicates.GetNameFromID(idManager.Predicates.GetID("predA")));
-            Assert.AreEqual("predB", idManager.Predicates.GetNameFromID(idManager.Predicates.GetID("predB", 1)));
-            Assert.AreEqual("predB", idManager.Predicates.GetNameFromID(idManager.Predicates.GetID("predB", 2)));
-            Assert.IsTrue(idManager.Predicates.GetID("predB", 1) != idManager.Predicates.GetID("predB", 2));
+            Assert.AreEqual("predA", idManager.Predicates.GetNameFromId(idManager.Predicates.GetId("predA")));
+            Assert.AreEqual("predB", idManager.Predicates.GetNameFromId(idManager.Predicates.GetId("predB", 1)));
+            Assert.AreEqual("predB", idManager.Predicates.GetNameFromId(idManager.Predicates.GetId("predB", 2)));
+            Assert.IsTrue(idManager.Predicates.GetId("predB", 1) != idManager.Predicates.GetId("predB", 2));
 
             Assert.AreEqual(2, idManager.Functions.Count());
             Assert.IsTrue(idManager.Functions.IsRegistered("objFunc", 1));
             Assert.IsFalse(idManager.Functions.IsRegistered("objFunc"));
             idManager.Functions.Register("objFunc");
             Assert.IsTrue(idManager.Functions.IsRegistered("objFunc"));
-            Assert.IsTrue(idManager.Functions.GetID("objFunc") != idManager.Functions.GetID("objFunc", 1));
+            Assert.IsTrue(idManager.Functions.GetId("objFunc") != idManager.Functions.GetId("objFunc", 1));
             idManager.Functions.Unregister("objFunc");
             Assert.IsFalse(idManager.Functions.IsRegistered("objFunc"));
             Assert.IsTrue(idManager.Functions.IsRegistered("numFunc", 1));
-            Assert.AreEqual(1, idManager.Functions.GetNumberOfArgumentsFromID(idManager.Functions.GetID("numFunc", 1)));
+            Assert.AreEqual(1, idManager.Functions.GetNumberOfArgumentsFromId(idManager.Functions.GetId("numFunc", 1)));
 
             Assert.AreEqual(3, idManager.Constants.Count());
             Assert.IsTrue(idManager.Constants.IsRegistered("constA"));
@@ -1888,10 +1887,10 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(idManager.Types.IsRegistered("typeB"));
             Assert.IsTrue(idManager.Types.IsRegistered("object"));
 
-            var usedIDs = idManager.Types.GetUsedIDs();
-            Assert.IsTrue(usedIDs.Contains(idManager.Types.GetID("typeA")));
-            Assert.IsTrue(usedIDs.Contains(idManager.Types.GetID("typeB")));
-            Assert.IsTrue(usedIDs.Contains(idManager.Types.GetID("object")));
+            var usedIDs = idManager.Types.GetUsedIDs().ToList();
+            Assert.IsTrue(usedIDs.Contains(idManager.Types.GetId("typeA")));
+            Assert.IsTrue(usedIDs.Contains(idManager.Types.GetId("typeB")));
+            Assert.IsTrue(usedIDs.Contains(idManager.Types.GetId("object")));
 
             Assert.AreEqual(0, idManager.Preferences.Count());
             Assert.AreEqual(0, idManager.Variables.Count());
@@ -1909,8 +1908,7 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_InitialStateDataBuilder_D.pddl"), GetFilePath("TC_InitialStateDataBuilder_P.pddl"));
 
-            Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             InitialStateDataBuilder builder = new InitialStateDataBuilder(idManager);
@@ -1941,7 +1939,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_NotAccomplishedConstraintsCounter_D.pddl"), GetFilePath("TC_NotAccomplishedConstraintsCounter_P.pddl"));
 
             Problem problem = new Problem(data);
-            GroundingManager groundingManager = new GroundingManager(data, new IDManager(data));
+            GroundingManager groundingManager = new GroundingManager(data, new IdManager(data));
             Lazy<ExpressionEvaluator> expressionEvaluator = new Lazy<ExpressionEvaluator>(() => new ExpressionEvaluator(groundingManager, problem.RigidRelations));
             Conditions goalConditions = (Conditions)problem.GoalConditions;
 
@@ -1961,9 +1959,9 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_NotAccomplishedConstraintsCounterCNF_D.pddl"), GetFilePath("TC_NotAccomplishedConstraintsCounterCNF_P.pddl"));
 
             Problem problem = new Problem(data);
-            GroundingManager groundingManager = new GroundingManager(data, new IDManager(data));
-            Lazy<ConditionsCNFEvaluator> conditionsCNFEvaluator = new Lazy<ConditionsCNFEvaluator>(() => new ConditionsCNFEvaluator(groundingManager));
-            NotAccomplishedConstraintsCounterCNF counter = new NotAccomplishedConstraintsCounterCNF(groundingManager, conditionsCNFEvaluator);
+            GroundingManager groundingManager = new GroundingManager(data, new IdManager(data));
+            Lazy<ConditionsCNFEvaluator> conditionsCnfEvaluator = new Lazy<ConditionsCNFEvaluator>(() => new ConditionsCNFEvaluator(groundingManager));
+            NotAccomplishedConstraintsCounterCNF counter = new NotAccomplishedConstraintsCounterCNF(conditionsCnfEvaluator);
 
             ConditionsCNF goalConditions = (ConditionsCNF)problem.GoalConditions.GetCNF();
             Assert.AreEqual(4, counter.Evaluate(goalConditions, problem.InitialState));
@@ -1981,7 +1979,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_NumericAssignmentsBackwardsReplacer_D.pddl"), GetFilePath("TC_NumericAssignmentsBackwardsReplacer_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
 
@@ -1995,7 +1993,7 @@ namespace PAD.Tests.PDDL
 
             NumericAssignmentsBackwardsReplacer replacer = new NumericAssignmentsBackwardsReplacer(effects.GroundedNumericFunctionAssignmentEffects, groundingManager, operatorSubstitution, expressionSubstitution);
 
-            NumericCompareExpression expression0 = goalConditions[0] as NumericCompareExpression;
+            NumericCompareExpression expression0 = (NumericCompareExpression)goalConditions[0];
             INumericExpression leftExpression0 = replacer.Replace(expression0.LeftArgument);
             INumericExpression rightExpression0 = replacer.Replace(expression0.RightArgument);
 
@@ -2007,7 +2005,7 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(numberRight0);
             Assert.AreEqual(0.5, numberRight0.Value);
 
-            NumericCompareExpression expression1 = goalConditions[1] as NumericCompareExpression;
+            NumericCompareExpression expression1 = (NumericCompareExpression)goalConditions[1];
             INumericExpression leftExpression1 = replacer.Replace(expression1.LeftArgument);
             INumericExpression rightExpression1 = replacer.Replace(expression1.RightArgument);
 
@@ -2019,7 +2017,7 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(numberRight1);
             Assert.AreEqual(0.5, numberRight1.Value);
 
-            NumericCompareExpression expression2 = goalConditions[2] as NumericCompareExpression;
+            NumericCompareExpression expression2 = (NumericCompareExpression)goalConditions[2];
             INumericExpression leftExpression2 = replacer.Replace(expression2.LeftArgument);
             INumericExpression rightExpression2 = replacer.Replace(expression2.RightArgument);
 
@@ -2030,7 +2028,7 @@ namespace PAD.Tests.PDDL
             UnaryMinus unaryMinusRight2 = rightExpression2 as UnaryMinus;
             Assert.IsNotNull(unaryMinusRight2);
 
-            NumericCompareExpression expression3 = goalConditions[3] as NumericCompareExpression;
+            NumericCompareExpression expression3 = (NumericCompareExpression)goalConditions[3];
             INumericExpression leftExpression3 = replacer.Replace(expression3.LeftArgument);
             INumericExpression rightExpression3 = replacer.Replace(expression3.RightArgument);
 
@@ -2042,7 +2040,7 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(numberRight3);
             Assert.AreEqual(24, numberRight3.Value);
 
-            NumericCompareExpression expression4 = goalConditions[4] as NumericCompareExpression;
+            NumericCompareExpression expression4 = (NumericCompareExpression)goalConditions[4];
             INumericExpression leftExpression4 = replacer.Replace(expression4.LeftArgument);
             INumericExpression rightExpression4 = replacer.Replace(expression4.RightArgument);
 
@@ -2056,7 +2054,7 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(plusRight4.Children[0] is NumericFunction);
             Assert.IsTrue(plusRight4.Children[1] is Number);
 
-            NumericCompareExpression expression5 = goalConditions[5] as NumericCompareExpression;
+            NumericCompareExpression expression5 = (NumericCompareExpression)goalConditions[5];
             INumericExpression leftExpression5 = replacer.Replace(expression5.LeftArgument);
             INumericExpression rightExpression5 = replacer.Replace(expression5.RightArgument);
 
@@ -2076,9 +2074,9 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_NumericExpressionsBuilder.pddl"), GetFilePath("Dummy_P.pddl"));
 
-            NumericExpressionsBuilder builder = new NumericExpressionsBuilder(new IDManager(data));
+            NumericExpressionsBuilder builder = new NumericExpressionsBuilder(new IdManager(data));
 
-            var equalsExpr = data.Domain.Actions[0].Preconditions[0] as InputData.PDDL.NumericCompareExpression;
+            var equalsExpr = (InputData.PDDL.NumericCompareExpression)data.Domain.Actions[0].Preconditions[0];
             var numericExpr = builder.Build(equalsExpr.NumericExpression1);
 
             Plus plusExpr = numericExpr as Plus;
@@ -2099,7 +2097,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_NumericExpressionEvaluator_D.pddl"), GetFilePath("TC_NumericExpressionEvaluator_P.pddl"));
 
             Problem problem = new Problem(data);
-            ExpressionEvaluator evaluator = new ExpressionEvaluator(new GroundingManager(data, new IDManager(data)), problem.RigidRelations);
+            ExpressionEvaluator evaluator = new ExpressionEvaluator(new GroundingManager(data, new IdManager(data)), problem.RigidRelations);
 
             foreach (IExpression expression in problem.Operators[0].Preconditions)
             {
@@ -2113,7 +2111,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_NumericExpressionsGrounder.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             NumericExpressionsGrounder numericExpressionsGrounder = new NumericExpressionsGrounder(new Lazy<TermsGrounder>(() => new TermsGrounder(idManager)), idManager);
 
@@ -2127,7 +2125,7 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(groundedNumFunc1);
             ConstantTerm constTerm1 = groundedNumFunc1.FunctionAtom.GetTerms()[0] as ConstantTerm;
             Assert.IsNotNull(constTerm1);
-            Assert.AreEqual(factory.CreateConstant("constB"), constTerm1.NameID);
+            Assert.AreEqual(factory.CreateConstant("constB"), constTerm1.NameId);
 
             INumericExpression groundedExpr2 = numericExpressionsGrounder.Ground(compareExpr.RightArgument, substitution);
             Plus groundedPlus2 = groundedExpr2 as Plus;
@@ -2136,7 +2134,7 @@ namespace PAD.Tests.PDDL
             Assert.IsNotNull(groundedNumFunc2);
             ConstantTerm constTerm2 = groundedNumFunc2.FunctionAtom.GetTerms()[0] as ConstantTerm;
             Assert.IsNotNull(constTerm2);
-            Assert.AreEqual(factory.CreateConstant("constA"), constTerm2.NameID);
+            Assert.AreEqual(factory.CreateConstant("constA"), constTerm2.NameId);
         }
 
         [TestMethod]
@@ -2145,7 +2143,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_NumericFunctionsCollector.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             NumericFunctionsCollector collector = new NumericFunctionsCollector();
 
@@ -2155,9 +2153,9 @@ namespace PAD.Tests.PDDL
 
             var functions = collector.Collect(expression0.LeftArgument);
             Assert.AreEqual(3, functions.Count);
-            functions.Contains(new NumericFunction(factory.CreateFunction("numFuncA", "constA", "?a"), idManager));
-            functions.Contains(new NumericFunction(factory.CreateFunction("numFuncB"), idManager));
-            functions.Contains(new NumericFunction(factory.CreateFunction("numFuncC", "constB"), idManager));
+            Assert.IsTrue(functions.Contains(new NumericFunction(factory.CreateFunction("numFuncA", "constA", "?a"), idManager)));
+            Assert.IsTrue(functions.Contains(new NumericFunction(factory.CreateFunction("numFuncB"), idManager)));
+            Assert.IsTrue(functions.Contains(new NumericFunction(factory.CreateFunction("numFuncC", "constB"), idManager)));
         }
 
         [TestMethod]
@@ -2166,7 +2164,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_Operator_D.pddl"), GetFilePath("TC_Operator_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var predAConstA = factory.CreatePredicate("predA", "constA");
@@ -2203,8 +2201,8 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(newState.HasPredicate(predEConstA));
             Assert.IsTrue(newState.HasPredicate(predDConstA));
             Assert.IsTrue(newState.HasPredicate(predDConstB));
-            Assert.IsTrue(newState.GetNumericFunctionValue(numFunc) == 9);
-            Assert.IsTrue(newState.GetObjectFunctionValue(objFunc) == constA);
+            Assert.AreEqual(9, newState.GetNumericFunctionValue(numFunc));
+            Assert.AreEqual(constA, newState.GetObjectFunctionValue(objFunc));
 
             Assert.IsTrue(operatorA.IsRelevant(goalConditions));
             Assert.IsFalse(operatorB.IsRelevant(goalConditions));
@@ -2218,8 +2216,8 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(newConditions.Contains(new PredicateLiteralCNF(new PredicateExpression(predC, idManager), false)));
             Assert.IsTrue(newConditions.Contains(new PredicateLiteralCNF(new PredicateExpression(predEConstA, idManager), false)));
 
-            var newRelativeStates = operatorA.ApplyBackwards(goalRelativeState);
-            Assert.AreEqual(1, newRelativeStates.Count());
+            var newRelativeStates = operatorA.ApplyBackwards(goalRelativeState).ToList();
+            Assert.AreEqual(1, newRelativeStates.Count);
             var newRelativeState = (IRelativeState)newRelativeStates.First();
             Assert.IsTrue(newRelativeState.HasNegatedPredicate(predAConstB));
             Assert.IsTrue(newRelativeState.HasPredicate(predC));
@@ -2227,25 +2225,22 @@ namespace PAD.Tests.PDDL
             Assert.IsFalse(newRelativeState.HasPredicate(predAConstA));
             Assert.IsFalse(newRelativeState.HasNegatedPredicate(predB));
 
-            Assert.AreEqual(LiftedOperator.DEFAULT_OPERATOR_COST, operatorA.GetCost());
+            Assert.AreEqual(LiftedOperator.DefaultOperatorCost, operatorA.GetCost());
             Assert.AreEqual(4, operator1.GetCost());
 
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(predAConstA, 5);
-            stateLabels.Add(predB, 3);
-            stateLabels.Add(predC, 7);
+            StateLabels stateLabels = new StateLabels {{predAConstA, 5}, {predB, 3}, {predC, 7}};
             Assert.AreEqual(15, operator1.ComputePlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.ADDITIVE_VALUE));
             Assert.AreEqual(7, operator1.ComputePlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.MAX_VALUE));
 
             var effectivePreconditions = operatorA.GetEffectivePreconditions(state);
             Assert.AreEqual(1, effectivePreconditions.Count);
-            effectivePreconditions.Contains(predEConstA);
+            Assert.IsTrue(effectivePreconditions.Contains(predEConstA));
 
             var effectiveEffects = operatorA.GetEffectiveEffects();
             Assert.AreEqual(3, effectiveEffects.Count);
-            effectiveEffects.Contains(predAConstA);
-            effectiveEffects.Contains(predDConstA);
-            effectiveEffects.Contains(predDConstB);
+            Assert.IsTrue(effectiveEffects.Contains(predAConstA));
+            Assert.IsTrue(effectiveEffects.Contains(predDConstA));
+            Assert.IsTrue(effectiveEffects.Contains(predDConstB));
 
             var operatorAClone = operatorA.Clone();
             Assert.IsTrue(operatorA != operatorAClone);
@@ -2258,7 +2253,7 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_OperatorApply_D.pddl"), GetFilePath("TC_OperatorApply_P.pddl"));
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var substitution = new Substitution();
@@ -2277,8 +2272,8 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(state.HasPredicate(pred0));
             Assert.IsTrue(state.HasPredicate(pred1ConstA));
             Assert.IsTrue(!state.HasPredicate(pred1ConstB));
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 0);
-            Assert.IsTrue(state.GetObjectFunctionValue(objectFunc) == constA);
+            Assert.AreEqual(0, state.GetNumericFunctionValue(numericFunc));
+            Assert.AreEqual(constA, state.GetObjectFunctionValue(objectFunc));
 
             state = operators[0].Apply(state, substitution);
             Assert.IsTrue(state.HasPredicate(pred1ConstB));
@@ -2291,28 +2286,28 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(!state.HasPredicate(pred1ConstB));
 
             state = operators[3].Apply(state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 5);
+            Assert.AreEqual(5, state.GetNumericFunctionValue(numericFunc));
 
             state = operators[4].Apply(state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 12);
+            Assert.AreEqual(12, state.GetNumericFunctionValue(numericFunc));
 
             state = operators[5].Apply(state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 10);
+            Assert.AreEqual(10, state.GetNumericFunctionValue(numericFunc));
 
             state = operators[6].Apply(state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 30);
+            Assert.AreEqual(30, state.GetNumericFunctionValue(numericFunc));
 
             state = operators[7].Apply(state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 15);
+            Assert.AreEqual(15, state.GetNumericFunctionValue(numericFunc));
 
             state = operators[8].Apply(state, substitution);
-            Assert.IsTrue(state.GetObjectFunctionValue(objectFunc) == constB);
+            Assert.AreEqual(constB, state.GetObjectFunctionValue(objectFunc));
 
             state = operators[9].Apply(state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 0);
+            Assert.AreEqual(0, state.GetNumericFunctionValue(numericFunc));
 
             state = operators[10].Apply(state, substitution);
-            Assert.IsTrue(state.GetNumericFunctionValue(numericFunc) == 0);
+            Assert.AreEqual(0, state.GetNumericFunctionValue(numericFunc));
 
             var substitutionConstA = factory.CreateSubstitution(operators[11].Parameters, "constA");
             state = operators[11].Apply(state, substitutionConstA);
@@ -2331,66 +2326,66 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_OperatorApplyBackwards_D.pddl"), GetFilePath("TC_OperatorApplyBackwards_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             Conditions goalConditions = (Conditions)problem.GoalConditions;
 
-            Func<string, int> GetConst = (string constName) => factory.CreateConstant(constName);
-            Func<string, PredicateLiteralCNF> GetPredicate = (string predicateName) => new PredicateLiteralCNF(factory.CreatePredicate(predicateName), false, idManager);
-            Func<string, PredicateLiteralCNF> GetNegPredicate = (string predicateName) => new PredicateLiteralCNF(factory.CreatePredicate(predicateName), true, idManager);
-            Func<string, ObjectFunctionTerm> GetObjFuncTerm = (string funcName) => new ObjectFunctionTerm(factory.CreateFunction(funcName), idManager);
-            Func<string, ConstantTerm> GetConstTerm = (string constName) => new ConstantTerm(GetConst(constName), idManager);
-            Func<string, NumericFunction> GetNumFunc = (string funcName) => new NumericFunction(factory.CreateFunction(funcName), idManager);
-            Func<string, string, string, PredicateLiteralCNF> GetPredicate2Args = (string predicateName, string arg1, string arg2)
+            Func<string, int> getConst = constName => factory.CreateConstant(constName);
+            Func<string, PredicateLiteralCNF> getPredicate = predicateName => new PredicateLiteralCNF(factory.CreatePredicate(predicateName), false, idManager);
+            Func<string, PredicateLiteralCNF> getNegPredicate = predicateName => new PredicateLiteralCNF(factory.CreatePredicate(predicateName), true, idManager);
+            Func<string, ObjectFunctionTerm> getObjFuncTerm = funcName => new ObjectFunctionTerm(factory.CreateFunction(funcName), idManager);
+            Func<string, ConstantTerm> getConstTerm = constName => new ConstantTerm(getConst(constName), idManager);
+            Func<string, NumericFunction> getNumFunc = funcName => new NumericFunction(factory.CreateFunction(funcName), idManager);
+            Func<string, string, string, PredicateLiteralCNF> getPredicate2Args = (predicateName, arg1, arg2)
                 => new PredicateLiteralCNF(factory.CreatePredicate(predicateName, arg1, arg2), false, idManager);
 
             IConditions resultConditions0 = problem.Operators[0].ApplyBackwards(goalConditions, new Substitution());
-            ConditionsCNF resultConditionsCNF0 = resultConditions0 as ConditionsCNF;
-            Assert.IsFalse(resultConditionsCNF0.Contains(GetPredicate("predA")));
-            Assert.IsFalse(resultConditionsCNF0.Contains(GetNegPredicate("predB")));
-            Assert.IsFalse(resultConditionsCNF0.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predC"), GetPredicate("predD") })));
-            Assert.IsTrue(resultConditionsCNF0.Contains(GetPredicate("predE")));
-            Assert.IsTrue(resultConditionsCNF0.Contains(GetPredicate("predZ")));
+            ConditionsCNF resultConditionsCnf0 = (ConditionsCNF)resultConditions0;
+            Assert.IsFalse(resultConditionsCnf0.Contains(getPredicate("predA")));
+            Assert.IsFalse(resultConditionsCnf0.Contains(getNegPredicate("predB")));
+            Assert.IsFalse(resultConditionsCnf0.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predC"), getPredicate("predD") })));
+            Assert.IsTrue(resultConditionsCnf0.Contains(getPredicate("predE")));
+            Assert.IsTrue(resultConditionsCnf0.Contains(getPredicate("predZ")));
 
             ISubstitution operatorSubstitution1 = factory.CreateSubstitution(problem.Operators[1].Parameters, "constA");
             IConditions resultConditions1 = problem.Operators[1].ApplyBackwards(goalConditions, operatorSubstitution1);
-            ConditionsCNF resultConditionsCNF1 = resultConditions1 as ConditionsCNF;
-            Assert.IsFalse(resultConditionsCNF1.Contains(new EqualsLiteralCNF(GetObjFuncTerm("objFunc1"), GetConstTerm("constA"), false)));
-            Assert.IsFalse(resultConditionsCNF1.Contains(new EqualsLiteralCNF(GetObjFuncTerm("objFunc3"), GetObjFuncTerm("objFunc2"), false)));
-            Assert.IsFalse(resultConditionsCNF1.Contains(new EqualsLiteralCNF(GetObjFuncTerm("objFunc4"), GetConstTerm("constA"), false)));
-            Assert.IsFalse(resultConditionsCNF1.Contains(new EqualsLiteralCNF(GetObjFuncTerm("objFunc5"), GetObjFuncTerm("objFunc6"), false)));
-            Assert.IsFalse(resultConditionsCNF1.Contains(new EqualsLiteralCNF(GetObjFuncTerm("objFunc5"), GetObjFuncTerm("objFunc6"), true)));
-            Assert.IsTrue(resultConditionsCNF1.Contains(new EqualsLiteralCNF(GetConstTerm("constB"), GetObjFuncTerm("objFunc6"), false)));
+            ConditionsCNF resultConditionsCnf1 = (ConditionsCNF)resultConditions1;
+            Assert.IsFalse(resultConditionsCnf1.Contains(new EqualsLiteralCNF(getObjFuncTerm("objFunc1"), getConstTerm("constA"), false)));
+            Assert.IsFalse(resultConditionsCnf1.Contains(new EqualsLiteralCNF(getObjFuncTerm("objFunc3"), getObjFuncTerm("objFunc2"), false)));
+            Assert.IsFalse(resultConditionsCnf1.Contains(new EqualsLiteralCNF(getObjFuncTerm("objFunc4"), getConstTerm("constA"), false)));
+            Assert.IsFalse(resultConditionsCnf1.Contains(new EqualsLiteralCNF(getObjFuncTerm("objFunc5"), getObjFuncTerm("objFunc6"), false)));
+            Assert.IsFalse(resultConditionsCnf1.Contains(new EqualsLiteralCNF(getObjFuncTerm("objFunc5"), getObjFuncTerm("objFunc6"), true)));
+            Assert.IsTrue(resultConditionsCnf1.Contains(new EqualsLiteralCNF(getConstTerm("constB"), getObjFuncTerm("objFunc6"), false)));
 
             IConditions resultConditions2 = problem.Operators[2].ApplyBackwards(goalConditions, new Substitution());
-            ConditionsCNF resultConditionsCNF2 = resultConditions2 as ConditionsCNF;
-            Assert.IsFalse(resultConditionsCNF2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.LTE, new Plus(GetNumFunc("numFunc1"), new Number(5)), new Number(8), false)));
-            Assert.IsFalse(resultConditionsCNF2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.GT, new Plus(GetNumFunc("numFunc1"), new Number(5)), new Number(8), true)));
-            Assert.IsFalse(resultConditionsCNF2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.GTE, GetNumFunc("numFunc1"), GetNumFunc("numFunc2"), false)));
-            Assert.IsFalse(resultConditionsCNF2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.LT, GetNumFunc("numFunc1"), GetNumFunc("numFunc2"), true)));
-            Assert.IsFalse(resultConditionsCNF2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.EQ, GetNumFunc("numFunc3"), new Number(0), false)));
-            Assert.IsTrue(resultConditionsCNF2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.EQ, new Minus(GetNumFunc("numFunc3"), new Number(10)), new Number(0), false)));
+            ConditionsCNF resultConditionsCnf2 = (ConditionsCNF)resultConditions2;
+            Assert.IsFalse(resultConditionsCnf2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.LTE, new Plus(getNumFunc("numFunc1"), new Number(5)), new Number(8), false)));
+            Assert.IsFalse(resultConditionsCnf2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.GT, new Plus(getNumFunc("numFunc1"), new Number(5)), new Number(8), true)));
+            Assert.IsFalse(resultConditionsCnf2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.GTE, getNumFunc("numFunc1"), getNumFunc("numFunc2"), false)));
+            Assert.IsFalse(resultConditionsCnf2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.LT, getNumFunc("numFunc1"), getNumFunc("numFunc2"), true)));
+            Assert.IsFalse(resultConditionsCnf2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.EQ, getNumFunc("numFunc3"), new Number(0), false)));
+            Assert.IsTrue(resultConditionsCnf2.Contains(new NumericCompareLiteralCNF(NumericCompareExpression.RelationalOperator.EQ, new Minus(getNumFunc("numFunc3"), new Number(10)), new Number(0), false)));
 
             ISubstitution substitution3 = factory.CreateSubstitution(problem.Operators[3].Parameters, "constA");
             IConditions resultConditions3 = problem.Operators[3].ApplyBackwards(goalConditions, substitution3);
-            ConditionsCNF resultConditionsCNF3 = resultConditions3 as ConditionsCNF;
-            Assert.IsFalse(resultConditionsCNF3.Contains(GetPredicate2Args("predF", "constA", "constA")));
-            Assert.IsFalse(resultConditionsCNF3.Contains(GetPredicate2Args("predF", "constA", "constB")));
-            Assert.IsTrue(resultConditionsCNF3.Contains(GetPredicate2Args("predF", "constB", "constA")));
-            Assert.IsTrue(resultConditionsCNF3.Contains(GetPredicate2Args("predF", "constB", "constB")));
+            ConditionsCNF resultConditionsCnf3 = (ConditionsCNF)resultConditions3;
+            Assert.IsFalse(resultConditionsCnf3.Contains(getPredicate2Args("predF", "constA", "constA")));
+            Assert.IsFalse(resultConditionsCnf3.Contains(getPredicate2Args("predF", "constA", "constB")));
+            Assert.IsTrue(resultConditionsCnf3.Contains(getPredicate2Args("predF", "constB", "constA")));
+            Assert.IsTrue(resultConditionsCnf3.Contains(getPredicate2Args("predF", "constB", "constB")));
 
             IConditions resultConditions4 = problem.Operators[4].ApplyBackwards(goalConditions, substitution3);
-            ConditionsCNF resultConditionsCNF4 = resultConditions4 as ConditionsCNF;
-            Assert.IsFalse(resultConditionsCNF4.Contains(GetPredicate("predX")));
-            Assert.IsFalse(resultConditionsCNF4.Contains(GetPredicate("predY")));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predX"), GetPredicate("predY"), GetPredicate("pred1") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predX"), GetPredicate("pred1") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predY"), GetPredicate("pred1"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predX"), GetPredicate("predY"), GetPredicate("pred1"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predX"), GetPredicate("pred1"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predX"), GetPredicate("predY"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { GetPredicate("predY"), GetPredicate("pred2") })));
-            Assert.IsTrue(resultConditionsCNF4.Contains(GetPredicate("predZ")));
+            ConditionsCNF resultConditionsCnf4 = (ConditionsCNF)resultConditions4;
+            Assert.IsFalse(resultConditionsCnf4.Contains(getPredicate("predX")));
+            Assert.IsFalse(resultConditionsCnf4.Contains(getPredicate("predY")));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predX"), getPredicate("predY"), getPredicate("pred1") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predX"), getPredicate("pred1") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predY"), getPredicate("pred1"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predX"), getPredicate("predY"), getPredicate("pred1"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predX"), getPredicate("pred1"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predX"), getPredicate("predY"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(new ClauseCNF(new HashSet<LiteralCNF> { getPredicate("predY"), getPredicate("pred2") })));
+            Assert.IsTrue(resultConditionsCnf4.Contains(getPredicate("predZ")));
         }
 
         [TestMethod]
@@ -2416,7 +2411,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_OperatorIsApplicable_D.pddl"), GetFilePath("TC_OperatorIsApplicable_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var operators = problem.Operators;
@@ -2438,7 +2433,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_OperatorIsRelevant_D.pddl"), GetFilePath("TC_OperatorIsRelevant_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var operators = problem.Operators;
@@ -2468,8 +2463,8 @@ namespace PAD.Tests.PDDL
             List<int> relevantContionalEffects = new List<int>();
             Assert.IsTrue(operators[13].IsRelevant(goalConditions, emptySubstitution, relevantContionalEffects));
             Assert.AreEqual(2, relevantContionalEffects.Count);
-            relevantContionalEffects.Contains(0);
-            relevantContionalEffects.Contains(2);
+            Assert.IsTrue(relevantContionalEffects.Contains(0));
+            Assert.IsTrue(relevantContionalEffects.Contains(2));
 
             relevantContionalEffects.Clear();
             Assert.IsFalse(operators[14].IsRelevant(goalConditions, emptySubstitution, relevantContionalEffects));
@@ -2478,7 +2473,7 @@ namespace PAD.Tests.PDDL
             relevantContionalEffects.Clear();
             Assert.IsTrue(operators[15].IsRelevant(goalConditions, emptySubstitution, relevantContionalEffects));
             Assert.AreEqual(1, relevantContionalEffects.Count);
-            relevantContionalEffects.Contains(0);
+            Assert.IsTrue(relevantContionalEffects.Contains(0));
 
             relevantContionalEffects.Clear();
             Assert.IsFalse(operators[16].IsRelevant(goalConditions, emptySubstitution, relevantContionalEffects));
@@ -2491,28 +2486,28 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_Parameters.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var params0 = problem.Operators[0].Parameters;
             Assert.AreEqual(2, params0.Count);
-            Assert.AreEqual(0, params0[0].ParameterNameID);
+            Assert.AreEqual(0, params0[0].ParameterNameId);
             Assert.AreEqual(factory.CreateType("typeA"), params0[0].TypeNamesIDs.First());
-            Assert.AreEqual(1, params0[1].ParameterNameID);
+            Assert.AreEqual(1, params0[1].ParameterNameId);
             Assert.AreEqual(factory.CreateType("typeB"), params0[1].TypeNamesIDs.First());
-            Assert.AreEqual(1, params0.GetMaxUsedParameterID());
+            Assert.AreEqual(1, params0.GetMaxUsedParameterId());
 
             var params1 = problem.Operators[1].Parameters;
             Assert.AreEqual(1, params1.Count);
-            Assert.AreEqual(0, params1[0].ParameterNameID);
+            Assert.AreEqual(0, params1[0].ParameterNameId);
             Assert.IsTrue(params1[0].TypeNamesIDs.Contains(factory.CreateType("typeB")));
             Assert.IsTrue(params1[0].TypeNamesIDs.Contains(factory.CreateType("typeC")));
-            Assert.AreEqual(0, params1.GetMaxUsedParameterID());
+            Assert.AreEqual(0, params1.GetMaxUsedParameterId());
             Assert.IsTrue(params0.AreConflictedWith(params1));
 
-            params1[0].ParameterNameID = 8;
+            params1[0].ParameterNameId = 8;
             Assert.IsFalse(params0.AreConflictedWith(params1));
-            Assert.AreEqual(8, params1.GetMaxUsedParameterID());
+            Assert.AreEqual(8, params1.GetMaxUsedParameterId());
 
             var params0Clone = params0.Clone();
             Assert.IsTrue(params0 != params0Clone);
@@ -2521,7 +2516,7 @@ namespace PAD.Tests.PDDL
 
             params0.Add(params1);
             Assert.AreEqual(3, params0.Count);
-            Assert.AreEqual(8, params0.GetMaxUsedParameterID());
+            Assert.AreEqual(8, params0.GetMaxUsedParameterId());
             Assert.IsFalse(params0.GetHashCode() == params0Clone.GetHashCode());
             Assert.IsFalse(params0.Equals(params0Clone));
         }
@@ -2532,17 +2527,19 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_PlanningGraphOperatorLabelEvaluator_D.pddl"), GetFilePath("TC_PlanningGraphOperatorLabelEvaluator_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
 
             PlanningGraphOperatorLabelEvaluator evaluator = new PlanningGraphOperatorLabelEvaluator(groundingManager);
 
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(factory.CreatePredicate("predA"), 5);
-            stateLabels.Add(factory.CreatePredicate("predB"), 3);
-            stateLabels.Add(factory.CreatePredicate("predC"), 7);
-            stateLabels.Add(factory.CreatePredicate("predD", "constA"), 8);
+            StateLabels stateLabels = new StateLabels
+            {
+                {factory.CreatePredicate("predA"), 5},
+                {factory.CreatePredicate("predB"), 3},
+                {factory.CreatePredicate("predC"), 7},
+                {factory.CreatePredicate("predD", "constA"), 8}
+            };
 
             var substit1A = factory.CreateSubstitution(problem.Operators[1].Parameters, "constA");
             var substit1B = factory.CreateSubstitution(problem.Operators[1].Parameters, "constB");
@@ -2563,17 +2560,19 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_PlanningGraphOperatorLabelEvaluatorCNF_D.pddl"), GetFilePath("TC_PlanningGraphOperatorLabelEvaluatorCNF_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
 
             PlanningGraphOperatorLabelEvaluatorCNF evaluator = new PlanningGraphOperatorLabelEvaluatorCNF(groundingManager);
 
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(factory.CreatePredicate("predA"), 5);
-            stateLabels.Add(factory.CreatePredicate("predB"), 3);
-            stateLabels.Add(factory.CreatePredicate("predC"), 7);
-            stateLabels.Add(factory.CreatePredicate("predD", "constA"), 8);
+            StateLabels stateLabels = new StateLabels
+            {
+                {factory.CreatePredicate("predA"), 5},
+                {factory.CreatePredicate("predB"), 3},
+                {factory.CreatePredicate("predC"), 7},
+                {factory.CreatePredicate("predD", "constA"), 8}
+            };
 
             var substit1A = factory.CreateSubstitution(problem.Operators[1].Parameters, "constA");
             var substit1B = factory.CreateSubstitution(problem.Operators[1].Parameters, "constB");
@@ -2594,7 +2593,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_Problem_D.pddl"), GetFilePath("TC_Problem_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             EvaluationManager evaluationManager = new EvaluationManager(new GroundingManager(data, idManager), problem.RigidRelations);
 
@@ -2609,7 +2608,7 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(factory.CreateState(pred0, pred2), problem.InitialState);
             Assert.AreEqual(new Conditions(new PredicateExpression(pred1, idManager), evaluationManager), problem.GoalConditions);
             Assert.IsTrue(problem.RigidRelations.Contains(predRigid));
-            Assert.IsNotNull(problem.IDManager);
+            Assert.IsNotNull(problem.IdManager);
             Assert.IsNotNull(problem.EvaluationManager);
 
             Assert.AreEqual("domainName", problem.GetDomainName());
@@ -2657,7 +2656,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_RelativeState.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             RelativeState state = (RelativeState)factory.CreateRelativeState();
 
@@ -2682,9 +2681,9 @@ namespace PAD.Tests.PDDL
             state.RemoveNegatedPredicate(pred1);
             Assert.IsFalse(state.HasNegatedPredicate(pred1));
 
-            Assert.AreEqual(NumericFunction.UNDEFINED_VALUE, state.GetNumericFunctionValue(numericFuncConstA));
-            Assert.AreEqual(NumericFunction.UNDEFINED_VALUE, state.GetNumericFunctionValue(numericFuncConstB));
-            Assert.AreEqual(ObjectFunctionTerm.UNDEFINED_VALUE, state.GetObjectFunctionValue(objectFunc));
+            Assert.AreEqual(NumericFunction.UndefinedValue, state.GetNumericFunctionValue(numericFuncConstA));
+            Assert.AreEqual(NumericFunction.UndefinedValue, state.GetNumericFunctionValue(numericFuncConstB));
+            Assert.AreEqual(ObjectFunctionTerm.UndefinedValue, state.GetObjectFunctionValue(objectFunc));
 
             state.IncreaseNumericFunction(numericFuncConstA, 15.0);
             Assert.AreEqual(15.0, state.GetNumericFunctionValue(numericFuncConstA));
@@ -2696,15 +2695,15 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(10.5, state.GetNumericFunctionValue(numericFuncConstA));
             state.AssignNumericFunction(numericFuncConstA, 66.0);
             Assert.AreEqual(66.0, state.GetNumericFunctionValue(numericFuncConstA));
-            state.AssignNumericFunction(numericFuncConstA, NumericFunction.UNDEFINED_VALUE);
-            Assert.AreEqual(NumericFunction.UNDEFINED_VALUE, state.GetNumericFunctionValue(numericFuncConstA));
+            state.AssignNumericFunction(numericFuncConstA, NumericFunction.UndefinedValue);
+            Assert.AreEqual(NumericFunction.UndefinedValue, state.GetNumericFunctionValue(numericFuncConstA));
             state.AssignNumericFunction(numericFuncConstA, 66.0);
-            Assert.AreEqual(NumericFunction.UNDEFINED_VALUE, state.GetNumericFunctionValue(numericFuncConstB));
+            Assert.AreEqual(NumericFunction.UndefinedValue, state.GetNumericFunctionValue(numericFuncConstB));
 
             state.AssignObjectFunction(objectFunc, constA);
             Assert.AreEqual(constA, state.GetObjectFunctionValue(objectFunc));
-            state.AssignObjectFunction(objectFunc, ObjectFunctionTerm.UNDEFINED_VALUE);
-            Assert.AreEqual(ObjectFunctionTerm.UNDEFINED_VALUE, state.GetObjectFunctionValue(objectFunc));
+            state.AssignObjectFunction(objectFunc, ObjectFunctionTerm.UndefinedValue);
+            Assert.AreEqual(ObjectFunctionTerm.UndefinedValue, state.GetObjectFunctionValue(objectFunc));
             state.AssignObjectFunction(objectFunc, constA);
 
             state.AddNegatedPredicate(pred2ConstA);
@@ -2730,8 +2729,8 @@ namespace PAD.Tests.PDDL
             Assert.IsFalse(state2.Evaluate(factory.CreateState(pred1, pred2ConstA)));
             Assert.IsFalse(state2.Evaluate(factory.CreateState(pred2ConstC)));
 
-            var correspondingStates = state2.GetCorrespondingStates(problem);
-            Assert.AreEqual(8, correspondingStates.Count());
+            var correspondingStates = state2.GetCorrespondingStates(problem).ToList();
+            Assert.AreEqual(8, correspondingStates.Count);
             Assert.IsTrue(correspondingStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1 })));
             Assert.IsTrue(correspondingStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1 }, new Dictionary<IAtom, int> { { objectFunc, constA } })));
             Assert.IsTrue(correspondingStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1 }, new Dictionary<IAtom, int> { { objectFunc, constB } })));
@@ -2771,7 +2770,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_RelaxedProblem_D.pddl"), GetFilePath("TC_RelaxedProblem_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var relaxedProblem = problem.GetRelaxedProblem();
@@ -2788,7 +2787,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_RigidRelations_D.pddl"), GetFilePath("TC_RigidRelations_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var pred0 = factory.CreatePredicate("pred0");
@@ -2819,7 +2818,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_RigidRelationsComplianceEvaluator_D.pddl"), GetFilePath("TC_RigidRelationsComplianceEvaluator_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             RigidRelationsComplianceEvaluator evaluator = new RigidRelationsComplianceEvaluator(new GroundingManager(data, idManager), problem.RigidRelations);
@@ -2844,7 +2843,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_SatisfyingAtomsEvaluator_D.pddl"), GetFilePath("TC_SatisfyingAtomsEvaluator_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             EvaluationManager evaluationManager = new EvaluationManager(new GroundingManager(data, idManager), problem.RigidRelations);
 
@@ -2872,7 +2871,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_State.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             State state = (State)problem.InitialState;
 
@@ -2893,9 +2892,9 @@ namespace PAD.Tests.PDDL
             state.RemovePredicate(pred1);
             Assert.IsFalse(state.HasPredicate(pred1));
 
-            Assert.AreEqual(NumericFunction.UNDEFINED_VALUE, state.GetNumericFunctionValue(numericFuncConstA));
-            Assert.AreEqual(NumericFunction.UNDEFINED_VALUE, state.GetNumericFunctionValue(numericFuncConstB));
-            Assert.AreEqual(ObjectFunctionTerm.UNDEFINED_VALUE, state.GetObjectFunctionValue(objectFunc));
+            Assert.AreEqual(NumericFunction.UndefinedValue, state.GetNumericFunctionValue(numericFuncConstA));
+            Assert.AreEqual(NumericFunction.UndefinedValue, state.GetNumericFunctionValue(numericFuncConstB));
+            Assert.AreEqual(ObjectFunctionTerm.UndefinedValue, state.GetObjectFunctionValue(objectFunc));
 
             state.IncreaseNumericFunction(numericFuncConstA, 15.0);
             Assert.AreEqual(15.0, state.GetNumericFunctionValue(numericFuncConstA));
@@ -2907,15 +2906,15 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(10.5, state.GetNumericFunctionValue(numericFuncConstA));
             state.AssignNumericFunction(numericFuncConstA, 66.0);
             Assert.AreEqual(66.0, state.GetNumericFunctionValue(numericFuncConstA));
-            state.AssignNumericFunction(numericFuncConstA, NumericFunction.UNDEFINED_VALUE);
-            Assert.AreEqual(NumericFunction.UNDEFINED_VALUE, state.GetNumericFunctionValue(numericFuncConstA));
+            state.AssignNumericFunction(numericFuncConstA, NumericFunction.UndefinedValue);
+            Assert.AreEqual(NumericFunction.UndefinedValue, state.GetNumericFunctionValue(numericFuncConstA));
             state.AssignNumericFunction(numericFuncConstA, 66.0);
-            Assert.AreEqual(NumericFunction.UNDEFINED_VALUE, state.GetNumericFunctionValue(numericFuncConstB));
+            Assert.AreEqual(NumericFunction.UndefinedValue, state.GetNumericFunctionValue(numericFuncConstB));
 
             state.AssignObjectFunction(objectFunc, constA);
             Assert.AreEqual(constA, state.GetObjectFunctionValue(objectFunc));
-            state.AssignObjectFunction(objectFunc, ObjectFunctionTerm.UNDEFINED_VALUE);
-            Assert.AreEqual(ObjectFunctionTerm.UNDEFINED_VALUE, state.GetObjectFunctionValue(objectFunc));
+            state.AssignObjectFunction(objectFunc, ObjectFunctionTerm.UndefinedValue);
+            Assert.AreEqual(ObjectFunctionTerm.UndefinedValue, state.GetObjectFunctionValue(objectFunc));
             state.AssignObjectFunction(objectFunc, constA);
 
             state.AddPredicate(pred2ConstA);
@@ -2948,7 +2947,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_StatesEnumerator.pddl"), GetFilePath("Dummy_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             EvaluationManager evaluationManager = new EvaluationManager(new GroundingManager(data, idManager));
 
@@ -2962,8 +2961,8 @@ namespace PAD.Tests.PDDL
             var objectFunc = factory.CreateFunction("objectFunc");
 
             var relativeState = factory.CreateRelativeState(new HashSet<int> { 1, 2 }, pred1, pred2ConstA, pred2ConstB); // (pred1), (not (pred2 constA)), (not (pred2 constB))
-            var relativeStateStates = StatesEnumerator.EnumerateStates(relativeState, problem);
-            Assert.AreEqual(8, relativeStateStates.Count());
+            var relativeStateStates = StatesEnumerator.EnumerateStates(relativeState, problem).ToList();
+            Assert.AreEqual(8, relativeStateStates.Count);
             Assert.IsTrue(relativeStateStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1 })));
             Assert.IsTrue(relativeStateStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1 }, new Dictionary<IAtom, int> { { objectFunc, constA } })));
             Assert.IsTrue(relativeStateStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1 }, new Dictionary<IAtom, int> { { objectFunc, constB } })));
@@ -2973,13 +2972,15 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(relativeStateStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1, pred2ConstC }, new Dictionary<IAtom, int> { { objectFunc, constB } })));
             Assert.IsTrue(relativeStateStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1, pred2ConstC }, new Dictionary<IAtom, int> { { objectFunc, constC } })));
 
-            var conditions = new Conditions(evaluationManager);
-            conditions.Add(new PredicateExpression(pred1, idManager));
-            conditions.Add(new NotExpression(new PredicateExpression(pred2ConstA, idManager)));
-            conditions.Add(new NotExpression(new PredicateExpression(pred2ConstB, idManager)));
+            var conditions = new Conditions(evaluationManager)
+            {
+                new PredicateExpression(pred1, idManager),
+                new NotExpression(new PredicateExpression(pred2ConstA, idManager)),
+                new NotExpression(new PredicateExpression(pred2ConstB, idManager))
+            };
 
-            var conditionsStates = StatesEnumerator.EnumerateStates(conditions, problem);
-            Assert.AreEqual(8, conditionsStates.Count());
+            var conditionsStates = StatesEnumerator.EnumerateStates(conditions, problem).ToList();
+            Assert.AreEqual(8, conditionsStates.Count);
             Assert.IsTrue(conditionsStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1 })));
             Assert.IsTrue(conditionsStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1 }, new Dictionary<IAtom, int> { { objectFunc, constA } })));
             Assert.IsTrue(conditionsStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1 }, new Dictionary<IAtom, int> { { objectFunc, constB } })));
@@ -2989,16 +2990,22 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(conditionsStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1, pred2ConstC }, new Dictionary<IAtom, int> { { objectFunc, constB } })));
             Assert.IsTrue(conditionsStates.Contains(factory.CreateState(new HashSet<IAtom> { pred1, pred2ConstC }, new Dictionary<IAtom, int> { { objectFunc, constC } })));
 
-            var conditionsRelativeStates = StatesEnumerator.EnumerateRelativeStates(conditions, problem);
-            Assert.AreEqual(1, conditionsRelativeStates.Count());
+            var conditionsRelativeStates = StatesEnumerator.EnumerateRelativeStates(conditions, problem).ToList();
+            Assert.AreEqual(1, conditionsRelativeStates.Count);
             Assert.IsTrue(conditionsRelativeStates.Contains(relativeState));
 
-            var conditions2 = new Conditions(evaluationManager);
-            conditions2.Add(new PredicateExpression(pred1, idManager));
-            conditions2.Add(new OrExpression(new List<IExpression> { new PredicateExpression(pred2ConstA, idManager), new PredicateExpression(pred2ConstB, idManager) }));
+            var conditions2 = new Conditions(evaluationManager)
+            {
+                new PredicateExpression(pred1, idManager),
+                new OrExpression(new List<IExpression>
+                {
+                    new PredicateExpression(pred2ConstA, idManager),
+                    new PredicateExpression(pred2ConstB, idManager)
+                })
+            };
 
-            var conditions2RelativeStates = StatesEnumerator.EnumerateRelativeStates(conditions2, problem);
-            Assert.AreEqual(2, conditions2RelativeStates.Count());
+            var conditions2RelativeStates = StatesEnumerator.EnumerateRelativeStates(conditions2, problem).ToList();
+            Assert.AreEqual(2, conditions2RelativeStates.Count);
             Assert.IsTrue(conditions2RelativeStates.Contains(factory.CreateRelativeState(pred1, pred2ConstA)));
             Assert.IsTrue(conditions2RelativeStates.Contains(factory.CreateRelativeState(pred1, pred2ConstB)));
         }
@@ -3008,18 +3015,17 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_Substitution.pddl"), GetFilePath("Dummy_P.pddl"));
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
 
             var constA = factory.CreateConstant("constA");
             var constB = factory.CreateConstant("constB");
-            var constC = factory.CreateConstant("constC");
 
             var operatorParams = problem.Operators[0].Parameters;
-            var param0 = operatorParams[0].ParameterNameID;
-            var param1 = operatorParams[1].ParameterNameID;
-            var param2 = operatorParams[2].ParameterNameID;
-            var invalidParam = 333;
+            var param0 = operatorParams[0].ParameterNameId;
+            var param1 = operatorParams[1].ParameterNameId;
+            var param2 = operatorParams[2].ParameterNameId;
+            const int invalidParam = 333;
 
             ISubstitution substitution = factory.CreateSubstitution(operatorParams, "constA", "constB", "constA");
             ISubstitution emptySubstitution = new Substitution();
@@ -3036,9 +3042,9 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(constA, result);
             Assert.IsFalse(substitution.TryGetValue(invalidParam, out result));
 
-            ForallExpression forallExpr = problem.Operators[0].Preconditions[0] as ForallExpression;
+            ForallExpression forallExpr = (ForallExpression)problem.Operators[0].Preconditions[0];
             ISubstitution localSubstitution = factory.CreateSubstitution(forallExpr.Parameters, "constC");
-            var localParam = forallExpr.Parameters[0].ParameterNameID;
+            var localParam = forallExpr.Parameters[0].ParameterNameId;
 
             Assert.IsFalse(substitution.TryGetValue(localParam, out result));
             substitution.AddLocalSubstitution(localSubstitution);
@@ -3063,11 +3069,11 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_SubstitutionGenerator.pddl"), GetFilePath("Dummy_P.pddl"));
 
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
-            SubstitutionGenerator substitutionGenerator = new SubstitutionGenerator(data, new Lazy<ConstantsManager>(() => new ConstantsManager(data, idManager)), idManager);
+            SubstitutionGenerator substitutionGenerator = new SubstitutionGenerator(new Lazy<ConstantsManager>(() => new ConstantsManager(data, idManager)));
 
-            Func<InputData.PDDL.Parameters, Parameters> ProcessParameters = (InputData.PDDL.Parameters inputParameters) =>
+            Func<InputData.PDDL.Parameters, Parameters> processParameters = inputParameters =>
             {
                 idManager.Variables.RegisterLocalParameters(inputParameters);
                 Parameters parameters = new Parameters(inputParameters, idManager);
@@ -3075,49 +3081,49 @@ namespace PAD.Tests.PDDL
                 return parameters;
             };
 
-            Parameters parameters0 = ProcessParameters(data.Domain.Actions[0].Parameters);
-            Parameters parameters1 = ProcessParameters(data.Domain.Actions[1].Parameters);
-            Parameters parameters2 = ProcessParameters(data.Domain.Actions[2].Parameters);
-            Parameters parameters3 = ProcessParameters(data.Domain.Actions[3].Parameters);
-            Parameters parameters4 = ProcessParameters(data.Domain.Actions[4].Parameters);
-            Parameters parameters5 = ProcessParameters(data.Domain.Actions[5].Parameters);
+            Parameters parameters0 = processParameters(data.Domain.Actions[0].Parameters);
+            Parameters parameters1 = processParameters(data.Domain.Actions[1].Parameters);
+            Parameters parameters2 = processParameters(data.Domain.Actions[2].Parameters);
+            Parameters parameters3 = processParameters(data.Domain.Actions[3].Parameters);
+            Parameters parameters4 = processParameters(data.Domain.Actions[4].Parameters);
+            Parameters parameters5 = processParameters(data.Domain.Actions[5].Parameters);
 
-            var substitutions0 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters0);
-            var substitutions1 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters1);
-            var substitutions2 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters2);
-            var substitutions3 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters3);
-            var substitutions4 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters4);
-            var substitutions5 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters5);
+            var substitutions0 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters0).ToList();
+            var substitutions1 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters1).ToList();
+            var substitutions2 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters2).ToList();
+            var substitutions3 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters3).ToList();
+            var substitutions4 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters4).ToList();
+            var substitutions5 = substitutionGenerator.GenerateAllLocalSubstitutions(parameters5).ToList();
 
-            var constAB = factory.CreateConstant("constAB");
+            var constAb = factory.CreateConstant("constAB");
             var constC = factory.CreateConstant("constC");
             var constD = factory.CreateConstant("constD");
             var constF = factory.CreateConstant("constF");
             var constG = factory.CreateConstant("constG");
 
-            Assert.AreEqual(2, substitutions0.Count());
+            Assert.AreEqual(2, substitutions0.Count);
             Assert.IsTrue(substitutions0.Contains(factory.CreateSubstitution(parameters0, "constAB")));
             Assert.IsTrue(substitutions0.Contains(factory.CreateSubstitution(parameters0, "constD")));
 
-            Assert.AreEqual(4, substitutions1.Count());
+            Assert.AreEqual(4, substitutions1.Count);
             Assert.IsTrue(substitutions1.Contains(factory.CreateSubstitution(parameters1, "constAB")));
             Assert.IsTrue(substitutions1.Contains(factory.CreateSubstitution(parameters1, "constD")));
 
-            Assert.AreEqual(1, substitutions2.Count());
+            Assert.AreEqual(1, substitutions2.Count);
             Assert.IsTrue(substitutions2.Contains(factory.CreateSubstitution(parameters2, "constD", "constD", "constD", "constD")));
 
-            Assert.AreEqual(5, substitutions3.Count());
+            Assert.AreEqual(5, substitutions3.Count);
             Assert.IsTrue(substitutions3.Contains(factory.CreateSubstitution(parameters3, "constAB")));
             Assert.IsTrue(substitutions3.Contains(factory.CreateSubstitution(parameters3, "constC")));
             Assert.IsTrue(substitutions3.Contains(factory.CreateSubstitution(parameters3, "constD")));
             Assert.IsTrue(substitutions3.Contains(factory.CreateSubstitution(parameters3, "constF")));
             Assert.IsTrue(substitutions3.Contains(factory.CreateSubstitution(parameters3, "constG")));
 
-            Assert.AreEqual(125, substitutions4.Count());
-            int varIdx0 = parameters4[0].ParameterNameID;
-            int varIdx1 = parameters4[1].ParameterNameID;
-            int varIdx2 = parameters4[2].ParameterNameID;
-            HashSet<int> validValuesTypeObject = new HashSet<int> { constAB, constC, constD, constF, constG };
+            Assert.AreEqual(125, substitutions4.Count);
+            int varIdx0 = parameters4[0].ParameterNameId;
+            int varIdx1 = parameters4[1].ParameterNameId;
+            int varIdx2 = parameters4[2].ParameterNameId;
+            HashSet<int> validValuesTypeObject = new HashSet<int> { constAb, constC, constD, constF, constG };
             foreach (var substitution in substitutions4)
             {
                 Assert.IsTrue(validValuesTypeObject.Contains(substitution.GetValue(varIdx0)));
@@ -3125,11 +3131,11 @@ namespace PAD.Tests.PDDL
                 Assert.IsTrue(validValuesTypeObject.Contains(substitution.GetValue(varIdx2)));
             }
 
-            Assert.AreEqual(8, substitutions5.Count());
-            int varIdx50 = parameters5[0].ParameterNameID;
-            int varIdx51 = parameters5[1].ParameterNameID;
-            HashSet<int> validValuesTypeF = new HashSet<int> { constAB, constC, constD, constF };
-            HashSet<int> validValuesTypeB = new HashSet<int> { constAB, constD };
+            Assert.AreEqual(8, substitutions5.Count);
+            int varIdx50 = parameters5[0].ParameterNameId;
+            int varIdx51 = parameters5[1].ParameterNameId;
+            HashSet<int> validValuesTypeF = new HashSet<int> { constAb, constC, constD, constF };
+            HashSet<int> validValuesTypeB = new HashSet<int> { constAb, constD };
             foreach (var substitution in substitutions5)
             {
                 Assert.IsTrue(validValuesTypeF.Contains(substitution.GetValue(varIdx50)));
@@ -3143,7 +3149,7 @@ namespace PAD.Tests.PDDL
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_TransitionsGenerator_D.pddl"), GetFilePath("TC_TransitionsGenerator_P.pddl"));
 
             Problem problem = new Problem(data);
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             PrimitivesFactory factory = new PrimitivesFactory(idManager);
             GroundingManager groundingManager = new GroundingManager(data, idManager);
             EvaluationManager evaluationManager = new EvaluationManager(groundingManager);
@@ -3156,19 +3162,19 @@ namespace PAD.Tests.PDDL
             var predD = factory.CreatePredicate("predD");
             var pred1ConstA = factory.CreatePredicate("pred1", "constA");
             var pred1ConstB = factory.CreatePredicate("pred1", "constB");
-            var pred2ConstAA = factory.CreatePredicate("pred2", "constA", "constA");
-            var pred2ConstAB = factory.CreatePredicate("pred2", "constA", "constB");
-            var pred2ConstBA = factory.CreatePredicate("pred2", "constB", "constA");
-            var pred2ConstBB = factory.CreatePredicate("pred2", "constB", "constB");
+            var pred2ConstAConstA = factory.CreatePredicate("pred2", "constA", "constA");
+            var pred2ConstAConstB = factory.CreatePredicate("pred2", "constA", "constB");
+            var pred2ConstBConstA = factory.CreatePredicate("pred2", "constB", "constA");
+            var pred2ConstBConstB = factory.CreatePredicate("pred2", "constB", "constB");
             var statePredC = factory.CreateState(predC);
             var conditionsPredD = new Conditions(new PredicateExpression(predD, idManager), evaluationManager);
 
-            var pred1ConstA_ = new PredicateLiteralCNF(pred1ConstA, false, idManager);
-            var pred2ConstBA_ = new PredicateLiteralCNF(pred2ConstBA, false, idManager);
-            var predA_ = new PredicateLiteralCNF(predA, false, idManager);
-            var predB_ = new PredicateLiteralCNF(predB, false, idManager);
-            var predC_ = new PredicateLiteralCNF(predC, false, idManager);
-            var predD_ = new PredicateLiteralCNF(predD, false, idManager);
+            var pred1ConstAc = new PredicateLiteralCNF(pred1ConstA, false, idManager);
+            var pred2ConstBAc = new PredicateLiteralCNF(pred2ConstBConstA, false, idManager);
+            var predAc = new PredicateLiteralCNF(predA, false, idManager);
+            var predBc = new PredicateLiteralCNF(predB, false, idManager);
+            var predCc = new PredicateLiteralCNF(predC, false, idManager);
+            var predDc = new PredicateLiteralCNF(predD, false, idManager);
 
             HashSet<IState> successorStates = new HashSet<IState>();
             foreach (var successor in transitionsGenerator.GetSuccessors(problem.InitialState))
@@ -3178,20 +3184,20 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(6, successorStates.Count);
             Assert.IsTrue(successorStates.Contains(factory.CreateState(predB, pred1ConstA)));
             Assert.IsTrue(successorStates.Contains(factory.CreateState(predB, pred1ConstB)));
-            Assert.IsTrue(successorStates.Contains(factory.CreateState(predA, pred2ConstAA)));
-            Assert.IsTrue(successorStates.Contains(factory.CreateState(predA, pred2ConstAB)));
-            Assert.IsTrue(successorStates.Contains(factory.CreateState(predA, pred2ConstBA)));
-            Assert.IsTrue(successorStates.Contains(factory.CreateState(predA, pred2ConstBB)));
+            Assert.IsTrue(successorStates.Contains(factory.CreateState(predA, pred2ConstAConstA)));
+            Assert.IsTrue(successorStates.Contains(factory.CreateState(predA, pred2ConstAConstB)));
+            Assert.IsTrue(successorStates.Contains(factory.CreateState(predA, pred2ConstBConstA)));
+            Assert.IsTrue(successorStates.Contains(factory.CreateState(predA, pred2ConstBConstB)));
 
             HashSet<IConditions> predecessorConditions = new HashSet<IConditions>();
             foreach (var predecessor in transitionsGenerator.GetPredecessors(problem.GoalConditions))
             {
                 predecessorConditions.Add((IConditions)predecessor.GetPredecessorConditions());
             }
-            Assert.AreEqual(3, predecessorConditions.Count());
-            Assert.IsTrue(predecessorConditions.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { predA_, pred2ConstBA_, predC_ }, evaluationManager, null)));
-            Assert.IsTrue(predecessorConditions.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { pred1ConstA_, predB_, predC_ }, evaluationManager, null)));
-            Assert.IsTrue(predecessorConditions.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { pred1ConstA_, pred2ConstBA_, predD_ }, evaluationManager, null)));
+            Assert.AreEqual(3, predecessorConditions.Count);
+            Assert.IsTrue(predecessorConditions.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { predAc, pred2ConstBAc, predCc }, evaluationManager, null)));
+            Assert.IsTrue(predecessorConditions.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { pred1ConstAc, predBc, predCc }, evaluationManager, null)));
+            Assert.IsTrue(predecessorConditions.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { pred1ConstAc, pred2ConstBAc, predDc }, evaluationManager, null)));
 
             HashSet<IRelativeState> predecessorRelativeStates = new HashSet<IRelativeState>();
             foreach (var predecessor in transitionsGenerator.GetPredecessors((IRelativeState)problem.GoalConditions.GetCorrespondingRelativeStates(problem).First()))
@@ -3199,20 +3205,20 @@ namespace PAD.Tests.PDDL
                 Assert.AreEqual(1, predecessor.GetPredecessorRelativeStates().Count());
                 predecessorRelativeStates.Add((IRelativeState)predecessor.GetPredecessorRelativeStates().First());
             }
-            Assert.AreEqual(3, predecessorRelativeStates.Count());
-            Assert.IsTrue(predecessorRelativeStates.Contains(factory.CreateRelativeState(predA, pred2ConstBA, predC)));
+            Assert.AreEqual(3, predecessorRelativeStates.Count);
+            Assert.IsTrue(predecessorRelativeStates.Contains(factory.CreateRelativeState(predA, pred2ConstBConstA, predC)));
             Assert.IsTrue(predecessorRelativeStates.Contains(factory.CreateRelativeState(pred1ConstA, predB, predC)));
-            Assert.IsTrue(predecessorRelativeStates.Contains(factory.CreateRelativeState(pred1ConstA, pred2ConstBA, predD)));
+            Assert.IsTrue(predecessorRelativeStates.Contains(factory.CreateRelativeState(pred1ConstA, pred2ConstBConstA, predD)));
 
             HashSet<IConditions> predecessorConditions2 = new HashSet<IConditions>();
-            foreach (var predecessor in transitionsGenerator.GetPredecessors(factory.CreateState(pred1ConstA, pred2ConstBA, predC)))
+            foreach (var predecessor in transitionsGenerator.GetPredecessors(factory.CreateState(pred1ConstA, pred2ConstBConstA, predC)))
             {
                 predecessorConditions2.Add((IConditions)predecessor.GetPredecessorConditions());
             }
-            Assert.AreEqual(3, predecessorConditions2.Count());
-            Assert.IsTrue(predecessorConditions2.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { predA_, pred2ConstBA_, predC_ }, evaluationManager, null)));
-            Assert.IsTrue(predecessorConditions2.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { pred1ConstA_, predB_, predC_ }, evaluationManager, null)));
-            Assert.IsTrue(predecessorConditions2.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { pred1ConstA_, pred2ConstBA_, predD_ }, evaluationManager, null)));
+            Assert.AreEqual(3, predecessorConditions2.Count);
+            Assert.IsTrue(predecessorConditions2.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { predAc, pred2ConstBAc, predCc }, evaluationManager, null)));
+            Assert.IsTrue(predecessorConditions2.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { pred1ConstAc, predBc, predCc }, evaluationManager, null)));
+            Assert.IsTrue(predecessorConditions2.Contains(new ConditionsCNF(new HashSet<IConjunctCNF> { pred1ConstAc, pred2ConstBAc, predDc }, evaluationManager, null)));
 
             Assert.AreEqual(0, transitionsGenerator.GetSuccessors(statePredC).Count());
             Assert.AreEqual(0, transitionsGenerator.GetPredecessors(conditionsPredD).Count());
@@ -3259,13 +3265,13 @@ namespace PAD.Tests.PDDL
             randomPredecessor = transitionsGenerator.GetRandomPredecessor(conditionsPredD);
             Assert.IsNull(randomPredecessor);
 
-            var successorStates2 = transitionsGenerator.GetSuccessorStates(problem.InitialState);
-            Assert.AreEqual(6, successorStates2.Count());
+            var successorStates2 = transitionsGenerator.GetSuccessorStates(problem.InitialState).ToList();
+            Assert.AreEqual(6, successorStates2.Count);
             foreach (var succState in successorStates2)
             {
                 Assert.IsTrue(successorStates.Contains(succState));
             }
-            Assert.AreEqual(384, transitionsGenerator.GetPredecessorStates(factory.CreateState(pred1ConstA, pred2ConstBA, predC)).Count());
+            Assert.AreEqual(384, transitionsGenerator.GetPredecessorStates(factory.CreateState(pred1ConstA, pred2ConstBConstA, predC)).Count());
         }
 
         [TestMethod]
@@ -3273,41 +3279,40 @@ namespace PAD.Tests.PDDL
         {
             PDDLInputData data = new PDDLInputData(GetFilePath("TC_TypeHierarchy.pddl"), GetFilePath("Dummy_P.pddl"));
 
-            IDManager idManager = new IDManager(data);
+            IdManager idManager = new IdManager(data);
             TypeHierarchy typeHierarchy = new TypeHierarchy(data, idManager);
-
-            Func<string, int> GetID = (string typeName) => idManager.Types.GetID(typeName);
+            Func<string, int> getId = typeName => idManager.Types.GetId(typeName);
 
             Assert.AreEqual(7, typeHierarchy.Count);
 
-            var objectChildren = typeHierarchy[GetID("object")];
+            var objectChildren = typeHierarchy[getId("object")];
             Assert.AreEqual(2, objectChildren.Count);
-            objectChildren.Contains(GetID("typeE"));
-            objectChildren.Contains(GetID("typeF"));
+            Assert.IsTrue(objectChildren.Contains(getId("typeE")));
+            Assert.IsTrue(objectChildren.Contains(getId("typeF")));
 
-            var typeAChildren = typeHierarchy[GetID("typeA")];
+            var typeAChildren = typeHierarchy[getId("typeA")];
             Assert.AreEqual(1, typeAChildren.Count);
-            typeAChildren.Contains(GetID("typeD"));
+            Assert.IsTrue(typeAChildren.Contains(getId("typeD")));
 
-            var typeBChildren = typeHierarchy[GetID("typeB")];
+            var typeBChildren = typeHierarchy[getId("typeB")];
             Assert.AreEqual(1, typeBChildren.Count);
-            typeBChildren.Contains(GetID("typeD"));
+            Assert.IsTrue(typeBChildren.Contains(getId("typeD")));
 
-            var typeCChildren = typeHierarchy[GetID("typeC")];
+            var typeCChildren = typeHierarchy[getId("typeC")];
             Assert.AreEqual(2, typeCChildren.Count);
-            typeCChildren.Contains(GetID("typeA"));
-            typeCChildren.Contains(GetID("typeB"));
+            Assert.IsTrue(typeCChildren.Contains(getId("typeA")));
+            Assert.IsTrue(typeCChildren.Contains(getId("typeB")));
 
-            var typeDChildren = typeHierarchy[GetID("typeD")];
+            var typeDChildren = typeHierarchy[getId("typeD")];
             Assert.AreEqual(0, typeDChildren.Count);
 
-            var typeEChildren = typeHierarchy[GetID("typeE")];
+            var typeEChildren = typeHierarchy[getId("typeE")];
             Assert.AreEqual(1, typeEChildren.Count);
-            typeEChildren.Contains(GetID("typeC"));
+            Assert.IsTrue(typeEChildren.Contains(getId("typeC")));
 
-            var typeFChildren = typeHierarchy[GetID("typeF")];
+            var typeFChildren = typeHierarchy[getId("typeF")];
             Assert.AreEqual(1, typeFChildren.Count);
-            typeFChildren.Contains(GetID("typeC"));
+            Assert.IsTrue(typeFChildren.Contains(getId("typeC")));
         }
     }
 }

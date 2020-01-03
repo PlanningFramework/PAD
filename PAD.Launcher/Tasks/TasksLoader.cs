@@ -1,7 +1,8 @@
-﻿using PAD.Launcher.Tasks;
+﻿using PAD.Launcher.Tasks.DefinitionTypes;
 using System.Collections.Generic;
+// ReSharper disable StringLiteralTypo
 
-namespace PAD.Launcher
+namespace PAD.Launcher.Tasks
 {
     /// <summary>
     /// Loader/generator of the planning tasks from the input arguments or config file.
@@ -48,7 +49,7 @@ namespace PAD.Launcher
                     continue;
                 }
 
-                var tokens = arg.Split(new char[] {'='}, System.StringSplitOptions.RemoveEmptyEntries);
+                var tokens = arg.Split(new[] {'='}, System.StringSplitOptions.RemoveEmptyEntries);
                 if (tokens.Length != 2)
                 {
                     throw new TasksLoaderException($"Invalid parameter '{arg}'!");
@@ -61,62 +62,92 @@ namespace PAD.Launcher
                 {
                     case "TYPE":
                     {
-                        currentTask.Type = TypeConverter.Convert(paramValue);
+                        if (currentTask != null)
+                        {
+                            currentTask.Type = TypeConverter.Convert(paramValue);
+                        }
                         break;
                     }
                     case "ALGORITHM":
                     {
-                        currentTask.Algorithm = AlgorithmConverter.Convert(paramValue);
+                        if (currentTask != null)
+                        {
+                            currentTask.Algorithm = AlgorithmConverter.Convert(paramValue);
+                        }
                         break;
                     }
                     case "HEURISTIC":
                     {
-                        currentTask.Heuristic = HeuristicConverter.Convert(paramValue);
+                        if (currentTask != null)
+                        {
+                            currentTask.Heuristic = HeuristicConverter.Convert(paramValue);
+                        }
                         break;
                     }
                     case "HEAP":
                     {
-                        currentTask.Heap = HeapConverter.Convert(paramValue);
+                        if (currentTask != null)
+                        {
+                            currentTask.Heap = HeapConverter.Convert(paramValue);
+                        }
                         break;
                     }
                     case "DOMAIN":
                     {
-                        currentTask.DomainFile = paramValue;
+                        if (currentTask != null)
+                        {
+                            currentTask.DomainFile = paramValue;
+                        }
                         break;
                     }
                     case "PROBLEMS":
                     {
-                        currentTask.ProblemFile = paramValue;
+                        if (currentTask != null)
+                        {
+                            currentTask.ProblemFile = paramValue;
+                        }
                         break;
                     }
                     case "OUTPUTTYPE":
                     {
-                        currentTask.OutputType = OutputTypeConverter.Convert(paramValue);
+                        if (currentTask != null)
+                        {
+                            currentTask.OutputType = OutputTypeConverter.Convert(paramValue);
+                        }
                         break;
                     }
                     case "OUTPUTFILE":
                     {
-                        currentTask.OutputFile = paramValue;
+                        if (currentTask != null)
+                        {
+                            currentTask.OutputFile = paramValue;
+                        }
                         break;
                     }
                     case "TIMELIMIT":
                     {
-                        int timeLimit;
-                        if (!int.TryParse(paramValue, out timeLimit))
+                        if (currentTask != null)
                         {
-                            throw new TasksLoaderException($"Invalid value of TimeLimit parameter '{paramValue}'!");
+                            int timeLimit;
+                            if (!int.TryParse(paramValue, out timeLimit))
+                            {
+                                throw new TasksLoaderException($"Invalid value of TimeLimit parameter '{paramValue}'!");
+                            }
+                            currentTask.TimeLimit = timeLimit;
                         }
-                        currentTask.TimeLimit = timeLimit;
                         break;
                     }
                     case "MEMORYLIMIT":
                     {
-                        long memoryLimit;
-                        if (!long.TryParse(paramValue, out memoryLimit))
+                        if (currentTask != null)
                         {
-                            throw new TasksLoaderException($"Invalid value of MemoryLimit parameter '{paramValue}'!");
+                            long memoryLimit;
+                            if (!long.TryParse(paramValue, out memoryLimit))
+                            {
+                                throw new TasksLoaderException($"Invalid value of MemoryLimit parameter '{paramValue}'!");
+                            }
+                            currentTask.MemoryLimit = memoryLimit;
                         }
-                        currentTask.MemoryLimit = memoryLimit;
                         break;
                     }
                     case "MAXNUMBEROFPARALLELTASKS":
@@ -139,7 +170,7 @@ namespace PAD.Launcher
 
             // now we validate each defined task
 
-            List<PlanningTask> finalTasks = new List<PlanningTask>();
+            List<IPlanningTask> finalTasks = new List<IPlanningTask>();
 
             foreach (var task in tasks)
             {
@@ -151,7 +182,8 @@ namespace PAD.Launcher
                     {
                         throw new TasksLoaderException("Some of the tasks are missing domain file definition!");
                     }
-                    else if (!System.IO.File.Exists(task.DomainFile))
+
+                    if (!System.IO.File.Exists(task.DomainFile))
                     {
                         throw new TasksLoaderException($"Specified domain file '{task.DomainFile}' does not exist!");
                     }
@@ -169,7 +201,7 @@ namespace PAD.Launcher
                 List<string> problemPaths = new List<string>();
                 if (problemFilePath.Contains(";"))
                 {
-                    var tokens = problemFilePath.Split(new char[] {';'}, System.StringSplitOptions.RemoveEmptyEntries);
+                    var tokens = problemFilePath.Split(new[] {';'}, System.StringSplitOptions.RemoveEmptyEntries);
                     foreach (var path in tokens)
                     {
                         if (!System.IO.File.Exists(path))

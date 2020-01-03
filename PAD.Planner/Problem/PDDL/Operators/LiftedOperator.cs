@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -10,37 +11,37 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Name of the operator.
         /// </summary>
-        public string Name { set; get; } = "";
+        public string Name { set; get; }
 
         /// <summary>
         /// Input parameters of the operator.
         /// </summary>
-        public Parameters Parameters { set; get; } = null;
+        public Parameters Parameters { set; get; }
 
         /// <summary>
         /// Preconditions for the operator applicability.
         /// </summary>
-        public Conditions Preconditions { set; get; } = null;
+        public Conditions Preconditions { set; get; }
 
         /// <summary>
         /// Effects of the operator application.
         /// </summary>
-        public Effects Effects { set; get; } = null;
+        public Effects Effects { set; get; }
 
         /// <summary>
         /// Cost of the operator.
         /// </summary>
-        public int Cost { set; get; } = DEFAULT_OPERATOR_COST;
+        public int Cost { set; get; } = DefaultOperatorCost;
 
         /// <summary>
         /// Default operator cost (if not specified in operator effects).
         /// </summary>
-        public const int DEFAULT_OPERATOR_COST = 1;
+        public const int DefaultOperatorCost = 1;
 
         /// <summary>
         /// ID manager.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the object from the input data.
@@ -48,7 +49,7 @@ namespace PAD.Planner.PDDL
         /// <param name="action">PDDL action definition.</param>
         /// <param name="idManager">ID manager.</param>
         /// <param name="evaluationManager">Evaluation manager.</param>
-        public LiftedOperator(InputData.PDDL.Action action, IDManager idManager, EvaluationManager evaluationManager)
+        public LiftedOperator(InputData.PDDL.Action action, IdManager idManager, EvaluationManager evaluationManager)
         {
             idManager.Variables.RegisterLocalParameters(action.Parameters);
 
@@ -56,7 +57,7 @@ namespace PAD.Planner.PDDL
             Parameters = new Parameters(action.Parameters, idManager);
             Preconditions = new Conditions(action.Preconditions, Parameters, idManager, evaluationManager);
             Effects = new Effects(action.Effects, Preconditions, idManager, evaluationManager);
-            IDManager = idManager;
+            IdManager = idManager;
 
             ExtractCostFromEffects();
 
@@ -91,15 +92,15 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="conditions">Target conditions.</param>
         /// <param name="substitution">Variables substitution.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
-        /// <returns>True if the operator is relevant to the given condititons, false otherwise.</returns>
-        public bool IsRelevant(IConditions conditions, ISubstitution substitution, IList<int> relevantContionalEffects = null)
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <returns>True if the operator is relevant to the given conditions, false otherwise.</returns>
+        public bool IsRelevant(IConditions conditions, ISubstitution substitution, IList<int> relevantConditionalEffects = null)
         {
             if (!Preconditions.EvaluateRigidRelationsCompliance(substitution))
             {
                 return false;
             }
-            return Effects.IsRelevant(conditions, substitution, relevantContionalEffects);
+            return Effects.IsRelevant(conditions, substitution, relevantConditionalEffects);
         }
 
         /// <summary>
@@ -107,15 +108,15 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="relativeState">Target relative state.</param>
         /// <param name="substitution">Variables substitution.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>True if the operator is relevant to the given relative state, false otherwise.</returns>
-        public bool IsRelevant(IRelativeState relativeState, ISubstitution substitution, IList<int> relevantContionalEffects = null)
+        public bool IsRelevant(IRelativeState relativeState, ISubstitution substitution, IList<int> relevantConditionalEffects = null)
         {
             if (!Preconditions.EvaluateRigidRelationsCompliance(substitution))
             {
                 return false;
             }
-            return Effects.IsRelevant(relativeState, substitution, relevantContionalEffects);
+            return Effects.IsRelevant(relativeState, substitution, relevantConditionalEffects);
         }
 
         /// <summary>
@@ -147,7 +148,7 @@ namespace PAD.Planner.PDDL
         /// <param name="stateLabels">Atom labels from the predecessor layer in the graph.</param>
         /// <param name="evaluationStrategy">Evaluation strategy of the planning graph.</param>
         /// <returns>Computed operator label in the relaxed planning graph.</returns>
-        public double ComputePlanningGraphLabel(ISubstitution substitution, StateLabels stateLabels, Planner.ForwardCostEvaluationStrategy evaluationStrategy)
+        public double ComputePlanningGraphLabel(ISubstitution substitution, StateLabels stateLabels, ForwardCostEvaluationStrategy evaluationStrategy)
         {
             return Preconditions.EvaluateOperatorPlanningGraphLabel(substitution, stateLabels, evaluationStrategy);
         }
@@ -156,7 +157,7 @@ namespace PAD.Planner.PDDL
         /// Gets a list of atoms from the specified state that were necessary to make this operator applicable. We already assume that the operator is applicable to the given state.
         /// </summary>
         /// <param name="substitution">Variable substitution.</param>
-        /// <param name="predecessorState">Predecessing state.</param>
+        /// <param name="predecessorState">Preceding state.</param>
         /// <returns>List of effective precondition atoms.</returns>
         public List<IAtom> GetEffectivePreconditions(ISubstitution substitution, IState predecessorState)
         {
@@ -181,16 +182,16 @@ namespace PAD.Planner.PDDL
         {
             List<string> parametersList = Parameters.ConvertAll(parameter =>
             {
-                int value = -1;
-                if (substitution.TryGetValue(parameter.ParameterNameID, out value))
+                int value;
+                if (substitution.TryGetValue(parameter.ParameterNameId, out value))
                 {
                     // constant name
-                    return IDManager.Constants.GetNameFromID(value);
+                    return IdManager.Constants.GetNameFromId(value);
                 }
                 else
                 {
                     // generic variable name
-                    return $"{IDManager.GENERIC_VARIABLE_PREFIX}{parameter.ParameterNameID.ToString()}";
+                    return $"{IdManager.GenericVariablePrefix}{parameter.ParameterNameId.ToString()}";
                 }
             });
 
@@ -202,12 +203,12 @@ namespace PAD.Planner.PDDL
         /// </summary>
         private void ExtractCostFromEffects()
         {
-            if (!IDManager.Functions.IsRegistered("total-cost"))
+            if (!IdManager.Functions.IsRegistered("total-cost"))
             {
                 return;
             }
 
-            IAtom operatorCostAtom = new Atom(IDManager.Functions.GetID("total-cost"));
+            IAtom operatorCostAtom = new Atom(IdManager.Functions.GetId("total-cost"));
             foreach (var effect in Effects)
             {
                 NumericIncreaseEffect increaseEffect = effect as NumericIncreaseEffect;

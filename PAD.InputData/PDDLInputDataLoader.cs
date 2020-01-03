@@ -1,6 +1,8 @@
 ﻿using PAD.InputData.PDDL.Loader;
 using PAD.InputData.PDDL.Loader.Grammar;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UseObjectOrCollectionInitializer
 
 namespace PAD.InputData
 {
@@ -30,7 +32,7 @@ namespace PAD.InputData
         /// <returns>PDDL domain input data.</returns>
         public static PDDL.Domain LoadDomain(string domainFilePath)
         {
-            PDDL.Domain domain = MasterExporter.ToDomain(MasterParser.ParseAndCreateAST<DomainAstNode>(domainFilePath, new MasterGrammarDomain()));
+            PDDL.Domain domain = MasterExporter.ToDomain(MasterParser.ParseAndCreateAst<DomainAstNode>(domainFilePath, new MasterGrammarDomain()));
             domain.FilePath = domainFilePath;
             return domain;
         }
@@ -43,7 +45,7 @@ namespace PAD.InputData
         /// <returns>PDDL problem input data.</returns>
         public static PDDL.Problem LoadProblem(PDDL.Domain domainContext, string problemFilePath)
         {
-            PDDL.Problem problem = MasterExporter.ToProblem(domainContext, MasterParser.ParseAndCreateAST<ProblemAstNode>(problemFilePath, new MasterGrammarProblem()));
+            PDDL.Problem problem = MasterExporter.ToProblem(domainContext, MasterParser.ParseAndCreateAst<ProblemAstNode>(problemFilePath, new MasterGrammarProblem()));
             problem.FilePath = problemFilePath;
             return problem;
         }

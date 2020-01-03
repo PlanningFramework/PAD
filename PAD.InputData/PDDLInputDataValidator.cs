@@ -1,5 +1,6 @@
 ﻿using PAD.InputData.PDDL;
 using PAD.InputData.PDDL.Validator;
+// ReSharper disable UnusedMember.Global
 
 namespace PAD.InputData
 {

@@ -9,17 +9,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Currently used variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// Reference state for the evaluation.
         /// </summary>
-        private IState ReferenceState { set; get; } = null;
+        private IState ReferenceState { set; get; }
 
         /// <summary>
         /// Constructs numeric evaluator.

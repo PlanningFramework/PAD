@@ -3,7 +3,7 @@
 namespace PAD.Planner.PDDL
 {
     /// <summary>
-    /// Common interface for visitors performing some property count on PDDL conjuctive-normal-form condition expression.
+    /// Common interface for visitors performing some property count on PDDL conjunctive-normal-form condition expression.
     /// </summary>
     public interface IConditionsCNFPropEvalVisitor
     {

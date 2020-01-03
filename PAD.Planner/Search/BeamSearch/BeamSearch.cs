@@ -12,7 +12,7 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Collection of new transition candidates.
         /// </summary>
-        protected BeamSearchTransitionCandidates Candidates { set; get; } = null;
+        protected BeamSearchTransitionCandidates Candidates { set; get; }
 
         /// <summary>
         /// Constructs the Beam search procedure.

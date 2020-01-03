@@ -4,6 +4,9 @@ using System.Linq;
 using System;
 using PAD.InputData;
 using PAD.Planner.SAS;
+// ReSharper disable PossibleUnintendedReferenceComparison
+// ReSharper disable IdentifierTypo
+// ReSharper disable CollectionNeverUpdated.Local
 
 namespace PAD.Tests.SAS
 {
@@ -11,16 +14,16 @@ namespace PAD.Tests.SAS
     /// Testing suite for the SAS+ planner. Testing all components of the planning problem and the searching engine.
     /// </summary>
     [TestClass]
-    public class SASPlannerUnitTests
+    public class PlannerUnitTests
     {
         /// <summary>
         /// Gets full filepath to the specified test case.
         /// </summary>
         /// <param name="fileName">Test case file name.</param>
         /// <returns>Filepath to the test case.</returns>
-        private string GetFilePath(string fileName)
+        private static string GetFilePath(string fileName)
         {
-            return $@"..\..\Planner.SAS\TestCases\{fileName}";
+            return $@"..\..\SAS\PlannerTestCases\{fileName}";
         }
 
         [TestMethod]
@@ -45,8 +48,8 @@ namespace PAD.Tests.SAS
             Assert.AreEqual("Red, Yes, Bottom", abstractedState.ToStringWithMeanings(problem));
 
             Assert.AreEqual(0, abstractedState.GetValue(0));
-            Assert.AreEqual(AbstractedState.WILD_CARD_VALUE, abstractedState.GetValue(1));
-            Assert.AreEqual(AbstractedState.WILD_CARD_VALUE, abstractedState.GetValue(2));
+            Assert.AreEqual(AbstractedState.WildCardValue, abstractedState.GetValue(1));
+            Assert.AreEqual(AbstractedState.WildCardValue, abstractedState.GetValue(2));
             Assert.AreEqual(0, abstractedState.GetValue(3));
             Assert.AreEqual(1, abstractedState.GetValue(4));
 
@@ -64,11 +67,11 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(1, abstractedState.GetAllValues(0).Length);
             Assert.AreEqual(0, abstractedState.GetAllValues(0)[0]);
             Assert.AreEqual(1, abstractedState.GetAllValues(1).Length);
-            Assert.AreEqual(AbstractedState.WILD_CARD_VALUE, abstractedState.GetAllValues(1)[0]);
-            Assert.IsTrue(abstractedState.GetAllValues().SequenceEqual(new int[] { 0, 0, 1 }));
+            Assert.AreEqual(AbstractedState.WildCardValue, abstractedState.GetAllValues(1)[0]);
+            Assert.IsTrue(abstractedState.GetAllValues().SequenceEqual(new[] { 0, 0, 1 }));
 
-            Assert.IsTrue(abstractedState.GetValues(new int[] { 2, 3 }).SequenceEqual(new int[] { AbstractedState.WILD_CARD_VALUE, 0 }));
-            Assert.IsTrue(abstractedState.GetValues(new int[] { 4 }).SequenceEqual(new int[] { 1 }));
+            Assert.IsTrue(abstractedState.GetValues(new[] { 2, 3 }).SequenceEqual(new[] { AbstractedState.WildCardValue, 0 }));
+            Assert.IsTrue(abstractedState.GetValues(new[] { 4 }).SequenceEqual(new[] { 1 }));
 
             var relaxedState = abstractedState.GetRelaxedState() as RelaxedState;
             Assert.IsNotNull(relaxedState);
@@ -76,7 +79,7 @@ namespace PAD.Tests.SAS
             var conditions = (IConditions)abstractedState.GetDescribingConditions(problem);
             Assert.AreEqual(conditions, new Conditions(new Assignment(0, 0), new Assignment(3, 0), new Assignment(4, 1)));
 
-            Assert.AreEqual("TestCases_TC_AbstractedState.sas_[2x0 1]", abstractedState.GetInfoString(problem));
+            Assert.AreEqual("PlannerTestCases_TC_AbstractedState.sas_[2x0 1]", abstractedState.GetInfoString(problem));
             Assert.AreEqual("[2x0 1]", abstractedState.GetCompressedDescription());
             Assert.AreEqual("[0 0 1]", abstractedState.ToString());
 
@@ -223,21 +226,19 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(EffectRelevance.IRRELEVANT, conditions.IsEffectAssignmentRelevant(new Assignment(3, 5)));
             Assert.AreEqual(EffectRelevance.IRRELEVANT, emptyConditions.IsEffectAssignmentRelevant(new Assignment(0, 0)));
 
-            Assert.IsTrue(conditions.IsCompatibleWithMutexContraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0) }));
-            Assert.IsFalse(conditions.IsCompatibleWithMutexContraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 2) }));
-            Assert.IsTrue(emptyConditions.IsCompatibleWithMutexContraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0) }));
+            Assert.IsTrue(conditions.IsCompatibleWithMutexConstraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0) }));
+            Assert.IsFalse(conditions.IsCompatibleWithMutexConstraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 2) }));
+            Assert.IsTrue(emptyConditions.IsCompatibleWithMutexConstraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0) }));
 
-            int value = -1;
+            int value;
             Assert.IsTrue(((ISimpleConditions)conditions).IsVariableConstrained(1, out value) && value == 2);
             Assert.IsFalse(((ISimpleConditions)conditions).IsVariableConstrained(2, out value));
             Assert.IsTrue(((ISimpleConditions)conditions).IsVariableConstrained(1));
             Assert.IsFalse(((ISimpleConditions)conditions).IsVariableConstrained(2));
-            Assert.IsTrue(((ISimpleConditions)conditions).GetAssignedValues().SequenceEqual(new int[] { 0, 2 }));
-            Assert.IsFalse(((ISimpleConditions)conditions).GetAssignedValues().SequenceEqual(new int[] { 2, 2 }));
+            Assert.IsTrue(((ISimpleConditions)conditions).GetAssignedValues().SequenceEqual(new[] { 0, 2 }));
+            Assert.IsFalse(((ISimpleConditions)conditions).GetAssignedValues().SequenceEqual(new[] { 2, 2 }));
 
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(new Assignment(0, 0), 3);
-            stateLabels.Add(new Assignment(1, 2), 7);
+            StateLabels stateLabels = new StateLabels {{new Assignment(0, 0), 3}, {new Assignment(1, 2), 7}};
             Assert.AreEqual(7, conditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.MAX_VALUE));
             Assert.AreEqual(10, conditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.ADDITIVE_VALUE));
 
@@ -246,8 +247,8 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(2, conditions.GetSize());
 
             HashSet<IState> expectedConditionsStates = new HashSet<IState> { new State(0, 2, 0), new State(0, 2, 1) };
-            var conditionsStates = conditions.GetCorrespondingStates(problem);
-            Assert.AreEqual(2, conditionsStates.Count());
+            var conditionsStates = conditions.GetCorrespondingStates(problem).ToList();
+            Assert.AreEqual(2, conditionsStates.Count);
             foreach (var state in conditionsStates)
             {
                 Assert.IsTrue(expectedConditionsStates.Contains(state));
@@ -257,25 +258,25 @@ namespace PAD.Tests.SAS
             {
                 new State(0, 0, 0), new State(0, 0, 1), new State(0, 1, 0), new State(0, 1, 1), new State(0, 2, 0), new State(0, 2, 1),
                 new State(1, 0, 0), new State(1, 0, 1), new State(1, 1, 0), new State(1, 1, 1), new State(1, 2, 0), new State(1, 2, 1),
-                new State(2, 0, 0), new State(2, 0, 1), new State(2, 1, 0), new State(2, 1, 1), new State(2, 2, 0), new State(2, 2, 1),
+                new State(2, 0, 0), new State(2, 0, 1), new State(2, 1, 0), new State(2, 1, 1), new State(2, 2, 0), new State(2, 2, 1)
             };
-            var emptyConditionsStates = emptyConditions.GetCorrespondingStates(problem);
-            Assert.AreEqual(18, emptyConditionsStates.Count());
+            var emptyConditionsStates = emptyConditions.GetCorrespondingStates(problem).ToList();
+            Assert.AreEqual(18, emptyConditionsStates.Count);
             foreach (var state in emptyConditionsStates)
             {
                 Assert.IsTrue(expectedEmptyConditionsStates.Contains(state));
             }
 
-            var conditionsRelativeStates = conditions.GetCorrespondingRelativeStates(problem);
-            Assert.AreEqual(1, conditionsRelativeStates.Count());
-            conditionsRelativeStates.Contains(new RelativeState(0, 2, -1));
+            var conditionsRelativeStates = conditions.GetCorrespondingRelativeStates(problem).ToList();
+            Assert.AreEqual(1, conditionsRelativeStates.Count);
+            Assert.IsTrue(conditionsRelativeStates.Contains(new RelativeState(0, 2, -1)));
 
-            var emptyConditionsRelativeStates = emptyConditions.GetCorrespondingRelativeStates(problem);
-            Assert.AreEqual(1, emptyConditionsRelativeStates.Count());
-            emptyConditionsRelativeStates.Contains(new RelativeState(-1, -1, -1));
+            var emptyConditionsRelativeStates = emptyConditions.GetCorrespondingRelativeStates(problem).ToList();
+            Assert.AreEqual(1, emptyConditionsRelativeStates.Count);
+            Assert.IsTrue(emptyConditionsRelativeStates.Contains(new RelativeState(-1, -1, -1)));
 
-            var simpleConditions = conditions.GetSimpleConditions();
-            Assert.AreEqual(1, simpleConditions.Count());
+            var simpleConditions = conditions.GetSimpleConditions().ToList();
+            Assert.AreEqual(1, simpleConditions.Count);
             Assert.IsTrue(simpleConditions.First() == conditions);
 
             var conditionsClone = conditions.Clone();
@@ -370,14 +371,14 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(EffectRelevance.IRRELEVANT, conditions3.IsEffectAssignmentRelevant(new Assignment(3, 5)));
             Assert.AreEqual(EffectRelevance.IRRELEVANT, emptyConditions.IsEffectAssignmentRelevant(new Assignment(0, 0)));
 
-            Assert.IsTrue(conditions3.IsCompatibleWithMutexContraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0), new Assignment(2, 0) }));
-            Assert.IsFalse(conditions3.IsCompatibleWithMutexContraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0), new Assignment(2, 0), new Assignment(1, 1) }));
-            Assert.IsFalse(emptyConditions.IsCompatibleWithMutexContraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0) }));
+            Assert.IsTrue(conditions3.IsCompatibleWithMutexConstraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0), new Assignment(2, 0) }));
+            Assert.IsFalse(conditions3.IsCompatibleWithMutexConstraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0), new Assignment(2, 0), new Assignment(1, 1) }));
+            Assert.IsFalse(emptyConditions.IsCompatibleWithMutexConstraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0) }));
 
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(new Assignment(0, 0), 3);
-            stateLabels.Add(new Assignment(1, 2), 7);
-            stateLabels.Add(new Assignment(2, 0), 8);
+            StateLabels stateLabels = new StateLabels
+            {
+                {new Assignment(0, 0), 3}, {new Assignment(1, 2), 7}, {new Assignment(2, 0), 8}
+            };
             Assert.AreEqual(8, conditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.MAX_VALUE));
             Assert.AreEqual(10, conditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.ADDITIVE_VALUE));
 
@@ -390,10 +391,10 @@ namespace PAD.Tests.SAS
                 new State(0, 2, 1),
                 new State(0, 0, 0), new State(0, 1, 0), new State(0, 2, 0),
                 new State(1, 0, 0), new State(1, 1, 0), new State(1, 2, 0),
-                new State(2, 0, 0), new State(2, 1, 0), new State(2, 2, 0),
+                new State(2, 0, 0), new State(2, 1, 0), new State(2, 2, 0)
             };
-            var conditionsStates = conditions.GetCorrespondingStates(problem);
-            Assert.AreEqual(11, conditionsStates.Count());
+            var conditionsStates = conditions.GetCorrespondingStates(problem).ToList();
+            Assert.AreEqual(11, conditionsStates.Count);
             foreach (var state in conditionsStates)
             {
                 Assert.IsTrue(expectedConditionsStates.Contains(state));
@@ -401,15 +402,15 @@ namespace PAD.Tests.SAS
 
             Assert.AreEqual(0, emptyConditions.GetCorrespondingStates(problem).Count());
 
-            var conditionsRelativeStates = conditions.GetCorrespondingRelativeStates(problem);
-            Assert.AreEqual(2, conditionsRelativeStates.Count());
+            var conditionsRelativeStates = conditions.GetCorrespondingRelativeStates(problem).ToList();
+            Assert.AreEqual(2, conditionsRelativeStates.Count);
             Assert.IsTrue(conditionsRelativeStates.Contains(new RelativeState(0, 2, -1)));
             Assert.IsTrue(conditionsRelativeStates.Contains(new RelativeState(-1, -1, 0)));
 
             Assert.AreEqual(0, emptyConditions.GetCorrespondingRelativeStates(problem).Count());
 
-            var simpleConditions = conditions1.GetSimpleConditions();
-            Assert.AreEqual(2, simpleConditions.Count());
+            var simpleConditions = conditions1.GetSimpleConditions().ToList();
+            Assert.AreEqual(2, simpleConditions.Count);
             Assert.IsTrue(simpleConditions.Contains(new Conditions(new Assignment(0, 0))));
             Assert.IsTrue(simpleConditions.Contains(new Conditions(new Assignment(1, 0))));
 
@@ -457,10 +458,9 @@ namespace PAD.Tests.SAS
             Assert.IsFalse(conditions.IsConstrained(new Assignment(0, 0)));
             Assert.IsTrue(conditions.IsConflictedWith(new Assignment(0, 0)));
             Assert.AreEqual(EffectRelevance.ANTI_RELEVANT, conditions.IsEffectAssignmentRelevant(new Assignment(0, 0)));
-            Assert.IsFalse(conditions.IsCompatibleWithMutexContraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0) }));
+            Assert.IsFalse(conditions.IsCompatibleWithMutexConstraints(new List<IAssignment> { new Assignment(0, 0), new Assignment(1, 0) }));
 
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(new Assignment(0, 0), 3);
+            StateLabels stateLabels = new StateLabels {{new Assignment(0, 0), 3}};
             Assert.AreEqual(int.MaxValue, conditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.MAX_VALUE));
             Assert.AreEqual(int.MaxValue, conditions.EvaluateOperatorPlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.ADDITIVE_VALUE));
 
@@ -568,9 +568,9 @@ namespace PAD.Tests.SAS
             var effects2 = problem.Operators[2].GetEffects();
             var preconditions2 = problem.Operators[2].GetPreconditions();
 
-            int value = -1;
+            int value;
             Assert.IsTrue(effects1.IsVariableAffected(0, out value) && value == 1);
-            Assert.IsTrue(!effects1.IsVariableAffected(2, out value) && value == Assignment.INVALID_VALUE);
+            Assert.IsTrue(!effects1.IsVariableAffected(2, out value) && value == Assignment.InvalidValue);
 
             IState state3 = new State(0, 2, 0);
             IState state4 = new State(0, 0, 0);
@@ -602,18 +602,18 @@ namespace PAD.Tests.SAS
 
             var conditions17 = effects1.ApplyBackwards(new Conditions(new Assignment(0, 1)), preconditions1);
             Assert.IsTrue(conditions17.Equals(new Conditions(new Assignment(0, 0))));
-            var relativeStates17 = effects1.ApplyBackwards(new RelativeState(1, -1, -1), preconditions1);
-            Assert.IsTrue(relativeStates17.Count() == 1 && relativeStates17.First().Equals(new RelativeState(0, -1, -1)));
+            var relativeStates17 = effects1.ApplyBackwards(new RelativeState(1, -1, -1), preconditions1).ToList();
+            Assert.IsTrue(relativeStates17.Count == 1 && relativeStates17.First().Equals(new RelativeState(0, -1, -1)));
 
             var conditions18 = effects1.ApplyBackwards(new Conditions(new Assignment(1, 1)), preconditions1);
             Assert.IsTrue(conditions18.Equals(new ConditionsClause(new Conditions(new Assignment(0, 0), new Assignment(1, 0)), new Conditions(new Assignment(0, 0), new Assignment(1, 1)))));
-            var relativeStates18 = effects1.ApplyBackwards(new RelativeState(-1, 1, -1), preconditions1);
-            Assert.IsTrue(relativeStates18.Count() == 2 && relativeStates18.Contains(new RelativeState(0, 0, -1)) && relativeStates18.Contains(new RelativeState(0, 1, -1)));
+            var relativeStates18 = effects1.ApplyBackwards(new RelativeState(-1, 1, -1), preconditions1).ToList();
+            Assert.IsTrue(relativeStates18.Count == 2 && relativeStates18.Contains(new RelativeState(0, 0, -1)) && relativeStates18.Contains(new RelativeState(0, 1, -1)));
 
             var conditions19 = effects1.ApplyBackwards(new Conditions(new Assignment(0, 1), new Assignment(1, 1)), preconditions1);
             Assert.IsTrue(conditions19.Equals(new ConditionsClause(new Conditions(new Assignment(0, 0), new Assignment(1, 0)), new Conditions(new Assignment(0, 0), new Assignment(1, 1)))));
-            var relativeStates19 = effects1.ApplyBackwards(new RelativeState(1, 1, -1), preconditions1);
-            Assert.IsTrue(relativeStates19.Count() == 2 && relativeStates19.Contains(new RelativeState(0, 0, -1)) && relativeStates19.Contains(new RelativeState(0, 1, -1)));
+            var relativeStates19 = effects1.ApplyBackwards(new RelativeState(1, 1, -1), preconditions1).ToList();
+            Assert.IsTrue(relativeStates19.Count == 2 && relativeStates19.Contains(new RelativeState(0, 0, -1)) && relativeStates19.Contains(new RelativeState(0, 1, -1)));
         }
 
         [TestMethod]
@@ -626,11 +626,10 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(3, problem.MutexGroups[0].Count);
             Assert.AreEqual(3, problem.MutexGroups[1].Count);
 
-            int itemIndex = -1;
+            int itemIndex;
             Assert.IsTrue(problem.MutexGroups[0].TryFindAffectedMutexItem(new Assignment(0, 2), out itemIndex));
             Assert.AreEqual(2, itemIndex);
 
-            itemIndex = -1;
             Assert.IsFalse(problem.MutexGroups[0].TryFindAffectedMutexItem(new Assignment(6, 6), out itemIndex));
             Assert.AreEqual(-1, itemIndex);
         }
@@ -681,51 +680,51 @@ namespace PAD.Tests.SAS
                 Assert.AreEqual(3, node0.OperatorsByDecisionVariableValue.Length);
                 Assert.IsTrue(node0.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeEmptyLeafNode);
                 Assert.IsTrue(node0.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
-                var node0_0 = node0.OperatorsByDecisionVariableValue[0];
-                var node0_N = node0.OperatorsIndependentOnDecisionVariable;
+                var node00 = node0.OperatorsByDecisionVariableValue[0];
+                var node0N = node0.OperatorsIndependentOnDecisionVariable;
 
-                var node0_0x1 = node0_0 as OperatorDecisionTreeInnerNode;
-                Assert.IsNotNull(node0_0x1);
-                Assert.AreEqual(1, node0_0x1.DecisionVariable);
-                Assert.AreEqual(3, node0_0x1.OperatorsByDecisionVariableValue.Length);
-                Assert.IsTrue(node0_0x1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeLeafNode);
-                Assert.IsTrue(node0_0x1.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_0x1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_0x1.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeLeafNode);
-                Assert.AreEqual(2, ((OperatorDecisionTreeLeafNode)node0_0x1.OperatorsByDecisionVariableValue[0]).Operators.Count);
-                Assert.AreEqual("operatorA", ((OperatorDecisionTreeLeafNode)node0_0x1.OperatorsByDecisionVariableValue[0]).Operators[0].GetName());
-                Assert.AreEqual("operatorE", ((OperatorDecisionTreeLeafNode)node0_0x1.OperatorsByDecisionVariableValue[0]).Operators[1].GetName());
-                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0_0x1.OperatorsIndependentOnDecisionVariable).Operators.Count);
-                Assert.AreEqual("operatorB", ((OperatorDecisionTreeLeafNode)node0_0x1.OperatorsIndependentOnDecisionVariable).Operators[0].GetName());
+                var node00X1 = node00 as OperatorDecisionTreeInnerNode;
+                Assert.IsNotNull(node00X1);
+                Assert.AreEqual(1, node00X1.DecisionVariable);
+                Assert.AreEqual(3, node00X1.OperatorsByDecisionVariableValue.Length);
+                Assert.IsTrue(node00X1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeLeafNode);
+                Assert.IsTrue(node00X1.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node00X1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node00X1.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeLeafNode);
+                Assert.AreEqual(2, ((OperatorDecisionTreeLeafNode)node00X1.OperatorsByDecisionVariableValue[0]).Operators.Count);
+                Assert.AreEqual("operatorA", ((OperatorDecisionTreeLeafNode)node00X1.OperatorsByDecisionVariableValue[0]).Operators[0].GetName());
+                Assert.AreEqual("operatorE", ((OperatorDecisionTreeLeafNode)node00X1.OperatorsByDecisionVariableValue[0]).Operators[1].GetName());
+                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node00X1.OperatorsIndependentOnDecisionVariable).Operators.Count);
+                Assert.AreEqual("operatorB", ((OperatorDecisionTreeLeafNode)node00X1.OperatorsIndependentOnDecisionVariable).Operators[0].GetName());
 
-                var node0_Nx1 = node0_N as OperatorDecisionTreeInnerNode;
-                Assert.IsNotNull(node0_Nx1);
-                Assert.AreEqual(1, node0_Nx1.DecisionVariable);
-                Assert.AreEqual(3, node0_Nx1.OperatorsByDecisionVariableValue.Length);
-                Assert.IsTrue(node0_Nx1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_Nx1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
-                var node0_Nx1_1 = node0_Nx1.OperatorsByDecisionVariableValue[1];
-                var node0_Nx1_N = node0_Nx1.OperatorsIndependentOnDecisionVariable;
+                var node0Nx1 = node0N as OperatorDecisionTreeInnerNode;
+                Assert.IsNotNull(node0Nx1);
+                Assert.AreEqual(1, node0Nx1.DecisionVariable);
+                Assert.AreEqual(3, node0Nx1.OperatorsByDecisionVariableValue.Length);
+                Assert.IsTrue(node0Nx1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node0Nx1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
+                var node0Nx11 = node0Nx1.OperatorsByDecisionVariableValue[1];
+                var node0Nx1N = node0Nx1.OperatorsIndependentOnDecisionVariable;
 
-                var node0_Nx1_1x2 = node0_Nx1_1 as OperatorDecisionTreeInnerNode;
-                Assert.IsNotNull(node0_Nx1_1x2);
-                Assert.AreEqual(2, node0_Nx1_1x2.DecisionVariable);
-                Assert.AreEqual(2, node0_Nx1_1x2.OperatorsByDecisionVariableValue.Length);
-                Assert.IsTrue(node0_Nx1_1x2.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_Nx1_1x2.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeLeafNode);
-                Assert.IsTrue(node0_Nx1_1x2.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeEmptyLeafNode);
-                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0_Nx1_1x2.OperatorsByDecisionVariableValue[1]).Operators.Count);
-                Assert.AreEqual("operatorC", ((OperatorDecisionTreeLeafNode)node0_Nx1_1x2.OperatorsByDecisionVariableValue[1]).Operators[0].GetName());
+                var node0Nx11X2 = node0Nx11 as OperatorDecisionTreeInnerNode;
+                Assert.IsNotNull(node0Nx11X2);
+                Assert.AreEqual(2, node0Nx11X2.DecisionVariable);
+                Assert.AreEqual(2, node0Nx11X2.OperatorsByDecisionVariableValue.Length);
+                Assert.IsTrue(node0Nx11X2.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node0Nx11X2.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeLeafNode);
+                Assert.IsTrue(node0Nx11X2.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeEmptyLeafNode);
+                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0Nx11X2.OperatorsByDecisionVariableValue[1]).Operators.Count);
+                Assert.AreEqual("operatorC", ((OperatorDecisionTreeLeafNode)node0Nx11X2.OperatorsByDecisionVariableValue[1]).Operators[0].GetName());
 
-                var node0_Nx1_Nx2 = node0_Nx1_N as OperatorDecisionTreeInnerNode;
-                Assert.IsNotNull(node0_Nx1_Nx2);
-                Assert.AreEqual(2, node0_Nx1_Nx2.DecisionVariable);
-                Assert.AreEqual(2, node0_Nx1_Nx2.OperatorsByDecisionVariableValue.Length);
-                Assert.IsTrue(node0_Nx1_Nx2.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeLeafNode);
-                Assert.IsTrue(node0_Nx1_Nx2.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_Nx1_Nx2.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeEmptyLeafNode);
-                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0_Nx1_Nx2.OperatorsByDecisionVariableValue[0]).Operators.Count);
-                Assert.AreEqual("operatorD", ((OperatorDecisionTreeLeafNode)node0_Nx1_Nx2.OperatorsByDecisionVariableValue[0]).Operators[0].GetName());
+                var node0Nx1Nx2 = node0Nx1N as OperatorDecisionTreeInnerNode;
+                Assert.IsNotNull(node0Nx1Nx2);
+                Assert.AreEqual(2, node0Nx1Nx2.DecisionVariable);
+                Assert.AreEqual(2, node0Nx1Nx2.OperatorsByDecisionVariableValue.Length);
+                Assert.IsTrue(node0Nx1Nx2.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeLeafNode);
+                Assert.IsTrue(node0Nx1Nx2.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node0Nx1Nx2.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeEmptyLeafNode);
+                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0Nx1Nx2.OperatorsByDecisionVariableValue[0]).Operators.Count);
+                Assert.AreEqual("operatorD", ((OperatorDecisionTreeLeafNode)node0Nx1Nx2.OperatorsByDecisionVariableValue[0]).Operators[0].GetName());
             }
 
             // relevance tree
@@ -737,46 +736,46 @@ namespace PAD.Tests.SAS
                 Assert.AreEqual(0, node0.DecisionVariable);
                 Assert.AreEqual(3, node0.OperatorsByDecisionVariableValue.Length);
                 Assert.IsTrue(node0.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
-                var node0_0 = node0.OperatorsByDecisionVariableValue[0];
-                var node0_1 = node0.OperatorsByDecisionVariableValue[1];
-                var node0_N = node0.OperatorsIndependentOnDecisionVariable;
+                var node00 = node0.OperatorsByDecisionVariableValue[0];
+                var node01 = node0.OperatorsByDecisionVariableValue[1];
+                var node0N = node0.OperatorsIndependentOnDecisionVariable;
 
-                var node0_0x1 = node0_0 as OperatorDecisionTreeInnerNode;
-                Assert.IsNotNull(node0_0x1);
-                Assert.AreEqual(1, node0_0x1.DecisionVariable);
-                Assert.AreEqual(3, node0_0x1.OperatorsByDecisionVariableValue.Length);
-                Assert.IsTrue(node0_0x1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeLeafNode);
-                Assert.IsTrue(node0_0x1.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_0x1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_0x1.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeLeafNode);
-                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0_0x1.OperatorsByDecisionVariableValue[0]).Operators.Count);
-                Assert.AreEqual("operatorC", ((OperatorDecisionTreeLeafNode)node0_0x1.OperatorsByDecisionVariableValue[0]).Operators[0].GetName());
-                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0_0x1.OperatorsIndependentOnDecisionVariable).Operators.Count);
-                Assert.AreEqual("operatorD", ((OperatorDecisionTreeLeafNode)node0_0x1.OperatorsIndependentOnDecisionVariable).Operators[0].GetName());
+                var node00X1 = node00 as OperatorDecisionTreeInnerNode;
+                Assert.IsNotNull(node00X1);
+                Assert.AreEqual(1, node00X1.DecisionVariable);
+                Assert.AreEqual(3, node00X1.OperatorsByDecisionVariableValue.Length);
+                Assert.IsTrue(node00X1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeLeafNode);
+                Assert.IsTrue(node00X1.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node00X1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node00X1.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeLeafNode);
+                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node00X1.OperatorsByDecisionVariableValue[0]).Operators.Count);
+                Assert.AreEqual("operatorC", ((OperatorDecisionTreeLeafNode)node00X1.OperatorsByDecisionVariableValue[0]).Operators[0].GetName());
+                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node00X1.OperatorsIndependentOnDecisionVariable).Operators.Count);
+                Assert.AreEqual("operatorD", ((OperatorDecisionTreeLeafNode)node00X1.OperatorsIndependentOnDecisionVariable).Operators[0].GetName());
 
-                var node0_1x1 = node0_1 as OperatorDecisionTreeInnerNode;
-                Assert.IsNotNull(node0_1x1);
-                Assert.AreEqual(1, node0_1x1.DecisionVariable);
-                Assert.AreEqual(3, node0_1x1.OperatorsByDecisionVariableValue.Length);
-                Assert.IsTrue(node0_1x1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_1x1.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_1x1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeLeafNode);
-                Assert.IsTrue(node0_1x1.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeLeafNode);
-                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0_1x1.OperatorsByDecisionVariableValue[2]).Operators.Count);
-                Assert.AreEqual("operatorA", ((OperatorDecisionTreeLeafNode)node0_1x1.OperatorsByDecisionVariableValue[2]).Operators[0].GetName());
-                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0_1x1.OperatorsIndependentOnDecisionVariable).Operators.Count);
-                Assert.AreEqual("operatorB", ((OperatorDecisionTreeLeafNode)node0_1x1.OperatorsIndependentOnDecisionVariable).Operators[0].GetName());
+                var node01X1 = node01 as OperatorDecisionTreeInnerNode;
+                Assert.IsNotNull(node01X1);
+                Assert.AreEqual(1, node01X1.DecisionVariable);
+                Assert.AreEqual(3, node01X1.OperatorsByDecisionVariableValue.Length);
+                Assert.IsTrue(node01X1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node01X1.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node01X1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeLeafNode);
+                Assert.IsTrue(node01X1.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeLeafNode);
+                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node01X1.OperatorsByDecisionVariableValue[2]).Operators.Count);
+                Assert.AreEqual("operatorA", ((OperatorDecisionTreeLeafNode)node01X1.OperatorsByDecisionVariableValue[2]).Operators[0].GetName());
+                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node01X1.OperatorsIndependentOnDecisionVariable).Operators.Count);
+                Assert.AreEqual("operatorB", ((OperatorDecisionTreeLeafNode)node01X1.OperatorsIndependentOnDecisionVariable).Operators[0].GetName());
 
-                var node0_Nx1 = node0_N as OperatorDecisionTreeInnerNode;
-                Assert.IsNotNull(node0_Nx1);
-                Assert.AreEqual(1, node0_Nx1.DecisionVariable);
-                Assert.AreEqual(3, node0_Nx1.OperatorsByDecisionVariableValue.Length);
-                Assert.IsTrue(node0_Nx1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_Nx1.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeLeafNode);
-                Assert.IsTrue(node0_Nx1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
-                Assert.IsTrue(node0_Nx1.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeEmptyLeafNode);
-                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0_Nx1.OperatorsByDecisionVariableValue[1]).Operators.Count);
-                Assert.AreEqual("operatorE", ((OperatorDecisionTreeLeafNode)node0_Nx1.OperatorsByDecisionVariableValue[1]).Operators[0].GetName());
+                var node0Nx1 = node0N as OperatorDecisionTreeInnerNode;
+                Assert.IsNotNull(node0Nx1);
+                Assert.AreEqual(1, node0Nx1.DecisionVariable);
+                Assert.AreEqual(3, node0Nx1.OperatorsByDecisionVariableValue.Length);
+                Assert.IsTrue(node0Nx1.OperatorsByDecisionVariableValue[0] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node0Nx1.OperatorsByDecisionVariableValue[1] is OperatorDecisionTreeLeafNode);
+                Assert.IsTrue(node0Nx1.OperatorsByDecisionVariableValue[2] is OperatorDecisionTreeEmptyLeafNode);
+                Assert.IsTrue(node0Nx1.OperatorsIndependentOnDecisionVariable is OperatorDecisionTreeEmptyLeafNode);
+                Assert.AreEqual(1, ((OperatorDecisionTreeLeafNode)node0Nx1.OperatorsByDecisionVariableValue[1]).Operators.Count);
+                Assert.AreEqual("operatorE", ((OperatorDecisionTreeLeafNode)node0Nx1.OperatorsByDecisionVariableValue[1]).Operators[0].GetName());
             }
         }
 
@@ -790,7 +789,7 @@ namespace PAD.Tests.SAS
 
             var oper = (Operator)problem.Operators[0];
             Assert.AreEqual("operator0", oper.GetName());
-            Assert.AreEqual(0, oper.ID);
+            Assert.AreEqual(0, oper.Id);
             Assert.AreEqual(5, oper.GetCost());
 
             Conditions conditions0 = oper.GetPreconditions();
@@ -838,16 +837,16 @@ namespace PAD.Tests.SAS
             Assert.IsTrue(newConditions.Evaluate(new State(0, 0, 2)));
             Assert.IsTrue(newConditions.Evaluate(new State(0, 0, 1)));
 
-            var newRelativeStates = oper.ApplyBackwards(relativeState);
-            Assert.IsTrue(newRelativeStates.Count() == 1 && newRelativeStates.First().Equals(new RelativeState(0, 0, -1)));
-            var newRelativeStates2 = oper.ApplyBackwards(relativeState2);
-            Assert.IsTrue(newRelativeStates2.Count() == 2 && newRelativeStates2.Contains(new RelativeState(0, 0, 1)) && newRelativeStates2.Contains(new RelativeState(0, 0, 2)));
+            var newRelativeStates = oper.ApplyBackwards(relativeState).ToList();
+            Assert.IsTrue(newRelativeStates.Count == 1 && newRelativeStates.First().Equals(new RelativeState(0, 0, -1)));
+            var newRelativeStates2 = oper.ApplyBackwards(relativeState2).ToList();
+            Assert.IsTrue(newRelativeStates2.Count == 2 && newRelativeStates2.Contains(new RelativeState(0, 0, 1)) && newRelativeStates2.Contains(new RelativeState(0, 0, 2)));
 
             var oper1 = problem.Operators[1];
-            StateLabels stateLabels = new StateLabels();
-            stateLabels.Add(new Assignment(0, 0), 3);
-            stateLabels.Add(new Assignment(1, 0), 7);
-            stateLabels.Add(new Assignment(2, 0), 2);
+            StateLabels stateLabels = new StateLabels
+            {
+                {new Assignment(0, 0), 3}, {new Assignment(1, 0), 7}, {new Assignment(2, 0), 2}
+            };
             Assert.AreEqual(7, oper1.ComputePlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.MAX_VALUE));
             Assert.AreEqual(12, oper1.ComputePlanningGraphLabel(stateLabels, Planner.ForwardCostEvaluationStrategy.ADDITIVE_VALUE));
 
@@ -863,24 +862,26 @@ namespace PAD.Tests.SAS
             SASInputData data = new SASInputData(GetFilePath("TC_PatternDatabase.sas"));
             Problem problem = new Problem(data);
 
-            PatternValuesDistances valuesDistances = new PatternValuesDistances();
-            valuesDistances.Add(new int[] { 3, 3, 3 }, 9);
-            valuesDistances.Add(new int[] { 2, 2, 2 }, 7);
-            Assert.AreEqual(7, valuesDistances.GetDistance(new int[] { 2, 2, 2 }));
-            Assert.AreEqual(PatternValuesDistances.MAX_DISTANCE, valuesDistances.GetDistance(new int[] { 2, 1, 2 }));
+            PatternValuesDistances valuesDistances = new PatternValuesDistances
+            {
+                {new[] {3, 3, 3}, 9},
+                {new[] {2, 2, 2}, 7}
+            };
+            Assert.AreEqual(7, valuesDistances.GetDistance(new[] { 2, 2, 2 }));
+            Assert.AreEqual(PatternValuesDistances.MaxDistance, valuesDistances.GetDistance(new[] { 2, 1, 2 }));
 
-            Pattern pattern = new Pattern(new int[] { 1, 2, 3 }, valuesDistances);
+            Pattern pattern = new Pattern(new[] { 1, 2, 3 }, valuesDistances);
             Assert.AreEqual(9, pattern.GetDistance(new State(0, 3, 3, 3, 0)));
-            Assert.AreEqual(PatternValuesDistances.MAX_DISTANCE, pattern.GetDistance(new State(0, 0, 0, 0, 0)));
+            Assert.AreEqual(PatternValuesDistances.MaxDistance, pattern.GetDistance(new State(0, 0, 0, 0, 0)));
 
             var userPatterns = new List<HashSet<int>> { new HashSet<int> { 0, 1 } };
             PatternDatabase database = new PatternDatabase(problem, false, userPatterns);
             Assert.AreEqual(1, database.Count);
-            Assert.IsTrue(Planner.CollectionsEquality.Equals(database[0].PatternVariables, new int[] { 0, 1 }));
+            Assert.IsTrue(Planner.CollectionsEquality.Equals(database[0].PatternVariables, new[] { 0, 1 }));
             Assert.AreEqual(5, database[0].PatternValuesDistances.Count);
             Assert.AreEqual("{[0, 1] = 0}, {[1, 1] = 0}, {[2, 1] = 0}, {[1, 0] = 1}, {[1, 2] = 1}", database[0].PatternValuesDistances.ToString());
 
-            Assert.AreEqual(PatternValuesDistances.MAX_DISTANCE, database.GetValue(new State(0, 0, 0)));
+            Assert.AreEqual(PatternValuesDistances.MaxDistance, database.GetValue(new State(0, 0, 0)));
             Assert.AreEqual(0, database.GetValue(new State(0, 1, 0)));
             Assert.AreEqual(1, database.GetValue(new State(1, 0, 0)));
         }
@@ -901,8 +902,8 @@ namespace PAD.Tests.SAS
             PatternDatabase database = new PatternDatabase(problem);
 
             Assert.AreEqual(2, database.Count);
-            Assert.IsTrue(Planner.CollectionsEquality.Equals(database[0].PatternVariables, new int[] { 0, 1, 2 }));
-            Assert.IsTrue(Planner.CollectionsEquality.Equals(database[1].PatternVariables, new int[] { 4 }));
+            Assert.IsTrue(Planner.CollectionsEquality.Equals(database[0].PatternVariables, new[] { 0, 1, 2 }));
+            Assert.IsTrue(Planner.CollectionsEquality.Equals(database[1].PatternVariables, new[] { 4 }));
         }
 
         [TestMethod]
@@ -949,7 +950,7 @@ namespace PAD.Tests.SAS
             {
                 predecessorConditions.Add((IConditions)predecessor.GetPredecessorConditions());
             }
-            Assert.AreEqual(2, predecessorConditions.Count());
+            Assert.AreEqual(2, predecessorConditions.Count);
             Assert.IsTrue(predecessorConditions.Contains(new Conditions(new Assignment(0, 1), new Assignment(1, 0), new Assignment(2, 1))));
             Assert.IsTrue(predecessorConditions.Contains(new Conditions(new Assignment(0, 1), new Assignment(1, 1), new Assignment(2, 0))));
             // filtered by mutex group 2: new Conditions(new Assignment(0, 0), new Assignment(1, 1), new Assignment(2, 1)))
@@ -1008,10 +1009,10 @@ namespace PAD.Tests.SAS
                     predecessors2States.Add((IState)state);
                 }
             }
-            Assert.AreEqual(1, predecessors2.Count());
+            Assert.AreEqual(1, predecessors2.Count);
             Assert.IsTrue(predecessors2.Contains(new Conditions(new Assignment(0, 1), new Assignment(1, 1), new Assignment(2, 0), new Assignment(3, 1))));
 
-            Assert.AreEqual(1, predecessors2States.Count());
+            Assert.AreEqual(1, predecessors2States.Count);
             Assert.IsTrue(predecessors2States.Contains(new State(1, 1, 0, 1)));
 
             HashSet<IRelativeState> predecessors3 = new HashSet<IRelativeState>();
@@ -1023,18 +1024,18 @@ namespace PAD.Tests.SAS
                 }
             }
 
-            Assert.AreEqual(2, predecessors3.Count());
+            Assert.AreEqual(2, predecessors3.Count);
             Assert.IsTrue(predecessors3.Contains(new RelativeState(0, 1, -1)));
             Assert.IsTrue(predecessors3.Contains(new RelativeState(1, 0, -1)));
 
-            var succStates = problem.GetSuccessorStates(new State(0, 0, 0, 0));
-            Assert.AreEqual(3, succStates.Count());
+            var succStates = problem.GetSuccessorStates(new State(0, 0, 0, 0)).ToList();
+            Assert.AreEqual(3, succStates.Count);
             Assert.IsTrue(succStates.Contains(new State(1, 0, 0, 0)));
             Assert.IsTrue(succStates.Contains(new State(0, 0, 1, 1)));
             Assert.IsTrue(succStates.Contains(new State(2, 2, 2, 1)));
 
-            var predStates = problem.GetPredecessorStates(new State(1, 1, 1, 1));
-            Assert.AreEqual(1, predStates.Count());
+            var predStates = problem.GetPredecessorStates(new State(1, 1, 1, 1)).ToList();
+            Assert.AreEqual(1, predStates.Count);
             Assert.IsTrue(predStates.Contains(new State(1, 1, 0, 1)));
 
             Assert.IsNotNull(problem.GetRelaxedProblem());
@@ -1049,7 +1050,7 @@ namespace PAD.Tests.SAS
 
             PredecessorsGenerator generator = new PredecessorsGenerator(problem.Operators, problem.Variables);
 
-            Func<IConditions, HashSet<Planner.IConditions>> GetPredecessors = (IConditions conditions) =>
+            Func<IConditions, HashSet<Planner.IConditions>> getPredecessors = conditions =>
             {
                 var predecessorsSet = new HashSet<Planner.IConditions>();
                 foreach (var predecessor in generator.GetPredecessors(conditions))
@@ -1059,25 +1060,25 @@ namespace PAD.Tests.SAS
                 return predecessorsSet;
             };
 
-            var predecessors = GetPredecessors(new Conditions(new Assignment(0, 1), new Assignment(1, 1)));
+            var predecessors = getPredecessors(new Conditions(new Assignment(0, 1), new Assignment(1, 1)));
             Assert.AreEqual(2, predecessors.Count);
             Assert.IsTrue(predecessors.Contains(new Conditions(new Assignment(0, 0), new Assignment(1, 1))));
             Assert.IsTrue(predecessors.Contains(new Conditions(new Assignment(0, 1), new Assignment(1, 0))));
 
-            predecessors = GetPredecessors(new Conditions(new Assignment(2, 2)));
+            predecessors = getPredecessors(new Conditions(new Assignment(2, 2)));
             Assert.AreEqual(1, predecessors.Count);
             Assert.IsTrue(predecessors.Contains(new ConditionsClause(new Conditions(new Assignment(2, 2), new Assignment(0, 2)), new Conditions(new Assignment(3, 0), new Assignment(0, 2)))));
 
-            predecessors = GetPredecessors(new ConditionsClause(new Conditions(new Assignment(0, 1)), new Conditions(new Assignment(1, 1))));
+            predecessors = getPredecessors(new ConditionsClause(new Conditions(new Assignment(0, 1)), new Conditions(new Assignment(1, 1))));
             Assert.AreEqual(2, predecessors.Count);
             Assert.IsTrue(predecessors.Contains(new Conditions(new Assignment(0, 0))));
             Assert.IsTrue(predecessors.Contains(new Conditions(new Assignment(1, 0))));
 
-            predecessors = GetPredecessors(new ConditionsClause(new Conditions(new Assignment(2, 2)), new Conditions(new Assignment(1, 2))));
+            predecessors = getPredecessors(new ConditionsClause(new Conditions(new Assignment(2, 2)), new Conditions(new Assignment(1, 2))));
             Assert.AreEqual(1, predecessors.Count);
             Assert.IsTrue(predecessors.Contains(new ConditionsClause(new Conditions(new Assignment(2, 2), new Assignment(0, 2)), new Conditions(new Assignment(1, 2), new Assignment(0, 2)), new Conditions(new Assignment(3, 0), new Assignment(0, 2)))));
 
-            predecessors = GetPredecessors(new ConditionsContradiction());
+            predecessors = getPredecessors(new ConditionsContradiction());
             Assert.AreEqual(0, predecessors.Count);
         }
         [TestMethod]
@@ -1109,10 +1110,10 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(2, state.GetAllValues(1).Length);
             Assert.AreEqual(1, state.GetAllValues(1)[0]);
             Assert.AreEqual(2, state.GetAllValues(1)[1]);
-            Assert.IsTrue(state.GetAllValues().SequenceEqual(new int[] { 2, 1, 2 }));
+            Assert.IsTrue(state.GetAllValues().SequenceEqual(new[] { 2, 1, 2 }));
 
-            Assert.IsTrue(state.GetValues(new int[] { 2, 0 }).SequenceEqual(new int[] { 2, 2 }));
-            Assert.IsTrue(state.GetValues(new int[] { 1 }).SequenceEqual(new int[] { 1 }));
+            Assert.IsTrue(state.GetValues(new[] { 2, 0 }).SequenceEqual(new[] { 2, 2 }));
+            Assert.IsTrue(state.GetValues(new[] { 1 }).SequenceEqual(new[] { 1 }));
 
             Assert.AreEqual(4, state.GetSize());
 
@@ -1123,7 +1124,7 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(conditions, new ConditionsClause(new Conditions(new Assignment(0, 2), new Assignment(1, 1), new Assignment(2, 2)),
                                                              new Conditions(new Assignment(0, 2), new Assignment(1, 2), new Assignment(2, 2))));
 
-            Assert.AreEqual("TestCases_TC_RedBlackState.sas_[2 1|2 2]", state.GetInfoString(problem));
+            Assert.AreEqual("PlannerTestCases_TC_RedBlackState.sas_[2 1|2 2]", state.GetInfoString(problem));
             Assert.AreEqual("[2 1|2 2]", state.ToString());
             Assert.AreEqual("Blue, White|Grey, Bike", state.ToStringWithMeanings(problem));
 
@@ -1146,7 +1147,7 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(2, state.GetValue(2));
 
             Assert.IsTrue(state.HasValue(0, 1));
-            Assert.IsTrue(state.HasValue(1, RelativeState.WILD_CARD_VALUE));
+            Assert.IsTrue(state.HasValue(1, RelativeState.WildCardValue));
             Assert.IsTrue(state.HasValue(2, 2));
 
             Assert.IsFalse(state.HasValue(new Assignment(2, 0)));
@@ -1160,10 +1161,10 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(-1, state.GetAllValues(1)[0]);
             Assert.AreEqual(1, state.GetAllValues(2).Length);
             Assert.AreEqual(2, state.GetAllValues(2)[0]);
-            Assert.IsTrue(state.GetAllValues().SequenceEqual(new int[] { 1, -1, 2 }));
+            Assert.IsTrue(state.GetAllValues().SequenceEqual(new[] { 1, -1, 2 }));
 
-            Assert.IsTrue(state.GetValues(new int[] { 2, 0 }).SequenceEqual(new int[] { 2, 1 }));
-            Assert.IsTrue(state.GetValues(new int[] { 1 }).SequenceEqual(new int[] { -1 }));
+            Assert.IsTrue(state.GetValues(new[] { 2, 0 }).SequenceEqual(new[] { 2, 1 }));
+            Assert.IsTrue(state.GetValues(new[] { 1 }).SequenceEqual(new[] { -1 }));
 
             Assert.AreEqual(3, state.GetSize());
 
@@ -1176,15 +1177,15 @@ namespace PAD.Tests.SAS
             var conditions = (IConditions)state.GetDescribingConditions(problem);
             Assert.AreEqual(conditions, new Conditions(new Assignment(0, 1), new Assignment(2, 2)));
 
-            var correspondingStates = state.GetCorrespondingStates(problem);
-            Assert.AreEqual(2, correspondingStates.Count());
+            var correspondingStates = state.GetCorrespondingStates(problem).ToList();
+            Assert.AreEqual(2, correspondingStates.Count);
             Assert.IsTrue(correspondingStates.Contains(new State(1, 0, 2)) && correspondingStates.Contains(new State(1, 1, 2)));
 
             Assert.AreEqual(new State(-1, 2, 1, 1, 1), State.Parse("[-1 2 3x1]"));
             Assert.AreEqual(new State(2), State.Parse("[2]"));
             Assert.AreEqual(new State(), State.Parse("[]"));
 
-            Assert.AreEqual("TestCases_TC_RelativeState.sas_[1 -1 2]", state.GetInfoString(problem));
+            Assert.AreEqual("PlannerTestCases_TC_RelativeState.sas_[1 -1 2]", state.GetInfoString(problem));
             Assert.AreEqual("[1 2 3x-1 3]", new RelativeState(1, 2, -1, -1, -1, 3).GetCompressedDescription());
             Assert.AreEqual("[1 -1 2]", state.ToString());
             Assert.AreEqual("Green, *, Bike", state.ToStringWithMeanings(problem));
@@ -1267,10 +1268,10 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(0, state.GetAllValues(0)[0]);
             Assert.AreEqual(1, state.GetAllValues(0)[1]);
             Assert.AreEqual(2, state.GetAllValues(0)[2]);
-            Assert.IsTrue(state.GetAllValues().SequenceEqual(new int[] { 0, 1, 2 }));
+            Assert.IsTrue(state.GetAllValues().SequenceEqual(new[] { 0, 1, 2 }));
 
-            Assert.IsTrue(state.GetValues(new int[] { 2, 0 }).SequenceEqual(new int[] { 2, 0 }));
-            Assert.IsTrue(state.GetValues(new int[] { 1 }).SequenceEqual(new int[] { 1 }));
+            Assert.IsTrue(state.GetValues(new[] { 2, 0 }).SequenceEqual(new[] { 2, 0 }));
+            Assert.IsTrue(state.GetValues(new[] { 1 }).SequenceEqual(new[] { 1 }));
 
             Assert.AreEqual(5, state.GetSize());
             Assert.AreEqual(3, state.GetLength());
@@ -1285,7 +1286,7 @@ namespace PAD.Tests.SAS
                                                              new Conditions(new Assignment(0, 1), new Assignment(1, 1), new Assignment(2, 2)),
                                                              new Conditions(new Assignment(0, 2), new Assignment(1, 1), new Assignment(2, 2))));
 
-            Assert.AreEqual("TestCases_TC_RelaxedState.sas_[0|1|2 1 2]", state.GetInfoString(problem));
+            Assert.AreEqual("PlannerTestCases_TC_RelaxedState.sas_[0|1|2 1 2]", state.GetInfoString(problem));
             Assert.AreEqual("[0|1|2 1 2]", state.ToString());
             Assert.AreEqual("Red|Green|Blue, White, Bike", state.ToStringWithMeanings(problem));
 
@@ -1322,10 +1323,10 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(1, state.GetAllValues(1)[0]);
             Assert.AreEqual(1, state.GetAllValues(2).Length);
             Assert.AreEqual(2, state.GetAllValues(2)[0]);
-            Assert.IsTrue(state.GetAllValues().SequenceEqual(new int[] { 0, 1, 2 }));
+            Assert.IsTrue(state.GetAllValues().SequenceEqual(new[] { 0, 1, 2 }));
 
-            Assert.IsTrue(state.GetValues(new int[] { 2, 0 }).SequenceEqual(new int[] { 2, 0 }));
-            Assert.IsTrue(state.GetValues(new int[] { 1 }).SequenceEqual(new int[] { 1 }));
+            Assert.IsTrue(state.GetValues(new[] { 2, 0 }).SequenceEqual(new[] { 2, 0 }));
+            Assert.IsTrue(state.GetValues(new[] { 1 }).SequenceEqual(new[] { 1 }));
 
             Assert.AreEqual(3, state.GetSize());
 
@@ -1339,7 +1340,7 @@ namespace PAD.Tests.SAS
             Assert.AreEqual(new State(2), State.Parse("[2]"));
             Assert.AreEqual(new State(), State.Parse("[]"));
 
-            Assert.AreEqual("TestCases_TC_State.sas_[0 1 2]", state.GetInfoString(problem));
+            Assert.AreEqual("PlannerTestCases_TC_State.sas_[0 1 2]", state.GetInfoString(problem));
             Assert.AreEqual("[1 2 3x1 3]", new State(1, 2, 1, 1, 1, 3).GetCompressedDescription());
             Assert.AreEqual("[0 1 2]", state.ToString());
             Assert.AreEqual("Red, White, Bike", state.ToStringWithMeanings(problem));
@@ -1363,11 +1364,11 @@ namespace PAD.Tests.SAS
             {
                 new State(0, 0, 0), new State(0, 1, 0),
                 new State(1, 0, 0), new State(1, 1, 0),
-                new State(2, 0, 0), new State(2, 1, 0),
+                new State(2, 0, 0), new State(2, 1, 0)
             };
 
-            var conditionsStates = StatesEnumerator.EnumerateStates(conditions, problem.Variables);
-            Assert.AreEqual(6, conditionsStates.Count());
+            var conditionsStates = StatesEnumerator.EnumerateStates(conditions, problem.Variables).ToList();
+            Assert.AreEqual(6, conditionsStates.Count);
             foreach (var state in conditionsStates)
             {
                 Assert.IsTrue(expectedConditionsStates.Contains(state));
@@ -1389,11 +1390,11 @@ namespace PAD.Tests.SAS
                 new State(0, 0, 0), new State(1, 1, 1),
                 new State(2, 0, 0), new State(2, 1, 0),
                 new State(2, 0, 1), new State(2, 1, 1),
-                new State(2, 0, 2), new State(2, 1, 2),
+                new State(2, 0, 2), new State(2, 1, 2)
             };
 
-            var conditionsClauseStates = StatesEnumerator.EnumerateStates(conditionsClause, problem.Variables);
-            Assert.AreEqual(8, conditionsClauseStates.Count());
+            var conditionsClauseStates = StatesEnumerator.EnumerateStates(conditionsClause, problem.Variables).ToList();
+            Assert.AreEqual(8, conditionsClauseStates.Count);
             foreach (var state in conditionsClauseStates)
             {
                 Assert.IsTrue(expectedConditionsClauseStates.Contains(state));
@@ -1412,11 +1413,11 @@ namespace PAD.Tests.SAS
             {
                 new State(0, 0, 0), new State(0, 1, 0),
                 new State(1, 0, 0), new State(1, 1, 0),
-                new State(2, 0, 0), new State(2, 1, 0),
+                new State(2, 0, 0), new State(2, 1, 0)
             };
 
-            var relativeStateStates = StatesEnumerator.EnumerateStates(relativeState, problem.Variables);
-            Assert.AreEqual(6, relativeStateStates.Count());
+            var relativeStateStates = StatesEnumerator.EnumerateStates(relativeState, problem.Variables).ToList();
+            Assert.AreEqual(6, relativeStateStates.Count);
             foreach (var state in relativeStateStates)
             {
                 Assert.IsTrue(expectedRelativeStateStates.Contains(state));
@@ -1450,7 +1451,7 @@ namespace PAD.Tests.SAS
             Problem problem = new Problem(data);
 
             Planner.TransitionsEnumerator<IState, Planner.ISuccessor> enumerator = new Planner.TransitionsEnumerator<IState, Planner.ISuccessor>();
-            Func<IState, IEnumerable<Planner.ISuccessor>> generatorFunction = (IState state) => { return problem.GetSuccessors(state); };
+            Func<IState, IEnumerable<Planner.ISuccessor>> generatorFunction = state => problem.GetSuccessors(state);
 
             State state0 = new State(0, 0, 0);
             State state1 = new State(1, 1, 1);
@@ -1510,7 +1511,7 @@ namespace PAD.Tests.SAS
             {
                 predecessorConditions.Add((IConditions)predecessor.GetPredecessorConditions());
             }
-            Assert.AreEqual(3, predecessorConditions.Count());
+            Assert.AreEqual(3, predecessorConditions.Count);
             Assert.IsTrue(predecessorConditions.Contains(new Conditions(new Assignment(0, 0), new Assignment(1, 1), new Assignment(2, 1))));
             Assert.IsTrue(predecessorConditions.Contains(new Conditions(new Assignment(0, 1), new Assignment(1, 0), new Assignment(2, 1))));
             Assert.IsTrue(predecessorConditions.Contains(new Conditions(new Assignment(0, 1), new Assignment(1, 1), new Assignment(2, 0))));
@@ -1569,12 +1570,12 @@ namespace PAD.Tests.SAS
                     predecessors2States.Add((IState)state);
                 }
             }
-            Assert.AreEqual(3, predecessors2.Count());
+            Assert.AreEqual(3, predecessors2.Count);
             Assert.IsTrue(predecessors2.Contains(new Conditions(new Assignment(0, 0), new Assignment(1, 1), new Assignment(2, 1))));
             Assert.IsTrue(predecessors2.Contains(new Conditions(new Assignment(0, 1), new Assignment(1, 0), new Assignment(2, 1))));
             Assert.IsTrue(predecessors2.Contains(new Conditions(new Assignment(0, 1), new Assignment(1, 1), new Assignment(2, 0))));
 
-            Assert.AreEqual(3, predecessors2States.Count());
+            Assert.AreEqual(3, predecessors2States.Count);
             Assert.IsTrue(predecessors2States.Contains(new State(0, 1, 1)));
             Assert.IsTrue(predecessors2States.Contains(new State(1, 0, 1)));
             Assert.IsTrue(predecessors2States.Contains(new State(1, 1, 0)));
@@ -1588,19 +1589,19 @@ namespace PAD.Tests.SAS
                 }
             }
 
-            Assert.AreEqual(2, predecessors3.Count());
+            Assert.AreEqual(2, predecessors3.Count);
             Assert.IsTrue(predecessors3.Contains(new RelativeState(0, 1, -1)));
             Assert.IsTrue(predecessors3.Contains(new RelativeState(1, 0, -1)));
 
-            var succStates = transitionsGenerator.GetSuccessorStates(new State(0, 0, 0));
-            Assert.AreEqual(4, succStates.Count());
+            var succStates = transitionsGenerator.GetSuccessorStates(new State(0, 0, 0)).ToList();
+            Assert.AreEqual(4, succStates.Count);
             Assert.IsTrue(succStates.Contains(new State(1, 0, 0)));
             Assert.IsTrue(succStates.Contains(new State(0, 1, 0)));
             Assert.IsTrue(succStates.Contains(new State(0, 0, 1)));
             Assert.IsTrue(succStates.Contains(new State(2, 2, 2)));
 
-            var predStates = transitionsGenerator.GetPredecessorStates(new State(1, 1, 1));
-            Assert.AreEqual(3, predStates.Count());
+            var predStates = transitionsGenerator.GetPredecessorStates(new State(1, 1, 1)).ToList();
+            Assert.AreEqual(3, predStates.Count);
             Assert.IsTrue(predStates.Contains(new State(0, 1, 1)));
             Assert.IsTrue(predStates.Contains(new State(1, 0, 1)));
             Assert.IsTrue(predStates.Contains(new State(1, 1, 0)));

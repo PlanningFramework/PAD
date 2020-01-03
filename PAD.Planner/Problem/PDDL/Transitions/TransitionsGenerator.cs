@@ -11,32 +11,32 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// List of lifted operators in the PDDL planning problem.
         /// </summary>
-        private LiftedOperators LiftedOperators { set; get; } = null;
+        private LiftedOperators LiftedOperators { get; }
 
         /// <summary>
         /// Enumerator for successive generation of forward transitions of the PDDL planning problem.
         /// </summary>
-        private Lazy<TransitionsEnumerator<IState, ISuccessor>> SuccessorsEnumerator { set; get; } = new Lazy<TransitionsEnumerator<IState, ISuccessor>>();
+        private Lazy<TransitionsEnumerator<IState, ISuccessor>> SuccessorsEnumerator { get; } = new Lazy<TransitionsEnumerator<IState, ISuccessor>>();
 
         /// <summary>
         /// Enumerator for successive generation of backward transitions of the PDDL planning problem.
         /// </summary>
-        private Lazy<TransitionsEnumerator<IConditions, IPredecessor>> PredecessorsEnumerator { set; get; } = new Lazy<TransitionsEnumerator<IConditions, IPredecessor>>();
+        private Lazy<TransitionsEnumerator<IConditions, IPredecessor>> PredecessorsEnumerator { get; } = new Lazy<TransitionsEnumerator<IConditions, IPredecessor>>();
 
         /// <summary>
         /// Random number generator.
         /// </summary>
-        private Random RandomNumberGenerator { set; get; } = new Random();
+        private Random RandomNumberGenerator { get; } = new Random();
 
         /// <summary>
         /// Reference to the parent planning problem.
         /// </summary>
-        private Problem Problem { set; get; } = null;
+        private Problem Problem { get; }
 
         /// <summary>
         /// Constructs the transitions generator.
@@ -79,7 +79,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Lazy generated collection of successors.</returns>
         public IEnumerable<ISuccessor> GetNextSuccessors(IState state, int numberOfSuccessors)
         {
-            Func<IState, IEnumerable<ISuccessor>> generator = (IState sourceState) => { return GetSuccessors(sourceState); };
+            Func<IState, IEnumerable<ISuccessor>> generator = GetSuccessors;
             return SuccessorsEnumerator.Value.GetNextTransitions(state, numberOfSuccessors, generator);
         }
 
@@ -153,7 +153,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Lazy generated collection of relevant predecessors.</returns>
         public IEnumerable<IPredecessor> GetNextPredecessors(IConditions conditions, int numberOfPredecessors)
         {
-            Func<IConditions, IEnumerable<IPredecessor>> generator = (IConditions sourceConditions) => { return GetPredecessors(sourceConditions); };
+            Func<IConditions, IEnumerable<IPredecessor>> generator = GetPredecessors;
             return PredecessorsEnumerator.Value.GetNextTransitions(conditions, numberOfPredecessors, generator);
         }
 
@@ -168,7 +168,7 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Gets a collection of all explicly enumerated successor states (created by forward applications) from the specified state. Lazy generated via yield return.
+        /// Gets a collection of all explicitly enumerated successor states (created by forward applications) from the specified state. Lazy generated via yield return.
         /// </summary>
         /// <param name="state">Original state.</param>
         /// <returns>Lazy generated collection of all successor states.</returns>
@@ -181,7 +181,7 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Gets a collection of all explicly enumerated predecessor states (created by relevant backwards applications) from the specified state. Lazy generated via yield return.
+        /// Gets a collection of all explicitly enumerated predecessor states (created by relevant backwards applications) from the specified state. Lazy generated via yield return.
         /// </summary>
         /// <param name="state">Original state.</param>
         /// <returns>Lazy generated collection of all predecessor states.</returns>

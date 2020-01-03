@@ -1,4 +1,5 @@
-﻿
+﻿// ReSharper disable PossibleUnintendedReferenceComparison
+
 namespace PAD.Planner.SAS
 {
     /// <summary>
@@ -9,22 +10,17 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Variable index.
         /// </summary>
-        public int Variable { set; get; } = INVALID_VARIABLE;
+        public int Variable { set; get; }
 
         /// <summary>
         /// Assigned value.
         /// </summary>
-        public int Value { set; get; } = INVALID_VALUE;
-
-        /// <summary>
-        /// Invalid variable constant.
-        /// </summary>
-        public const int INVALID_VARIABLE = -1;
+        public int Value { set; get; }
 
         /// <summary>
         /// Invalid value constant.
         /// </summary>
-        public const int INVALID_VALUE = -1;
+        public const int InvalidValue = -1;
 
         /// <summary>
         /// Constructs the assigned value.
@@ -40,7 +36,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Constructs the assigned value from the input data.
         /// </summary>
-        /// <param name="inputData">Input data.</param>
+        /// <param name="assignment">Input data assignment.</param>
         public Assignment(InputData.SAS.Assignment assignment) : this(assignment.Variable, assignment.Value)
         {
         }

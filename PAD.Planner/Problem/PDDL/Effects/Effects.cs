@@ -11,41 +11,41 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Effects applier, applying the operator effects to the specified state (making the successor state).
         /// </summary>
-        private Lazy<EffectsApplier> EffectsApplier { set; get; } = null;
+        private Lazy<EffectsApplier> EffectsApplier { get; }
 
         /// <summary>
         /// Effects relevance evaluator, checking whether the operator effects are relevant to the specified state.
         /// </summary>
-        private Lazy<EffectsRelevanceConditionsEvaluator> EffectsRelevanceConditionsEvaluator { set; get; } = null;
+        private Lazy<EffectsRelevanceConditionsEvaluator> EffectsRelevanceConditionsEvaluator { get; }
 
         /// <summary>
         /// Effects relevance evaluator, checking whether the operator effects are relevant to the specified relative state.
         /// </summary>
-        private Lazy<EffectsRelevanceRelativeStateEvaluator> EffectsRelevanceRelativeStateEvaluator { set; get; } = null;
+        private Lazy<EffectsRelevanceRelativeStateEvaluator> EffectsRelevanceRelativeStateEvaluator { get; }
 
         /// <summary>
         /// Effects backwards applier, applying the relevant operators backwards to the given conditions.
         /// </summary>
-        private Lazy<EffectsBackwardsConditionsApplier> EffectsBackwardsConditionsApplier { set; get; } = null;
+        private Lazy<EffectsBackwardsConditionsApplier> EffectsBackwardsConditionsApplier { get; }
 
         /// <summary>
         /// Effects backwards applier, applying the relevant operators backwards to the given relative state.
         /// </summary>
-        private Lazy<EffectsBackwardsRelativeStateApplier> EffectsBackwardsRelativeStateApplier { set; get; } = null;
+        private Lazy<EffectsBackwardsRelativeStateApplier> EffectsBackwardsRelativeStateApplier { get; }
 
         /// <summary>
         /// Collector structure gathering positive result atoms of the operator effects application.
         /// </summary>
-        private Lazy<EffectsResultAtomsCollector> EffectsResultAtomsCollector { set; get; } = null;
+        private Lazy<EffectsResultAtomsCollector> EffectsResultAtomsCollector { get; }
 
         /// <summary>
         /// Constructs the object from the input data.
         /// </summary>
         /// <param name="inputData">Operator effects input data.</param>
-        /// <param name="operatorPreconditions">Operator precoditions.</param>
+        /// <param name="operatorPreconditions">Operator preconditions.</param>
         /// <param name="idManager">ID manager.</param>
         /// <param name="evaluationManager">Evaluation manager.</param>
-        public Effects(InputData.PDDL.Effects inputData, Conditions operatorPreconditions, IDManager idManager, EvaluationManager evaluationManager)
+        public Effects(InputData.PDDL.Effects inputData, Conditions operatorPreconditions, IdManager idManager, EvaluationManager evaluationManager)
         {
             EffectsBuilder effectsBuilder = new EffectsBuilder(idManager);
             inputData.ForEach(inputEffect => Add(effectsBuilder.Build(inputEffect)));
@@ -91,11 +91,11 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="conditions">Target conditions.</param>
         /// <param name="substitution">Variables substitution.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
-        /// <returns>True if the operator effects are relevant to the given condititons, false otherwise.</returns>
-        public bool IsRelevant(IConditions conditions, ISubstitution substitution, IList<int> relevantContionalEffects = null)
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <returns>True if the operator effects are relevant to the given conditions, false otherwise.</returns>
+        public bool IsRelevant(IConditions conditions, ISubstitution substitution, IList<int> relevantConditionalEffects = null)
         {
-            return EffectsRelevanceConditionsEvaluator.Value.Evaluate(conditions, substitution, new Substitution(), relevantContionalEffects);
+            return EffectsRelevanceConditionsEvaluator.Value.Evaluate(conditions, substitution, new Substitution(), relevantConditionalEffects);
         }
 
         /// <summary>
@@ -103,11 +103,11 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="relativeState">Target relative state.</param>
         /// <param name="substitution">Variables substitution.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>True if the operator is relevant to the given relative state, false otherwise.</returns>
-        public bool IsRelevant(IRelativeState relativeState, ISubstitution substitution, IList<int> relevantContionalEffects = null)
+        public bool IsRelevant(IRelativeState relativeState, ISubstitution substitution, IList<int> relevantConditionalEffects = null)
         {
-            return EffectsRelevanceRelativeStateEvaluator.Value.Evaluate(relativeState, substitution, relevantContionalEffects);
+            return EffectsRelevanceRelativeStateEvaluator.Value.Evaluate(relativeState, substitution, relevantConditionalEffects);
         }
 
         /// <summary>

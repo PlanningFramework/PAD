@@ -58,7 +58,7 @@ namespace PAD.Planner.SAS
         bool IsConflictedWith(IAssignment assignment);
 
         /// <summary>
-        /// Evaluates the relavance of a single effect assignment.
+        /// Evaluates the relevance of a single effect assignment.
         /// </summary>
         /// <param name="assignment">Effect assignment.</param>
         /// <returns>Effect relevance of the specified assignment.</returns>
@@ -69,7 +69,7 @@ namespace PAD.Planner.SAS
         /// </summary>
         /// <param name="mutexConstraints">Mutex constraints.</param>
         /// <returns>True if the conditions is compatible with the specified mutex constraints, false otherwise.</returns>
-        bool IsCompatibleWithMutexContraints(IList<IAssignment> mutexConstraints);
+        bool IsCompatibleWithMutexConstraints(IList<IAssignment> mutexConstraints);
 
         /// <summary>
         /// Gets the collection of simple conditions, i.e. individual conjuncts in case of the clause conditions, or itself
@@ -81,7 +81,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Gets the number of not accomplished condition constraints for the specified state.
         /// </summary>
-        /// <param name="state">State to be evalatuated.</param>
+        /// <param name="state">State to be evaluated.</param>
         /// <returns>Number of not accomplished condition constraints.</returns>
         int GetNotAccomplishedConstraintsCount(IState state);
     }

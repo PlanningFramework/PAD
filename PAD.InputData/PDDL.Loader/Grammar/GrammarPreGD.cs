@@ -1,83 +1,78 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
     /// <summary>
     /// Grammar node representing pre-GD block (standard GD expression with preferences).
     /// </summary>
-    public class PreGD : BaseGrammarNode
+    public class PreGd : BaseGrammarNode
     {
         /// <summary>
         /// Constructor of the grammar node.
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
-        public PreGD(MasterGrammar p) : base(p)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
+        public PreGd(MasterGrammar p) : base(p)
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
-            var preGD = new NonTerminal("Pre-GD", typeof(TransientAstNode));
-            var preGDBase = new NonTerminal("Pre-GD base", typeof(TransientAstNode));
-            var preGDStarList = new NonTerminal("Pre-GD star-list", typeof(TransientAstNode));
+            var preGd = new NonTerminal("Pre-GD", typeof(TransientAstNode));
+            var preGdBase = new NonTerminal("Pre-GD base", typeof(TransientAstNode));
+            var preGdStarList = new NonTerminal("Pre-GD star-list", typeof(TransientAstNode));
 
-            var prefPreGDBase = new NonTerminal("Preference expression (pre-GD)", typeof(PreferenceGDAstNode));
+            var prefPreGdBase = new NonTerminal("Preference expression (pre-GD)", typeof(PreferenceGdAstNode));
             var prefNameOrEmpty = new NonTerminal("Optional preference name", typeof(TransientAstNode));
             var prefName = new IdentifierTerminal("Preference name", IdentifierType.CONSTANT);
 
-            var andPreGDBase = new NonTerminal("AND expression (pre-GDs)", typeof(AndGDAstNode));
-            var forallPreGDBase = new NonTerminal("FORALL expression (pre-GD)", typeof(ForallGDAstNode));
-            var orGDBase = new NonTerminal("OR expression (pre-GD)", typeof(OrGDAstNode));
-            var notGDBase = new NonTerminal("NOT expression (pre-GD)", typeof(NotGDAstNode));
-            var implyGDBase = new NonTerminal("IMPLY expression (pre-GD)", typeof(ImplyGDAstNode));
-            var existsGDBase = new NonTerminal("EXISTS expression (pre-GD)", typeof(ExistsGDAstNode));
-            var equalsOpGDBase = new NonTerminal("Equals operator (pre-GD)", typeof(EqualsOpGDAstNode));
+            var andPreGdBase = new NonTerminal("AND expression (pre-GDs)", typeof(AndGdAstNode));
+            var forallPreGdBase = new NonTerminal("FORALL expression (pre-GD)", typeof(ForallGdAstNode));
+            var orGdBase = new NonTerminal("OR expression (pre-GD)", typeof(OrGdAstNode));
+            var notGdBase = new NonTerminal("NOT expression (pre-GD)", typeof(NotGdAstNode));
+            var implyGdBase = new NonTerminal("IMPLY expression (pre-GD)", typeof(ImplyGdAstNode));
+            var existsGdBase = new NonTerminal("EXISTS expression (pre-GD)", typeof(ExistsGdAstNode));
+            var equalsOpGdBase = new NonTerminal("Equals operator (pre-GD)", typeof(EqualsOpGdAstNode));
 
-            var numCompGDBase = new NonTerminal("Numeric comparison expression (pre-GD)", typeof(NumCompGDAstNode));
+            var numCompGdBase = new NonTerminal("Numeric comparison expression (pre-GD)", typeof(NumCompGdAstNode));
             var binaryComparer = new NonTerminal("Binary comparer", typeof(TransientAstNode));
 
-            var GDStarList = new NonTerminal("GD star-list", typeof(TransientAstNode));
+            var gdStarList = new NonTerminal("GD star-list", typeof(TransientAstNode));
 
             // USED SUB-TREES
 
             var typedList = new TypedList(p);
-            var GD = new GD(p);
-            var predicateGDBase = new PredicateGD(p, BForm.BASE);
+            var gd = new Gd(p);
+            var predicateGdBase = new PredicateGd(p, BForm.BASE);
             var numericExpr = new NumericExpr(p);
             var valueOrTerm = new ValueOrTerm(p);
 
             // RULES
 
-            preGD.Rule = p.ToTerm("(") + preGDBase + ")";
-            preGDBase.Rule = prefPreGDBase | andPreGDBase | forallPreGDBase | orGDBase | notGDBase | implyGDBase | existsGDBase | predicateGDBase | equalsOpGDBase | numCompGDBase;
+            preGd.Rule = p.ToTerm("(") + preGdBase + ")";
+            preGdBase.Rule = prefPreGdBase | andPreGdBase | forallPreGdBase | orGdBase | notGdBase | implyGdBase | existsGdBase | predicateGdBase | equalsOpGdBase | numCompGdBase;
 
-            prefPreGDBase.Rule = p.ToTerm("preference") + prefNameOrEmpty + GD;
+            prefPreGdBase.Rule = p.ToTerm("preference") + prefNameOrEmpty + gd;
             prefNameOrEmpty.Rule = prefName | p.Empty;
 
-            andPreGDBase.Rule = p.ToTerm("and") + preGDStarList;
-            forallPreGDBase.Rule = p.ToTerm("forall") + "(" + typedList + ")" + preGD;
-            orGDBase.Rule = p.ToTerm("or") + GDStarList;
-            notGDBase.Rule = p.ToTerm("not") + GD;
-            implyGDBase.Rule = p.ToTerm("imply") + GD + GD;
-            existsGDBase.Rule = p.ToTerm("exists") + "(" + typedList + ")" + GD;
-            equalsOpGDBase.Rule = p.ToTerm("=") + valueOrTerm + valueOrTerm;
+            andPreGdBase.Rule = p.ToTerm("and") + preGdStarList;
+            forallPreGdBase.Rule = p.ToTerm("forall") + "(" + typedList + ")" + preGd;
+            orGdBase.Rule = p.ToTerm("or") + gdStarList;
+            notGdBase.Rule = p.ToTerm("not") + gd;
+            implyGdBase.Rule = p.ToTerm("imply") + gd + gd;
+            existsGdBase.Rule = p.ToTerm("exists") + "(" + typedList + ")" + gd;
+            equalsOpGdBase.Rule = p.ToTerm("=") + valueOrTerm + valueOrTerm;
 
-            numCompGDBase.Rule = binaryComparer + numericExpr + numericExpr;
+            numCompGdBase.Rule = binaryComparer + numericExpr + numericExpr;
             binaryComparer.Rule = p.ToTerm(">") | "<" | ">=" | "<=";
 
-            preGDStarList.Rule = p.MakeStarRule(preGDStarList, preGD);
-            GDStarList.Rule = p.MakeStarRule(GDStarList, GD);
+            preGdStarList.Rule = p.MakeStarRule(preGdStarList, preGd);
+            gdStarList.Rule = p.MakeStarRule(gdStarList, gd);
 
-            p.MarkTransient(preGD, preGDBase, GD, numericExpr, binaryComparer);
+            p.MarkTransient(preGd, preGdBase, gd, numericExpr, binaryComparer);
 
-            return preGD;
+            Rule = preGd;
         }
     }
 }

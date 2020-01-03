@@ -10,29 +10,29 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Parameter name ID.
         /// </summary>
-        public int ParameterNameID { set; get; } = IDManager.INVALID_ID;
+        public int ParameterNameId { set; get; }
 
         /// <summary>
         /// Type name IDs of possible parameter types.
         /// </summary>
-        public ICollection<int> TypeNamesIDs { set; get; } = null;
+        public ICollection<int> TypeNamesIDs { set; get; }
 
         /// <summary>
         /// ID manager of the corresponding planning problem.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Construct the parameter.
         /// </summary>
-        /// <param name="parameterNameID">Parameter name ID.</param>
+        /// <param name="parameterNameId">Parameter name ID.</param>
         /// <param name="typeNamesIDs">Type names IDs.</param>
         /// <param name="idManager">ID manager.</param>
-        public Parameter(int parameterNameID, ICollection<int> typeNamesIDs, IDManager idManager)
+        public Parameter(int parameterNameId, ICollection<int> typeNamesIDs, IdManager idManager)
         {
-            ParameterNameID = parameterNameID;
+            ParameterNameId = parameterNameId;
             TypeNamesIDs = typeNamesIDs;
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Deep copy of the parameter.</returns>
         public Parameter Clone()
         {
-            return new Parameter(ParameterNameID, new List<int>(TypeNamesIDs), IDManager);
+            return new Parameter(ParameterNameId, new List<int>(TypeNamesIDs), IdManager);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Hash code of the object.</returns>
         public override int GetHashCode()
         {
-            return HashHelper.GetHashCode(TypeNamesIDs).CombineHashCode(ParameterNameID);
+            return HashHelper.GetHashCode(TypeNamesIDs).CombineHashCode(ParameterNameId);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace PAD.Planner.PDDL
                 return false;
             }
 
-            return (ParameterNameID == other.ParameterNameID && CollectionsEquality.Equals(TypeNamesIDs, other.TypeNamesIDs));
+            return (ParameterNameId == other.ParameterNameId && CollectionsEquality.Equals(TypeNamesIDs, other.TypeNamesIDs));
         }
 
         /// <summary>
@@ -80,12 +80,12 @@ namespace PAD.Planner.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            string parameterName = $"{IDManager.GENERIC_VARIABLE_PREFIX}{ParameterNameID.ToString()}";
+            string parameterName = $"{IdManager.GenericVariablePrefix}{ParameterNameId.ToString()}";
 
             List<string> typeNames = new List<string>();
-            foreach (var typeID in TypeNamesIDs)
+            foreach (var typeId in TypeNamesIDs)
             {
-                typeNames.Add(IDManager.Types.GetNameFromID(typeID));
+                typeNames.Add(IdManager.Types.GetNameFromId(typeId));
             }
 
             if (typeNames.Count == 0)
@@ -93,15 +93,7 @@ namespace PAD.Planner.PDDL
                 return parameterName;
             }
 
-            string parameterTypes = "";
-            if (typeNames.Count == 1)
-            {
-                parameterTypes = typeNames[0];
-            }
-            else
-            {
-                parameterTypes = $"(either {string.Join(" ", typeNames)})";
-            }
+            string parameterTypes = (typeNames.Count == 1) ? typeNames[0] : $"(either {string.Join(" ", typeNames)})";
 
             return $"{parameterName} - {parameterTypes}";
         }

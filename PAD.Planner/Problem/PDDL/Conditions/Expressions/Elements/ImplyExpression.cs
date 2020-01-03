@@ -10,12 +10,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Left child expression.
         /// </summary>
-        public IExpression LeftChild { set; get; } = null;
+        public IExpression LeftChild { set; get; }
 
         /// <summary>
         /// Right child expression.
         /// </summary>
-        public IExpression RightChild { set; get; } = null;
+        public IExpression RightChild { set; get; }
 
         /// <summary>
         /// Constructs the IMPLY expression.

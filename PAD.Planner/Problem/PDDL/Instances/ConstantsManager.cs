@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using ConstantID = System.Int32;
-using TypeID = System.Int32;
+using ConstantId = System.Int32;
+using TypeId = System.Int32;
 
 namespace PAD.Planner.PDDL
 {
@@ -9,112 +9,112 @@ namespace PAD.Planner.PDDL
     /// The manager holds all constants for the concrete types, respecting type hierarchy. Also, the manager allows to obtain the 
     /// definition type(s) for the specific constant.
     /// </summary>
-    public class ConstantsManager : Dictionary<TypeID, ConstantIDCollection>
+    public class ConstantsManager : Dictionary<TypeId, ConstantIdCollection>
     {
         /// <summary>
         /// ID manager.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Type hierarchy in the planning problem.
         /// </summary>
-        private TypeHierarchy TypeHierarchy { set; get; } = null;
+        private TypeHierarchy TypeHierarchy { get; }
 
         /// <summary>
         /// Definition types for all available constants (directly from the PDDL input definition, e.g. constA - typeA).
         /// Single constant can have multiple types via either clause, e.g. constB - (either typeA typeB).
         /// </summary>
-        private Dictionary<ConstantID, ICollection<TypeID>> ConstantDefinitionTypes { set; get; } = null;
+        private Dictionary<ConstantId, ICollection<TypeId>> ConstantDefinitionTypes { get; }
 
         /// <summary>
         /// Constructs the constant manager.
         /// </summary>
         /// <param name="inputData">Input data.</param>
         /// <param name="idManager">ID manager.</param>
-        public ConstantsManager(InputData.PDDLInputData inputData, IDManager idManager)
+        public ConstantsManager(InputData.PDDLInputData inputData, IdManager idManager)
         {
-            IDManager = idManager;
+            IdManager = idManager;
             TypeHierarchy = new TypeHierarchy(inputData, idManager);
             ConstantDefinitionTypes = new Dictionary<int, ICollection<int>>();
 
             foreach (var type in TypeHierarchy)
             {
-                TypeID typeID = type.Key;
-                Add(typeID, new ConstantIDCollection());
+                TypeId typeId = type.Key;
+                Add(typeId, new ConstantIdCollection());
             }
 
-            System.Action<string, List<string>> ProcessConstantItem = (string constantName, List<string> typeNames) =>
+            System.Action<string, List<string>> processConstantItem = (constantName, typeNames) =>
             {
-                HashSet<TypeID> typeIDs = new HashSet<int>();
+                HashSet<TypeId> typeIDs = new HashSet<int>();
 
-                ConstantID constantID = idManager.Constants.GetID(constantName);
+                ConstantId constantId = idManager.Constants.GetId(constantName);
                 foreach (string type in typeNames)
                 {
-                    TypeID typeID = idManager.Types.GetID(type);
-                    this[typeID].Add(constantID);
-                    typeIDs.Add(typeID);
+                    TypeId typeId = idManager.Types.GetId(type);
+                    this[typeId].Add(constantId);
+                    typeIDs.Add(typeId);
                 }
 
-                ConstantDefinitionTypes.Add(constantID, typeIDs);
+                ConstantDefinitionTypes.Add(constantId, typeIDs);
             };
 
             foreach (var constant in inputData.Domain.Constants)
             {
-                ProcessConstantItem(constant.ConstantName, constant.TypeNames);
+                processConstantItem(constant.ConstantName, constant.TypeNames);
             }
 
             foreach (var obj in inputData.Problem.Objects)
             {
-                ProcessConstantItem(obj.ObjectName, obj.TypeNames);
+                processConstantItem(obj.ObjectName, obj.TypeNames);
             }
 
-            System.Action<TypeID, TypeID> FillConstantsFromChildType = null;
-            FillConstantsFromChildType = (TypeID typeID, TypeID outputTypeID) =>
+            System.Action<TypeId, TypeId> fillConstantsFromChildType = null;
+            fillConstantsFromChildType = (typeId, outputTypeId) =>
             {
-                this[outputTypeID].UnionWith(this[typeID]);
+                this[outputTypeId].UnionWith(this[typeId]);
 
-                TypeIDCollection childrenTypes = TypeHierarchy[typeID];
-                foreach (TypeID childTypeID in childrenTypes)
+                TypeIdCollection childrenTypes = TypeHierarchy[typeId];
+                foreach (TypeId childTypeId in childrenTypes)
                 {
-                    FillConstantsFromChildType(childTypeID, outputTypeID);
+                    fillConstantsFromChildType(childTypeId, outputTypeId);
                 }
             };
 
-            foreach (TypeID typeID in Keys)
+            foreach (TypeId typeId in Keys)
             {
-                FillConstantsFromChildType(typeID, typeID);
+                fillConstantsFromChildType(typeId, typeId);
             }
         }
 
         /// <summary>
         /// Gets all possible constants of the given type (i.e. including all constants of the ancestor types).
         /// </summary>
-        /// <param name="typeID">Type ID.</param>
+        /// <param name="typeId">Type ID.</param>
         /// <returns>Collection of constants of the given type.</returns>
-        public IEnumerable<ConstantID> GetAllConstantsOfType(TypeID typeID)
+        public IEnumerable<ConstantId> GetAllConstantsOfType(TypeId typeId)
         {
-            return this[typeID];
+            return this[typeId];
         }
 
         /// <summary>
         /// Gets the definition type(s) for the specified constant (more types = either clause)
         /// </summary>
-        /// <param name="constantID">Constant ID.</param>
+        /// <param name="constantId">Constant ID.</param>
         /// <returns>Collection of definition types for the given constant.</returns>
-        public ICollection<TypeID> GetTypesForConstant(ConstantID constantID)
+        public ICollection<TypeId> GetTypesForConstant(ConstantId constantId)
         {
-            return ConstantDefinitionTypes[constantID];
+            return ConstantDefinitionTypes[constantId];
         }
 
         /// <summary>
         /// Gets the collection of direct children types for the specified type.
         /// </summary>
-        /// <param name="typeID">Type ID.</param>
+        /// <param name="typeId">Type ID.</param>
         /// <returns>Direct children types of the given type.</returns>
-        public IEnumerable<TypeID> GetChildrenTypes(TypeID typeID)
+        public IEnumerable<TypeId> GetChildrenTypes(TypeId typeId)
         {
-            return TypeHierarchy.GetChildrenTypes(typeID);
+            return TypeHierarchy.GetChildrenTypes(typeId);
         }
 
         /// <summary>
@@ -126,33 +126,26 @@ namespace PAD.Planner.PDDL
             List<string> returnList = new List<string>();
             foreach (var item in this)
             {
-                string typeName = IDManager.Types.GetNameFromID(item.Key);
+                string typeName = IdManager.Types.GetNameFromId(item.Key);
 
                 List<string> constantNames = new List<string>();
-                foreach (ConstantID constantID in item.Value)
+                foreach (ConstantId constantId in item.Value)
                 {
-                    string constantName = IDManager.Constants.GetNameFromID(constantID);
+                    string constantName = IdManager.Constants.GetNameFromId(constantId);
                     constantNames.Add(constantName);
                 }
 
-                string constantNamesList = string.Join($", ", constantNames);
-                if (constantNames.Count == 0)
-                {
-                    returnList.Add($"({typeName})");
-                }
-                else
-                {
-                    returnList.Add($"({typeName} >> {constantNamesList})");
-                }
+                string constantNamesList = string.Join(", ", constantNames);
+                returnList.Add((constantNames.Count == 0) ? $"({typeName})" : $"({typeName} >> {constantNamesList})");
             }
-            return string.Join($", ", returnList);
+            return string.Join(", ", returnList);
         }
     }
 
     /// <summary>
     /// Collection of constant IDs.
     /// </summary>
-    public class ConstantIDCollection : HashSet<ConstantID>
+    public class ConstantIdCollection : HashSet<ConstantId>
     {
     }
 }

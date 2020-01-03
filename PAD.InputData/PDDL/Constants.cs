@@ -57,7 +57,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Name of the constant.
         /// </summary>
-        public string ConstantName { set; get; } = "";
+        public string ConstantName { set; get; }
 
         /// <summary>
         /// Name of the constant type(s).
@@ -67,7 +67,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Specification of a default constant type.
         /// </summary>
-        public const string DEFAULT_TYPE = "object";
+        public const string DefaultType = "object";
 
         /// <summary>
         /// Constructs a constant.
@@ -77,7 +77,7 @@ namespace PAD.InputData.PDDL
         public Constant(string constantName, string[] typeNames)
         {
             ConstantName = constantName;
-            TypeNames.AddRange(typeNames.GetTypesOrDefault(DEFAULT_TYPE));
+            TypeNames.AddRange(typeNames.GetTypesOrDefault(DefaultType));
         }
 
         /// <summary>

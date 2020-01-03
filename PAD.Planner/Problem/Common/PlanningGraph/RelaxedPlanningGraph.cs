@@ -10,22 +10,22 @@ namespace PAD.Planner
         /// <summary>
         /// Corresponding relaxed planning problem.
         /// </summary>
-        protected IRelaxedProblem RelaxedProblem { set; get; } = null;
+        protected IRelaxedProblem RelaxedProblem { set; get; }
 
         /// <summary>
         /// Cached state layers collection (FF computation).
         /// </summary>
-        private List<IStateLayer> StateLayers = new List<IStateLayer>();
+        private List<IStateLayer> StateLayers { get; } = new List<IStateLayer>();
 
         /// <summary>
         /// Cached action layers collection (FF computation).
         /// </summary>
-        private List<ActionLayer> ActionLayers = new List<ActionLayer>();
+        private List<ActionLayer> ActionLayers { get; } = new List<ActionLayer>();
 
         /// <summary>
         /// Cached marked action nodes collection (FF computation).
         /// </summary>
-        private HashSet<IOperator> MarkedActionNodes { set; get; } = new HashSet<IOperator>();
+        private HashSet<IOperator> MarkedActionNodes { get; } = new HashSet<IOperator>();
 
         /// <summary>
         /// Cached unsatisfied propositions on the current layer collection (FF computation).
@@ -40,13 +40,13 @@ namespace PAD.Planner
         /// <summary>
         /// Cached unsatisfied propositions swapper (FF computation).
         /// </summary>
-        private Stack<IProposition> UnsatisfiedSwapper { set; get; } = null;
+        private Stack<IProposition> UnsatisfiedSwapper { set; get; }
 
         /// <summary>
         /// Constructs the relaxed planning graph.
         /// </summary>
         /// <param name="relaxedProblem">Relaxed planning problem.</param>
-        public RelaxedPlanningGraph(IRelaxedProblem relaxedProblem)
+        protected RelaxedPlanningGraph(IRelaxedProblem relaxedProblem)
         {
             RelaxedProblem = relaxedProblem;
         }
@@ -75,14 +75,14 @@ namespace PAD.Planner
         /// Computes the additive forward cost from the specified state in the relaxed planning graph.
         /// </summary>
         /// <param name="state">State.</param>
-        /// <returns>Addititive forward cost in the relaxed planning graph.</returns>
+        /// <returns>Additive forward cost in the relaxed planning graph.</returns>
         public double ComputeAdditiveForwardCost(IState state)
         {
             return ComputeForwardCost(state, RelaxedProblem.GetGoalConditions(), ForwardCostEvaluationStrategy.ADDITIVE_VALUE);
         }
 
         /// <summary>
-        /// Computes the adititive forward cost from the specified conditions in the relaxed planning graph.
+        /// Computes the additive forward cost from the specified conditions in the relaxed planning graph.
         /// </summary>
         /// <param name="conditions">Conditions.</param>
         /// <returns>Additive forward cost in the relaxed planning graph.</returns>
@@ -115,8 +115,8 @@ namespace PAD.Planner
         /// Computes the forward cost heuristics for the given state in the relaxed planning graph.
         /// </summary>
         /// <param name="state">Starting state.</param>
-        /// <param name="conditions">Goal conditions.</param>
-        /// <param name="evaluationStrategy">Evalaution strategy.</param>
+        /// <param name="goalConditions">Goal conditions.</param>
+        /// <param name="evaluationStrategy">Evaluation strategy.</param>
         /// <returns>Forward cost heuristic value from the specified state.</returns>
         private double ComputeForwardCost(IState state, IConditions goalConditions, ForwardCostEvaluationStrategy evaluationStrategy)
         {
@@ -175,7 +175,7 @@ namespace PAD.Planner
 
                 if (goalConditions.Evaluate(stateLayer.GetState()))
                 {
-                    ActionLayers.Add(new ActionLayer() { CreateFFGoalActionNode(goalConditions, stateLayer.GetState()) });
+                    ActionLayers.Add(new ActionLayer { CreateFFGoalActionNode(goalConditions, stateLayer.GetState()) });
                     break;
                 }
 
@@ -299,7 +299,7 @@ namespace PAD.Planner
         /// <param name="proposition">Proposition to satisfy.</param>
         /// <param name="actionLayer">Action layer.</param>
         /// <returns>Best relevant action node.</returns>
-        private ActionNode GetBestRelevantActionNodeFF(IProposition proposition, ActionLayer actionLayer)
+        private static ActionNode GetBestRelevantActionNodeFF(IProposition proposition, ActionLayer actionLayer)
         {
             ActionNode bestActionNode = null;
 

@@ -20,7 +20,7 @@ namespace PAD.Planner
         IEnumerable<IRelativeState> GetPredecessorRelativeStates();
 
         /// <summary>
-        /// Gets the collection of all possible predecessing states for the current backwards application.
+        /// Gets the collection of all possible preceding states for the current backwards application.
         /// </summary>
         /// <param name="problem">Reference planning problem.</param>
         /// <returns>All possible state predecessors.</returns>

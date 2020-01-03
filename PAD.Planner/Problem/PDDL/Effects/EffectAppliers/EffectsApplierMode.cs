@@ -15,5 +15,5 @@ namespace PAD.Planner.PDDL
         /// Delete relaxation mode - negative operator effects are omitted.
         /// </summary>
         DELETE_RELAXATION
-    };
+    }
 }

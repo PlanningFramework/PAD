@@ -10,19 +10,19 @@ namespace PAD.Planner.Heuristics
         /// <summary>
         /// Actually used heuristic.
         /// </summary>
-        private IHeuristic Heuristic { set; get; } = null;
+        private IHeuristic Heuristic { get; }
 
         /// <summary>
         /// Used weight.
         /// </summary>
-        private int Weight { set; get; } = 1;
+        private int Weight { get; }
 
         /// <summary>
         /// Constructs the heuristic.
         /// </summary>
         /// <param name="heuristic">Used heuristic.</param>
         /// <param name="weight">Used weight.</param>
-        public WeightedHeuristic(IHeuristic heuristic, int weight) : base(null)
+        public WeightedHeuristic(IHeuristic heuristic, int weight)
         {
             Heuristic = heuristic;
             Weight = weight;

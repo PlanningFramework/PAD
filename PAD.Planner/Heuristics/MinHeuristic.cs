@@ -11,13 +11,13 @@ namespace PAD.Planner.Heuristics
         /// <summary>
         /// List of internal heuristics for evaluation.
         /// </summary>
-        private IEnumerable<IHeuristic> Heuristics { set; get; } = null;
+        private IEnumerable<IHeuristic> Heuristics { get; }
 
         /// <summary>
         /// Constructs the heuristic.
         /// </summary>
         /// <param name="heuristics">List of heuristics.</param>
-        public MinHeuristic(IEnumerable<IHeuristic> heuristics) : base(null)
+        public MinHeuristic(IEnumerable<IHeuristic> heuristics)
         {
             Heuristics = heuristics;
         }
@@ -26,7 +26,7 @@ namespace PAD.Planner.Heuristics
         /// Constructs the heuristic.
         /// </summary>
         /// <param name="heuristics">List of heuristics.</param>
-        public MinHeuristic(params IHeuristic[] heuristics) : base(null)
+        public MinHeuristic(params IHeuristic[] heuristics)
         {
             Heuristics = heuristics;
         }

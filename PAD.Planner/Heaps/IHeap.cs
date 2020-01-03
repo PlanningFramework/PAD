@@ -10,7 +10,7 @@ namespace PAD.Planner.Heaps
     }
 
     /// <summary>
-    /// Common interface for generic (minimal) heaps, i.e. partially ordered colections with operations optimized for getting a minimum value.
+    /// Common interface for generic (minimal) heaps, i.e. partially ordered collections with operations optimized for getting a minimum value.
     /// </summary>
     /// <typeparam name="Key">Key type.</typeparam>
     /// <typeparam name="Value">Value type.</typeparam>

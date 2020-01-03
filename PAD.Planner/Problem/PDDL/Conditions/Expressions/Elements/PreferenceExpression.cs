@@ -10,29 +10,29 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Preference name ID.
         /// </summary>
-        public int PreferenceNameID { set; get; } = IDManager.INVALID_ID;
+        public int PreferenceNameId { set; get; }
 
         /// <summary>
         /// Child expression.
         /// </summary>
-        public IExpression Child { set; get; } = null;
+        public IExpression Child { set; get; }
 
         /// <summary>
         /// ID manager of the corresponding planning problem.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the preference expression.
         /// </summary>
-        /// <param name="preferenceID">Preference name ID.</param>
+        /// <param name="preferenceNameId">Preference name ID.</param>
         /// <param name="child">An argument of the expression.</param>
         /// <param name="idManager">ID manager.</param>
-        public PreferenceExpression(int preferenceNameID, IExpression child, IDManager idManager)
+        public PreferenceExpression(int preferenceNameId, IExpression child, IdManager idManager)
         {
-            PreferenceNameID = preferenceNameID;
+            PreferenceNameId = preferenceNameId;
             Child = child;
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace PAD.Planner.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            return $"(preference {IDManager.Preferences.GetNameFromID(PreferenceNameID)} {Child})";
+            return $"(preference {IdManager.Preferences.GetNameFromId(PreferenceNameId)} {Child})";
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Hash code of the object.</returns>
         public override int GetHashCode()
         {
-            return HashHelper.GetHashCode("preference", PreferenceNameID, Child);
+            return HashHelper.GetHashCode("preference", PreferenceNameId, Child);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace PAD.Planner.PDDL
             {
                 return false;
             }
-            return (PreferenceNameID == other.PreferenceNameID) && Child.Equals(other.Child);
+            return (PreferenceNameId == other.PreferenceNameId) && Child.Equals(other.Child);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Expression clone.</returns>
         public IExpression Clone()
         {
-            return new PreferenceExpression(PreferenceNameID, Child.Clone(), IDManager);
+            return new PreferenceExpression(PreferenceNameId, Child.Clone(), IdManager);
         }
 
         /// <summary>

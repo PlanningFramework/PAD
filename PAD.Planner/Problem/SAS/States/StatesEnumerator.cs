@@ -33,16 +33,16 @@ namespace PAD.Planner.SAS
         /// <returns>All possible SAS+ states meeting the conditions.</returns>
         public static IEnumerable<IState> EnumerateStates(ISimpleConditions conditions, Variables variables)
         {
-            Func<int, int> Checker = (int variable) =>
+            Func<int, int> checker = (variable) =>
             {
-                int value = -1;
+                int value;
                 if (conditions.IsVariableConstrained(variable, out value))
                 {
                     return value;
                 }
                 return -1;
             };
-            return EnumerateStates(0, new State(new int[variables.Count]), Checker, variables);
+            return EnumerateStates(0, new State(new int[variables.Count]), checker, variables);
         }
 
         /// <summary>
@@ -53,11 +53,8 @@ namespace PAD.Planner.SAS
         /// <returns>All possible SAS+ states meeting the conditions.</returns>
         public static IEnumerable<IState> EnumerateStates(IRelativeState relativeState, Variables variables)
         {
-            Func<int, int> Checker = (int variable) =>
-            {
-                return relativeState.GetValue(variable);
-            };
-            return EnumerateStates(0, new State(new int[variables.Count]), Checker, variables);
+            Func<int, int> checker = relativeState.GetValue;
+            return EnumerateStates(0, new State(new int[variables.Count]), checker, variables);
         }
 
         /// <summary>

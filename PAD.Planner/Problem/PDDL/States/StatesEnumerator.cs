@@ -36,7 +36,7 @@ namespace PAD.Planner.PDDL
         {
             // note: numeric function assignments are not enumerated (as it is generally infinite), but only fixed by the values of the source state
 
-            Func<IAtom, bool?> PredicateChecker = (IAtom predicate) =>
+            Func<IAtom, bool?> predicateChecker = (predicate) =>
             {
                 if (relativeState.HasPredicate(predicate))
                 {
@@ -49,12 +49,9 @@ namespace PAD.Planner.PDDL
                 return null;
             };
 
-            Func<IAtom, int> ObjectFunctionChecker = (IAtom function) =>
-            {
-                return relativeState.GetObjectFunctionValue(function);
-            };
+            Func<IAtom, int> objectFunctionChecker = relativeState.GetObjectFunctionValue;
 
-            IState initState = new State(problem.IDManager);
+            IState initState = new State(problem.IdManager);
             foreach (var numericFunction in relativeState.GetNumericFunctions())
             {
                 initState.AssignNumericFunction(numericFunction.Key, numericFunction.Value);
@@ -63,9 +60,9 @@ namespace PAD.Planner.PDDL
             var predicates = problem.EvaluationManager.GroundingManager.GetAllGroundedPredicates();
             var objectFunctions = problem.EvaluationManager.GroundingManager.GetAllGroundedObjectFunctions();
 
-            foreach (var state in EnumerateStatesByPredicates(0, predicates, initState, PredicateChecker))
+            foreach (var state in EnumerateStatesByPredicates(0, predicates, initState, predicateChecker))
             {
-                foreach (var resultState in EnumerateStatesByObjectFunctions(0, objectFunctions, state, ObjectFunctionChecker))
+                foreach (var resultState in EnumerateStatesByObjectFunctions(0, objectFunctions, state, objectFunctionChecker))
                 {
                     yield return resultState;
                 }
@@ -80,7 +77,7 @@ namespace PAD.Planner.PDDL
         /// <returns>All possible PDDL relative states meeting the conditions.</returns>
         public static IEnumerable<IRelativeState> EnumerateRelativeStates(IConditions conditions, Problem problem)
         {
-            return EnumerateRelativeStatesByCNF(0, new List<IConjunctCNF>((ConditionsCNF)conditions.GetCNF()), new RelativeState(problem.IDManager));
+            return EnumerateRelativeStatesByCNF(0, new List<IConjunctCNF>((ConditionsCNF)conditions.GetCNF()), new RelativeState(problem.IdManager));
         }
 
         /// <summary>
@@ -89,7 +86,7 @@ namespace PAD.Planner.PDDL
         /// <param name="index">Current index in the predicates list.</param>
         /// <param name="predicates">List of all grounded predicates.</param>
         /// <param name="result">Current state being built.</param>
-        /// <param name="predicateConstraint">Predicate constraint function (returns true for positively contrained predicate, false for negatively constrained
+        /// <param name="predicateConstraint">Predicate constraint function (returns true for positively constrained predicate, false for negatively constrained
         /// predicate, or null for not constrained).</param>
         /// <returns>All possible PDDL states meeting the conditions.</returns>
         private static IEnumerable<IState> EnumerateStatesByPredicates(int index, List<IAtom> predicates, IState result, Func<IAtom, bool?> predicateConstraint)
@@ -160,7 +157,7 @@ namespace PAD.Planner.PDDL
                 var objectFunction = objectFunctions[index];
                 var value = constrainedValue(objectFunction.Item1);
 
-                if (value != ObjectFunctionTerm.UNDEFINED_VALUE)
+                if (value != ObjectFunctionTerm.UndefinedValue)
                 {
                     result.AssignObjectFunction(objectFunction.Item1, value);
 
@@ -199,7 +196,7 @@ namespace PAD.Planner.PDDL
                 result.ClearContent();
             }
 
-            Action<IRelativeState, LiteralCNF> AddLiteral = (IRelativeState state, LiteralCNF literal) =>
+            Action<IRelativeState, LiteralCNF> addLiteral = (state, literal) =>
             {
                 // Note: At the moment, there is limited support for object and numeric function assignments.
                 // For example, numeric comparison literals like (< (numFunc) 5) will be omitted in the resulting relative state.
@@ -226,7 +223,7 @@ namespace PAD.Planner.PDDL
                     {
                         if (!literal.IsNegated)
                         {
-                            state.AssignObjectFunction(assignment.Item1.FunctionAtom.Clone(), assignment.Item2.NameID);
+                            state.AssignObjectFunction(assignment.Item1.FunctionAtom.Clone(), assignment.Item2.NameId);
                         }
                     }
                     return;
@@ -243,11 +240,10 @@ namespace PAD.Planner.PDDL
                             state.AssignNumericFunction(assignment.Item1.FunctionAtom.Clone(), assignment.Item2.Value);
                         }
                     }
-                    return;
                 }
             };
 
-            Action<IRelativeState, LiteralCNF> RemoveLiteral = (IRelativeState state, LiteralCNF literal) =>
+            Action<IRelativeState, LiteralCNF> removeLiteral = (state, literal) =>
             {
                 PredicateLiteralCNF predicateLiteral = literal as PredicateLiteralCNF;
                 if (predicateLiteral != null)
@@ -271,7 +267,7 @@ namespace PAD.Planner.PDDL
                     {
                         if (!literal.IsNegated)
                         {
-                            state.AssignObjectFunction(assignment.Item1.FunctionAtom.Clone(), ObjectFunctionTerm.UNDEFINED_VALUE);
+                            state.AssignObjectFunction(assignment.Item1.FunctionAtom.Clone(), ObjectFunctionTerm.UndefinedValue);
                         }
                     }
                     return;
@@ -285,10 +281,9 @@ namespace PAD.Planner.PDDL
                     {
                         if (!compareLiteral.IsNegated)
                         {
-                            state.AssignNumericFunction(assignment.Item1.FunctionAtom.Clone(), NumericFunction.UNDEFINED_VALUE);
+                            state.AssignNumericFunction(assignment.Item1.FunctionAtom.Clone(), NumericFunction.UndefinedValue);
                         }
                     }
-                    return;
                 }
             };
 
@@ -305,14 +300,14 @@ namespace PAD.Planner.PDDL
                 {
                     foreach (var literal in clause)
                     {
-                        AddLiteral(result, literal);
+                        addLiteral(result, literal);
 
                         foreach (var item in EnumerateRelativeStatesByCNF(index + 1, conjuncts, result))
                         {
                             yield return item;
                         }
 
-                        RemoveLiteral(result, literal);
+                        removeLiteral(result, literal);
                     }
                 }
                 else
@@ -320,18 +315,16 @@ namespace PAD.Planner.PDDL
                     LiteralCNF literal = conjunct as LiteralCNF;
                     Debug.Assert(literal != null);
 
-                    AddLiteral(result, literal);
+                    addLiteral(result, literal);
 
                     foreach (var item in EnumerateRelativeStatesByCNF(index + 1, conjuncts, result))
                     {
                         yield return item;
                     }
 
-                    RemoveLiteral(result, literal);
+                    removeLiteral(result, literal);
                 }
             }
-
-            yield break;
         }
     }
 }

@@ -10,12 +10,12 @@ namespace PAD.Planner
         /// <summary>
         /// Reference to the original state.
         /// </summary>
-        private IState ReferenceState { set; get; } = null;
+        private IState ReferenceState { get; }
 
         /// <summary>
         /// Grounded applied operator.
         /// </summary>
-        private IOperator AppliedOperator { set; get; } = null;
+        private IOperator AppliedOperator { get; }
 
         /// <summary>
         /// Constructs the successor entity.

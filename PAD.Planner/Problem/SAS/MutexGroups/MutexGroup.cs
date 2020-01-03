@@ -13,7 +13,7 @@ namespace PAD.Planner.SAS
         /// <param name="inputData">Input data.</param>
         public MutexGroup(InputData.SAS.MutexGroup inputData)
         {
-            inputData.ForEach(assigment => Add(new Assignment(assigment)));
+            inputData.ForEach(assignment => Add(new Assignment(assignment)));
         }
 
         /// <summary>

@@ -35,12 +35,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Length specifier.
         /// </summary>
-        public LengthSpecifier LengthSpecifier { get; set; } = LengthSpecifier.SERIAL;
+        public LengthSpecifier LengthSpecifier { get; set; }
 
         /// <summary>
         /// Length parameter.
         /// </summary>
-        public int Parameter { get; set; } = 0;
+        public int Parameter { get; set; }
 
         /// <summary>
         /// Constructs a length specifier.

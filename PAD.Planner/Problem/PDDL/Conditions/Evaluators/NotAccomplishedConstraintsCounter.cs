@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -12,22 +13,22 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Expression evaluator.
         /// </summary>
-        private Lazy<ExpressionEvaluator> ExpressionEvaluator { set; get; } = null;
+        private Lazy<ExpressionEvaluator> ExpressionEvaluator { get; }
 
         /// <summary>
         /// Variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { get; }
 
         /// <summary>
         /// Reference state for the evaluation.
         /// </summary>
-        private IState ReferenceState { set; get; } = null;
+        private IState ReferenceState { set; get; }
 
         /// <summary>
         /// Constructs the counter.

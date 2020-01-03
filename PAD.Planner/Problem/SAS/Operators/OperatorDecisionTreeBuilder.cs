@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System;
+// ReSharper disable IdentifierTypo
 
 namespace PAD.Planner.SAS
 {
@@ -28,10 +29,7 @@ namespace PAD.Planner.SAS
         /// <returns>Operator decision tree of operators applicability.</returns>
         public static IOperatorDecisionTreeNode BuildApplicabilityTree(Operators operators, Variables variables)
         {
-            OperatorEvaluator evaluator = (IOperator oper, int variable, out int value) =>
-            {
-                return oper.GetPreconditions().IsVariableConstrained(variable, out value);
-            };
+            OperatorEvaluator evaluator = (IOperator oper, int variable, out int value) => oper.GetPreconditions().IsVariableConstrained(variable, out value);
             return BuildTree(new List<IOperator>(operators), GetAllDecisionVariables(variables), evaluator);
         }
 
@@ -43,10 +41,7 @@ namespace PAD.Planner.SAS
         /// <returns>Operator decision tree of operators relevance.</returns>
         public static IOperatorDecisionTreeNode BuildRelevanceTree(Operators operators, Variables variables)
         {
-            OperatorEvaluator evaluator = (IOperator oper, int variable, out int value) =>
-            {
-                return oper.GetEffects().IsVariableAffected(variable, out value);
-            };
+            OperatorEvaluator evaluator = (IOperator oper, int variable, out int value) => oper.GetEffects().IsVariableAffected(variable, out value);
             return BuildTree(new List<IOperator>(operators), GetAllDecisionVariables(variables), evaluator);
         }
 
@@ -94,8 +89,8 @@ namespace PAD.Planner.SAS
             int decisionVariable = decisionVariables.First(variable => variable.Item2 == decisionVariableDomainRange).Item1;
 
             // prepare decision variables modifiers
-            Action RemoveCurrentDecisionVariable = () => { decisionVariables.RemoveAll(variable => variable.Item1 == decisionVariable); };
-            Action RestoreCurrentDecisionVariable = () => { decisionVariables.Add(Tuple.Create(decisionVariable, decisionVariableDomainRange)); };
+            Action removeCurrentDecisionVariable = () => { decisionVariables.RemoveAll(variable => variable.Item1 == decisionVariable); };
+            Action restoreCurrentDecisionVariable = () => { decisionVariables.Add(Tuple.Create(decisionVariable, decisionVariableDomainRange)); };
 
             // prepare collections for sorting out available operators
             List<IOperator>[] operatorsByValue = new List<IOperator>[decisionVariableDomainRange];
@@ -110,7 +105,7 @@ namespace PAD.Planner.SAS
             // it into the operatorsByValue collection, otherwise into the nonAffectedOperators collection
             foreach (var oper in availableOperators)
             {
-                int value = Assignment.INVALID_VALUE;
+                int value;
                 if (evaluator(oper, decisionVariable, out value))
                 {
                     operatorsByValue[value].Add(oper);
@@ -124,21 +119,21 @@ namespace PAD.Planner.SAS
             // the decision variable has zero impact -> continue without it
             if (nonAffectedOperators.Count == availableOperators.Count)
             {
-                RemoveCurrentDecisionVariable();
+                removeCurrentDecisionVariable();
                 var result = BuildTree(nonAffectedOperators, decisionVariables, evaluator);
-                RestoreCurrentDecisionVariable();
+                restoreCurrentDecisionVariable();
                 return result;
             }
 
             // prepare a new decision node - create decision subtrees for all the possible values of the current decision variable
-            RemoveCurrentDecisionVariable();
+            removeCurrentDecisionVariable();
             IOperatorDecisionTreeNode[] childrenByValues = new IOperatorDecisionTreeNode[decisionVariableDomainRange];
             for (int i = 0; i < decisionVariableDomainRange; ++i)
             {
                 childrenByValues[i] = BuildTree(operatorsByValue[i], decisionVariables, evaluator);
             }
             IOperatorDecisionTreeNode childIndependentOnDecisionVariable = BuildTree(nonAffectedOperators, decisionVariables, evaluator);
-            RestoreCurrentDecisionVariable();
+            restoreCurrentDecisionVariable();
 
             // return the root of the current subtree
             return new OperatorDecisionTreeInnerNode(decisionVariable, childrenByValues, childIndependentOnDecisionVariable);

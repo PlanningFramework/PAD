@@ -34,7 +34,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Name of the parameter.
         /// </summary>
-        public string ParameterName { set; get; } = "";
+        public string ParameterName { set; get; }
 
         /// <summary>
         /// Name of the parameter type(s).
@@ -44,7 +44,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Specification of a default parameter type.
         /// </summary>
-        public const string DEFAULT_TYPE = "object";
+        public const string DefaultType = "object";
 
         /// <summary>
         /// Constructs a parameter.
@@ -54,7 +54,7 @@ namespace PAD.InputData.PDDL
         public Parameter(string parameterName, string[] typeNames)
         {
             ParameterName = parameterName;
-            TypeNames.AddRange(typeNames.GetTypesOrDefault(DEFAULT_TYPE));
+            TypeNames.AddRange(typeNames.GetTypesOrDefault(DefaultType));
         }
 
         /// <summary>

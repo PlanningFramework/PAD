@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System;
+// ReSharper disable IdentifierTypo
 
 namespace PAD.Planner.SAS
 {
@@ -12,29 +13,29 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Variable name.
         /// </summary>
-        public string Name { set; get; } = "";
+        public string Name { set; get; }
 
         /// <summary>
         /// Variable ID.
         /// </summary>
-        public int ID { set; get; } = -1;
+        public int Id { set; get; }
 
         /// <summary>
         /// Variable axiom layer. Affects the order of axiomatic inference. Equals -1 for non-axiomatic variables.
         /// </summary>
-        public int AxiomLayer { set; get; } = -1;
+        public int AxiomLayer { set; get; }
 
         /// <summary>
         /// List of available values for this variable. Strings represent a symbolic meaning of the corresponding numerical values.
         /// The number of items gives the actual domain range of the variable.
         /// </summary>
-        public List<string> Values { set; get; } = null;
+        public List<string> Values { set; get; }
 
         /// <summary>
         /// Is the variable rigid (i.e. its value is never changed)? Testing rigidity is time-demanding, so it is performed via Lazy
         /// feature only once and then stored for a later usage. Call the check via IsRigid() method.
         /// </summary>
-        private Lazy<bool> Rigidity { set; get; } = null;
+        private Lazy<bool> Rigidity { get; }
 
         /// <summary>
         /// Is the variable abstracted (i.e. can have multiple values at the same time)?
@@ -44,20 +45,20 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Reference to planning problem operators.
         /// </summary>
-        private Operators Operators { set; get; } = null;
+        private Operators Operators { set; get; }
 
         /// <summary>
         /// Constructs the variable.
         /// </summary>
         /// <param name="inputData">Input data.</param>
-        /// <param name="variableID">Variable ID.</param>
-        public Variable(InputData.SAS.Variable inputData, int variableID)
+        /// <param name="variableId">Variable ID.</param>
+        public Variable(InputData.SAS.Variable inputData, int variableId)
         {
             Name = inputData.Name;
-            ID = variableID;
+            Id = variableId;
             AxiomLayer = inputData.AxiomLayer;
             Values = new List<string>(inputData.Values);
-            Rigidity = new Lazy<bool>(() => !(Operators.Any(oper => oper.GetEffects().Any(eff => eff.GetAssignment().GetVariable() == ID))));
+            Rigidity = new Lazy<bool>(() => !(Operators.Any(oper => oper.GetEffects().Any(eff => eff.GetAssignment().GetVariable() == Id))));
         }
 
         /// <summary>

@@ -11,17 +11,17 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Planning problem.
         /// </summary>
-        protected ISearchableProblem Problem { set; get; } = null;
+        protected ISearchableProblem Problem { set; get; }
 
         /// <summary>
         /// Heuristic.
         /// </summary>
-        protected ISearchableHeuristic Heuristic { set; get; } = null;
+        protected ISearchableHeuristic Heuristic { set; get; }
 
         /// <summary>
         /// Maximal size of the candidates collection.
         /// </summary>
-        protected int MaxSize { set; get; } = 0;
+        protected int MaxSize { set; get; }
 
         /// <summary>
         /// Constructs the transition candidates collection.

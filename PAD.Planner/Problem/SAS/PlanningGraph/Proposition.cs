@@ -9,7 +9,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Assignment.
         /// </summary>
-        public IAssignment Assignment { set; get; } = null;
+        public IAssignment Assignment { set; get; }
 
         /// <summary>
         /// Creates the proposition.

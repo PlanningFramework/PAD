@@ -34,12 +34,12 @@ namespace PAD.InputData.SAS
         /// <summary>
         /// Variable name.
         /// </summary>
-        public string Name { set; get; } = "";
+        public string Name { set; get; }
 
         /// <summary>
         /// Variable axiom layer. Affects the order of axiomatic inference. Equals -1 for non-axiomatic variables.
         /// </summary>
-        public int AxiomLayer { set; get; } = -1;
+        public int AxiomLayer { set; get; }
 
         /// <summary>
         /// Is the variable of axiomatic type?
@@ -56,14 +56,14 @@ namespace PAD.InputData.SAS
         /// List of available values for this variable. Strings represent a symbolic meaning of the corresponding numerical values.
         /// The number of items gives the actual domain range of the variable.
         /// </summary>
-        public List<string> Values { set; get; } = new List<string>();
+        public List<string> Values { set; get; }
 
         /// <summary>
         /// Constructs the variable.
         /// </summary>
         /// <param name="name">Variable name.</param>
         /// <param name="axiomLayer">Variable axiom layer.</param>
-        /// <param name="values">List of availabel values.</param>
+        /// <param name="values">List of available values.</param>
         public Variable(string name, int axiomLayer, List<string> values)
         {
             Name = name;

@@ -89,7 +89,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>True if the node a root, false otherwise.</returns>
-        private bool IsRoot(TreeNode node)
+        private static bool IsRoot(TreeNode node)
         {
             return (node.Index == 0);
         }
@@ -101,7 +101,7 @@ namespace PAD.Planner.Heaps
         /// <returns>True if the node a leaf, false otherwise.</returns>
         private bool IsLeaf(TreeNode node)
         {
-            return GetLeftSuccesor(node) == null;
+            return GetLeftSuccessor(node) == null;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>Left successor, if exists.</returns>
-        private TreeNode GetLeftSuccesor(TreeNode node)
+        private TreeNode GetLeftSuccessor(TreeNode node)
         {
             int index = node.Index * 3 + 1;
             return (Tree.Count > index) ? Tree[index] : null;
@@ -130,7 +130,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>Middle successor, if exists.</returns>
-        private TreeNode GetMiddleSuccesor(TreeNode node)
+        private TreeNode GetMiddleSuccessor(TreeNode node)
         {
             int index = node.Index * 3 + 2;
             return (Tree.Count > index) ? Tree[index] : null;
@@ -141,7 +141,7 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="node">Tree node.</param>
         /// <returns>Right successor, if exists.</returns>
-        private TreeNode GetRightSuccesor(TreeNode node)
+        private TreeNode GetRightSuccessor(TreeNode node)
         {
             int index = node.Index * 3 + 3;
             return (Tree.Count > index) ? Tree[index] : null;
@@ -180,7 +180,7 @@ namespace PAD.Planner.Heaps
         {
             while (!IsLeaf(node))
             {
-                var successor = GetSmallestSuccesor(node);
+                var successor = GetSmallestSuccessor(node);
                 if (successor.Key >= node.Key)
                 {
                     break;
@@ -211,24 +211,23 @@ namespace PAD.Planner.Heaps
         /// </summary>
         /// <param name="current">Current node.</param>
         /// <returns>Smallest successor to the specified node.</returns>
-        private TreeNode GetSmallestSuccesor(TreeNode current)
+        private TreeNode GetSmallestSuccessor(TreeNode current)
         {
-            TreeNode result = null;
-            TreeNode left = GetLeftSuccesor(current);
+            TreeNode left = GetLeftSuccessor(current);
             if (left == null)
             {
                 return null;
             }
 
-            TreeNode middle = GetMiddleSuccesor(current);
+            TreeNode middle = GetMiddleSuccessor(current);
             if (middle == null)
             {
                 return left;
             }
 
-            result = (middle.Key < left.Key) ? middle : left;
+            TreeNode result = (middle.Key < left.Key) ? middle : left;
 
-            TreeNode right = GetRightSuccesor(current);
+            TreeNode right = GetRightSuccessor(current);
             if (right == null)
             {
                 return result;
@@ -246,17 +245,17 @@ namespace PAD.Planner.Heaps
             /// <summary>
             /// Value item.
             /// </summary>
-            public Value Value { get; set; } = default(Value);
+            public Value Value { get; }
 
             /// <summary>
             /// Key item.
             /// </summary>
-            public double Key { get; set; } = 0.0;
+            public double Key { get; }
 
             /// <summary>
             /// Node index.
             /// </summary>
-            public int Index { get; set; } = 0;
+            public int Index { get; set; }
 
             /// <summary>
             /// Constructs the tree node.

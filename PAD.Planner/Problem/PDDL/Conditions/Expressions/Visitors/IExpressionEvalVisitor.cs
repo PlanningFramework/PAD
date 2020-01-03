@@ -1,4 +1,5 @@
-﻿
+﻿// ReSharper disable CommentTypo
+
 namespace PAD.Planner.PDDL
 {
     /// <summary>

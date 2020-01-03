@@ -9,12 +9,12 @@ namespace PAD.InputData.SAS
         /// <summary>
         /// Variable index.
         /// </summary>
-        public int Variable { set; get; } = 0;
+        public int Variable { set; get; }
 
         /// <summary>
         /// Assigned value.
         /// </summary>
-        public int Value { set; get; } = 0;
+        public int Value { set; get; }
 
         /// <summary>
         /// Constructs an empty assigned value.

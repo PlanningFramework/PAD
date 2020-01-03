@@ -17,7 +17,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of numeric arguments.
         /// </summary>
-        public List<TermOrNumericAstNode> Arguments { get; private set; } = null;
+        public List<TermOrNumericAstNode> Arguments { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -42,7 +42,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
             }
             else
             {
-                // multiary operation
+                // multi-ary operation
                 var arg2List = treeNode.GetChildAstList<TermOrNumericAstNode>(2);
                 if (arg2List != null)
                     Arguments.AddRange(arg2List);

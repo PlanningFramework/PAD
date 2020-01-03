@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
-using VariableID = System.Int32;
-using ConstantID = System.Int32;
+using VariableId = System.Int32;
+using ConstantId = System.Int32;
 
 namespace PAD.Planner.PDDL
 {
     /// <summary>
     /// Standard implementation of a PDDL variables substitution, in form of a collection of pairs (variableID:constantValueID).
     /// </summary>
-    public class Substitution : Dictionary<VariableID, ConstantID>, ISubstitution
+    public class Substitution : Dictionary<VariableId, ConstantId>, ISubstitution
     {
         /// <summary>
         /// Constructs an empty substitution.
@@ -27,28 +27,28 @@ namespace PAD.Planner.PDDL
             Debug.Assert(valuesList.Count == parameters.Count);
             for (int i = 0; i < valuesList.Count; ++i)
             {
-                Add(parameters[i].ParameterNameID, valuesList[i]);
+                Add(parameters[i].ParameterNameId, valuesList[i]);
             }
         }
 
         /// <summary>
         /// Checks whether the substitution contains specified variable.
         /// </summary>
-        /// <param name="variableID">Requested variable.</param>
-        /// <returns>True if the given variable is substitues, false otherwise.</returns>
-        public bool Contains(VariableID variableID)
+        /// <param name="variableId">Requested variable.</param>
+        /// <returns>True if the given variable is substitutes, false otherwise.</returns>
+        public bool Contains(VariableId variableId)
         {
-            return ContainsKey(variableID);
+            return ContainsKey(variableId);
         }
 
         /// <summary>
         /// Gets the value of the specified variable.
         /// </summary>
-        /// <param name="variableID">Requested variable.</param>
-        /// <returns>Substitued value of the specified variable.</returns>
-        public ConstantID GetValue(VariableID variableID)
+        /// <param name="variableId">Requested variable.</param>
+        /// <returns>Substituted value of the specified variable.</returns>
+        public ConstantId GetValue(VariableId variableId)
         {
-            return this[variableID];
+            return this[variableId];
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.Heaps
 {
@@ -18,7 +19,7 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Internal Wintellect collection.
         /// </summary>
-        private Wintellect.PowerCollections.OrderedBag<Wintellect.PowerCollections.Pair<double, Value>> Collection { set; get; } = null;
+        private Wintellect.PowerCollections.OrderedBag<Wintellect.PowerCollections.Pair<double, Value>> Collection { get; }
 
         /// <summary>
         /// Constructs the heap.

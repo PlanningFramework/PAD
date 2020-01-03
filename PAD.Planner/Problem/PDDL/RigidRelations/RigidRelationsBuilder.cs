@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable IdentifierTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -10,7 +11,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Collection of predicate names that can be influenced by PDDL operator effects.
         /// </summary>
-        private HashSet<int> PredicatesInfluencedByOperators { set; get; } = null;
+        private HashSet<int> PredicatesInfluencedByOperators { set; get; }
 
         /// <summary>
         /// Builds the collection of rigid relations in the PDDL planning problem.
@@ -32,7 +33,7 @@ namespace PAD.Planner.PDDL
             HashSet<IAtom> rigidRelations = new HashSet<IAtom>();
             foreach (var predicate in initialState.GetPredicates())
             {
-                if (!PredicatesInfluencedByOperators.Contains(predicate.GetNameID()))
+                if (!PredicatesInfluencedByOperators.Contains(predicate.GetNameId()))
                 {
                     rigidRelations.Add(predicate);
                 }
@@ -65,7 +66,7 @@ namespace PAD.Planner.PDDL
         /// <param name="effect">Effect.</param>
         public void Visit(PredicateEffect effect)
         {
-            PredicatesInfluencedByOperators.Add(effect.PredicateAtom.GetNameID());
+            PredicatesInfluencedByOperators.Add(effect.PredicateAtom.GetNameId());
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Wild card value in the state (indicating that the value may be arbitrary).
         /// </summary>
-        public const int WILD_CARD_VALUE = -1;
+        public const int WildCardValue = -1;
 
         /// <summary>
         /// Creates a relative state from the given list of values.
@@ -44,7 +44,7 @@ namespace PAD.Planner.SAS
             for (int variable = 0; variable < Values.Length; ++variable)
             {
                 int value = Values[variable];
-                if (value != WILD_CARD_VALUE)
+                if (value != WildCardValue)
                 {
                     if (!evaluatedState.HasValue(variable, value))
                     {
@@ -67,7 +67,7 @@ namespace PAD.Planner.SAS
             for (int variable = 0; variable < Values.Length; ++variable)
             {
                 int value = Values[variable];
-                if (value != WILD_CARD_VALUE)
+                if (value != WildCardValue)
                 {
                     conditions.Add(new Assignment(variable, value));
                 }
@@ -96,7 +96,7 @@ namespace PAD.Planner.SAS
             return string.Join(", ", Enumerable.Range(0, Values.Length).Select(i =>
             {
                 var value = Values[i];
-                return (value == WILD_CARD_VALUE) ? "*" : problem.Variables[i].Values[value].Replace("Atom", "");
+                return (value == WildCardValue) ? "*" : problem.Variables[i].Values[value].Replace("Atom", "");
             }));
         }
 

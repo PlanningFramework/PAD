@@ -8,13 +8,13 @@ namespace PAD.Planner
     /// generation of a limited number of transitions (specified by a user), while the next call continue from the last generated instance.
     /// To implement this we need to store (lazy evaluated) enumerators of forward/backward transitions for all the requested states/conditions.
     /// </summary>
-    public class TransitionsEnumerator<Source, Transition> where Transition : ITransition
+    public class TransitionsEnumerator<Source, TTransition> where TTransition : ITransition
     {
         /// <summary>
         /// Collection of enumerators for the successive generation of forward/backward transitions. The dictionary key is a source state
         /// or conditions from which the transitions are generated.
         /// </summary>
-        private Dictionary<Source, IEnumerator<Transition>> EnumeratorsMap { set; get; } = new Dictionary<Source, IEnumerator<Transition>>();
+        private Dictionary<Source, IEnumerator<TTransition>> EnumeratorsMap { get; } = new Dictionary<Source, IEnumerator<TTransition>>();
 
         /// <summary>
         /// Enumeration method getting a list with a limited number of possible transitions from the specified state/conditions. The next call
@@ -25,9 +25,9 @@ namespace PAD.Planner
         /// <param name="numberOfTransitions">Number of transitions to be returned.</param>
         /// <param name="generator">Generator function creating the actual collection of transitions.</param>
         /// <returns>Lazy generated collection of transitions.</returns>
-        public IEnumerable<Transition> GetNextTransitions(Source source, int numberOfTransitions, Func<Source, IEnumerable<Transition>> generator)
+        public IEnumerable<TTransition> GetNextTransitions(Source source, int numberOfTransitions, Func<Source, IEnumerable<TTransition>> generator)
         {
-            IEnumerator<Transition> enumerator = null;
+            IEnumerator<TTransition> enumerator;
             if (!EnumeratorsMap.TryGetValue(source, out enumerator))
             {
                 enumerator = generator(source).GetEnumerator();
@@ -47,7 +47,7 @@ namespace PAD.Planner
                     if (transitionsGenerated == 0)
                     {
                         // if the enumeration reached the end in the previous call of this method, we intentionally return an empty collection to
-                        // signalize this fact before reseting the enumerator for the next call (alternatively, there are no transitions at all)
+                        // signalize this fact before resetting the enumerator for the next call (alternatively, there are no transitions at all)
                         EnumeratorsMap.Remove(source);
                     }
                     yield break;

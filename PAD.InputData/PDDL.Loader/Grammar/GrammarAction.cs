@@ -23,14 +23,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="bForm">Block form.</param>
         public Action(MasterGrammar p, BForm bForm) : base(p, bForm)
         {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
-        {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
             var actionDef = new NonTerminal("Action definition", typeof(TransientAstNode));
@@ -39,7 +31,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             var actionPreconditions = new NonTerminal("Action preconditions", typeof(TransientAstNode));
             var actionEffects = new NonTerminal("Action effects", typeof(TransientAstNode));
 
-            var emptyOrPreGD = new NonTerminal("Empty or pre-GD", typeof(TransientAstNode));
+            var emptyOrPreGd = new NonTerminal("Empty or pre-GD", typeof(TransientAstNode));
             var emptyOrEffect = new NonTerminal("Empty or effect", typeof(TransientAstNode));
             var emptyBlock = new NonTerminal("Empty block", typeof(TransientAstNode));
 
@@ -48,7 +40,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             // USED SUB-TREES
 
             var typedList = new TypedList(p);
-            var preGD = new PreGD(p);
+            var preGd = new PreGd(p);
             var effect = new Effect(p);
 
             // RULES
@@ -56,16 +48,16 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             actionDef.Rule = p.ToTerm("(") + actionDefBase + ")";
             actionDefBase.Rule = p.ToTerm(":action") + actionName + actionParameters + actionPreconditions + actionEffects;
             actionParameters.Rule = p.ToTerm(":parameters") + "(" + typedList + ")";
-            actionPreconditions.Rule = (p.ToTerm(":precondition") + emptyOrPreGD) | p.Empty;
+            actionPreconditions.Rule = (p.ToTerm(":precondition") + emptyOrPreGd) | p.Empty;
             actionEffects.Rule = (p.ToTerm(":effect") + emptyOrEffect) | p.Empty;
 
-            emptyOrPreGD.Rule = emptyBlock | preGD;
+            emptyOrPreGd.Rule = emptyBlock | preGd;
             emptyOrEffect.Rule = emptyBlock | effect;
             emptyBlock.Rule = p.ToTerm("(") + p.ToTerm(")");
 
-            p.MarkTransient(actionDef, emptyOrPreGD, emptyOrEffect);
+            p.MarkTransient(actionDef, emptyOrPreGd, emptyOrEffect);
 
-            return (bForm == BForm.BASE) ? actionDefBase : actionDef;
+            Rule = (bForm == BForm.BASE) ? actionDefBase : actionDef;
         }
     }
 }

@@ -14,13 +14,16 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="p">Parent master grammar.</param>
         public NumericExpr(MasterGrammar p) : base(p)
         {
+            Rule = ConstructNumericExprRule(p);
         }
 
         /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
+        /// Constructs the numeric expression rule from the specified parameters.
         /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
+        /// <param name="p">Parent master grammar.</param>
+        /// <param name="durationVariable">Duration variable.</param>
+        /// <returns>Numeric expression grammar rule.</returns>
+        public static NonTerminal ConstructNumericExprRule(MasterGrammar p, NonTerminal durationVariable = null)
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -37,7 +40,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             var termFunctionBase = new FunctionTerm(p, BForm.BASE);
             var numericOpBase = new NumericOp(p, numericExpr, BForm.BASE);
-            var durationVariable = getDurationVariable();
 
             // RULES
 
@@ -48,20 +50,13 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             numericExprComplexBase.Rule = termFunctionBase | numericOpBase;
 
             if (durationVariable != null)
+            {
                 numericExpr.Rule = durationVariable | numericExpr.Rule;
+            }
 
             p.MarkTransient(numericExpr, numericExprComplex, numericExprComplexBase, numericOpBase);
 
             return numericExpr;
-        }
-
-        /// <summary>
-        /// Factory method for an optional duration variable to be added into grammar rules.
-        /// </summary>
-        /// <returns>Duration variable rule.</returns>
-        protected virtual NonTerminal getDurationVariable()
-        {
-            return null;
         }
     }
 }

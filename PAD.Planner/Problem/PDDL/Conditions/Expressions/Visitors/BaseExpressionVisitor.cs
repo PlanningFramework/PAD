@@ -2,7 +2,7 @@
 namespace PAD.Planner.PDDL
 {
     /// <summary>
-    /// Base implemention of generic PDDL logical expression visitor.
+    /// Base implementation of generic PDDL logical expression visitor.
     /// </summary>
     public class BaseExpressionVisitor : IExpressionVisitor
     {

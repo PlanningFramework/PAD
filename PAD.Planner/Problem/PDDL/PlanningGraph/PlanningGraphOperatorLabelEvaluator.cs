@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -11,17 +12,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// State labels.
         /// </summary>
-        private StateLabels StateLabels { set; get; } = null;
+        private StateLabels StateLabels { set; get; }
 
         /// <summary>
         /// Evaluation strategy.
@@ -63,7 +64,7 @@ namespace PAD.Planner.PDDL
         {
             var groundedAtom = GroundingManager.GroundAtom(expression.PredicateAtom, Substitution);
 
-            double value = -1;
+            double value;
             if (StateLabels.TryGetValue(groundedAtom, out value))
             {
                 return Tuple.Create(value, 0.0);

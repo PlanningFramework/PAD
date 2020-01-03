@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.SAS
 {
@@ -12,7 +13,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Values of the state.
         /// </summary>
-        protected int[] Values { set; get; } = null;
+        protected int[] Values { set; get; }
 
         /// <summary>
         /// Constructs the state from the given list of values.
@@ -35,7 +36,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Constructs the state from the input data.
         /// </summary>
-        /// <param name="inputData">Init state data.</param>
+        /// <param name="initState">Init state data.</param>
         public State(InputData.SAS.InitialState initState) : this(initState.ToArray())
         {
         }
@@ -58,7 +59,7 @@ namespace PAD.Planner.SAS
         /// <returns>Values for the specified variable.</returns>
         public int[] GetAllValues(int variable)
         {
-            return new int[] { GetValue(variable) };
+            return new[] { GetValue(variable) };
         }
 
         /// <summary>
@@ -210,7 +211,7 @@ namespace PAD.Planner.SAS
             List<int> values = new List<int>();
             state = state.Replace('[', ' ').Replace(']', ' ');
 
-            foreach (var item in state.Split(new string[] { " " }, System.StringSplitOptions.RemoveEmptyEntries))
+            foreach (var item in state.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries))
             {
                 if (!item.Contains("x"))
                 {
@@ -239,8 +240,8 @@ namespace PAD.Planner.SAS
         /// <returns>String representation of the state.</returns>
         public string GetInfoString(IProblem problem)
         {
-            var splitted = problem.GetInputFilePath().Split(System.IO.Path.DirectorySeparatorChar);
-            string stateInfo = splitted[splitted.Length - 2] + "_" + splitted[splitted.Length - 1] + "_" + GetCompressedDescription();
+            var split = problem.GetInputFilePath().Split(System.IO.Path.DirectorySeparatorChar);
+            string stateInfo = split[split.Length - 2] + "_" + split[split.Length - 1] + "_" + GetCompressedDescription();
             return stateInfo;
         }
 
@@ -255,15 +256,15 @@ namespace PAD.Planner.SAS
             int? previous = null;
             int previousCount = 0;
 
-            Action AddPrevious = () =>
+            Action<int?, int> addPrevious = (prev, prevCount) =>
             {
-                if (previousCount > 1)
+                if (prevCount > 1)
                 {
-                    values.Add($"{previousCount}x{previous}");
+                    values.Add($"{prevCount}x{prev}");
                 }
-                else if (previousCount == 1)
+                else if (prevCount == 1)
                 {
-                    values.Add(previous.ToString());
+                    values.Add(prev.ToString());
                 }
             };
 
@@ -282,11 +283,11 @@ namespace PAD.Planner.SAS
                     continue;
                 }
 
-                AddPrevious();
+                addPrevious(previous, previousCount);
                 previous = current;
                 previousCount = 1;
             }
-            AddPrevious();
+            addPrevious(previous, previousCount);
 
             return $"[{string.Join(" ", values)}]";
         }

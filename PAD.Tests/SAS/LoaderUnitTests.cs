@@ -8,16 +8,16 @@ namespace PAD.Tests.SAS
     /// problem file into SASInputData structure.
     /// </summary>
     [TestClass]
-    public class SASLoaderUnitTests
+    public class LoaderUnitTests
     {
         /// <summary>
         /// Gets full filepath to the specified test case.
         /// </summary>
         /// <param name="fileName">Test case file name.</param>
         /// <returns>Filepath to the test case.</returns>
-        private string GetFilePath(string fileName)
+        private static string GetFilePath(string fileName)
         {
-            return $@"..\..\Loader.SAS\TestCases\{fileName}";
+            return $@"..\..\SAS\LoaderTestCases\{fileName}";
         }
 
         [TestMethod]

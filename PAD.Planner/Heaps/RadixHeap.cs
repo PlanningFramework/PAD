@@ -13,28 +13,28 @@ namespace PAD.Planner.Heaps
         /// <summary>
         /// Buckets collections.
         /// </summary>
-        private List<TreeNode<int, Value>>[] Buckets { set; get; } = null;
+        private List<TreeNode<int>>[] Buckets { set; get; }
 
         /// <summary>
         /// Bounds array.
         /// </summary>
-        private int[] Bounds { set; get; } = null;
+        private int[] Bounds { set; get; }
 
         /// <summary>
         /// Range of the elements.
         /// Must be greater than the difference between the highest possible key and the lowest possible key!
         /// </summary>
-        private int C { set; get; } = 0;
+        private int C { get; }
 
         /// <summary>
         /// Size of the hash array. Depends on C.
         /// </summary>
-        private int B { set; get; } = 0;
+        private int B { set; get; }
 
         /// <summary>
         /// Number of elements in the structure.
         /// </summary>
-        private int Count { set; get; } = 0;
+        private int Count { set; get; }
 
         /// <summary>
         /// Constructs the radix heap.
@@ -58,7 +58,7 @@ namespace PAD.Planner.Heaps
             {
                 --i;
             }
-            Buckets[i].Add(new TreeNode<int, Value>(value, key));
+            Buckets[i].Add(new TreeNode<int>(value, key));
             Count++;
         }
 
@@ -68,20 +68,20 @@ namespace PAD.Planner.Heaps
         /// <returns>Value item with the minimal key.</returns>
         public Value RemoveMin()
         {
-            int i = 0, j = 0;
+            int i = 0;
             while (Buckets[i].Count == 0)
             {
                 ++i;
             }
 
-            int minkey = Buckets[i][0].Key;
+            int minKey = Buckets[i][0].Key;
             int minIndex = 0;
 
-            for (j = 1; j < Buckets[i].Count; j++)
+            for (int j = 1; j < Buckets[i].Count; j++)
             {
-                if (Buckets[i][j].Key < minkey)
+                if (Buckets[i][j].Key < minKey)
                 {
-                    minkey = Buckets[i][j].Key;
+                    minKey = Buckets[i][j].Key;
                     minIndex = j;
                 }
             }
@@ -106,14 +106,14 @@ namespace PAD.Planner.Heaps
                 Bounds[0] = k;
                 Bounds[1] = k + 1;
 
-                for (j = 2; j < i + 1; j++)
+                for (int j = 2; j < i + 1; j++)
                 {
                     Bounds[j] = Min(Bounds[j - 1] + 1 << (j - 2), Bounds[i + 1]);
                 }
 
                 while (Buckets[i].Count > 0)
                 {
-                    j = 0;
+                    int j = 0;
                     var el = Buckets[i][Buckets[i].Count - 1];
                     Buckets[i].RemoveAt(Buckets[i].Count - 1);
                     while (el.Key > Bounds[j + 1])
@@ -158,11 +158,11 @@ namespace PAD.Planner.Heaps
             B = (int)Math.Ceiling(Math.Log(C + 1, 2) + 2);
             Count = 0;
 
-            Buckets = new List<TreeNode<int, Value>>[B];
+            Buckets = new List<TreeNode<int>>[B];
             Bounds = new int[B];
             for (int i = 0; i < B; ++i)
             {
-                Buckets[i] = new List<TreeNode<int, Value>>();
+                Buckets[i] = new List<TreeNode<int>>();
             }
 
             Bounds[0] = 0;
@@ -190,7 +190,7 @@ namespace PAD.Planner.Heaps
         /// <param name="a">First argument.</param>
         /// <param name="b">Second argument.</param>
         /// <returns>The lesser of two values.</returns>
-        private int Min(int a, int b)
+        private static int Min(int a, int b)
         {
             return a < b ? a : b;
         }
@@ -199,25 +199,24 @@ namespace PAD.Planner.Heaps
         /// Tree node to be used in the buckets collection.
         /// </summary>
         /// <typeparam name="KeyType">Key type.</typeparam>
-        /// <typeparam name="ValueType">Value type.</typeparam>
-        private class TreeNode<KeyType, ValueType> where KeyType : IComparable
+        private class TreeNode<KeyType> where KeyType : IComparable
         {
             /// <summary>
             /// Value item.
             /// </summary>
-            public ValueType Value { get; set; } = default(ValueType);
+            public Value Value { get; }
 
             /// <summary>
             /// Key item.
             /// </summary>
-            public KeyType Key { get; set; } = default(KeyType);
+            public KeyType Key { get; }
 
             /// <summary>
             /// Constructs the tree node.
             /// </summary>
             /// <param name="value">Value item.</param>
             /// <param name="key">Key item.</param>
-            public TreeNode(ValueType value, KeyType key)
+            public TreeNode(Value value, KeyType key)
             {
                 Value = value;
                 Key = key;

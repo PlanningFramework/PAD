@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable IdentifierTypo
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
     /// <summary>
-    /// Evalutor of the operator effects relevance. The operator is relevant for the specified relative state, if it contributes to satisfy the
+    /// Evaluator of the operator effects relevance. The operator is relevant for the specified relative state, if it contributes to satisfy the
     /// relative state. This operator can be then used in the backward search and reverse application on the given relative state.
     /// </summary>
     public class EffectsRelevanceRelativeStateEvaluator
@@ -11,17 +13,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Structure for collecting and preprocessing of operator effects that are being evaluated.
         /// </summary>
-        private EffectsPreprocessedCollection Effects { set; get; } = new EffectsPreprocessedCollection();
+        private EffectsPreprocessedCollection Effects { get; } = new EffectsPreprocessedCollection();
 
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Variables substitution of the effects' parent operator.
         /// </summary>
-        private ISubstitution OperatorSubstitution { set; get; } = null;
+        private ISubstitution OperatorSubstitution { set; get; }
 
         /// <summary>
         /// Constructs the effects relevance evaluator.
@@ -50,11 +52,11 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="relativeState">Relative state.</param>
         /// <param name="operatorSubstitution">Variables substitution of the operator.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>True when the effects are relevant, false otherwise.</returns>
-        public bool Evaluate(IRelativeState relativeState, ISubstitution operatorSubstitution, IList<int> relevantContionalEffects = null)
+        public bool Evaluate(IRelativeState relativeState, ISubstitution operatorSubstitution, IList<int> relevantConditionalEffects = null)
         {
-            return (EvaluateInternal(relativeState, operatorSubstitution, relevantContionalEffects) == EffectRelevance.RELEVANT);
+            return (EvaluateInternal(relativeState, operatorSubstitution, relevantConditionalEffects) == EffectRelevance.RELEVANT);
         }
 
         /// <summary>
@@ -62,9 +64,9 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="relativeState">Relative state.</param>
         /// <param name="operatorSubstitution">Variables substitution of the operator.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>Effect relevance (relevant, irrelevant, or anti-relevant).</returns>
-        private EffectRelevance EvaluateInternal(IRelativeState relativeState, ISubstitution operatorSubstitution, IList<int> relevantContionalEffects = null)
+        private EffectRelevance EvaluateInternal(IRelativeState relativeState, ISubstitution operatorSubstitution, IList<int> relevantConditionalEffects = null)
         {
             Effects.GroundEffectsByCurrentOperatorSubstitution(GroundingManager, operatorSubstitution);
 
@@ -76,13 +78,13 @@ namespace PAD.Planner.PDDL
                 return EffectRelevance.ANTI_RELEVANT;
             }
 
-            var forallResult = ProcessForallEffects(relativeState, relevantContionalEffects);
+            var forallResult = ProcessForallEffects(relativeState);
             if (forallResult == EffectRelevance.ANTI_RELEVANT)
             {
                 return EffectRelevance.ANTI_RELEVANT;
             }
 
-            var whenResult = ProcessWhenEffects(relativeState, relevantContionalEffects);
+            var whenResult = ProcessWhenEffects(relativeState, relevantConditionalEffects);
             if (whenResult == EffectRelevance.ANTI_RELEVANT)
             {
                 return EffectRelevance.ANTI_RELEVANT;
@@ -125,11 +127,11 @@ namespace PAD.Planner.PDDL
 
             foreach (var function in relativeState.GetObjectFunctions())
             {
-                ITerm assignValue = null;
+                ITerm assignValue;
                 if (Effects.GroundedObjectFunctionAssignmentEffects.TryGetValue(function.Key, out assignValue))
                 {
                     ConstantTerm constantValue = assignValue as ConstantTerm;
-                    if (constantValue == null || constantValue.NameID != function.Value)
+                    if (constantValue == null || constantValue.NameId != function.Value)
                     {
                         // surely assigning different value -> anti-relevant
                         return EffectRelevance.ANTI_RELEVANT;
@@ -140,11 +142,11 @@ namespace PAD.Planner.PDDL
 
             foreach (var function in relativeState.GetNumericFunctions())
             {
-                INumericExpression assignExpression = null;
+                INumericExpression assignExpression;
                 if (Effects.GroundedNumericFunctionAssignmentEffects.TryGetValue(function.Key, out assignExpression))
                 {
                     Number numberValue = assignExpression as Number;
-                    if (numberValue == null || numberValue.Value != function.Value)
+                    if (numberValue == null || !numberValue.Value.Equals(function.Value))
                     {
                         // surely assigning different value -> anti-relevant
                         return EffectRelevance.ANTI_RELEVANT;
@@ -160,9 +162,8 @@ namespace PAD.Planner.PDDL
         /// Processes forall effects.
         /// </summary>
         /// <param name="relativeState">Relative state.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>Effect relevance (relevant, irrelevant, or anti-relevant).</returns>
-        private EffectRelevance ProcessForallEffects(IRelativeState relativeState, IList<int> relevantContionalEffects = null)
+        private EffectRelevance ProcessForallEffects(IRelativeState relativeState)
         {
             bool anyRelevant = false;
 
@@ -175,7 +176,7 @@ namespace PAD.Planner.PDDL
                 {
                     OperatorSubstitution.AddLocalSubstitution(localSubstitution);
 
-                    var result = evaluator.EvaluateInternal(relativeState, OperatorSubstitution, null);
+                    var result = evaluator.EvaluateInternal(relativeState, OperatorSubstitution);
                     anyRelevant |= (result == EffectRelevance.RELEVANT);
 
                     OperatorSubstitution.RemoveLocalSubstitution(localSubstitution);
@@ -194,9 +195,9 @@ namespace PAD.Planner.PDDL
         /// Processes conditional (when) effects.
         /// </summary>
         /// <param name="relativeState">Relative state.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>Effect relevance (relevant, irrelevant, or anti-relevant).</returns>
-        private EffectRelevance ProcessWhenEffects(IRelativeState relativeState, IList<int> relevantContionalEffects = null)
+        private EffectRelevance ProcessWhenEffects(IRelativeState relativeState, IList<int> relevantConditionalEffects = null)
         {
             bool anyRelevant = false;
             int whenEffectIndex = -1;
@@ -209,7 +210,7 @@ namespace PAD.Planner.PDDL
                 whenEffect.Effects.ForEach(subEffect => subEffects.Add(subEffect));
                 EffectsRelevanceRelativeStateEvaluator evaluator = new EffectsRelevanceRelativeStateEvaluator(subEffects, GroundingManager);
 
-                var result = evaluator.EvaluateInternal(relativeState, OperatorSubstitution, relevantContionalEffects);
+                var result = evaluator.EvaluateInternal(relativeState, OperatorSubstitution, relevantConditionalEffects);
                 if (result == EffectRelevance.ANTI_RELEVANT)
                 {
                     // anti-relevant conditional effect -> can't be used (but it doesn't have to be, we just ignore it)
@@ -218,10 +219,7 @@ namespace PAD.Planner.PDDL
 
                 if (result == EffectRelevance.RELEVANT)
                 {
-                    if (relevantContionalEffects != null)
-                    {
-                        relevantContionalEffects.Add(whenEffectIndex);
-                    }
+                    relevantConditionalEffects?.Add(whenEffectIndex);
                     anyRelevant = true;
                 }
             }

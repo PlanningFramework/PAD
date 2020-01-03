@@ -10,7 +10,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Children numeric expressions.
         /// </summary>
-        public List<INumericExpression> Children { set; get; } = null;
+        public List<INumericExpression> Children { set; get; }
 
         /// <summary>
         /// Constructs the "multiply" numeric expression.
@@ -19,9 +19,7 @@ namespace PAD.Planner.PDDL
         /// <param name="rightChild">Right numeric expression.</param>
         public Multiply(INumericExpression leftChild, INumericExpression rightChild)
         {
-            Children = new List<INumericExpression>();
-            Children.Add(leftChild);
-            Children.Add(rightChild);
+            Children = new List<INumericExpression> {leftChild, rightChild};
         }
 
         /// <summary>

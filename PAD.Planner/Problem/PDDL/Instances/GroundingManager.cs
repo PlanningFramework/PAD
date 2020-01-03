@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -11,33 +12,33 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounder instance.
         /// </summary>
-        private Lazy<Grounder> Grounder { set; get; } = null;
+        private Lazy<Grounder> Grounder { get; }
 
         /// <summary>
         /// Substitution generator.
         /// </summary>
-        private Lazy<SubstitutionGenerator> SubstitutionGenerator { set; get; } = null;
+        private Lazy<SubstitutionGenerator> SubstitutionGenerator { get; }
 
         /// <summary>
         /// Constants manager, handling available constants for types.
         /// </summary>
-        private Lazy<ConstantsManager> ConstantsManager { set; get; } = null;
+        private Lazy<ConstantsManager> ConstantsManager { get; }
 
         /// <summary>
         /// Atoms manager, handling available grounded instances for predicates/functions.
         /// </summary>
-        private Lazy<AtomsManager> AtomsManager { set; get; } = null;
+        private Lazy<AtomsManager> AtomsManager { get; }
 
         /// <summary>
         /// Constructs the grounding manager.
         /// </summary>
         /// <param name="inputData">Input data.</param>
         /// <param name="idManager">ID manager.</param>
-        public GroundingManager(InputData.PDDLInputData inputData, IDManager idManager)
+        public GroundingManager(InputData.PDDLInputData inputData, IdManager idManager)
         {
             ConstantsManager = new Lazy<ConstantsManager>(() => new ConstantsManager(inputData, idManager));
             AtomsManager = new Lazy<AtomsManager>(() => new AtomsManager(inputData, idManager));
-            SubstitutionGenerator = new Lazy<SubstitutionGenerator>(() => new SubstitutionGenerator(inputData, ConstantsManager, idManager));
+            SubstitutionGenerator = new Lazy<SubstitutionGenerator>(() => new SubstitutionGenerator(ConstantsManager));
             Grounder = new Lazy<Grounder>(() => new Grounder(idManager));
         }
 
@@ -53,11 +54,11 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Grounds the specified atom by the given substitution and returns it. The "deep" version of terms grouding is used.
+        /// Grounds the specified atom by the given substitution and returns it. The "deep" version of terms grounding is used.
         /// </summary>
         /// <param name="atom">Function or predicate atom.</param>
         /// <param name="substitution">Variables substitution.</param>
-        /// <param name="referenceState">Reference state.</param>
+        /// <param name="state">Reference state.</param>
         /// <returns>Grounded atom.</returns>
         public IAtom GroundAtomDeep(IAtom atom, ISubstitution substitution, IState state)
         {
@@ -77,7 +78,7 @@ namespace PAD.Planner.PDDL
 
         /// <summary>
         /// Grounds the term. This version does "deep" grounding, in the sense that even object function terms are 
-        /// grounded into constant terms (the value of the object function term is getted from the given reference state).
+        /// grounded into constant terms (the value of the object function term is gotten from the given reference state).
         /// </summary>
         /// <param name="term">Term.</param>
         /// <param name="substitution">Variables substitution.</param>
@@ -135,31 +136,31 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Gets all possible constants of the given type (i.e. including all constants of the ancestor types).
         /// </summary>
-        /// <param name="typeID">Type ID.</param>
+        /// <param name="typeId">Type ID.</param>
         /// <returns>Collection of constants of the given type.</returns>
-        public IEnumerable<int> GetAllConstantsOfType(int typeID)
+        public IEnumerable<int> GetAllConstantsOfType(int typeId)
         {
-            return ConstantsManager.Value.GetAllConstantsOfType(typeID);
+            return ConstantsManager.Value.GetAllConstantsOfType(typeId);
         }
 
         /// <summary>
         /// Gets the definition type(s) for the specified constant (more types = either clause)
         /// </summary>
-        /// <param name="constantID">Constant ID.</param>
+        /// <param name="constantId">Constant ID.</param>
         /// <returns>Collection of definition types for the given constant.</returns>
-        public ICollection<int> GetTypesForConstant(int constantID)
+        public ICollection<int> GetTypesForConstant(int constantId)
         {
-            return ConstantsManager.Value.GetTypesForConstant(constantID);
+            return ConstantsManager.Value.GetTypesForConstant(constantId);
         }
 
         /// <summary>
         /// Gets the collection of direct children types for the specified type.
         /// </summary>
-        /// <param name="typeID">Type ID.</param>
+        /// <param name="typeId">Type ID.</param>
         /// <returns>Direct children types of the given type.</returns>
-        public IEnumerable<int> GetChildrenTypes(int typeID)
+        public IEnumerable<int> GetChildrenTypes(int typeId)
         {
-            return ConstantsManager.Value.GetChildrenTypes(typeID);
+            return ConstantsManager.Value.GetChildrenTypes(typeId);
         }
 
         /// <summary>
@@ -247,8 +248,7 @@ namespace PAD.Planner.PDDL
                 List<int> functionReturnTypes = function.Item2;
                 Parameters functionVariables = function.Item3;
 
-                HashSet<int> possibleReturnValues = new HashSet<int>();
-                possibleReturnValues.Add(ObjectFunctionTerm.UNDEFINED_VALUE);
+                HashSet<int> possibleReturnValues = new HashSet<int> {ObjectFunctionTerm.UndefinedValue};
 
                 foreach (var returnType in functionReturnTypes)
                 {

@@ -1,18 +1,19 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable UnusedMember.Global
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
     /// <summary>
     /// Grammar node representing a predicate used within GD expression..
     /// </summary>
-    public class PredicateGD : BaseGrammarNode
+    public class PredicateGd : BaseGrammarNode
     {
         /// <summary>
         /// Constructor of the grammar node.
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
-        public PredicateGD(MasterGrammar p) : base(p, BForm.FULL)
+        public PredicateGd(MasterGrammar p) : this(p, BForm.FULL)
         {
         }
 
@@ -21,20 +22,12 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
         /// <param name="bForm">Block form.</param>
-        public PredicateGD(MasterGrammar p, BForm bForm) : base(p, bForm)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
+        public PredicateGd(MasterGrammar p, BForm bForm) : base(p, bForm)
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
             var predicate = new NonTerminal("Predicate GD", typeof(TransientAstNode));
-            var predicateBase = new NonTerminal("Predicate GD base", typeof(PredicateGDAstNode));
+            var predicateBase = new NonTerminal("Predicate GD base", typeof(PredicateGdAstNode));
             var predicateArguments = new NonTerminal("Predicate arguments", typeof(TransientAstNode));
             var predicateIdentifier = new IdentifierTerminal("Predicate identifier", IdentifierType.CONSTANT);
 
@@ -50,7 +43,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(predicate, term);
 
-            return (bForm == BForm.BASE) ? predicateBase : predicate;
+            Rule = (bForm == BForm.BASE) ? predicateBase : predicate;
         }
     }
 }

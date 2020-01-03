@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable StringLiteralTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -10,12 +13,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// List of expression parameters.
         /// </summary>
-        public Parameters Parameters { get; set; } = null;
+        public Parameters Parameters { get; set; }
 
         /// <summary>
         /// List of effects for the expression to be applied.
         /// </summary>
-        public List<IEffect> Effects { get; set; } = null;
+        public List<IEffect> Effects { get; set; }
 
         /// <summary>
         /// Constructs the effect.

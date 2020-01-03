@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable IdentifierTypo
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
     /// <summary>
-    /// Evalutor of the operator effects relevance. The operator is relevant for the specified conditions, if it contributes to satisfy the
+    /// Evaluator of the operator effects relevance. The operator is relevant for the specified conditions, if it contributes to satisfy the
     /// conditions. This operator can be then used in the backward search and reverse application on the given conditions.
     /// </summary>
     public class EffectsRelevanceConditionsEvaluator : IElementCNFRelevanceEvaluationVisitor
@@ -12,22 +14,22 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Structure for collecting and preprocessing of operator effects that are being evaluated.
         /// </summary>
-        private EffectsPreprocessedCollection Effects { set; get; } = new EffectsPreprocessedCollection();
+        private EffectsPreprocessedCollection Effects { get; } = new EffectsPreprocessedCollection();
 
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Variables substitution of the effects' parent operator.
         /// </summary>
-        private ISubstitution OperatorSubstitution { set; get; } = null;
+        private ISubstitution OperatorSubstitution { set; get; }
 
         /// <summary>
         /// Variables substitution of the expression (expression can be lifted e.g. in forall subexpressions).
         /// </summary>
-        private ISubstitution ExpressionSubstitution { set; get; } = null;
+        private ISubstitution ExpressionSubstitution { set; get; }
 
         /// <summary>
         /// Constructs the effects relevance evaluator.
@@ -57,11 +59,11 @@ namespace PAD.Planner.PDDL
         /// <param name="conditions">Conditions expression.</param>
         /// <param name="operatorSubstitution">Variables substitution of the operator.</param>
         /// <param name="expressionSubstitution">Variables substitution of the expression.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>True when the effects are relevant, false otherwise.</returns>
-        public bool Evaluate(IConditions conditions, ISubstitution operatorSubstitution, ISubstitution expressionSubstitution = null, IList<int> relevantContionalEffects = null)
+        public bool Evaluate(IConditions conditions, ISubstitution operatorSubstitution, ISubstitution expressionSubstitution = null, IList<int> relevantConditionalEffects = null)
         {
-            var result = EvaluateWithExtendedResult(conditions, operatorSubstitution, (expressionSubstitution == null) ? new Substitution() : expressionSubstitution, relevantContionalEffects);
+            var result = EvaluateWithExtendedResult(conditions, operatorSubstitution, expressionSubstitution ?? new Substitution(), relevantConditionalEffects);
             return (result.Item1 && result.Item2);
         }
 
@@ -71,12 +73,12 @@ namespace PAD.Planner.PDDL
         /// <param name="conditions">Conditions expression.</param>
         /// <param name="operatorSubstitution">Variables substitution of the operator.</param>
         /// <param name="expressionSubstitution">Variables substitution of the expression.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>Tuple of two values, where the first is true when the positive relevance condition (inclusion) is satisfied, while the second is
         /// true when the negative condition (exclusion) is not violated. False otherwise.</returns>
-        public Tuple<bool, bool> EvaluateWithExtendedResult(IConditions conditions, ISubstitution operatorSubstitution, ISubstitution expressionSubstitution, IList<int> relevantContionalEffects = null)
+        public Tuple<bool, bool> EvaluateWithExtendedResult(IConditions conditions, ISubstitution operatorSubstitution, ISubstitution expressionSubstitution, IList<int> relevantConditionalEffects = null)
         {
-            ConditionsCNF expression = (conditions != null) ? (ConditionsCNF)conditions.GetCNF() : null;
+            ConditionsCNF expression = (ConditionsCNF)conditions?.GetCNF();
 
             if (expression == null)
             {
@@ -94,13 +96,13 @@ namespace PAD.Planner.PDDL
                 return primitivesResult;
             }
 
-            var forallResult = ProcessForallEffects(expression, relevantContionalEffects);
+            var forallResult = ProcessForallEffects(expression);
             if (!forallResult.Item2)
             {
                 return forallResult;
             }
 
-            var whenResult = ProcessWhenEffects(expression, relevantContionalEffects);
+            var whenResult = ProcessWhenEffects(expression, relevantConditionalEffects);
             if (!whenResult.Item2)
             {
                 return whenResult;
@@ -124,10 +126,9 @@ namespace PAD.Planner.PDDL
         /// Processes forall effects.
         /// </summary>
         /// <param name="expression">Conditions expression in CNF.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>Tuple of two values, where the first is true when the positive relevance condition (inclusion) is satisfied, while the second is
         /// true when the negative condition (exclusion) is not violated. False otherwise.</returns>
-        private Tuple<bool, bool> ProcessForallEffects(ConditionsCNF expression, IList<int> relevantContionalEffects)
+        private Tuple<bool, bool> ProcessForallEffects(ConditionsCNF expression)
         {
             bool positiveCondition = false;
             bool negativeCondition = true;
@@ -153,17 +154,17 @@ namespace PAD.Planner.PDDL
                     }
                 }
             }
-            return Tuple.Create(positiveCondition, negativeCondition);
+            return Tuple.Create(positiveCondition, true);
         }
 
         /// <summary>
         /// Processes conditional (when) effects.
         /// </summary>
         /// <param name="expression">Conditions expression in CNF.</param>
-        /// <param name="relevantContionalEffects">Output indices of relevant conditional effects (can be null).</param>
+        /// <param name="relevantConditionalEffects">Output indices of relevant conditional effects (can be null).</param>
         /// <returns>Tuple of two values, where the first is true when the positive relevance condition (inclusion) is satisfied, while the second is
         /// true when the negative condition (exclusion) is not violated. False otherwise.</returns>
-        private Tuple<bool, bool> ProcessWhenEffects(ConditionsCNF expression, IList<int> relevantContionalEffects)
+        private Tuple<bool, bool> ProcessWhenEffects(ConditionsCNF expression, IList<int> relevantConditionalEffects)
         {
             bool positiveCondition = false;
             int whenEffectIndex = -1;
@@ -176,7 +177,7 @@ namespace PAD.Planner.PDDL
                 whenEffect.Effects.ForEach(subEffect => subEffects.Add(subEffect));
                 EffectsRelevanceConditionsEvaluator evaluator = new EffectsRelevanceConditionsEvaluator(subEffects, GroundingManager);
 
-                var result = evaluator.EvaluateWithExtendedResult(expression, OperatorSubstitution, ExpressionSubstitution, relevantContionalEffects);
+                var result = evaluator.EvaluateWithExtendedResult(expression, OperatorSubstitution, ExpressionSubstitution, relevantConditionalEffects);
                 if (!result.Item2)
                 {
                     continue;
@@ -184,10 +185,7 @@ namespace PAD.Planner.PDDL
 
                 if (result.Item1 && result.Item2)
                 {
-                    if (relevantContionalEffects != null)
-                    {
-                        relevantContionalEffects.Add(whenEffectIndex);
-                    }
+                    relevantConditionalEffects?.Add(whenEffectIndex);
                 }
                 positiveCondition |= result.Item1;
             }
@@ -218,15 +216,15 @@ namespace PAD.Planner.PDDL
             bool positiveCondition = false;
             bool negativeCondition = true;
 
-            Action<ITerm, ITerm> CheckObjectFunctionArgument = (ITerm argument, ITerm secondaryArgument) =>
+            Action<ITerm, ITerm> checkObjectFunctionArgument = (argument, secondaryArgument) =>
             {
                 ObjectFunctionTerm objectFunction = argument as ObjectFunctionTerm;
                 if (objectFunction != null)
                 {
-                    ITerm assignValue = null;
+                    ITerm assignValue;
                     if (Effects.GroundedObjectFunctionAssignmentEffects.TryGetValue(GroundingManager.GroundAtom(objectFunction.FunctionAtom, ExpressionSubstitution), out assignValue))
                     {
-                        positiveCondition |= true;
+                        positiveCondition = true;
                         if (!(secondaryArgument is ObjectFunctionTerm) && !(assignValue is ObjectFunctionTerm))
                         {
                             bool valueDiffersValueAssign = !GroundingManager.GroundTerm(secondaryArgument, ExpressionSubstitution).Equals(GroundingManager.GroundTerm(assignValue, OperatorSubstitution));
@@ -240,8 +238,8 @@ namespace PAD.Planner.PDDL
                 }
             };
 
-            CheckObjectFunctionArgument(expression.LeftArgument, expression.RightArgument);
-            CheckObjectFunctionArgument(expression.RightArgument, expression.LeftArgument);
+            checkObjectFunctionArgument(expression.LeftArgument, expression.RightArgument);
+            checkObjectFunctionArgument(expression.RightArgument, expression.LeftArgument);
 
             return Tuple.Create(positiveCondition, negativeCondition);
         }

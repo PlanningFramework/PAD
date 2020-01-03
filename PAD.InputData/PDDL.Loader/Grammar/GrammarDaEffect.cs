@@ -1,5 +1,8 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -23,14 +26,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="bForm">Block form.</param>
         public DaEffect(MasterGrammar p, BForm bForm) : base(p, bForm)
         {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
-        {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
             var daEffect = new NonTerminal("Da-effect", typeof(TransientAstNode));
@@ -48,7 +43,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             var timedEffectBase = new TimedEffect(p, BForm.BASE);
             var typedList = new TypedList(p);
-            var daGD = new DaGD(p);
+            var daGd = new DaGd(p);
 
             // RULES
 
@@ -59,13 +54,13 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             daEffectsStarList.Rule = p.MakeStarRule(daEffectsStarList, daEffect);
 
             forallDaEffect.Rule = p.ToTerm("forall") + "(" + typedList + ")" + daEffect;
-            whenTimeEffect.Rule = p.ToTerm("when") + daGD + timedEffect;
+            whenTimeEffect.Rule = p.ToTerm("when") + daGd + timedEffect;
 
             timedEffect.Rule = p.ToTerm("(") + timedEffectBase + ")";
 
             p.MarkTransient(daEffect, daEffectBase, timedEffect);
 
-            return (bForm == BForm.BASE) ? daEffectBase : daEffect;
+            Rule = (bForm == BForm.BASE) ? daEffectBase : daEffect;
         }
         
     }

@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using PAD.InputData.PDDL.Traits;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL
 {
@@ -47,12 +50,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// List of expression parameters.
         /// </summary>
-        public Parameters Parameters { get; set; } = new Parameters();
+        public Parameters Parameters { get; set; }
 
         /// <summary>
         /// List of effects for the expression to be applied.
         /// </summary>
-        public DurativeEffects Effects { get; set; } = new DurativeEffects();
+        public DurativeEffects Effects { get; set; }
 
         /// <summary>
         /// Constructs the durative effect.
@@ -95,12 +98,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public DurativeExpression Expression { get; set; } = null;
+        public DurativeExpression Expression { get; set; }
 
         /// <summary>
         /// Argument timed effect.
         /// </summary>
-        public TimedEffect Effect { get; set; } = null;
+        public TimedEffect Effect { get; set; }
 
         /// <summary>
         /// Constructs the durative effect.
@@ -149,12 +152,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Time specifier.
         /// </summary>
-        public TimeSpecifier TimeSpecifier { get; set; } = TimeSpecifier.START;
+        public TimeSpecifier TimeSpecifier { get; set; }
 
         /// <summary>
         /// List of effects for the expression to be applied.
         /// </summary>
-        public PrimitiveEffects Effects { get; set; } = new PrimitiveEffects();
+        public PrimitiveEffects Effects { get; set; }
 
         /// <summary>
         /// Constructs the durative effect.
@@ -195,17 +198,17 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Assign operator specifier.
         /// </summary>
-        public TimedEffectAssignOperator AssignOperator { get; set; } = TimedEffectAssignOperator.INCREASE;
+        public TimedEffectAssignOperator AssignOperator { get; set; }
 
         /// <summary>
         /// Numeric function of which value will be assigned.
         /// </summary>
-        public NumericFunction Function { get; set; } = null;
+        public NumericFunction Function { get; set; }
 
         /// <summary>
         /// Timed numeric value to be assigned.
         /// </summary>
-        public TimedNumericExpression Value { get; set; } = null;
+        public TimedNumericExpression Value { get; set; }
 
         /// <summary>
         /// Constructs the durative effect.
@@ -285,7 +288,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument numeric expression.
         /// </summary>
-        public NumericExpression NumericExpression { get; set; } = null;
+        public NumericExpression NumericExpression { get; set; }
 
         /// <summary>
         /// Constructs the durative effect.

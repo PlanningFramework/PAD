@@ -9,14 +9,14 @@ namespace PAD.Planner.SAS
     public class StateLabels : Dictionary<IAssignment, double>, IStateLabels
     {
         /// <summary>
-        /// Constructs empty state lables.
+        /// Constructs empty state labels.
         /// </summary>
         public StateLabels()
         {
         }
 
         /// <summary>
-        /// Constructs the initial state lables.
+        /// Constructs the initial state labels.
         /// </summary>
         /// <param name="initialState">Initial state of the original problem.</param>
         public StateLabels(RelaxedState initialState)

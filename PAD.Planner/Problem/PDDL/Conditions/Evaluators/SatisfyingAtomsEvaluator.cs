@@ -8,7 +8,7 @@ namespace PAD.Planner.PDDL
     public class SatisfyingAtomsEvaluator : ConditionsCNFEvaluator
     {
         /// <summary>
-        /// List of the atoms satisfying the evalatuated conditions.
+        /// List of the atoms satisfying the evaluated conditions.
         /// </summary>
         public List<IAtom> Atoms { set; get; } = new List<IAtom>();
 
@@ -26,7 +26,7 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="conditions">Conditions to evaluate.</param>
         /// <param name="substitution">Variable substitution.</param>
-        /// <param name="predecessorState">Predecessing state.</param>
+        /// <param name="predecessorState">Preceding state.</param>
         /// <returns>List of satisfying atoms.</returns>
         public List<IAtom> Evaluate(IConditions conditions, ISubstitution substitution, IState predecessorState)
         {

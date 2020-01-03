@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System;
+// ReSharper disable IdentifierTypo
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -8,58 +10,58 @@ namespace PAD.Planner.PDDL
     /// Manager for the unique ID mappings used in the PDDL planning problem. Handles identifiers of predicates, functions, constants,
     /// types and preferences (global scope), and also identifiers of variables (local scope).
     /// </summary>
-    public class IDManager
+    public class IdManager
     {
         /// <summary>
         /// Predicates ID mapping. Stores the data about original predicate names (and number of arguments) and their mapped IDs.
         /// </summary>
-        public EntityIDManager Predicates { set; get; } = new EntityIDManager();
+        public EntityIdManager Predicates { set; get; } = new EntityIdManager();
 
         /// <summary>
         /// Functions ID mapping. Stores the data about original function names (and number of arguments) and their mapped IDs.
         /// </summary>
-        public EntityIDManager Functions { set; get; } = new EntityIDManager();
+        public EntityIdManager Functions { set; get; } = new EntityIdManager();
 
         /// <summary>
         /// Constants ID mapping. Stores the data about original constant names and their mapped IDs.
         /// </summary>
-        public EntityIDManager Constants { set; get; } = new EntityIDManager();
+        public EntityIdManager Constants { set; get; } = new EntityIdManager();
 
         /// <summary>
         /// Types ID mapping. Stores the data about original type names and their mapped IDs.
         /// </summary>
-        public EntityIDManager Types { set; get; } = new EntityIDManager();
+        public EntityIdManager Types { set; get; } = new EntityIdManager();
 
         /// <summary>
         /// Preferences ID mapping. Stores the data about original preference names and their mapped IDs.
         /// </summary>
-        public EntityIDManager Preferences { set; get; } = new EntityIDManager();
+        public EntityIdManager Preferences { set; get; } = new EntityIdManager();
 
         /// <summary>
         /// Variables ID mapping. Stores the data about original variable names and their mapped IDs (only locally unique!).
         /// </summary>
-        public LocalEntityIDManager Variables { set; get; } = new LocalEntityIDManager();
+        public LocalEntityIdManager Variables { set; get; } = new LocalEntityIdManager();
 
         /// <summary>
         /// Invalid ID value.
         /// </summary>
-        public const int INVALID_ID = -1;
+        public const int InvalidId = -1;
 
         /// <summary>
         /// Undefined ID value (e.g. functions can have an undefined value).
         /// </summary>
-        public const int UNDEFINED_ID = -2;
+        public const int UndefinedId = -2;
 
         /// <summary>
         /// Generic prefix for variable names (exact variable names in parameters are not stored, at the moment).
         /// </summary>
-        public const string GENERIC_VARIABLE_PREFIX = "?var";
+        public const string GenericVariablePrefix = "?var";
 
         /// <summary>
         /// Creates and initiliazes ID manager from the input data.
         /// </summary>
         /// <param name="inputData">Input data.</param>
-        public IDManager(InputData.PDDLInputData inputData)
+        public IdManager(InputData.PDDLInputData inputData)
         {
             Types.Register("object");
             foreach (var type in inputData.Domain.Types)
@@ -90,17 +92,17 @@ namespace PAD.Planner.PDDL
     /// while e.g. constants are uniquely identified only by their name, the predicates are identified by their names and a number
     /// of their arguments.
     /// </summary>
-    public class EntityIDManager
+    public class EntityIdManager
     {
         /// <summary>
         /// Mapping of the original entity name with a number of arguments to its corresponding ID.
         /// </summary>
-        protected Dictionary<Tuple<string, int>, int> NameWithArgToID { set; get; } = new Dictionary<Tuple<string, int>, int>();
+        protected Dictionary<Tuple<string, int>, int> NameWithArgToId { set; get; } = new Dictionary<Tuple<string, int>, int>();
 
         /// <summary>
         /// Free ID to be used for the next entity registration.
         /// </summary>
-        protected int NextFreeID { set; get; } = 0;
+        protected int NextFreeId { set; get; }
 
         /// <summary>
         /// Registers the specified entity and returns the registered ID value.
@@ -111,9 +113,9 @@ namespace PAD.Planner.PDDL
         public int Register(string name, int numberOfArguments = 0)
         {
             var key = Tuple.Create(name, numberOfArguments);
-            Debug.Assert(!NameWithArgToID.ContainsKey(key));
-            NameWithArgToID.Add(key, NextFreeID);
-            return NextFreeID++;
+            Debug.Assert(!NameWithArgToId.ContainsKey(key));
+            NameWithArgToId.Add(key, NextFreeId);
+            return NextFreeId++;
         }
 
         /// <summary>
@@ -125,7 +127,7 @@ namespace PAD.Planner.PDDL
         public bool IsRegistered(string name, int numberOfArguments = 0)
         {
             var key = Tuple.Create(name, numberOfArguments);
-            return NameWithArgToID.ContainsKey(key);
+            return NameWithArgToId.ContainsKey(key);
         }
 
         /// <summary>
@@ -136,8 +138,8 @@ namespace PAD.Planner.PDDL
         public void Unregister(string name, int numberOfArguments = 0)
         {
             var key = Tuple.Create(name, numberOfArguments);
-            Debug.Assert(NameWithArgToID.ContainsKey(key));
-            NameWithArgToID.Remove(key);
+            Debug.Assert(NameWithArgToId.ContainsKey(key));
+            NameWithArgToId.Remove(key);
         }
 
         /// <summary>
@@ -146,12 +148,12 @@ namespace PAD.Planner.PDDL
         /// <param name="name">Original entity name.</param>
         /// <param name="numberOfArguments">Number of entity arguments (if it has any).</param>
         /// <returns>Mapped entity ID.</returns>
-        public int GetID(string name, int numberOfArguments = 0)
+        public int GetId(string name, int numberOfArguments = 0)
         {
             var key = Tuple.Create(name, numberOfArguments);
 
-            int value = -1;
-            if (!NameWithArgToID.TryGetValue(key, out value))
+            int value;
+            if (!NameWithArgToId.TryGetValue(key, out value))
             {
                 Debug.Assert(false, "Invalid entity name requested!");
             }
@@ -163,14 +165,14 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="id">Mapped entity ID.</param>
         /// <returns>Original entity name.</returns>
-        public string GetNameFromID(int id)
+        public string GetNameFromId(int id)
         {
-            if (id == ObjectFunctionTerm.UNDEFINED_VALUE)
+            if (id == ObjectFunctionTerm.UndefinedValue)
             {
                 return "undefined";
             }
 
-            foreach (var item in NameWithArgToID)
+            foreach (var item in NameWithArgToId)
             {
                 if (item.Value == id)
                 {
@@ -187,9 +189,9 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="id">Mapped entity ID.</param>
         /// <returns>Number of arguments of the entity.</returns>
-        public int GetNumberOfArgumentsFromID(int id)
+        public int GetNumberOfArgumentsFromId(int id)
         {
-            foreach (var item in NameWithArgToID)
+            foreach (var item in NameWithArgToId)
             {
                 if (item.Value == id)
                 {
@@ -207,7 +209,7 @@ namespace PAD.Planner.PDDL
         /// <returns>List of used IDs.</returns>
         public IEnumerable<int> GetUsedIDs()
         {
-            return NameWithArgToID.Values;
+            return NameWithArgToId.Values;
         }
 
         /// <summary>
@@ -216,14 +218,14 @@ namespace PAD.Planner.PDDL
         /// <returns>Number of mapped items.</returns>
         public int Count()
         {
-            return NameWithArgToID.Count;
+            return NameWithArgToId.Count;
         }
     }
 
     /// <summary>
     /// Extended entity ID manager, handling entities with a local scope.
     /// </summary>
-    public class LocalEntityIDManager : EntityIDManager
+    public class LocalEntityIdManager : EntityIdManager
     {
         /// <summary>
         /// Registers local parameters.
@@ -235,7 +237,7 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Unregisters local parameters.
+        /// Un-registers local parameters.
         /// </summary>
         /// <param name="parameters">Input local parameters.</param>
         public void UnregisterLocalParameters(InputData.PDDL.Parameters parameters)
@@ -243,9 +245,9 @@ namespace PAD.Planner.PDDL
             parameters.ForEach(parameter => Unregister(parameter.ParameterName));
 
             // if a full block was processed, we can reset the ID to zero
-            if (NameWithArgToID.Count == 0)
+            if (NameWithArgToId.Count == 0)
             {
-                NextFreeID = 0;
+                NextFreeId = 0;
             }
         }
     }

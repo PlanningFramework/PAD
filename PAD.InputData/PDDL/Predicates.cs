@@ -34,7 +34,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Name of the predicate.
         /// </summary>
-        public string Name { set; get; } = "";
+        public string Name { set; get; }
 
         /// <summary>
         /// Terms of the predicate.

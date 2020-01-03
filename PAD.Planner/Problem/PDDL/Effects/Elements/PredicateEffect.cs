@@ -9,7 +9,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Predicate atom.
         /// </summary>
-        public IAtom PredicateAtom { set; get; } = null;
+        public IAtom PredicateAtom { set; get; }
 
         /// <summary>
         /// Constructs the effect.

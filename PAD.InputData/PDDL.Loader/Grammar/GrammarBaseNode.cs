@@ -26,17 +26,17 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <summary>
         /// Reference to parent master grammar.
         /// </summary>
-        protected MasterGrammar p;
+        protected MasterGrammar P;
 
         /// <summary>
         /// Requested form of the grammar node.
         /// </summary>
-        protected BForm bForm;
+        protected BForm BForm;
 
         /// <summary>
-        /// Sub-expression for optional parametrizing of the generic grammar node.
+        /// Sub-expression for optional parametrization of the generic grammar node.
         /// </summary>
-        protected NonTerminal subExpression;
+        protected NonTerminal SubExpression;
 
         /// <summary>
         /// Constructor of the base grammar node.
@@ -44,20 +44,14 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="p">Parent master grammar.</param>
         /// <param name="bForm">Form specification.</param>
         /// <param name="subExpression">Sub-expression specification.</param>
-        public BaseGrammarNode(MasterGrammar p, BForm bForm = BForm.FULL, NonTerminal subExpression = null) : base("Base grammar node", typeof(TransientAstNode))
+        protected BaseGrammarNode(MasterGrammar p, BForm bForm = BForm.FULL, NonTerminal subExpression = null) : base("Base grammar node", typeof(TransientAstNode))
         {
-            this.p = p;
-            this.bForm = bForm;
-            this.subExpression = subExpression;
+            P = p;
+            BForm = bForm;
+            SubExpression = subExpression;
 
             p.MarkTransient(this);
-            Rule = Make();
+            Rule = null;
         }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected abstract NonTerminal Make();
     }
 }

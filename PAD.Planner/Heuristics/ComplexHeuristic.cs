@@ -2,7 +2,7 @@
 namespace PAD.Planner.Heuristics
 {
     /// <summary>
-    /// Base class for complex PDDL or SAS+ heuristics using the predecessing entities to determine the heuristic value.
+    /// Base class for complex PDDL or SAS+ heuristics using the preceding entities to determine the heuristic value.
     /// </summary>
     public abstract class ComplexHeuristic : Heuristic
     {
@@ -10,8 +10,8 @@ namespace PAD.Planner.Heuristics
         /// Gets the heuristic value for the given node.
         /// </summary>
         /// <param name="node">Node to be evaluated.</param>
-        /// <param name="predecessor">Predecessing node.</param>
-        /// <param name="appliedOperator">Applied operator from the predecessing node.</param>
+        /// <param name="predecessor">Preceding node.</param>
+        /// <param name="appliedOperator">Applied operator from the preceding node.</param>
         /// <returns>Heuristic value for the specified node.</returns>
         public double GetValue(ISearchNode node, ISearchNode predecessor, IOperator appliedOperator)
         {
@@ -24,8 +24,8 @@ namespace PAD.Planner.Heuristics
         /// Gets the heuristic value for the given state.
         /// </summary>
         /// <param name="state">State to be evaluated.</param>
-        /// <param name="predecessor">Predecessing state.</param>
-        /// <param name="appliedOperator">Applied operator from the predecessing state.</param>
+        /// <param name="predecessor">Preceding state.</param>
+        /// <param name="appliedOperator">Applied operator from the preceding state.</param>
         /// <returns>Heuristic value for the specified state.</returns>
         public double GetValue(IState state, IState predecessor, IOperator appliedOperator)
         {
@@ -42,8 +42,8 @@ namespace PAD.Planner.Heuristics
         /// Gets the heuristic value for the given state.
         /// </summary>
         /// <param name="state">State to be evaluated.</param>
-        /// <param name="predecessor">Predecessing state.</param>
-        /// <param name="appliedOperator">Applied operator from the predecessing state.</param>
+        /// <param name="predecessor">Preceding state.</param>
+        /// <param name="appliedOperator">Applied operator from the preceding state.</param>
         /// <returns>Heuristic value for the specified state.</returns>
         protected virtual double GetValueImpl(IState state, IState predecessor, IOperator appliedOperator)
         {

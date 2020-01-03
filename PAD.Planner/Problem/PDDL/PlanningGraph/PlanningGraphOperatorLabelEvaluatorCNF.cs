@@ -10,17 +10,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// State labels.
         /// </summary>
-        private StateLabels StateLabels { set; get; } = null;
+        private StateLabels StateLabels { set; get; }
 
         /// <summary>
         /// Evaluation strategy.
@@ -44,7 +44,7 @@ namespace PAD.Planner.PDDL
         /// <param name="stateLabels">Atom labels in the predecessor layer.</param>
         /// <param name="evaluationStrategy">Evaluation strategy.</param>
         /// <returns>Operator label value in the relaxed planning graph.</returns>
-        public double Evaluate(ConditionsCNF conditions, ISubstitution substitution, StateLabels stateLabels, Planner.ForwardCostEvaluationStrategy evaluationStrategy)
+        public double Evaluate(ConditionsCNF conditions, ISubstitution substitution, StateLabels stateLabels, ForwardCostEvaluationStrategy evaluationStrategy)
         {
             Substitution = substitution;
             StateLabels = stateLabels;
@@ -111,7 +111,7 @@ namespace PAD.Planner.PDDL
         {
             var groundedAtom = GroundingManager.GroundAtom(expression.PredicateAtom, Substitution);
 
-            double value = -1;
+            double value;
             if (StateLabels.TryGetValue(groundedAtom, out value))
             {
                 return (expression.IsNegated) ? Tuple.Create(0.0, value) : Tuple.Create(value, 0.0);

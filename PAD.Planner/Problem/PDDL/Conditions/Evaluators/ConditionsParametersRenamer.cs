@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -10,25 +12,25 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Remapping of parameter IDs to the new IDs.
         /// </summary>
-        private Dictionary<int, int> ParametersRemapping { set; get; } = new Dictionary<int, int>();
+        private Dictionary<int, int> ParametersRemapping { get; } = new Dictionary<int, int>();
 
         /// <summary>
         /// Renames the parameters (and the corresponding occurences in the conditions), starting from the given free parameter ID.
         /// </summary>
         /// <param name="conditions">Conditions to be edited.</param>
-        /// <param name="firstFreeParameterID">First free parameter ID.</param>
-        public void Rename(ConditionsCNF conditions, int firstFreeParameterID)
+        /// <param name="firstFreeParameterId">First free parameter ID.</param>
+        public void Rename(ConditionsCNF conditions, int firstFreeParameterId)
         {
             // firstly, build a renaming map and rename the parameters
 
             ParametersRemapping.Clear();
 
-            int currentParameterID = firstFreeParameterID;
+            int currentParameterId = firstFreeParameterId;
             foreach (var parameter in conditions.Parameters)
             {
-                ParametersRemapping.Add(parameter.ParameterNameID, currentParameterID);
-                parameter.ParameterNameID = currentParameterID;
-                ++currentParameterID;
+                ParametersRemapping.Add(parameter.ParameterNameId, currentParameterId);
+                parameter.ParameterNameId = currentParameterId;
+                ++currentParameterId;
             }
 
             // rename the conditions
@@ -95,10 +97,10 @@ namespace PAD.Planner.PDDL
             VariableTerm variableTerm = term as VariableTerm;
             if (variableTerm != null)
             {
-                int newParameterID = -1;
-                if (ParametersRemapping.TryGetValue(variableTerm.NameID, out newParameterID))
+                int newParameterId;
+                if (ParametersRemapping.TryGetValue(variableTerm.NameId, out newParameterId))
                 {
-                    variableTerm.NameID = newParameterID;
+                    variableTerm.NameId = newParameterId;
                 }
                 return;
             }

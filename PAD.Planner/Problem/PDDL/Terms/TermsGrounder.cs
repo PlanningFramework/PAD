@@ -14,25 +14,25 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Variables substitution.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// Reference state.
         /// </summary>
-        private IState ReferenceState { set; get; } = null;
+        private IState ReferenceState { set; get; }
 
         /// <summary>
         /// ID manager.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the grounding object.
         /// </summary>
         /// <param name="idManager">ID manager.</param>
-        public TermsGrounder(IDManager idManager)
+        public TermsGrounder(IdManager idManager)
         {
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace PAD.Planner.PDDL
 
         /// <summary>
         /// Grounds the term. This version does "deep" grounding, in the sense that even object function terms are 
-        /// grounded into constant terms (the value of the object function term is getted from the given reference state).
+        /// grounded into constant terms (the value of the object function term is gotten from the given reference state).
         /// </summary>
         /// <param name="term">Term.</param>
         /// <param name="substitution">Variables substitution.</param>
@@ -73,11 +73,11 @@ namespace PAD.Planner.PDDL
         {
             List<ITerm> groundedTerms = new List<ITerm>();
             atom.GetTerms().ForEach(term => groundedTerms.Add(GroundTerm(term, substitution)));
-            return new Atom(atom.GetNameID(), groundedTerms);
+            return new Atom(atom.GetNameId(), groundedTerms);
         }
 
         /// <summary>
-        /// Grounds the atom. The "deep" version of terms grouding is used.
+        /// Grounds the atom. The "deep" version of terms grounding is used.
         /// </summary>
         /// <param name="atom">Function or predicate atom.</param>
         /// <param name="substitution">Variables substitution.</param>
@@ -87,7 +87,7 @@ namespace PAD.Planner.PDDL
         {
             List<ITerm> groundedTerms = new List<ITerm>();
             atom.GetTerms().ForEach(term => groundedTerms.Add(GroundTermDeep(term, substitution, referenceState)));
-            return new Atom(atom.GetNameID(), groundedTerms);
+            return new Atom(atom.GetNameId(), groundedTerms);
         }
 
         /// <summary>
@@ -107,10 +107,10 @@ namespace PAD.Planner.PDDL
         /// <returns>Transformed term.</returns>
         public ITerm Visit(VariableTerm term)
         {
-            ConstantID substituedValue = IDManager.INVALID_ID;
-            if (Substitution.TryGetValue(term.NameID, out substituedValue))
+            ConstantID substitutedValue;
+            if (Substitution.TryGetValue(term.NameId, out substitutedValue))
             {
-                return new ConstantTerm(substituedValue, IDManager);
+                return new ConstantTerm(substitutedValue, IdManager);
             }
             return term.Clone();
         }
@@ -125,10 +125,10 @@ namespace PAD.Planner.PDDL
             if (ReferenceState != null)
             {
                 IAtom groundedFunctionAtom = GroundAtomDeep(term.FunctionAtom, Substitution, ReferenceState);
-                return new ConstantTerm(ReferenceState.GetObjectFunctionValue(groundedFunctionAtom), IDManager);
+                return new ConstantTerm(ReferenceState.GetObjectFunctionValue(groundedFunctionAtom), IdManager);
             }
 
-            return new ObjectFunctionTerm(GroundAtom(term.FunctionAtom, Substitution), IDManager);
+            return new ObjectFunctionTerm(GroundAtom(term.FunctionAtom, Substitution), IdManager);
         }
     }
 }

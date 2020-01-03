@@ -6,17 +6,17 @@ namespace PAD.Planner.SAS
     /// Implementation of the Red-Black state variant in the SAS+ planning problem. Some of the variables are considered as "red" (abstracted), while others
     /// are "black" (non-abstracted). Information about which variables are abstracted is provided by the parent planning problem.
     /// </summary>
-    public class RedBlackState : RelaxedState, IState
+    public class RedBlackState : RelaxedState
     {
         /// <summary>
         /// Parent planning problem.
         /// </summary>
-        private Problem Problem { set; get; } = null;
+        private Problem Problem { get; }
 
         /// <summary>
         /// Wild card value (we can specify that the value doesn't matter).
         /// </summary>
-        public const int WILD_CARD_VALUE = -1;
+        public const int WildCardValue = -1;
 
         /// <summary>
         /// Constructs the Red-Black state from the given standard state.
@@ -66,7 +66,7 @@ namespace PAD.Planner.SAS
         /// <returns>True if the given variable has the given value, false otherwise.</returns>
         public override bool HasValue(int variable, int value)
         {
-            return (value == WILD_CARD_VALUE || Values[variable].Contains(value));
+            return (value == WildCardValue || Values[variable].Contains(value));
         }
 
         /// <summary>

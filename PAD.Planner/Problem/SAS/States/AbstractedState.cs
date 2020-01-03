@@ -8,17 +8,17 @@ namespace PAD.Planner.SAS
     /// is parametrized globally, so only a single abstraction is allowed to be worked with at any time (i.e. there cannot be two instances of this state
     /// with different sets of abstracted variables).
     /// </summary>
-    public class AbstractedState : State, IState
+    public sealed class AbstractedState : State
     {
         /// <summary>
         /// Set of not abstracted variables, mapping original variable indices into reduced underlying state variable indices.
         /// </summary>
-        private static Dictionary<int, int> NotAbstractedVariables { set; get; } = new Dictionary<int, int>();
+        private static Dictionary<int, int> NotAbstractedVariables { get; } = new Dictionary<int, int>();
 
         /// <summary>
         /// Wild card value (i.e. the value is considered as arbitrary).
         /// </summary>
-        public const int WILD_CARD_VALUE = -1;
+        public const int WildCardValue = -1;
 
         /// <summary>
         /// Constructs an empty abstracted state.
@@ -30,7 +30,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Constructs the abstracted state from the given standard state.
         /// </summary>
-        /// <param name="valuesList">Values of the state.</param>
+        /// <param name="state">Standard reference state.</param>
         public AbstractedState(State state) : base(new int[NotAbstractedVariables.Keys.Count])
         {
             for (int variable = 0; variable < state.GetSize(); ++variable)
@@ -44,7 +44,7 @@ namespace PAD.Planner.SAS
         /// Constructs the abstracted state from the given list of values.
         /// </summary>
         /// <param name="valuesList">Values of the state.</param>
-        protected AbstractedState(int[] valuesList) : base(valuesList)
+        private AbstractedState(int[] valuesList) : base(valuesList)
         {
         }
 
@@ -82,7 +82,7 @@ namespace PAD.Planner.SAS
         {
             if (IsVariableAbstracted(variable))
             {
-                return WILD_CARD_VALUE;
+                return WildCardValue;
             }
             return base.GetValue(NotAbstractedVariables[variable]);
         }

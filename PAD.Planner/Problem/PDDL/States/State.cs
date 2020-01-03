@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -11,30 +13,30 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Set of predicates in the state.
         /// </summary>
-        public HashSet<IAtom> Predicates { set; get; } = null;
+        public HashSet<IAtom> Predicates { set; get; }
 
         /// <summary>
         /// Collection of numeric function values in the state.
         /// </summary>
-        public Dictionary<IAtom, double> NumericFunctions { set; get; } = null;
+        public Dictionary<IAtom, double> NumericFunctions { set; get; }
 
         /// <summary>
         /// Collection of object function values in the state.
         /// </summary>
-        public Dictionary<IAtom, int> ObjectFunctions { set; get; } = null;
+        public Dictionary<IAtom, int> ObjectFunctions { set; get; }
 
         /// <summary>
         /// ID manager.
         /// </summary>
-        protected IDManager IDManager { set; get; } = null;
+        protected IdManager IdManager { set; get; }
 
         /// <summary>
         /// Constructs an empty state.
         /// </summary>
         /// <param name="idManager">ID manager.</param>
-        public State(IDManager idManager)
+        public State(IdManager idManager)
         {
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -43,7 +45,8 @@ namespace PAD.Planner.PDDL
         /// <param name="predicates">Predicates of the state.</param>
         /// <param name="numericFunctions">Numeric function values.</param>
         /// <param name="objectFunctions">Object function values.</param>
-        public State(HashSet<IAtom> predicates, Dictionary<IAtom, double> numericFunctions, Dictionary<IAtom, int> objectFunctions, IDManager idManager) : this(idManager)
+        /// <param name="idManager">ID manager.</param>
+        public State(HashSet<IAtom> predicates, Dictionary<IAtom, double> numericFunctions, Dictionary<IAtom, int> objectFunctions, IdManager idManager) : this(idManager)
         {
             Predicates = predicates;
             NumericFunctions = numericFunctions;
@@ -54,7 +57,8 @@ namespace PAD.Planner.PDDL
         /// Constructs the state from the input data.
         /// </summary>
         /// <param name="init">Input data.</param>
-        public State(InputData.PDDL.Init init, IDManager idManager) : this(idManager)
+        /// <param name="idManager">ID manager.</param>
+        public State(InputData.PDDL.Init init, IdManager idManager) : this(idManager)
         {
             InitialStateDataBuilder builder = new InitialStateDataBuilder(idManager);
             builder.Build(init);
@@ -68,25 +72,22 @@ namespace PAD.Planner.PDDL
         /// Adds the predicate to the state.
         /// </summary>
         /// <param name="predicate">Predicate to be added.</param>
-        public void AddPredicate(IAtom predicateAtom)
+        public void AddPredicate(IAtom predicate)
         {
             if (Predicates == null)
             {
                 Predicates = new HashSet<IAtom>();
             }
-            Predicates.Add(predicateAtom);
+            Predicates.Add(predicate);
         }
 
         /// <summary>
         /// Removes the predicate from the state.
         /// </summary>
         /// <param name="predicate">Predicate to be removed.</param>
-        public void RemovePredicate(IAtom predicateAtom)
+        public void RemovePredicate(IAtom predicate)
         {
-            if (Predicates != null)
-            {
-                Predicates.Remove(predicateAtom);
-            }
+            Predicates?.Remove(predicate);
         }
 
         /// <summary>
@@ -94,89 +95,89 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="predicate">Predicate to be checked.</param>
         /// <returns>True if the state contains the predicate, false otherwise.</returns>
-        public bool HasPredicate(IAtom predicateAtom)
+        public bool HasPredicate(IAtom predicate)
         {
             if (Predicates == null)
             {
                 return false;
             }
-            return Predicates.Contains(predicateAtom);
+            return Predicates.Contains(predicate);
         }
 
         /// <summary>
         /// Returns the value of the given object function.
         /// </summary>
-        /// <param name="functionAtom">Grounded function atom.</param>
+        /// <param name="function">Grounded function atom.</param>
         /// <returns>Object value, i.e. constant name ID.</returns>
-        public int GetObjectFunctionValue(IAtom functionAtom)
+        public int GetObjectFunctionValue(IAtom function)
         {
-            if (ObjectFunctions == null || !ObjectFunctions.ContainsKey(functionAtom))
+            if (ObjectFunctions == null || !ObjectFunctions.ContainsKey(function))
             {
-                return ObjectFunctionTerm.UNDEFINED_VALUE;
+                return ObjectFunctionTerm.UndefinedValue;
             }
-            return ObjectFunctions[functionAtom];
+            return ObjectFunctions[function];
         }
 
         /// <summary>
         /// Defines a new value for the requested function in the state.
         /// </summary>
-        /// <param name="functionAtom">Requested function.</param>
+        /// <param name="function">Requested function.</param>
         /// <param name="assignment">Value to be assigned.</param>
-        public void AssignObjectFunction(IAtom functionAtom, int assignment)
+        public void AssignObjectFunction(IAtom function, int assignment)
         {
-            if (assignment == ObjectFunctionTerm.UNDEFINED_VALUE)
+            if (assignment == ObjectFunctionTerm.UndefinedValue)
             {
-                if (ObjectFunctions != null && ObjectFunctions.ContainsKey(functionAtom))
+                if (ObjectFunctions != null && ObjectFunctions.ContainsKey(function))
                 {
-                    ObjectFunctions.Remove(functionAtom);
+                    ObjectFunctions.Remove(function);
                 }
             }
             else
             {
-                CheckObjectFunctionsInited();
-                ObjectFunctions[functionAtom] = assignment;
+                CheckObjectFunctionsInitialized();
+                ObjectFunctions[function] = assignment;
             }
         }
 
         /// <summary>
         /// Returns the value of the given numeric function.
         /// </summary>
-        /// <param name="functionAtom">Grounded function atom.</param>
+        /// <param name="function">Grounded function atom.</param>
         /// <returns>Numeric value.</returns>
-        public double GetNumericFunctionValue(IAtom functionAtom)
+        public double GetNumericFunctionValue(IAtom function)
         {
-            if (NumericFunctions == null || !NumericFunctions.ContainsKey(functionAtom))
+            if (NumericFunctions == null || !NumericFunctions.ContainsKey(function))
             {
-                return NumericFunction.UNDEFINED_VALUE;
+                return NumericFunction.UndefinedValue;
             }
-            return NumericFunctions[functionAtom];
+            return NumericFunctions[function];
         }
 
         /// <summary>
         /// Defines a new value for the requested function in the state.
         /// </summary>
-        /// <param name="functionAtom">Requested function.</param>
+        /// <param name="function">Requested function.</param>
         /// <param name="assignment">Value to be assigned.</param>
-        public void AssignNumericFunction(IAtom functionAtom, double assignment)
+        public void AssignNumericFunction(IAtom function, double assignment)
         {
             if (NumericFunction.IsValueUndefined(assignment))
             {
-                if (NumericFunctions != null && NumericFunctions.ContainsKey(functionAtom))
+                if (NumericFunctions != null && NumericFunctions.ContainsKey(function))
                 {
-                    NumericFunctions.Remove(functionAtom);
+                    NumericFunctions.Remove(function);
                 }
             }
             else
             {
-                CheckNumericFunctionsInited();
-                NumericFunctions[functionAtom] = assignment;
+                CheckNumericFunctionsInitialized();
+                NumericFunctions[function] = assignment;
             }
         }
 
         /// <summary>
         /// Checks whether the numeric functions collection is initialized. If not, the collection is initialized.
         /// </summary>
-        private void CheckNumericFunctionsInited()
+        private void CheckNumericFunctionsInitialized()
         {
             if (NumericFunctions == null)
             {
@@ -187,7 +188,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Checks whether the object functions collection is initialized. If not, the collection is initialized.
         /// </summary>
-        private void CheckObjectFunctionsInited()
+        private void CheckObjectFunctionsInitialized()
         {
             if (ObjectFunctions == null)
             {
@@ -198,76 +199,76 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Increase the value of the requested numeric function by the specified value.
         /// </summary>
-        /// <param name="functionAtom">Requested numeric function.</param>
+        /// <param name="function">Requested numeric function.</param>
         /// <param name="value">Value to be increased by.</param>
-        public void IncreaseNumericFunction(IAtom functionAtom, double value)
+        public void IncreaseNumericFunction(IAtom function, double value)
         {
-            CheckNumericFunctionsInited();
+            CheckNumericFunctionsInitialized();
 
-            if (!NumericFunctions.ContainsKey(functionAtom))
+            if (!NumericFunctions.ContainsKey(function))
             {
-                NumericFunctions[functionAtom] = value;
+                NumericFunctions[function] = value;
             }
             else
             {
-                NumericFunctions[functionAtom] += value;
+                NumericFunctions[function] += value;
             }
         }
 
         /// <summary>
         /// Decrease the value of the requested numeric function by the specified value.
         /// </summary>
-        /// <param name="functionAtom">Requested numeric function.</param>
+        /// <param name="function">Requested numeric function.</param>
         /// <param name="value">Value to be decreased by.</param>
-        public void DecreaseNumericFunction(IAtom functionAtom, double value)
+        public void DecreaseNumericFunction(IAtom function, double value)
         {
-            CheckNumericFunctionsInited();
+            CheckNumericFunctionsInitialized();
 
-            if (!NumericFunctions.ContainsKey(functionAtom))
+            if (!NumericFunctions.ContainsKey(function))
             {
-                NumericFunctions[functionAtom] = -value;
+                NumericFunctions[function] = -value;
             }
             else
             {
-                NumericFunctions[functionAtom] -= value;
+                NumericFunctions[function] -= value;
             }
         }
 
         /// <summary>
         /// Scale-up the value of the requested numeric function by the specified value.
         /// </summary>
-        /// <param name="functionAtom">Requested numeric function.</param>
+        /// <param name="function">Requested numeric function.</param>
         /// <param name="value">Value to be scaled-up by.</param>
-        public void ScaleUpNumericFunction(IAtom functionAtom, double value)
+        public void ScaleUpNumericFunction(IAtom function, double value)
         {
-            CheckNumericFunctionsInited();
+            CheckNumericFunctionsInitialized();
 
-            if (!NumericFunctions.ContainsKey(functionAtom))
+            if (!NumericFunctions.ContainsKey(function))
             {
-                NumericFunctions[functionAtom] = 0.0;
+                NumericFunctions[function] = 0.0;
             }
             else
             {
-                NumericFunctions[functionAtom] *= value;
+                NumericFunctions[function] *= value;
             }
         }
 
         /// <summary>
         /// Scale-down the value of the requested numeric function by the specified value.
         /// </summary>
-        /// <param name="functionAtom">Requested numeric function.</param>
+        /// <param name="function">Requested numeric function.</param>
         /// <param name="value">Value to be scaled-down by.</param>
-        public void ScaleDownNumericFunction(IAtom functionAtom, double value)
+        public void ScaleDownNumericFunction(IAtom function, double value)
         {
-            CheckNumericFunctionsInited();
+            CheckNumericFunctionsInitialized();
 
-            if (!NumericFunctions.ContainsKey(functionAtom))
+            if (!NumericFunctions.ContainsKey(function))
             {
-                NumericFunctions[functionAtom] = 0.0;
+                NumericFunctions[function] = 0.0;
             }
             else
             {
-                NumericFunctions[functionAtom] /= value;
+                NumericFunctions[function] /= value;
             }
         }
 
@@ -341,7 +342,7 @@ namespace PAD.Planner.PDDL
                 (Predicates == null) ? null : new HashSet<IAtom>(Predicates),
                 (NumericFunctions == null) ? null : new Dictionary<IAtom, double>(NumericFunctions),
                 (ObjectFunctions == null) ? null : new Dictionary<IAtom, int>(ObjectFunctions),
-                IDManager);
+                IdManager);
         }
 
         /// <summary>
@@ -361,9 +362,9 @@ namespace PAD.Planner.PDDL
         public int GetSize()
         {
             int result = 0;
-            result += (Predicates != null) ? Predicates.Count : 0;
-            result += (NumericFunctions != null) ? NumericFunctions.Count : 0;
-            result += (ObjectFunctions != null) ? ObjectFunctions.Count : 0;
+            result += Predicates?.Count ?? 0;
+            result += NumericFunctions?.Count ?? 0;
+            result += ObjectFunctions?.Count ?? 0;
             return result;
         }
 
@@ -374,13 +375,13 @@ namespace PAD.Planner.PDDL
         /// <returns>Conditions describing the state.</returns>
         public virtual Planner.IConditions GetDescribingConditions(IProblem problem)
         {
-            Conditions newConditions = new Conditions(((Problem)problem).EvaluationManager, null);
+            Conditions newConditions = new Conditions(((Problem)problem).EvaluationManager);
 
             if (Predicates != null)
             {
                 foreach (var predicate in Predicates)
                 {
-                    newConditions.Add(new PredicateExpression(predicate.Clone(), IDManager));
+                    newConditions.Add(new PredicateExpression(predicate.Clone(), IdManager));
                 }
             }
 
@@ -389,7 +390,7 @@ namespace PAD.Planner.PDDL
                 foreach (var numericFunction in NumericFunctions)
                 {
                     newConditions.Add(new NumericCompareExpression(NumericCompareExpression.RelationalOperator.EQ,
-                                                                   new NumericFunction(numericFunction.Key.Clone(), IDManager),
+                                                                   new NumericFunction(numericFunction.Key.Clone(), IdManager),
                                                                    new Number(numericFunction.Value)));
                 }
             }
@@ -398,7 +399,7 @@ namespace PAD.Planner.PDDL
             {
                 foreach (var objectFunction in ObjectFunctions)
                 {
-                    newConditions.Add(new EqualsExpression(new ObjectFunctionTerm(objectFunction.Key.Clone(), IDManager), new ConstantTerm(objectFunction.Value, IDManager)));
+                    newConditions.Add(new EqualsExpression(new ObjectFunctionTerm(objectFunction.Key.Clone(), IdManager), new ConstantTerm(objectFunction.Value, IdManager)));
                 }
             }
 
@@ -446,15 +447,15 @@ namespace PAD.Planner.PDDL
             {
                 foreach (var predicateAtom in Predicates)
                 {
-                    itemsList.Add(predicateAtom.ToString(IDManager.Predicates));
+                    itemsList.Add(predicateAtom.ToString(IdManager.Predicates));
                 }
             }
             if (NumericFunctions != null)
             {
                 foreach (var numericFunction in NumericFunctions)
                 {
-                    string functionAtom = numericFunction.Key.ToString(IDManager.Functions);
-                    string numericValue = (NumericFunction.IsValueUndefined(numericFunction.Value)) ? "undefined" : numericFunction.Value.ToString();
+                    string functionAtom = numericFunction.Key.ToString(IdManager.Functions);
+                    string numericValue = (NumericFunction.IsValueUndefined(numericFunction.Value)) ? "undefined" : numericFunction.Value.ToString(CultureInfo.InvariantCulture);
                     itemsList.Add($"(= {functionAtom} {numericValue})");
                 }
             }
@@ -462,8 +463,8 @@ namespace PAD.Planner.PDDL
             {
                 foreach (var objectFunction in ObjectFunctions)
                 {
-                    string functionAtom = objectFunction.Key.ToString(IDManager.Functions);
-                    string constValue = IDManager.Constants.GetNameFromID(objectFunction.Value);
+                    string functionAtom = objectFunction.Key.ToString(IdManager.Functions);
+                    string constValue = IdManager.Constants.GetNameFromId(objectFunction.Value);
                     itemsList.Add($"(= {functionAtom} {constValue})");
                 }
             }

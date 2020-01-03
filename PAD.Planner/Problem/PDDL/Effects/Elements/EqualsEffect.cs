@@ -9,12 +9,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// First argument term.
         /// </summary>
-        public ITerm LeftArgument { get; set; } = null;
+        public ITerm LeftArgument { get; set; }
 
         /// <summary>
         /// Second argument term.
         /// </summary>
-        public ITerm RightArgument { get; set; } = null;
+        public ITerm RightArgument { get; set; }
 
         /// <summary>
         /// Constructs the effect.

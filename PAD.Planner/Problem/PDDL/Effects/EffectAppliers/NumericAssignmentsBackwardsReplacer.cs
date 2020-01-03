@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -12,22 +13,22 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Numeric function assignments from the effects.
         /// </summary>
-        private Dictionary<IAtom, INumericExpression> NumericFunctionAssignments { set; get; } = null;
+        private Dictionary<IAtom, INumericExpression> NumericFunctionAssignments { get; }
 
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager { set; get; } = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Variables substitution of the effects' parent operator.
         /// </summary>
-        private ISubstitution OperatorSubstitution { set; get; } = null;
+        private ISubstitution OperatorSubstitution { get; }
 
         /// <summary>
         /// Variables substitution of the expression (expression can be lifted e.g. in forall subexpressions).
         /// </summary>
-        private ISubstitution ExpressionSubstitution { set; get; } = null;
+        private ISubstitution ExpressionSubstitution { get; }
 
         /// <summary>
         /// Register of already replaced function atoms in the current sub-expression. Needs to be checked to avoid chaining of the same
@@ -89,7 +90,7 @@ namespace PAD.Planner.PDDL
             {
                 return new Number(argumentsSum);
             }
-            else if (argumentsSum != 0.0)
+            else if (!argumentsSum.Equals(0.0))
             {
                 newArguments.Add(new Number(argumentsSum));
             }
@@ -165,7 +166,8 @@ namespace PAD.Planner.PDDL
             {
                 return new Number(argumentsProduct);
             }
-            else if (argumentsProduct != 1.0)
+
+            if (!argumentsProduct.Equals(1.0))
             {
                 newArguments.Add(new Number(argumentsProduct));
             }
@@ -225,13 +227,13 @@ namespace PAD.Planner.PDDL
 
             if (!ReplacedFunctionAtomsInSubExpression.Contains(functionAtom))
             {
-                INumericExpression substituedValue = null;
-                if (NumericFunctionAssignments.TryGetValue(functionAtom, out substituedValue))
+                INumericExpression substitutedValue;
+                if (NumericFunctionAssignments.TryGetValue(functionAtom, out substitutedValue))
                 {
                     ReplacedFunctionAtomsInSubExpression.Add(functionAtom);
                     ExpressionSubstitution.AddLocalSubstitution(OperatorSubstitution);
 
-                    INumericExpression transformedValue = substituedValue.Accept(this);
+                    INumericExpression transformedValue = substitutedValue.Accept(this);
 
                     ExpressionSubstitution.RemoveLocalSubstitution(OperatorSubstitution);
                     ReplacedFunctionAtomsInSubExpression.Remove(functionAtom);

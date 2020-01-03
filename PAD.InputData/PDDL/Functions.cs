@@ -13,14 +13,14 @@ namespace PAD.InputData.PDDL
         /// </summary>
         /// <param name="functionName">Name of the function.</param>
         /// <param name="numberOfTerms">Number of function terms.</param>
-        /// <param name="returnType">Return type of the function.</param>
+        /// <param name="numericFunction">Is the entity a numeric function?</param>
         /// <returns>True if the function list contains the specified function. False otherwise.</returns>
         public bool ContainsFunction(string functionName, int numberOfTerms, bool numericFunction)
         {
             return Exists(definition =>
                 definition.Name.EqualsNoCase(functionName) &&
                 definition.Terms.Count == numberOfTerms &&
-                ((numericFunction) ? definition.IsNumbericFunction() : !definition.IsNumbericFunction()));
+                ((numericFunction) ? definition.IsNumericFunction() : !definition.IsNumericFunction()));
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Name of the function.
         /// </summary>
-        public string Name { set; get; } = "";
+        public string Name { set; get; }
 
         /// <summary>
         /// Terms of the function.
@@ -66,7 +66,7 @@ namespace PAD.InputData.PDDL
         /// Checks whether the function is of numeric type (i.e. the return type is 'number').
         /// </summary>
         /// <returns>True if the function is numeric.</returns>
-        public bool IsNumbericFunction()
+        public bool IsNumericFunction()
         {
             return (ReturnValueTypes.Count == 1 && ReturnValueTypes[0].EqualsNoCase("number"));
         }
@@ -74,7 +74,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Specification of a default function return type.
         /// </summary>
-        public const string DEFAULT_RETURN_TYPE = "number";
+        public const string DefaultReturnType = "number";
 
         /// <summary>
         /// Constructs a function.
@@ -84,7 +84,7 @@ namespace PAD.InputData.PDDL
         public Function(string name, string[] returnValueTypes)
         {
             Name = name;
-            ReturnValueTypes.AddRange(returnValueTypes.GetTypesOrDefault(DEFAULT_RETURN_TYPE));
+            ReturnValueTypes.AddRange(returnValueTypes.GetTypesOrDefault(DefaultReturnType));
         }
 
         /// <summary>

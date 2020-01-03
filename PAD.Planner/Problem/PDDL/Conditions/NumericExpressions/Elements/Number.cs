@@ -1,4 +1,5 @@
-﻿
+﻿using System.Globalization;
+
 namespace PAD.Planner.PDDL
 {
     /// <summary>
@@ -9,12 +10,12 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Numeric constant value.
         /// </summary>
-        public double Value { set; get; } = 0.0;
+        public double Value { set; get; }
 
         /// <summary>
         /// Constructs the numeric constant numeric expression.
         /// </summary>
-        /// <param name="constVal">Numeric constant value.</param>
+        /// <param name="value">Numeric constant value.</param>
         public Number(double value)
         {
             Value = value;
@@ -26,7 +27,7 @@ namespace PAD.Planner.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            return Value.ToString();
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace PAD.Planner.PDDL
             {
                 return false;
             }
-            return (Value == other.Value);
+            return Value.Equals(other.Value);
         }
 
         /// <summary>

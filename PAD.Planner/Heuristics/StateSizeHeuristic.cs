@@ -1,4 +1,5 @@
-﻿
+﻿// ReSharper disable CommentTypo
+
 namespace PAD.Planner.Heuristics
 {
     /// <summary>
@@ -7,13 +8,6 @@ namespace PAD.Planner.Heuristics
     /// </summary>
     public class StateSizeHeuristic : Heuristic
     {
-        /// <summary>
-        /// Constructs the heuristic.
-        /// </summary>
-        public StateSizeHeuristic() : base(null)
-        {
-        }
-
         /// <summary>
         /// Gets the heuristic value for the given state (in the context of forward search).
         /// </summary>

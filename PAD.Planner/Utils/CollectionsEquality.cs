@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+// ReSharper disable PossibleUnintendedReferenceComparison
 
 namespace PAD.Planner
 {
@@ -48,7 +49,7 @@ namespace PAD.Planner
                 return false;
             }
 
-            return (dictionary1.Keys.Count == dictionary2.Keys.Count && dictionary1.Keys.All(k => dictionary2.ContainsKey(k) && object.Equals(dictionary2[k], dictionary1[k])));
+            return (dictionary1.Keys.Count == dictionary2.Keys.Count && dictionary1.Keys.All(k => dictionary2.ContainsKey(k) && Equals(dictionary2[k], dictionary1[k])));
         }
 
         /// <summary>
@@ -236,11 +237,6 @@ namespace PAD.Planner
         {
             unchecked
             {
-                if (array == null)
-                {
-                    return 0;
-                }
-
                 int hash = 17;
                 foreach (int element in array)
                 {
@@ -265,18 +261,13 @@ namespace PAD.Planner
         {
             unchecked
             {
-                if (array == null)
-                {
-                    return 0;
-                }
-
                 int result = 0;
                 int shift = 0;
 
-                for (int i = 0; i < array.Length; ++i)
+                foreach (var item in array)
                 {
                     shift = (shift + 11) % 21;
-                    result ^= (array[i] + 1024) << shift;
+                    result ^= (item + 1024) << shift;
                 }
                 return result;
             }
@@ -297,15 +288,10 @@ namespace PAD.Planner
         {
             unchecked
             {
-                if (array == null)
-                {
-                    return 0;
-                }
-
                 int result = array.Length;
-                for (int i = 0; i < array.Length; ++i)
+                foreach (var item in array)
                 {
-                    result += array[i];
+                    result += item;
                 }
                 return result;
             }

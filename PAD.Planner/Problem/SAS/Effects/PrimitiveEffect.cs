@@ -9,7 +9,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Actual assignment to be applied (variable-value pair).
         /// </summary>
-        public IAssignment Assignment { set; get; } = null;
+        public IAssignment Assignment { set; get; }
 
         /// <summary>
         /// Constructs the SAS+ operator effect from the input data.
@@ -66,7 +66,7 @@ namespace PAD.Planner.SAS
         public virtual EffectRelevance IsRelevant(IRelativeState relativeState)
         {
             int value = relativeState.GetValue(Assignment.GetVariable());
-            if (value == RelativeState.WILD_CARD_VALUE)
+            if (value == RelativeState.WildCardValue)
             {
                 // not a conflict, but not positively contributing either
                 return EffectRelevance.IRRELEVANT;
@@ -96,7 +96,7 @@ namespace PAD.Planner.SAS
         public virtual IRelativeState ApplyBackwards(IRelativeState relativeState)
         {
             // we are fine here with the direct modification
-            relativeState.SetValue(Assignment.GetVariable(), RelativeState.WILD_CARD_VALUE);
+            relativeState.SetValue(Assignment.GetVariable(), RelativeState.WildCardValue);
             return relativeState;
         }
 

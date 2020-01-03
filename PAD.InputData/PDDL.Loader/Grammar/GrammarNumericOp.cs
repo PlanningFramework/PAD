@@ -1,5 +1,8 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -12,26 +15,9 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// Constructor of the grammar node.
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
-        /// <param name="numericExpr">Numeric expression type used within the numeric operation</param>
-        public NumericOp(MasterGrammar p, NonTerminal numericExpr) : this(p, numericExpr, BForm.FULL)
-        {
-        }
-
-        /// <summary>
-        /// Constructor of the grammar node.
-        /// </summary>
-        /// <param name="p">Parent master grammar.</param>
-        /// <param name="numericExpr">Numeric expression type used within the numeric operation</param>
+        /// <param name="numericExpression">Numeric expression type used within the numeric operation</param>
         /// <param name="bForm">Block form.</param>
-        public NumericOp(MasterGrammar p, NonTerminal numericExpr, BForm bForm) : base(p, bForm, numericExpr)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
+        public NumericOp(MasterGrammar p, NonTerminal numericExpression, BForm bForm) : base(p, bForm, numericExpression)
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -48,7 +34,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             // USED SUB-TREES
 
-            var numericExpr = subExpression; // passed as a parameter
+            var numericExpr = SubExpression; // passed as a parameter
 
             // RULES
 
@@ -65,7 +51,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(numericOp, numericOpBase, multiOperator, binaryOpSecondArg);
 
-            return (bForm == BForm.BASE) ? numericOpBase : numericOp;
+            Rule = (bForm == BForm.BASE) ? numericOpBase : numericOp;
         }
     }
 }

@@ -1,9 +1,11 @@
-﻿
+﻿using System;
+
 namespace PAD.InputData.PDDL.Validator
 {
     /// <summary>
     /// Exception specifying errors while validation of the input data.
     /// </summary>
+    [Serializable]
     public class ValidationException : InputDataException
     {
         /// <summary>

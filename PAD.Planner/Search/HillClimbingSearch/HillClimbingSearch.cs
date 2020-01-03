@@ -13,7 +13,7 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Number of processed states.
         /// </summary>
-        private long ProcessedStatesCount { set; get; } = 0;
+        private long ProcessedStatesCount { set; get; }
 
         /// <summary>
         /// Evaluated solution cost.
@@ -23,12 +23,12 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Evaluated solution plan.
         /// </summary>
-        protected SolutionPlan SolutionPlan { set; get; } = null;
+        protected SolutionPlan SolutionPlan { set; get; }
 
         /// <summary>
         /// Random number generator.
         /// </summary>
-        private Random RandomNumberGenerator { set; get; } = new Random();
+        private Random RandomNumberGenerator { get; } = new Random();
 
         /// <summary>
         /// Constructs the Hill-Climbing search procedure.
@@ -82,7 +82,7 @@ namespace PAD.Planner.Search
 
                 transitionCandidates.Clear();
                 double bestCost = double.MaxValue;
-                IOperator bestCostOperator = null;
+                IOperator bestCostOperator;
 
                 foreach (var transition in Problem.GetTransitions(currentNode))
                 {
@@ -96,7 +96,7 @@ namespace PAD.Planner.Search
                         transitionCandidates.Clear();
                         transitionCandidates.Add(appliedOperator);
                     }
-                    else if (transitionCost == bestCost)
+                    else if (transitionCost.Equals(bestCost))
                     {
                         transitionCandidates.Add(appliedOperator);
                     }

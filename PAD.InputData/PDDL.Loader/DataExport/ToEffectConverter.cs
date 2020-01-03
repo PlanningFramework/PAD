@@ -10,7 +10,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public Effects EffectsData { get; private set; } = new Effects();
+        public Effects EffectsData { get; } = new Effects();
 
         /// <summary>
         /// Handles the AST node visit.
@@ -98,7 +98,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// </summary>
         /// <param name="effects">List of effects.</param>
         /// <returns>List of primitive effects.</returns>
-        private PrimitiveEffects ToPrimitiveEffects(Effects effects)
+        private static PrimitiveEffects ToPrimitiveEffects(Effects effects)
         {
             PrimitiveEffects primitiveEffects = new PrimitiveEffects();
             effects.ForEach(x => primitiveEffects.Add((PrimitiveEffect)x));

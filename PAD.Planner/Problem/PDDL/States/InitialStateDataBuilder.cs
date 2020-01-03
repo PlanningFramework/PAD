@@ -10,36 +10,36 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Set of predicates in the initial state.
         /// </summary>
-        public HashSet<IAtom> Predicates { set; get; } = null;
+        public HashSet<IAtom> Predicates { set; get; }
 
         /// <summary>
         /// Collection of numeric function values in the initial state.
         /// </summary>
-        public Dictionary<IAtom, double> NumericFunctions { set; get; } = null;
+        public Dictionary<IAtom, double> NumericFunctions { set; get; }
 
         /// <summary>
-        /// Collection of object function values in the intitial state.
+        /// Collection of object function values in the initial state.
         /// </summary>
-        public Dictionary<IAtom, int> ObjectFunctions { set; get; } = null;
+        public Dictionary<IAtom, int> ObjectFunctions { set; get; }
 
         /// <summary>
         /// ID manager converting predicate, function, constant and type names to their corresponding IDs.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the initial state data builder.
         /// </summary>
         /// <param name="idManager">ID manager.</param>
-        public InitialStateDataBuilder(IDManager idManager)
+        public InitialStateDataBuilder(IdManager idManager)
         {
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
-        /// Builds PDDL inital state data.
+        /// Builds PDDL initial state data.
         /// </summary>
-        /// <param name="init">Inital state input data.</param>
+        /// <param name="init">Initial state input data.</param>
         public void Build(InputData.PDDL.Init init)
         {
             Predicates = new HashSet<IAtom>();
@@ -58,10 +58,10 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void Visit(InputData.PDDL.PredicateInitElement data)
         {
-            int predicateNameID = IDManager.Predicates.GetID(data.Name, data.Terms.Count);
+            int predicateNameId = IdManager.Predicates.GetId(data.Name, data.Terms.Count);
             List<ITerm> terms = GetTerms(data.Terms);
 
-            Predicates.Add(new Atom(predicateNameID, terms));
+            Predicates.Add(new Atom(predicateNameId, terms));
         }
 
         /// <summary>
@@ -70,10 +70,10 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void Visit(InputData.PDDL.EqualsNumericFunctionInitElement data)
         {
-            int functionNameID = IDManager.Functions.GetID(data.Function.Name, data.Function.Terms.Count);
+            int functionNameId = IdManager.Functions.GetId(data.Function.Name, data.Function.Terms.Count);
             List<ITerm> terms = GetTerms(data.Function.Terms);
 
-            NumericFunctions.Add(new Atom(functionNameID, terms), data.Number);
+            NumericFunctions.Add(new Atom(functionNameId, terms), data.Number);
         }
 
         /// <summary>
@@ -82,11 +82,11 @@ namespace PAD.Planner.PDDL
         /// <param name="data">Input data node.</param>
         public override void Visit(InputData.PDDL.EqualsObjectFunctionInitElement data)
         {
-            int functionNameID = IDManager.Functions.GetID(data.Function.Name, data.Function.Terms.Count);
+            int functionNameId = IdManager.Functions.GetId(data.Function.Name, data.Function.Terms.Count);
             List<ITerm> terms = GetTerms(data.Function.Terms);
-            int valueTermID = IDManager.Constants.GetID(data.Term.Name);
+            int valueTermId = IdManager.Constants.GetId(data.Term.Name);
 
-            ObjectFunctions.Add(new Atom(functionNameID, terms), valueTermID);
+            ObjectFunctions.Add(new Atom(functionNameId, terms), valueTermId);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace PAD.Planner.PDDL
             List<ITerm> terms = new List<ITerm>();
             foreach (var term in inputTerms)
             {
-                terms.Add(new ConstantTerm(IDManager.Constants.GetID(term.Name), IDManager));
+                terms.Add(new ConstantTerm(IdManager.Constants.GetId(term.Name), IdManager));
             }
             return terms;
         }

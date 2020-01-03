@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using PAD.InputData.PDDL.Traits;
 
 namespace PAD.InputData.PDDL
@@ -16,7 +17,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument metric expression.
         /// </summary>
-        public MetricExpression Expression { get; set; } = null;
+        public MetricExpression Expression { get; set; }
 
         /// <summary>
         /// Constructs a metric specification.
@@ -56,10 +57,7 @@ namespace PAD.InputData.PDDL
         public void Accept(IVisitor visitor)
         {
             visitor.Visit(this);
-            if (Expression != null)
-            {
-                Expression.Accept(visitor);
-            }
+            Expression?.Accept(visitor);
         }
     }
 
@@ -98,7 +96,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Number value.
         /// </summary>
-        public double Value { get; set; } = 0.0;
+        public double Value { get; set; }
 
         /// <summary>
         /// Constructs a metric expression.
@@ -115,7 +113,7 @@ namespace PAD.InputData.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            return Value.ToString();
+            return Value.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -136,7 +134,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Function name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument terms.
@@ -205,7 +203,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Preference name.
         /// </summary>
-        public string PreferenceName { get; set; } = "";
+        public string PreferenceName { get; set; }
 
         /// <summary>
         /// Constructs a metric expression.
@@ -250,7 +248,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Numeric arguments.
         /// </summary>
-        public MetricExpressions Arguments { get; set; } = new MetricExpressions();
+        public MetricExpressions Arguments { get; set; }
 
         /// <summary>
         /// Constructs a metric numeric operation.
@@ -289,7 +287,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Numeric arguments.
         /// </summary>
-        public MetricExpressions Arguments { get; set; } = new MetricExpressions();
+        public MetricExpressions Arguments { get; set; }
 
         /// <summary>
         /// Constructs a metric numeric operation.
@@ -328,12 +326,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First numeric argument.
         /// </summary>
-        public MetricExpression Argument1 { get; set; } = null;
+        public MetricExpression Argument1 { get; set; }
 
         /// <summary>
         /// Second numeric argument.
         /// </summary>
-        public MetricExpression Argument2 { get; set; } = null;
+        public MetricExpression Argument2 { get; set; }
 
         /// <summary>
         /// Constructs a metric numeric operation.
@@ -375,12 +373,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First numeric argument.
         /// </summary>
-        public MetricExpression Argument1 { get; set; } = null;
+        public MetricExpression Argument1 { get; set; }
 
         /// <summary>
         /// Second numeric argument.
         /// </summary>
-        public MetricExpression Argument2 { get; set; } = null;
+        public MetricExpression Argument2 { get; set; }
 
         /// <summary>
         /// Constructs a metric numeric operation.
@@ -422,7 +420,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Numeric argument.
         /// </summary>
-        public MetricExpression Argument { get; set; } = null;
+        public MetricExpression Argument { get; set; }
 
         /// <summary>
         /// Constructs a metric numeric operation.

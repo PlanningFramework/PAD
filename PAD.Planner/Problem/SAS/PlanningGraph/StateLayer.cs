@@ -11,18 +11,18 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Relaxed SAS+ state.
         /// </summary>
-        public IState State { set; get; } = null;
+        public IState State { set; get; }
 
         /// <summary>
         /// Corresponding labels for the relaxed state variables.
         /// </summary>
-        public StateLabels Labels { set; get; } = null;
+        public StateLabels Labels { set; get; }
 
         /// <summary>
         /// Constructs the state layer from the initial state of the problem.
         /// </summary>
         /// <param name="state">State.</param>
-        /// <param name="initLabels">Should the labels be inited?</param>
+        /// <param name="initLabels">Should the labels be initialized?</param>
         public StateLayer(RelaxedState state, bool initLabels = true)
         {
             State = state;
@@ -43,7 +43,7 @@ namespace PAD.Planner.SAS
         }
 
         /// <summary>
-        /// Constructs the state layer from the predecessing state layer and action layer.
+        /// Constructs the state layer from the preceding state layer and action layer.
         /// </summary>
         /// <param name="sLayer">State layer.</param>
         /// <param name="aLayer">Action layer.</param>
@@ -74,7 +74,7 @@ namespace PAD.Planner.SAS
         /// <param name="label">Predicate label.</param>
         private void StoreLabel(IAssignment assignment, double label)
         {
-            double value = -1;
+            double value;
             if (Labels.TryGetValue(assignment, out value))
             {
                 Labels[assignment] = Math.Min(value, label);

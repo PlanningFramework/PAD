@@ -22,13 +22,13 @@ namespace PAD.Planner.Search
         NoSolutionFound,
 
         /// <summary>
-        /// The searching procedure finished with a failure - time limit has been excceded.
+        /// The searching procedure finished with a failure - time limit has been exceeded.
         /// </summary>
         TimeLimitExceeded,
 
         /// <summary>
-        /// The searching procedure finished with a failure - memory limit of searched nodes has been excceded.
+        /// The searching procedure finished with a failure - memory limit of searched nodes has been exceeded.
         /// </summary>
-        MemoryLimitExceeded,
+        MemoryLimitExceeded
     }
 }

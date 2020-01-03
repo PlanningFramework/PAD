@@ -11,7 +11,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public NumericExpression ExpressionData { get; private set; } = null;
+        public NumericExpression ExpressionData { get; private set; }
 
         /// <summary>
         /// Handles the AST node visit.

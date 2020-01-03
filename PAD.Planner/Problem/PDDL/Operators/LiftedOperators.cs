@@ -13,7 +13,7 @@ namespace PAD.Planner.PDDL
         /// <param name="actions">PDDL actions definition.</param>
         /// <param name="idManager">ID manager.</param>
         /// <param name="evaluationManager">Evaluation manager.</param>
-        public LiftedOperators(InputData.PDDL.Actions actions, IDManager idManager, EvaluationManager evaluationManager)
+        public LiftedOperators(InputData.PDDL.Actions actions, IdManager idManager, EvaluationManager evaluationManager)
         {
             actions.ForEach(action => Add(new LiftedOperator(action, idManager, evaluationManager)));
         }

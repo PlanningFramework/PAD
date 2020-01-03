@@ -1,44 +1,39 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
     /// <summary>
     /// Grammar node representing da-GD expression (duration action GD).
     /// </summary>
-    public class DaGD : BaseGrammarNode
+    public class DaGd : BaseGrammarNode
     {
         /// <summary>
         /// Constructor of the grammar node.
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
-        public DaGD(MasterGrammar p) : base(p)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
+        public DaGd(MasterGrammar p) : base(p)
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
-            var daGD = new NonTerminal("Da-GD", typeof(TransientAstNode));
-            var daGDBase = new NonTerminal("Da-GD base", typeof(TransientAstNode));
-            var daGDStarList = new NonTerminal("Da-GD star-list", typeof(TransientAstNode));
+            var daGd = new NonTerminal("Da-GD", typeof(TransientAstNode));
+            var daGdBase = new NonTerminal("Da-GD base", typeof(TransientAstNode));
+            var daGdStarList = new NonTerminal("Da-GD star-list", typeof(TransientAstNode));
 
-            var andDaGDBase = new NonTerminal("AND expression (da-GDs)", typeof(AndDaGDAstNode));
-            var forallDaGDBase = new NonTerminal("FORALL expression (da-GD)", typeof(ForallDaGDAstNode));
-            var prefDaGDBase = new NonTerminal("Preference (da-GD)", typeof(PreferenceDaGDAstNode));
+            var andDaGdBase = new NonTerminal("AND expression (da-GDs)", typeof(AndDaGdAstNode));
+            var forallDaGdBase = new NonTerminal("FORALL expression (da-GD)", typeof(ForallDaGdAstNode));
+            var prefDaGdBase = new NonTerminal("Preference (da-GD)", typeof(PreferenceDaGdAstNode));
 
             var prefNameOrEmpty = new NonTerminal("Optional preference name", typeof(TransientAstNode));
             var prefName = new IdentifierTerminal("Preference name", IdentifierType.CONSTANT);
 
-            var timedDaGD = new NonTerminal("Timed-da-GD", typeof(TransientAstNode));
-            var timedDaGDBase = new NonTerminal("Timed-da-GD base", typeof(TransientAstNode));
-            var atTimedDaGD = new NonTerminal("AT expression (timed-da-GD)", typeof(AtTimedDaGDAstNode));
-            var overTimedDaGD = new NonTerminal("OVER expression (timed-da-GD)", typeof(OverTimedDaGDAstNode));
+            var timedDaGd = new NonTerminal("Timed-da-GD", typeof(TransientAstNode));
+            var timedDaGdBase = new NonTerminal("Timed-da-GD base", typeof(TransientAstNode));
+            var atTimedDaGd = new NonTerminal("AT expression (timed-da-GD)", typeof(AtTimedDaGdAstNode));
+            var overTimedDaGd = new NonTerminal("OVER expression (timed-da-GD)", typeof(OverTimedDaGdAstNode));
 
             var timeSpecifier = new NonTerminal("Time specifier", typeof(TransientAstNode));
             var intervalSpecifier = new NonTerminal("Interval specifier", typeof(TransientAstNode));
@@ -46,32 +41,32 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             // USED SUB-TREES
 
             var typedList = new TypedList(p);
-            var GD = new GD(p);
+            var gd = new Gd(p);
 
             // RULES
 
-            daGD.Rule = p.ToTerm("(") + daGDBase + ")";
-            daGDBase.Rule = andDaGDBase | forallDaGDBase | prefDaGDBase | timedDaGDBase;
+            daGd.Rule = p.ToTerm("(") + daGdBase + ")";
+            daGdBase.Rule = andDaGdBase | forallDaGdBase | prefDaGdBase | timedDaGdBase;
 
-            andDaGDBase.Rule = p.ToTerm("and") + daGDStarList;
-            forallDaGDBase.Rule = p.ToTerm("forall") + "(" + typedList + ")" + daGD;
+            andDaGdBase.Rule = p.ToTerm("and") + daGdStarList;
+            forallDaGdBase.Rule = p.ToTerm("forall") + "(" + typedList + ")" + daGd;
 
-            prefDaGDBase.Rule = p.ToTerm("preference") + prefNameOrEmpty + timedDaGD;
+            prefDaGdBase.Rule = p.ToTerm("preference") + prefNameOrEmpty + timedDaGd;
             prefNameOrEmpty.Rule = prefName | p.Empty;
 
-            timedDaGD.Rule = p.ToTerm("(") + timedDaGDBase + ")";
-            timedDaGDBase.Rule = atTimedDaGD | overTimedDaGD;
-            atTimedDaGD.Rule = p.ToTerm("at") + timeSpecifier + GD;
-            overTimedDaGD.Rule = p.ToTerm("over") + intervalSpecifier + GD;
+            timedDaGd.Rule = p.ToTerm("(") + timedDaGdBase + ")";
+            timedDaGdBase.Rule = atTimedDaGd | overTimedDaGd;
+            atTimedDaGd.Rule = p.ToTerm("at") + timeSpecifier + gd;
+            overTimedDaGd.Rule = p.ToTerm("over") + intervalSpecifier + gd;
 
             timeSpecifier.Rule = p.ToTerm("start") | p.ToTerm("end");
             intervalSpecifier.Rule = p.ToTerm("all");
 
-            daGDStarList.Rule = p.MakeStarRule(daGDStarList, daGD);
+            daGdStarList.Rule = p.MakeStarRule(daGdStarList, daGd);
 
-            p.MarkTransient(daGD, daGDBase, timedDaGD, timedDaGDBase);
+            p.MarkTransient(daGd, daGdBase, timedDaGd, timedDaGdBase);
 
-            return daGD;
+            Rule = daGd;
         }
     }
 }

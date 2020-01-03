@@ -10,19 +10,18 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Reference to the lifted version of the operator.
         /// </summary>
-        private LiftedOperator LiftedOperator { set; get; } = null;
+        private LiftedOperator LiftedOperator { get; }
 
         /// <summary>
         /// Variable substitution for the lifted operator.
         /// </summary>
-        private ISubstitution Substitution { set; get; } = null;
+        private ISubstitution Substitution { get; }
 
         /// <summary>
         /// Constructs an instance of the grounded PDDL operator.
         /// </summary>
         /// <param name="liftedOperator">Reference to the lifted PDDL operator.</param>
         /// <param name="substitution">Concrete PDDL operator substitution.</param>
-        /// <param name="cost">Cost of the grounded operator (optional).</param>
         public Operator(LiftedOperator liftedOperator, ISubstitution substitution)
         {
             LiftedOperator = liftedOperator;
@@ -81,7 +80,7 @@ namespace PAD.Planner.PDDL
         /// Checks whether the operator is relevant to the given target conditions.
         /// </summary>
         /// <param name="conditions">Target conditions.</param>
-        /// <returns>True if the operator is relevant to the given condititons, false otherwise.</returns>
+        /// <returns>True if the operator is relevant to the given conditions, false otherwise.</returns>
         public bool IsRelevant(Planner.IConditions conditions)
         {
             return LiftedOperator.IsRelevant((IConditions)conditions, Substitution);
@@ -140,7 +139,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Gets a list of atoms from the specified state that were necessary to make this operator applicable. We already assume that the operator is applicable to the given state.
         /// </summary>
-        /// <param name="predecessorState">Predecessing state.</param>
+        /// <param name="predecessorState">Preceding state.</param>
         /// <returns>List of effective precondition atoms.</returns>
         public List<IAtom> GetEffectivePreconditions(IState predecessorState)
         {

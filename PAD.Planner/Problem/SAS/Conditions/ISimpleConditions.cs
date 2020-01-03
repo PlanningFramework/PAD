@@ -18,7 +18,7 @@ namespace PAD.Planner.SAS
         /// Checks whether the specified variable is actually constrained. If the check is positive, returns also a constraining value.
         /// </summary>
         /// <param name="variable">Variable to be checked.</param>
-        /// <param name="value">Costraining value.</param>
+        /// <param name="value">Constraining value.</param>
         /// <returns>True if the given variable is constrained in the conditions, false otherwise.</returns>
         bool IsVariableConstrained(int variable, out int value);
 

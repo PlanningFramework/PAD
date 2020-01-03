@@ -10,27 +10,27 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        protected GroundingManager GroundingManager { set; get; } = null;
+        protected GroundingManager GroundingManager { set; get; }
 
         /// <summary>
         /// Numeric evaluator.
         /// </summary>
-        protected Lazy<NumericExpressionEvaluator> NumericEvaluator { set; get; } = null;
+        protected Lazy<NumericExpressionEvaluator> NumericEvaluator { set; get; }
 
         /// <summary>
         /// Rigid relations of the planning problem.
         /// </summary>
-        protected RigidRelations RigidRelations { set; get; } = null;
+        protected RigidRelations RigidRelations { set; get; }
 
         /// <summary>
         /// Currently used variables substitution.
         /// </summary>
-        protected ISubstitution Substitution { set; get; } = null;
+        protected ISubstitution Substitution { set; get; }
 
         /// <summary>
         /// Reference state for the evaluation.
         /// </summary>
-        protected IState ReferenceState { set; get; } = null;
+        protected IState ReferenceState { set; get; }
 
         /// <summary>
         /// Constructs the CNF expression evaluator.
@@ -40,7 +40,7 @@ namespace PAD.Planner.PDDL
         public ConditionsCNFEvaluator(GroundingManager groundingManager, RigidRelations rigidRelations = null)
         {
             GroundingManager = groundingManager;
-            RigidRelations = (rigidRelations != null) ? rigidRelations : new RigidRelations();
+            RigidRelations = rigidRelations ?? new RigidRelations();
             NumericEvaluator = new Lazy<NumericExpressionEvaluator>(() => new NumericExpressionEvaluator(groundingManager));
         }
 

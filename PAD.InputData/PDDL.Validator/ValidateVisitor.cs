@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using PAD.InputData.PDDL.Traits;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Validator
 {
@@ -13,22 +15,22 @@ namespace PAD.InputData.PDDL.Validator
         /// <summary>
         /// Domain context.
         /// </summary>
-        Domain DomainContext { set; get; } = null;
+        private Domain DomainContext { set; get; }
 
         /// <summary>
         /// Problem context.
         /// </summary>
-        Problem ProblemContext { set; get; } = null;
+        private Problem ProblemContext { set; get; }
 
         /// <summary>
         /// Location specification in the input data (in case of a validation failure).
         /// </summary>
-        string Location { set; get; } = "";
+        private string Location { set; get; } = "";
 
         /// <summary>
         /// Currently valid parameters.
         /// </summary>
-        Parameters ActiveParameters { set; get; } = new Parameters();
+        private Parameters ActiveParameters { get; } = new Parameters();
 
         /// <summary>
         /// Checks the given domain data.
@@ -91,7 +93,7 @@ namespace PAD.InputData.PDDL.Validator
 
             if (data.TypeName.EqualsNoCase("number"))
             {
-                throw GetException($"Type 'number' is built-in type and cannot be redefined.");
+                throw GetException("Type 'number' is built-in type and cannot be redefined.");
             }
         }
 
@@ -149,7 +151,7 @@ namespace PAD.InputData.PDDL.Validator
                 throw GetException($"Definition of function {data.Name} uses a custom return type, but requirement :typing not specified.");
             }
 
-            if (data.IsNumbericFunction())
+            if (data.IsNumericFunction())
             {
                 if (!IsNumericFluentsEnabled() && !IsActionCostsEnabled())
                 {
@@ -479,7 +481,7 @@ namespace PAD.InputData.PDDL.Validator
 
             if (!AreParametersUnique(data.Parameters))
             {
-                throw GetException($"Parameters specification of forall constraint contains duplicate variable names.");
+                throw GetException("Parameters specification of forall constraint contains duplicate variable names.");
             }
 
             AddActiveParameters(data.Parameters);
@@ -718,7 +720,7 @@ namespace PAD.InputData.PDDL.Validator
 
             if (!AreParametersUnique(data.Parameters))
             {
-                throw GetException($"Parameters specification of exists expression contains duplicate variable names.");
+                throw GetException("Parameters specification of exists expression contains duplicate variable names.");
             }
 
             AddActiveParameters(data.Parameters);
@@ -746,7 +748,7 @@ namespace PAD.InputData.PDDL.Validator
 
             if (!AreParametersUnique(data.Parameters))
             {
-                throw GetException($"Parameters specification of forall expression contains duplicate variable names.");
+                throw GetException("Parameters specification of forall expression contains duplicate variable names.");
             }
 
             AddActiveParameters(data.Parameters);
@@ -822,7 +824,7 @@ namespace PAD.InputData.PDDL.Validator
 
             if (!AreParametersUnique(data.Parameters))
             {
-                throw GetException($"Parameters specification of forall effect contains duplicate variable names.");
+                throw GetException("Parameters specification of forall effect contains duplicate variable names.");
             }
 
             AddActiveParameters(data.Parameters);
@@ -952,7 +954,7 @@ namespace PAD.InputData.PDDL.Validator
 
             if (!(data.Value is Number) && !IsNumericFluentsEnabled())
             {
-                throw GetException($"Duration constraint is compared to a general numeric expression, but requirement :numeric-fluents not specified.");
+                throw GetException("Duration constraint is compared to a general numeric expression, but requirement :numeric-fluents not specified.");
             }
         }
 
@@ -981,7 +983,7 @@ namespace PAD.InputData.PDDL.Validator
 
             if (!AreParametersUnique(data.Parameters))
             {
-                throw GetException($"Parameters specification of forall durative expression contains duplicate variable names.");
+                throw GetException("Parameters specification of forall durative expression contains duplicate variable names.");
             }
 
             AddActiveParameters(data.Parameters);
@@ -1021,7 +1023,7 @@ namespace PAD.InputData.PDDL.Validator
 
             if (!AreParametersUnique(data.Parameters))
             {
-                throw GetException($"Parameters specification of forall durative effect contains duplicate variable names.");
+                throw GetException("Parameters specification of forall durative effect contains duplicate variable names.");
             }
 
             AddActiveParameters(data.Parameters);
@@ -1130,11 +1132,12 @@ namespace PAD.InputData.PDDL.Validator
             {
                 if (IsActionCostsEnabled())
                 {
-                    if (IsFunctionSpecialTotalCost(data.Function) && data.Number != 0.0)
+                    if (IsFunctionSpecialTotalCost(data.Function) && !data.Number.Equals(0.0))
                     {
                         throw GetException("If the special numeric fluent total-cost is used as an action-cost, it has to be inited to zero value.");
                     }
-                    else if (data.Number < 0.0)
+
+                    if (data.Number < 0.0)
                     {
                         throw GetException($"Action cost numeric fluent {data.Function.Name} has to inited to non-negative value.");
                     }
@@ -1412,9 +1415,9 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="types">Type(s) to be checked.</param>
         /// <returns>True if all the types is user-specified.</returns>
-        private bool AreCustomTypes(List<string> types)
+        private static bool AreCustomTypes(List<string> types)
         {
-            return types.TrueForAll(type => IsCustomType(type));
+            return types.TrueForAll(IsCustomType);
         }
 
         /// <summary>
@@ -1422,7 +1425,7 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="type">Type to be checked.</param>
         /// <returns>True if the type is user-specified.</returns>
-        private bool IsCustomType(string type)
+        private static bool IsCustomType(string type)
         {
             return (type.Length != 0 && !type.EqualsNoCase("object"));
         }
@@ -1432,7 +1435,7 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="types">Type(s) to be checked.</param>
         /// <returns>True if the type is user-specified.</returns>
-        private bool IsCustomReturnType(List<string> types)
+        private static bool IsCustomReturnType(List<string> types)
         {
             return types.TrueForAll(type => (type.Length != 0 && !type.EqualsNoCase("number")));
         }
@@ -1442,7 +1445,7 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="function">Numeric function to be checked.</param>
         /// <returns>True if the function is 'total-cost'.</returns>
-        private bool IsFunctionSpecialTotalCost(NumericFunction function)
+        private static bool IsFunctionSpecialTotalCost(NumericFunction function)
         {
             return IsFunctionTotalCostFluent(function.Name, function.Terms.Count);
         }
@@ -1452,7 +1455,7 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="function">Numeric function to be checked.</param>
         /// <returns>True if the function is 'total-cost'.</returns>
-        private bool IsFunctionSpecialTotalCost(BasicNumericFunctionTerm function)
+        private static bool IsFunctionSpecialTotalCost(BasicNumericFunctionTerm function)
         {
             return IsFunctionTotalCostFluent(function.Name, function.Terms.Count);
         }
@@ -1462,7 +1465,7 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="expression">Metric expression to be checked.</param>
         /// <returns>True if the expression is 'total-cost' function.</returns>
-        private bool IsTotalCostFunction(MetricExpression expression)
+        private static bool IsTotalCostFunction(MetricExpression expression)
         {
             MetricNumericFunction function = expression as MetricNumericFunction;
             if (function == null)
@@ -1479,7 +1482,7 @@ namespace PAD.InputData.PDDL.Validator
         /// <param name="functionName">Name of the numeric function to be checked.</param>
         /// <param name="termsCount">Terms count of the numeric function to be checked.</param>
         /// <returns>True if the function is 'total-cost'.</returns>
-        private bool IsFunctionTotalCostFluent(string functionName, int termsCount)
+        private static bool IsFunctionTotalCostFluent(string functionName, int termsCount)
         {
             return functionName.EqualsNoCase("total-cost") && termsCount == 0;
         }
@@ -1489,7 +1492,7 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="expression">Metric expression to be checked.</param>
         /// <returns>True if the expression is a linear combination of total-cost and total-time.</returns>
-        private bool IsLinearCombiOfTotalCostAndTotalTime(MetricExpression expression)
+        private static bool IsLinearCombiOfTotalCostAndTotalTime(MetricExpression expression)
         {
             ActionCostMetricExpressionChecker visitor = new ActionCostMetricExpressionChecker();
             visitor.Evaluate(expression);
@@ -1501,7 +1504,7 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="expression">Expression to be checked.</param>
         /// <returns>True if the expression is a valid value for an action-cost assignment.</returns>
-        private bool IsCorrectActionCostsNumericExpressionToAssign(NumericExpression expression)
+        private static bool IsCorrectActionCostsNumericExpressionToAssign(NumericExpression expression)
         {
             Number number = expression as Number;
             if (number != null)
@@ -1572,7 +1575,7 @@ namespace PAD.InputData.PDDL.Validator
         private bool IsObjectFunctionDefined(string functionName, int termsCount)
         {
             return DomainContext.Functions.Exists(function => function.Name.EqualsNoCase(functionName)
-                && function.Terms.Count == termsCount && !function.IsNumbericFunction());
+                && function.Terms.Count == termsCount && !function.IsNumericFunction());
         }
 
         /// <summary>
@@ -1584,7 +1587,7 @@ namespace PAD.InputData.PDDL.Validator
         private bool IsNumericFunctionDefined(string functionName, int termsCount)
         {
             return DomainContext.Functions.Exists(function => function.Name.EqualsNoCase(functionName)
-                && function.Terms.Count == termsCount && function.IsNumbericFunction());
+                && function.Terms.Count == termsCount && function.IsNumericFunction());
         }
 
         /// <summary>
@@ -1613,19 +1616,9 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="parameters">List of parameters.</param>
         /// <returns>True if all parameters of the list are unique.</returns>
-        private bool AreParametersUnique(Parameters parameters)
+        private static bool AreParametersUnique(Parameters parameters)
         {
             return parameters.TrueForAll(param => parameters.FindAll(referenceParam => referenceParam.ParameterName.EqualsNoCase(param.ParameterName)).Count == 1);
-        }
-
-        /// <summary>
-        /// Checks whether some of the parameters are already in use in the current context.
-        /// </summary>
-        /// <param name="parameters">List of parameters.</param>
-        /// <returns>True if some parameter of the list is already used.</returns>
-        private bool AreSomeParametersAlreadyInUse(Parameters parameters)
-        {
-            return true;
         }
 
         /// <summary>
@@ -1643,7 +1636,7 @@ namespace PAD.InputData.PDDL.Validator
         /// <param name="parameters">Parameters to be removed.</param>
         private void RemoveFromActiveParameters(Parameters parameters)
         {
-            ActiveParameters.RemoveAll(parameter => parameters.Contains(parameter));
+            ActiveParameters.RemoveAll(parameters.Contains);
         }
 
         /// <summary>
@@ -1651,7 +1644,7 @@ namespace PAD.InputData.PDDL.Validator
         /// </summary>
         /// <param name="terms">Terms to be converted.</param>
         /// <returns>Parameters corresponding to the given terms.</returns>
-        private Parameters TermsToParameters(DefinitionTerms terms)
+        private static Parameters TermsToParameters(DefinitionTerms terms)
         {
             Parameters parameters = new Parameters();
             foreach (var term in terms)
@@ -1671,7 +1664,7 @@ namespace PAD.InputData.PDDL.Validator
         private bool DoObjectFunctionTermMatchAssignedTermType(string functionName, int termsCount, Term term)
         {
             var functionDef = DomainContext.Functions.Find(funcDef => funcDef.Name.EqualsNoCase(functionName) && funcDef.Terms.Count == termsCount);
-            return DoTermTypesMatch(GetTermTypes(new Terms(){term})[0], functionDef.ReturnValueTypes.ToArray());
+            return DoTermTypesMatch(GetTermTypes(new Terms{term})[0], functionDef.ReturnValueTypes.ToArray());
         }
 
         /// <summary>
@@ -1726,7 +1719,7 @@ namespace PAD.InputData.PDDL.Validator
         /// <param name="termTypes">Types of terms.</param>
         /// <param name="allowedTypes">Allowed types for the term.</param>
         /// <returns>True if used term types match allowed types.</returns>
-        private bool DoTermTypesMatch(string[] termTypes, string[] allowedTypes)
+        private bool DoTermTypesMatch(IEnumerable<string> termTypes, string[] allowedTypes)
         {
             foreach (var termType in termTypes)
             {
@@ -1825,7 +1818,6 @@ namespace PAD.InputData.PDDL.Validator
                 {
                     var functionDef = DomainContext.Functions.Find(function => function.Name.EqualsNoCase(functionTerm.Name) && function.Terms.Count == functionTerm.Terms.Count);
                     typesList.Add(functionDef.ReturnValueTypes.ToArray());
-                    continue;
                 }
             }
 

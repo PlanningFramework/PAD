@@ -9,15 +9,15 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Variable name.
         /// </summary>
-        public int NameID { get; set; } = IDManager.INVALID_ID;
+        public int NameId { get; set; }
 
         /// <summary>
         /// Constructs the term.
         /// </summary>
-        /// <param name="nameID">Variable name.</param>
-        public VariableTerm(int nameID)
+        /// <param name="nameId">Variable name.</param>
+        public VariableTerm(int nameId)
         {
-            NameID = nameID;
+            NameId = nameId;
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace PAD.Planner.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            return $"{IDManager.GENERIC_VARIABLE_PREFIX}{NameID.ToString()}";
+            return $"{IdManager.GenericVariablePrefix}{NameId.ToString()}";
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Hash code of the object.</returns>
         public override int GetHashCode()
         {
-            return HashHelper.GetHashCode("var", NameID);
+            return HashHelper.GetHashCode("var", NameId);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace PAD.Planner.PDDL
                 return false;
             }
 
-            return (NameID == other.NameID);
+            return (NameId == other.NameId);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace PAD.Planner.PDDL
         /// <returns>A copy of the term.</returns>
         public ITerm Clone()
         {
-            return new VariableTerm(NameID);
+            return new VariableTerm(NameId);
         }
 
         /// <summary>

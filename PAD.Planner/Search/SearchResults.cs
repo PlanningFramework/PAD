@@ -35,7 +35,7 @@ namespace PAD.Planner.Search
         public string Heuristic { set; get; } = "";
 
         /// <summary>
-        /// Elapsed time of the search in miliseconds.
+        /// Elapsed time of the search in milliseconds.
         /// </summary>
         public TimeSpan SearchTime { set; get; } = default(TimeSpan);
 
@@ -67,12 +67,12 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Solution to the planning problem, if any found.
         /// </summary>
-        public ISolutionPlan SolutionPlan { set; get; } = null;
+        public ISolutionPlan SolutionPlan { set; get; }
 
         /// <summary>
         /// Cost of the solution plan (i.e. plan length), if any found.
         /// </summary>
-        public double SolutionCost { set; get; } = 0.0;
+        public double SolutionCost { set; get; }
 
         /// <summary>
         /// Constructs empty the results of the searching procedure.
@@ -132,12 +132,12 @@ namespace PAD.Planner.Search
         {
             string domainName = string.IsNullOrEmpty(DomainName) ? "N/A" : DomainName;
 
-            var descriptionParts = new List<string>()
+            var descriptionParts = new List<string>
             {
                 $"Domain: {domainName}, Problem: {ProblemName}, Algorithm: {Algorithm}, Heuristic: {Heuristic}",
                 $"Result: {ResultStatusToString(ResultStatus)}, Elapsed Time: {SearchTime.TotalMilliseconds} ms",
                 $"Closed nodes: {ClosedNodes}, Open nodes: {OpenNodes}, Max g-value: {MaxGValue}",
-                $"Best heuristic value: {BestHeuristicValue}, Average heuristic value: {AverageHeuristicValue}",
+                $"Best heuristic value: {BestHeuristicValue}, Average heuristic value: {AverageHeuristicValue}"
             };
 
             if (SolutionPlan != null)
@@ -152,10 +152,10 @@ namespace PAD.Planner.Search
         /// <summary>
         /// Gets a brief description of the search result.
         /// </summary>
-        /// <returns>Bried description of the search result.</returns>
+        /// <returns>Brief description of the search result.</returns>
         public string GetBriefDescription()
         {
-            var descriptionParts = new List<string>()
+            var descriptionParts = new List<string>
             {
                 $"Result: {ResultStatusToString(ResultStatus)}, Elapsed Time: {SearchTime.TotalMilliseconds} ms"
             };

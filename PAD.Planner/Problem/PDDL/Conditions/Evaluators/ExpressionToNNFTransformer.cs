@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -13,17 +14,17 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Grounding manager.
         /// </summary>
-        private GroundingManager GroundingManager = null;
+        private GroundingManager GroundingManager { get; }
 
         /// <summary>
         /// Is currently negating the processed expression?
         /// </summary>
-        private bool IsNegating { set; get; } = false;
+        private bool IsNegating { set; get; }
 
         /// <summary>
         /// Creates the expression NNF transformer.
         /// </summary>
-        /// <param name="evaluationManager">Evalution manager.</param>
+        /// <param name="evaluationManager">Evaluation manager.</param>
         public ExpressionToNNFTransformer(EvaluationManager evaluationManager)
         {
             GroundingManager = evaluationManager.GroundingManager;
@@ -126,10 +127,10 @@ namespace PAD.Planner.PDDL
         public override IExpression Visit(NotExpression expression)
         {
             IsNegating = !IsNegating;
-            IExpression tranformedExpression = expression.Child.Accept(this);
+            IExpression transformedExpression = expression.Child.Accept(this);
             IsNegating = !IsNegating;
 
-            return tranformedExpression;
+            return transformedExpression;
         }
 
         /// <summary>

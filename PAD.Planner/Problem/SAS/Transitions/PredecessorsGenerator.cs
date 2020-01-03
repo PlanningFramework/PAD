@@ -10,12 +10,12 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Root node of the relevance operators decision tree.
         /// </summary>
-        private IOperatorDecisionTreeNode TreeRoot { set; get; } = null;
+        private IOperatorDecisionTreeNode TreeRoot { get; }
 
         /// <summary>
         /// Collector traversing the relevance operators decision tree and returning the actual predecessors.
         /// </summary>
-        private PredecessorsCollector PredecessorsCollector { set; get; } = new PredecessorsCollector();
+        private PredecessorsCollector PredecessorsCollector { get; } = new PredecessorsCollector();
 
         /// <summary>
         /// Builds the predecessors generator.

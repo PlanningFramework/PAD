@@ -1,4 +1,7 @@
-﻿
+﻿// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
+
 namespace PAD.InputData.PDDL.Loader.Ast
 {
     /// <summary>
@@ -47,42 +50,42 @@ namespace PAD.InputData.PDDL.Loader.Ast
 
         // logical expressions for action (derived from GDAstNode)
 
-        void Visit(AndGDAstNode node);
-        void Visit(OrGDAstNode node);
-        void Visit(NotGDAstNode node);
-        void Visit(ImplyGDAstNode node);
-        void Visit(ExistsGDAstNode node);
-        void Visit(ForallGDAstNode node);
-        void Visit(PredicateGDAstNode node);
-        void Visit(EqualsOpGDAstNode node);
-        void Visit(NumCompGDAstNode node);
-        void Visit(PreferenceGDAstNode node);
+        void Visit(AndGdAstNode node);
+        void Visit(OrGdAstNode node);
+        void Visit(NotGdAstNode node);
+        void Visit(ImplyGdAstNode node);
+        void Visit(ExistsGdAstNode node);
+        void Visit(ForallGdAstNode node);
+        void Visit(PredicateGdAstNode node);
+        void Visit(EqualsOpGdAstNode node);
+        void Visit(NumCompGdAstNode node);
+        void Visit(PreferenceGdAstNode node);
 
         // logical expressions for timed constraints (derived from ConGDAstNode)
 
-        void Visit(AndConGDAstNode node);
-        void Visit(ForallConGDAstNode node);
-        void Visit(AtEndConGDAstNode node);
-        void Visit(AlwaysConGDAstNode node);
-        void Visit(SometimeConGDAstNode node);
-        void Visit(WithinConGDAstNode node);
-        void Visit(AtMostOnceConGDAstNode node);
-        void Visit(SometimeAfterConGDAstNode node);
-        void Visit(SometimeBeforeConGDAstNode node);
-        void Visit(AlwaysWithinConGDAstNode node);
-        void Visit(HoldDuringConGDAstNode node);
-        void Visit(HoldAfterConGDAstNode node);
-        void Visit(PreferenceConGDAstNode node);
+        void Visit(AndConGdAstNode node);
+        void Visit(ForallConGdAstNode node);
+        void Visit(AtEndConGdAstNode node);
+        void Visit(AlwaysConGdAstNode node);
+        void Visit(SometimeConGdAstNode node);
+        void Visit(WithinConGdAstNode node);
+        void Visit(AtMostOnceConGdAstNode node);
+        void Visit(SometimeAfterConGdAstNode node);
+        void Visit(SometimeBeforeConGdAstNode node);
+        void Visit(AlwaysWithinConGdAstNode node);
+        void Visit(HoldDuringConGdAstNode node);
+        void Visit(HoldAfterConGdAstNode node);
+        void Visit(PreferenceConGdAstNode node);
 
         // logical expressions for durative action (derived from DaGDAstNode)
 
-        void Visit(AndDaGDAstNode node);
-        void Visit(ForallDaGDAstNode node);
-        void Visit(PreferenceDaGDAstNode node);
-        void Visit(AtTimedDaGDAstNode node);
-        void Visit(OverTimedDaGDAstNode node);
+        void Visit(AndDaGdAstNode node);
+        void Visit(ForallDaGdAstNode node);
+        void Visit(PreferenceDaGdAstNode node);
+        void Visit(AtTimedDaGdAstNode node);
+        void Visit(OverTimedDaGdAstNode node);
 
-        // duration contraints for durative action (derived from DurationConstraintAstNode)
+        // duration constraints for durative action (derived from DurationConstraintAstNode)
 
         void Visit(AndSimpleDurationConstraintsAstNode node);
         void Visit(AtSimpleDurationConstraintAstNode node);
@@ -123,7 +126,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         void Visit(NumberTermAstNode node);
         void Visit(NumericOpAstNode node);
         void Visit(MetricPreferenceViolationAstNode node);
-        void Visit(DurationVariableTermAstNode noda);
+        void Visit(DurationVariableTermAstNode node);
 
         // typed blocks and skeletons
 
@@ -144,10 +147,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="rootNode">Root node of the AST.</param>
         public void Evaluate(IAstVisitableNode rootNode)
         {
-            if (rootNode != null)
-            {
-                rootNode.Accept(this);
-            }
+            rootNode?.Accept(this);
         }
 
         // root domain and problem nodes
@@ -179,42 +179,42 @@ namespace PAD.InputData.PDDL.Loader.Ast
 
         // logical expressions for action (derived from GDAstNode)
 
-        public virtual void Visit(AndGDAstNode node) { }
-        public virtual void Visit(OrGDAstNode node) { }
-        public virtual void Visit(NotGDAstNode node) { }
-        public virtual void Visit(ImplyGDAstNode node) { }
-        public virtual void Visit(ExistsGDAstNode node) { }
-        public virtual void Visit(ForallGDAstNode node) { }
-        public virtual void Visit(PredicateGDAstNode node) { }
-        public virtual void Visit(EqualsOpGDAstNode node) { }
-        public virtual void Visit(NumCompGDAstNode node) { }
-        public virtual void Visit(PreferenceGDAstNode node) { }
+        public virtual void Visit(AndGdAstNode node) { }
+        public virtual void Visit(OrGdAstNode node) { }
+        public virtual void Visit(NotGdAstNode node) { }
+        public virtual void Visit(ImplyGdAstNode node) { }
+        public virtual void Visit(ExistsGdAstNode node) { }
+        public virtual void Visit(ForallGdAstNode node) { }
+        public virtual void Visit(PredicateGdAstNode node) { }
+        public virtual void Visit(EqualsOpGdAstNode node) { }
+        public virtual void Visit(NumCompGdAstNode node) { }
+        public virtual void Visit(PreferenceGdAstNode node) { }
 
         // logical expressions for timed constraints (derived from ConGDAstNode)
 
-        public virtual void Visit(AndConGDAstNode node) { }
-        public virtual void Visit(ForallConGDAstNode node) { }
-        public virtual void Visit(AtEndConGDAstNode node) { }
-        public virtual void Visit(AlwaysConGDAstNode node) { }
-        public virtual void Visit(SometimeConGDAstNode node) { }
-        public virtual void Visit(WithinConGDAstNode node) { }
-        public virtual void Visit(AtMostOnceConGDAstNode node) { }
-        public virtual void Visit(SometimeAfterConGDAstNode node) { }
-        public virtual void Visit(SometimeBeforeConGDAstNode node) { }
-        public virtual void Visit(AlwaysWithinConGDAstNode node) { }
-        public virtual void Visit(HoldDuringConGDAstNode node) { }
-        public virtual void Visit(HoldAfterConGDAstNode node) { }
-        public virtual void Visit(PreferenceConGDAstNode node) { }
+        public virtual void Visit(AndConGdAstNode node) { }
+        public virtual void Visit(ForallConGdAstNode node) { }
+        public virtual void Visit(AtEndConGdAstNode node) { }
+        public virtual void Visit(AlwaysConGdAstNode node) { }
+        public virtual void Visit(SometimeConGdAstNode node) { }
+        public virtual void Visit(WithinConGdAstNode node) { }
+        public virtual void Visit(AtMostOnceConGdAstNode node) { }
+        public virtual void Visit(SometimeAfterConGdAstNode node) { }
+        public virtual void Visit(SometimeBeforeConGdAstNode node) { }
+        public virtual void Visit(AlwaysWithinConGdAstNode node) { }
+        public virtual void Visit(HoldDuringConGdAstNode node) { }
+        public virtual void Visit(HoldAfterConGdAstNode node) { }
+        public virtual void Visit(PreferenceConGdAstNode node) { }
 
         // logical expressions for durative action (derived from DaGDAstNode)
 
-        public virtual void Visit(AndDaGDAstNode node) { }
-        public virtual void Visit(ForallDaGDAstNode node) { }
-        public virtual void Visit(PreferenceDaGDAstNode node) { }
-        public virtual void Visit(AtTimedDaGDAstNode node) { }
-        public virtual void Visit(OverTimedDaGDAstNode node) { }
+        public virtual void Visit(AndDaGdAstNode node) { }
+        public virtual void Visit(ForallDaGdAstNode node) { }
+        public virtual void Visit(PreferenceDaGdAstNode node) { }
+        public virtual void Visit(AtTimedDaGdAstNode node) { }
+        public virtual void Visit(OverTimedDaGdAstNode node) { }
 
-        // duration contraints for durative action (derived from DurationConstraintAstNode)
+        // duration constraints for durative action (derived from DurationConstraintAstNode)
 
         public virtual void Visit(AndSimpleDurationConstraintsAstNode node) { }
         public virtual void Visit(AtSimpleDurationConstraintAstNode node) { }

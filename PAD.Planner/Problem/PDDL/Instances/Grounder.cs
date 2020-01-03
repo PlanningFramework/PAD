@@ -10,27 +10,27 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Terms and atoms grounder.
         /// </summary>
-        private Lazy<TermsGrounder> TermsAndAtomsGrounder { set; get; } = null;
+        private Lazy<TermsGrounder> TermsAndAtomsGrounder { get; }
 
         /// <summary>
         /// Expressions grounder.
         /// </summary>
-        private Lazy<ExpressionsGrounder> ExpressionsGrounder { set; get; } = null;
+        private Lazy<ExpressionsGrounder> ExpressionsGrounder { get; }
 
         /// <summary>
         /// Numeric expression grounder.
         /// </summary>
-        private Lazy<NumericExpressionsGrounder> NumericExpressionsGrounder { set; get; } = null;
+        private Lazy<NumericExpressionsGrounder> NumericExpressionsGrounder { get; }
 
         /// <summary>
         /// Conditions grounder.
         /// </summary>
-        private Lazy<ConditionsGrounder> ConditionsGrounder { set; get; } = null;
+        private Lazy<ConditionsGrounder> ConditionsGrounder { get; }
 
         /// <summary>
         /// Constructs the grounder object.
         /// </summary>
-        public Grounder(IDManager idManager)
+        public Grounder(IdManager idManager)
         {
             TermsAndAtomsGrounder = new Lazy<TermsGrounder>(() => new TermsGrounder(idManager));
             NumericExpressionsGrounder = new Lazy<NumericExpressionsGrounder>(() => new NumericExpressionsGrounder(TermsAndAtomsGrounder, idManager));
@@ -50,11 +50,11 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Grounds the specified atom by the given substitution and returns it. The "deep" version of terms grouding is used.
+        /// Grounds the specified atom by the given substitution and returns it. The "deep" version of terms grounding is used.
         /// </summary>
         /// <param name="atom">Function or predicate atom.</param>
         /// <param name="substitution">Variables substitution.</param>
-        /// <param name="referenceState">Reference state.</param>
+        /// <param name="state">Reference state.</param>
         /// <returns>Grounded atom.</returns>
         public IAtom GroundAtomDeep(IAtom atom, ISubstitution substitution, IState state)
         {
@@ -74,7 +74,7 @@ namespace PAD.Planner.PDDL
 
         /// <summary>
         /// Grounds the term. This version does "deep" grounding, in the sense that even object function terms are 
-        /// grounded into constant terms (the value of the object function term is getted from the given reference state).
+        /// grounded into constant terms (the value of the object function term is gotten from the given reference state).
         /// </summary>
         /// <param name="term">Term.</param>
         /// <param name="substitution">Variables substitution.</param>

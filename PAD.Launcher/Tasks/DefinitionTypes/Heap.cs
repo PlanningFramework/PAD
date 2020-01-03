@@ -1,5 +1,6 @@
-﻿
-namespace PAD.Launcher.Tasks
+﻿// ReSharper disable StringLiteralTypo
+
+namespace PAD.Launcher.Tasks.DefinitionTypes
 {
     /// <summary>
     /// Heap used in the planning task.
@@ -16,7 +17,7 @@ namespace PAD.Launcher.Tasks
     }
 
     /// <summary>
-    /// Auxilliary class for converting heap parameters.
+    /// Auxiliary class for converting heap parameters.
     /// </summary>
     public static class HeapConverter
     {

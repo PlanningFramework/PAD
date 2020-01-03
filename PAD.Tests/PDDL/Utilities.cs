@@ -13,7 +13,7 @@ namespace PAD.Tests.PDDL
     public static class Utilities
     {
         /// <summary>
-        /// Parse the input file and convertts it into the AST.
+        /// Parse the input file and converts it into the AST.
         /// </summary>
         /// <param name="grammarType">Grammar rule to be tested.</param>
         /// <param name="inputFile">Input file to be tested.</param>
@@ -23,7 +23,7 @@ namespace PAD.Tests.PDDL
             var grammar = new MasterTestGrammar();
             grammar.Root = (NonTerminal)Activator.CreateInstance(grammarType, grammar);
 
-            return MasterParser.ParseAndCreateAST<BaseAstNode>(inputFile, grammar);
+            return MasterParser.ParseAndCreateAst<BaseAstNode>(inputFile, grammar);
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace PAD.Tests.PDDL
         /// <returns>True if the string representation of the data is a valid PDDL input. False otherwise.</returns>
         public static bool CheckToStringExport(PDDLInputData data)
         {
-            string domainString = data.Domain != null ? data.Domain.ToString() : null;
-            string problemString = data.Problem != null ? data.Problem.ToString() : null;
+            string domainString = data.Domain?.ToString();
+            string problemString = data.Problem?.ToString();
 
             string domainTempFile = CreateAndWriteToTemporaryFile(domainString);
             string problemTempFile = CreateAndWriteToTemporaryFile(problemString);
@@ -70,8 +70,6 @@ namespace PAD.Tests.PDDL
             }
 
             string fileName = System.IO.Path.GetTempFileName();
-            System.IO.FileInfo fileInfo = new System.IO.FileInfo(fileName);
-            fileInfo.Attributes = System.IO.FileAttributes.Temporary;
 
             System.IO.StreamWriter streamWriter = System.IO.File.AppendText(fileName);
             streamWriter.Write(fileContent);
@@ -99,14 +97,6 @@ namespace PAD.Tests.PDDL
     /// </summary>
     public class MasterTestGrammar : MasterGrammar
     {
-        /// <summary>
-        /// Factory method for the definition of root grammar rules.
-        /// </summary>
-        /// <returns>Grammar rules for this grammar.</returns>
-        protected override NonTerminal MakeGrammarRules()
-        {
-            return null;
-        }
     }
 
     /// <summary>
@@ -117,27 +107,27 @@ namespace PAD.Tests.PDDL
         /// <summary>
         /// ID of the problem.
         /// </summary>
-        public string ProblemID { set; get; } = "";
+        public string ProblemId { set; get; }
 
         /// <summary>
         /// Filepath to the PDDL domain.
         /// </summary>
-        public string Domain { set; get; } = "";
+        public string Domain { set; get; }
 
         /// <summary>
         /// Filepath to the PDDL problem.
         /// </summary>
-        public string Problem { set; get; } = "";
+        public string Problem { set; get; }
 
         /// <summary>
-        /// Constructs the filepaths structure.
+        /// Constructs the file paths structure.
         /// </summary>
-        /// <param name="problemID">ID of the specified problem.</param>
-        /// <param name="domain">Domain filepath.</param>
-        /// <param name="problem">Problem filepath.</param>
-        public FilePaths(string problemID, string domain, string problem)
+        /// <param name="problemId">ID of the specified problem.</param>
+        /// <param name="domain">Domain file path.</param>
+        /// <param name="problem">Problem file path.</param>
+        public FilePaths(string problemId, string domain, string problem)
         {
-            ProblemID = problemID;
+            ProblemId = problemId;
             Domain = domain;
             Problem = problem;
         }

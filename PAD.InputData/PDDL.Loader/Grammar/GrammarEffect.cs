@@ -1,5 +1,8 @@
 ﻿using Irony.Parsing;
 using PAD.InputData.PDDL.Loader.Ast;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL.Loader.Grammar
 {
@@ -22,14 +25,6 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// <param name="p">Parent master grammar.</param>
         /// <param name="bForm">Block form.</param>
         public Effect(MasterGrammar p, BForm bForm) : base(p, bForm)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -54,7 +49,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             // USED SUB-TREES
 
             var typedList = new TypedList(p);
-            var GD = new GD(p);
+            var gd = new Gd(p);
             var pEffect = new PEffect(p, BForm.FULL);
             var pEffectBase = new PEffect(p, BForm.BASE);
 
@@ -72,7 +67,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
             cEffectBase.Rule = forallCEffectBase | whenCEffectBase | pEffectBase;
 
             forallCEffectBase.Rule = p.ToTerm("forall") + "(" + typedList + ")" + effect;
-            whenCEffectBase.Rule = p.ToTerm("when") + GD + condEffect;
+            whenCEffectBase.Rule = p.ToTerm("when") + gd + condEffect;
 
             // cond-effect (not allowing inner conditional effects)
             condEffect.Rule = p.ToTerm("(") + condEffectBase + ")";
@@ -83,7 +78,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(effect, effectBase, cEffect, cEffectBase, condEffect, condEffectBase);
 
-            return (bForm == BForm.BASE) ? effectBase : effect;
+            Rule = (bForm == BForm.BASE) ? effectBase : effect;
         }
     }
 }

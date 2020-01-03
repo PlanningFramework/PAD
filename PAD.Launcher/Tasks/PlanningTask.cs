@@ -1,4 +1,4 @@
-﻿using System;
+﻿using PAD.Launcher.Tasks.DefinitionTypes;
 
 namespace PAD.Launcher.Tasks
 {
@@ -41,23 +41,23 @@ namespace PAD.Launcher.Tasks
         /// <summary>
         /// Time limit of the planning task in minutes.
         /// </summary>
-        public int TimeLimit { set; get; } = Planner.Search.HeuristicSearch.DEFAULT_TIME_LIMIT_MINUTES;
+        public int TimeLimit { set; get; } = Planner.Search.HeuristicSearch.DefaultTimeLimitMinutes;
 
         /// <summary>
         /// Memory limit (of searched nodes) for the planning task.
         /// </summary>
-        public long MemoryLimit { set; get; } = Planner.Search.HeuristicSearch.DEFAULT_MEMORY_LIMIT_NODES;
+        public long MemoryLimit { set; get; } = Planner.Search.HeuristicSearch.DefaultMemoryLimitNodes;
 
         /// <summary>
         /// Creates and returns the corresponding heuristic search engine.
         /// </summary>
-        /// <returns>Corrsponding heuristic search engine.</returns>
+        /// <returns>Corresponding heuristic search engine.</returns>
         protected override Planner.Search.IHeuristicSearch GetHeuristicSearch()
         {
             Planner.IProblem problem = GetProblem();
             Planner.Heuristics.IHeuristic heuristic = GetHeuristic(problem);
             Planner.Heaps.IHeap heap = GetHeap();
-            TimeSpan timeLimit = TimeSpan.FromMinutes(TimeLimit);
+            System.TimeSpan timeLimit = System.TimeSpan.FromMinutes(TimeLimit);
             long memoryLimit = MemoryLimit;
 
             switch (Algorithm)
@@ -69,12 +69,12 @@ namespace PAD.Launcher.Tasks
                 case Algorithm.HillClimbingSearch:
                     return new Planner.Search.HillClimbingSearch(problem, heuristic, false, timeLimit, memoryLimit);
                 default:
-                    throw new NotImplementedException("Unknown search algorithm type!");
+                    throw new System.NotImplementedException("Unknown search algorithm type!");
             }
         }
 
         /// <summary>
-        /// Creates and returs the corresponding planning problem for the search engine.
+        /// Creates and returns the corresponding planning problem for the search engine.
         /// </summary>
         /// <returns>Corresponding planning problem for the search engine.</returns>
         private Planner.IProblem GetProblem()
@@ -86,12 +86,12 @@ namespace PAD.Launcher.Tasks
                 case Type.SAS:
                     return new Planner.SAS.Problem(ProblemFile, false);
                 default:
-                    throw new NotImplementedException("Unknown planning task type!");
+                    throw new System.NotImplementedException("Unknown planning task type!");
             }
         }
 
         /// <summary>
-        /// Creates and returs the corresponding heuristic for the search engine.
+        /// Creates and returns the corresponding heuristic for the search engine.
         /// </summary>
         /// <param name="problem">Planning problem.</param>
         /// <returns>Corresponding heuristic for the search engine.</returns>
@@ -114,12 +114,12 @@ namespace PAD.Launcher.Tasks
                 case Heuristic.PDBHeuristic:
                     return new Planner.Heuristics.PDBHeuristic(problem);
                 default:
-                    throw new NotImplementedException("Unknown heuristic type!");
+                    throw new System.NotImplementedException("Unknown heuristic type!");
             }
         }
 
         /// <summary>
-        /// Creates and returs the corresponding heap for the search engine.
+        /// Creates and returns the corresponding heap for the search engine.
         /// </summary>
         /// <returns>Corresponding planning problem for the search engine.</returns>
         private Planner.Heaps.IHeap GetHeap()
@@ -141,7 +141,7 @@ namespace PAD.Launcher.Tasks
                 case Heap.RegularTernaryHeap:
                     return new Planner.Heaps.RegularTernaryHeap();
                 default:
-                    throw new NotImplementedException("Unknown heap type!");
+                    throw new System.NotImplementedException("Unknown heap type!");
             }
         }
 
@@ -151,7 +151,7 @@ namespace PAD.Launcher.Tasks
         /// <returns>Clone of the planning task.</returns>
         public PlanningTask Clone()
         {
-            return new PlanningTask()
+            return new PlanningTask
             {
                 Type = Type,
                 Algorithm = Algorithm,

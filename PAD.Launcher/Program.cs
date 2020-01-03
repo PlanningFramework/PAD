@@ -4,7 +4,7 @@ namespace PAD.Launcher
     /// <summary>
     /// Entry point of the launcher.
     /// </summary>
-    static class Program
+    public static class Program
     {
         /// <summary>
         /// Main method, executing tasks specified in input arguments of the program.

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable IdentifierTypo
 
 namespace PAD.Planner.SAS
 {

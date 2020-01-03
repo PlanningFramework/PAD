@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner
 {
@@ -39,7 +40,7 @@ namespace PAD.Planner
         /// Enumerates all possible relative states meeting the current conditions.
         /// </summary>
         /// <param name="problem">Parent planning problem.</param>
-        /// <returns>All possible realtive states meeting the conditions.</returns>
+        /// <returns>All possible relative states meeting the conditions.</returns>
         IEnumerable<IRelativeState> GetCorrespondingRelativeStates(IProblem problem);
 
         /// <summary>

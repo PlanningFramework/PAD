@@ -7,13 +7,6 @@ namespace PAD.Planner.Heuristics
     public class BlindHeuristic : Heuristic
     {
         /// <summary>
-        /// Constructs the heuristic.
-        /// </summary>
-        public BlindHeuristic() : base(null)
-        {
-        }
-
-        /// <summary>
         /// Gets the heuristic value for the given state (in the context of forward search).
         /// </summary>
         /// <param name="state">State to be evaluated.</param>

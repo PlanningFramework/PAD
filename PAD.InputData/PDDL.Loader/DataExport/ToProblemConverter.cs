@@ -10,7 +10,7 @@ namespace PAD.InputData.PDDL.Loader.DataExport
         /// <summary>
         /// Loaded data to be returned.
         /// </summary>
-        public Problem ProblemData { get; private set; } = new Problem();
+        public Problem ProblemData { get; } = new Problem();
 
         /// <summary>
         /// Handles the AST node visit.

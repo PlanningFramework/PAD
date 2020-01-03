@@ -9,22 +9,22 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Constant name.
         /// </summary>
-        public int NameID { get; set; } = IDManager.INVALID_ID;
+        public int NameId { get; set; }
 
         /// <summary>
         /// ID manager of the corresponding planning problem.
         /// </summary>
-        private IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the term.
         /// </summary>
-        /// <param name="nameID">Constant name.</param>
+        /// <param name="nameId">Constant name.</param>
         /// <param name="idManager">ID manager.</param>
-        public ConstantTerm(int nameID, IDManager idManager = null)
+        public ConstantTerm(int nameId, IdManager idManager = null)
         {
-            NameID = nameID;
-            IDManager = idManager;
+            NameId = nameId;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace PAD.Planner.PDDL
         /// <returns>String representation.</returns>
         public override string ToString()
         {
-            return (IDManager != null) ? IDManager.Constants.GetNameFromID(NameID) : NameID.ToString();
+            return (IdManager != null) ? IdManager.Constants.GetNameFromId(NameId) : NameId.ToString();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Hash code of the object.</returns>
         public override int GetHashCode()
         {
-            return HashHelper.GetHashCode(NameID, "const");
+            return HashHelper.GetHashCode(NameId, "const");
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace PAD.Planner.PDDL
                 return false;
             }
 
-            return (NameID == other.NameID);
+            return (NameId == other.NameId);
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace PAD.Planner.PDDL
         /// <returns>A copy of the term.</returns>
         public ITerm Clone()
         {
-            return new ConstantTerm(NameID, IDManager);
+            return new ConstantTerm(NameId, IdManager);
         }
 
         /// <summary>

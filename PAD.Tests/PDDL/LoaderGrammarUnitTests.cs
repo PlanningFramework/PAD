@@ -2,6 +2,8 @@
 using PAD.InputData.PDDL.Loader.Grammar;
 using PAD.InputData.PDDL.Loader.Ast;
 using PAD.InputData.PDDL.Traits;
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.Tests.PDDL
 {
@@ -10,16 +12,16 @@ namespace PAD.Tests.PDDL
     /// Covers the entire phase from taking an input file, parsing it into a parsing tree and converting into an AST.
     /// </summary>
     [TestClass]
-    public class PDDLLoaderGrammarUnitTests
+    public class LoaderGrammarUnitTests
     {
         /// <summary>
         /// Gets full filepath to the specified test case.
         /// </summary>
         /// <param name="fileName">Test case file name.</param>
         /// <returns>Filepath to the test case.</returns>
-        private string GetFilePath(string fileName)
+        private static string GetFilePath(string fileName)
         {
-            return $@"..\..\Loader.PDDL\GrammarTestCases\{fileName}";
+            return $@"..\..\PDDL\LoaderGrammarTestCases\{fileName}";
         }
 
         [TestMethod]
@@ -28,7 +30,7 @@ namespace PAD.Tests.PDDL
             var astNode = Utilities.LoadAst(typeof(Action), GetFilePath("TC_GrammarAction.pddl"));
 
             Assert.IsTrue(astNode is DomainActionAstNode);
-            var action = ((DomainActionAstNode)astNode);
+            var action = (DomainActionAstNode)astNode;
 
             Assert.AreEqual("actionName", action.Name);
 
@@ -42,24 +44,24 @@ namespace PAD.Tests.PDDL
         [TestMethod]
         public void TC_GrammarConGD()
         {
-            var astNode = Utilities.LoadAst(typeof(ConGD), GetFilePath("TC_GrammarConGD.pddl"));
+            var astNode = Utilities.LoadAst(typeof(ConGd), GetFilePath("TC_GrammarConGD.pddl"));
 
-            Assert.IsTrue(astNode is AndConGDAstNode);
-            var andExprArgs = ((AndConGDAstNode)astNode).Arguments;
+            Assert.IsTrue(astNode is AndConGdAstNode);
+            var andExprArgs = ((AndConGdAstNode)astNode).Arguments;
 
             Assert.AreEqual(11, andExprArgs.Count);
 
-            Assert.IsTrue(andExprArgs[0] is ForallConGDAstNode);
-            Assert.IsTrue(andExprArgs[1] is AtEndConGDAstNode);
-            Assert.IsTrue(andExprArgs[2] is AlwaysConGDAstNode);
-            Assert.IsTrue(andExprArgs[3] is SometimeConGDAstNode);
-            Assert.IsTrue(andExprArgs[4] is WithinConGDAstNode);
-            Assert.IsTrue(andExprArgs[5] is AtMostOnceConGDAstNode);
-            Assert.IsTrue(andExprArgs[6] is SometimeAfterConGDAstNode);
-            Assert.IsTrue(andExprArgs[7] is SometimeBeforeConGDAstNode);
-            Assert.IsTrue(andExprArgs[8] is AlwaysWithinConGDAstNode);
-            Assert.IsTrue(andExprArgs[9] is HoldDuringConGDAstNode);
-            Assert.IsTrue(andExprArgs[10] is HoldAfterConGDAstNode);
+            Assert.IsTrue(andExprArgs[0] is ForallConGdAstNode);
+            Assert.IsTrue(andExprArgs[1] is AtEndConGdAstNode);
+            Assert.IsTrue(andExprArgs[2] is AlwaysConGdAstNode);
+            Assert.IsTrue(andExprArgs[3] is SometimeConGdAstNode);
+            Assert.IsTrue(andExprArgs[4] is WithinConGdAstNode);
+            Assert.IsTrue(andExprArgs[5] is AtMostOnceConGdAstNode);
+            Assert.IsTrue(andExprArgs[6] is SometimeAfterConGdAstNode);
+            Assert.IsTrue(andExprArgs[7] is SometimeBeforeConGdAstNode);
+            Assert.IsTrue(andExprArgs[8] is AlwaysWithinConGdAstNode);
+            Assert.IsTrue(andExprArgs[9] is HoldDuringConGdAstNode);
+            Assert.IsTrue(andExprArgs[10] is HoldAfterConGdAstNode);
         }
 
         [TestMethod]
@@ -80,43 +82,43 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(effect1.Effect is AtTimedEffectAstNode);
 
             var effect2 = (WhenDaEffectAstNode)effects[2];
-            Assert.IsTrue(effect2.Condition is AtTimedDaGDAstNode);
+            Assert.IsTrue(effect2.Condition is AtTimedDaGdAstNode);
             Assert.IsTrue(effect2.Effect is AtTimedEffectAstNode);
         }
 
         [TestMethod]
         public void TC_GrammarDaGD()
         {
-            var astNode = Utilities.LoadAst(typeof(DaGD), GetFilePath("TC_GrammarDaGD.pddl"));
+            var astNode = Utilities.LoadAst(typeof(DaGd), GetFilePath("TC_GrammarDaGD.pddl"));
 
-            Assert.IsTrue(astNode is AndDaGDAstNode);
-            var andExprArgs = ((AndDaGDAstNode)astNode).Arguments;
+            Assert.IsTrue(astNode is AndDaGdAstNode);
+            var andExprArgs = ((AndDaGdAstNode)astNode).Arguments;
 
             Assert.AreEqual(5, andExprArgs.Count);
-            Assert.IsTrue(andExprArgs[0] is ForallDaGDAstNode);
-            Assert.IsTrue(andExprArgs[1] is PreferenceDaGDAstNode);
-            Assert.IsTrue(andExprArgs[2] is AtTimedDaGDAstNode);
-            Assert.IsTrue(andExprArgs[3] is AtTimedDaGDAstNode);
-            Assert.IsTrue(andExprArgs[4] is OverTimedDaGDAstNode);
+            Assert.IsTrue(andExprArgs[0] is ForallDaGdAstNode);
+            Assert.IsTrue(andExprArgs[1] is PreferenceDaGdAstNode);
+            Assert.IsTrue(andExprArgs[2] is AtTimedDaGdAstNode);
+            Assert.IsTrue(andExprArgs[3] is AtTimedDaGdAstNode);
+            Assert.IsTrue(andExprArgs[4] is OverTimedDaGdAstNode);
 
-            var forallExpr = (ForallDaGDAstNode)andExprArgs[0];
-            Assert.IsTrue(forallExpr.Expression is AtTimedDaGDAstNode);
+            var forallExpr = (ForallDaGdAstNode)andExprArgs[0];
+            Assert.IsTrue(forallExpr.Expression is AtTimedDaGdAstNode);
 
-            var preferenceExpr = (PreferenceDaGDAstNode)andExprArgs[1];
+            var preferenceExpr = (PreferenceDaGdAstNode)andExprArgs[1];
             Assert.AreEqual("prefName", preferenceExpr.Name);
-            Assert.IsTrue(preferenceExpr.Argument is AtTimedDaGDAstNode);
+            Assert.IsTrue(preferenceExpr.Argument is AtTimedDaGdAstNode);
 
-            var atExpr1 = (AtTimedDaGDAstNode)andExprArgs[2];
+            var atExpr1 = (AtTimedDaGdAstNode)andExprArgs[2];
             Assert.AreEqual(TimeSpecifier.START, atExpr1.TimeSpecifier);
-            Assert.IsTrue(atExpr1.Argument is PredicateGDAstNode);
+            Assert.IsTrue(atExpr1.Argument is PredicateGdAstNode);
 
-            var atExpr2 = (AtTimedDaGDAstNode)andExprArgs[3];
+            var atExpr2 = (AtTimedDaGdAstNode)andExprArgs[3];
             Assert.AreEqual(TimeSpecifier.END, atExpr2.TimeSpecifier);
-            Assert.IsTrue(atExpr2.Argument is PredicateGDAstNode);
+            Assert.IsTrue(atExpr2.Argument is PredicateGdAstNode);
 
-            var overExpr = (OverTimedDaGDAstNode)andExprArgs[4];
+            var overExpr = (OverTimedDaGdAstNode)andExprArgs[4];
             Assert.AreEqual(IntervalSpecifier.ALL, overExpr.IntervalSpecifier);
-            Assert.IsTrue(overExpr.Argument is PredicateGDAstNode);
+            Assert.IsTrue(overExpr.Argument is PredicateGdAstNode);
         }
 
         [TestMethod]
@@ -125,10 +127,10 @@ namespace PAD.Tests.PDDL
             var astNode = Utilities.LoadAst(typeof(DerivedPred), GetFilePath("TC_GrammarDerivedPred.pddl"));
 
             Assert.IsTrue(astNode is DomainDerivedPredAstNode);
-            var derivedPred = ((DomainDerivedPredAstNode)astNode);
+            var derivedPred = (DomainDerivedPredAstNode)astNode;
 
-            Assert.IsTrue(derivedPred.Predicate is PredicateSkeletonAstNode);
-            Assert.IsTrue(derivedPred.Expression is ForallGDAstNode);
+            Assert.IsNotNull(derivedPred.Predicate);
+            Assert.IsTrue(derivedPred.Expression is ForallGdAstNode);
 
             Assert.AreEqual("predA", derivedPred.Predicate.Name);
             Assert.AreEqual(1, derivedPred.Predicate.Arguments.TypedIdentifiers.Count);
@@ -140,7 +142,7 @@ namespace PAD.Tests.PDDL
             var astNode = Utilities.LoadAst(typeof(Domain), GetFilePath("TC_GrammarDomain.pddl"));
 
             Assert.IsTrue(astNode is DomainAstNode);
-            var domain = ((DomainAstNode)astNode);
+            var domain = (DomainAstNode)astNode;
             var sections = domain.DomainSections;
 
             Assert.AreEqual("domainName", domain.DomainName);
@@ -172,7 +174,7 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(2, functions.FunctionTypedList.FunctionsList.Count);
 
             var constraints = (DomainConstraintsAstNode)sections[5];
-            Assert.IsTrue(constraints.Expression is AlwaysConGDAstNode);
+            Assert.IsTrue(constraints.Expression is AlwaysConGdAstNode);
         }
 
         [TestMethod]
@@ -181,7 +183,7 @@ namespace PAD.Tests.PDDL
             var astNode = Utilities.LoadAst(typeof(DurAction), GetFilePath("TC_GrammarDurAction.pddl"));
 
             Assert.IsTrue(astNode is DomainDurActionAstNode);
-            var action = ((DomainDurActionAstNode)astNode);
+            var action = (DomainDurActionAstNode)astNode;
 
             Assert.AreEqual("actionName", action.Name);
 
@@ -243,7 +245,7 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(effect2.Effect is PredicatePEffectAstNode);
 
             var effect3 = (WhenCEffectAstNode)effects[3];
-            Assert.IsTrue(effect3.Condition is PredicateGDAstNode);
+            Assert.IsTrue(effect3.Condition is PredicateGdAstNode);
             Assert.IsTrue(effect3.Effect is AndPEffectsAstNode);
         }
         
@@ -253,7 +255,7 @@ namespace PAD.Tests.PDDL
             var astNode = Utilities.LoadAst(typeof(FunctionTerm), GetFilePath("TC_GrammarFunctionTerm.pddl"));
 
             Assert.IsTrue(astNode is FunctionTermAstNode);
-            var function = ((FunctionTermAstNode)astNode);
+            var function = (FunctionTermAstNode)astNode;
             var terms = function.Terms;
 
             Assert.AreEqual("funcName", function.Name);
@@ -279,7 +281,7 @@ namespace PAD.Tests.PDDL
             var astNode = Utilities.LoadAst(typeof(FunctionTermC), GetFilePath("TC_GrammarFunctionTermC.pddl"));
 
             Assert.IsTrue(astNode is FunctionTermAstNode);
-            var function = ((FunctionTermAstNode)astNode);
+            var function = (FunctionTermAstNode)astNode;
             var terms = function.Terms;
 
             Assert.AreEqual("funcName", function.Name);
@@ -331,29 +333,29 @@ namespace PAD.Tests.PDDL
         [TestMethod]
         public void TC_GrammarGD()
         {
-            var astNode = Utilities.LoadAst(typeof(GD), GetFilePath("TC_GrammarGD.pddl"));
+            var astNode = Utilities.LoadAst(typeof(Gd), GetFilePath("TC_GrammarGD.pddl"));
 
-            Assert.IsTrue(astNode is AndGDAstNode);
-            var andExprArgs = ((AndGDAstNode)astNode).Arguments;
+            Assert.IsTrue(astNode is AndGdAstNode);
+            var andExprArgs = ((AndGdAstNode)astNode).Arguments;
 
             Assert.AreEqual(8, andExprArgs.Count);
-            Assert.IsTrue(andExprArgs[0] is PredicateGDAstNode);
-            Assert.IsTrue(andExprArgs[1] is NotGDAstNode);
-            Assert.IsTrue(andExprArgs[2] is OrGDAstNode);
-            Assert.IsTrue(andExprArgs[3] is ImplyGDAstNode);
-            Assert.IsTrue(andExprArgs[4] is ExistsGDAstNode);
-            Assert.IsTrue(andExprArgs[5] is ForallGDAstNode);
-            Assert.IsTrue(andExprArgs[6] is EqualsOpGDAstNode);
-            Assert.IsTrue(andExprArgs[7] is NumCompGDAstNode);
+            Assert.IsTrue(andExprArgs[0] is PredicateGdAstNode);
+            Assert.IsTrue(andExprArgs[1] is NotGdAstNode);
+            Assert.IsTrue(andExprArgs[2] is OrGdAstNode);
+            Assert.IsTrue(andExprArgs[3] is ImplyGdAstNode);
+            Assert.IsTrue(andExprArgs[4] is ExistsGdAstNode);
+            Assert.IsTrue(andExprArgs[5] is ForallGdAstNode);
+            Assert.IsTrue(andExprArgs[6] is EqualsOpGdAstNode);
+            Assert.IsTrue(andExprArgs[7] is NumCompGdAstNode);
         }
 
         [TestMethod]
         public void TC_GrammarIdentifier()
         {
-            var astNode = Utilities.LoadAst(typeof(PredicateGD), GetFilePath("TC_GrammarIdentifier.pddl"));
+            var astNode = Utilities.LoadAst(typeof(PredicateGd), GetFilePath("TC_GrammarIdentifier.pddl"));
 
-            Assert.IsTrue(astNode is PredicateGDAstNode);
-            var terms = ((PredicateGDAstNode)astNode).Terms;
+            Assert.IsTrue(astNode is PredicateGdAstNode);
+            var terms = ((PredicateGdAstNode)astNode).Terms;
             Assert.AreEqual(3, terms.Count);
 
             Assert.IsTrue(terms[0] is IdentifierTermAstNode);
@@ -531,24 +533,24 @@ namespace PAD.Tests.PDDL
 
             Assert.IsTrue(andExprArgs[2] is NotPEffectAstNode);
             var expr2 = (NotPEffectAstNode)andExprArgs[2];
-            Assert.IsTrue(expr2.Argument is PEffectAstNode);
+            Assert.IsNotNull(expr2.Argument);
 
             Assert.IsTrue(andExprArgs[3] is AssignPEffectAstNode);
             var expr3 = (AssignPEffectAstNode)andExprArgs[3];
             Assert.AreEqual(AssignOperator.ASSIGN, expr3.AssignOperator);
-            Assert.IsTrue(expr3.Argument1 is FunctionTermAstNode);
+            Assert.IsNotNull(expr3.Argument1);
             Assert.IsTrue(expr3.Argument2 is IdentifierTermAstNode);
 
             Assert.IsTrue(andExprArgs[4] is AssignPEffectAstNode);
             var expr4 = (AssignPEffectAstNode)andExprArgs[4];
             Assert.AreEqual(AssignOperator.ASSIGN, expr4.AssignOperator);
-            Assert.IsTrue(expr4.Argument1 is FunctionTermAstNode);
+            Assert.IsNotNull(expr4.Argument1);
             Assert.IsTrue(expr4.Argument2 is UndefinedFuncValAstNode);
 
             Assert.IsTrue(andExprArgs[5] is AssignPEffectAstNode);
             var expr5 = (AssignPEffectAstNode)andExprArgs[5];
             Assert.AreEqual(AssignOperator.INCREASE, expr5.AssignOperator);
-            Assert.IsTrue(expr5.Argument1 is FunctionTermAstNode);
+            Assert.IsNotNull(expr5.Argument1);
             Assert.IsTrue(expr5.Argument2 is NumberTermAstNode);
         }
 
@@ -570,29 +572,29 @@ namespace PAD.Tests.PDDL
             Assert.IsTrue(andExprArgs[1] is AssignPEffectAstNode);
             var equalExpr1 = (AssignPEffectAstNode)andExprArgs[1];
             Assert.AreEqual(AssignOperator.ASSIGN, equalExpr1.AssignOperator);
-            Assert.IsTrue(equalExpr1.Argument1 is FunctionTermAstNode);
+            Assert.IsNotNull(equalExpr1.Argument1);
             Assert.IsTrue(equalExpr1.Argument2 is DurationVariableTermAstNode);
 
             Assert.IsTrue(andExprArgs[2] is AssignPEffectAstNode);
             var equalExpr2 = (AssignPEffectAstNode)andExprArgs[2];
             Assert.AreEqual(AssignOperator.ASSIGN, equalExpr2.AssignOperator);
-            Assert.IsTrue(equalExpr2.Argument1 is FunctionTermAstNode);
+            Assert.IsNotNull(equalExpr2.Argument1);
             Assert.IsTrue(equalExpr2.Argument2 is NumericOpAstNode);
 
             Assert.IsTrue(andExprArgs[3] is AssignPEffectAstNode);
             var equalExpr3 = (AssignPEffectAstNode)andExprArgs[3];
             Assert.AreEqual(AssignOperator.INCREASE, equalExpr3.AssignOperator);
-            Assert.IsTrue(equalExpr3.Argument1 is FunctionTermAstNode);
+            Assert.IsNotNull(equalExpr3.Argument1);
             Assert.IsTrue(equalExpr3.Argument2 is DurationVariableTermAstNode);
         }
 
         [TestMethod]
         public void TC_GrammarPredicateGD()
         {
-            var astNode = Utilities.LoadAst(typeof(PredicateGD), GetFilePath("TC_GrammarPredicateGD.pddl"));
+            var astNode = Utilities.LoadAst(typeof(PredicateGd), GetFilePath("TC_GrammarPredicateGD.pddl"));
 
-            Assert.IsTrue(astNode is PredicateGDAstNode);
-            var predicate = ((PredicateGDAstNode)astNode);
+            Assert.IsTrue(astNode is PredicateGdAstNode);
+            var predicate = (PredicateGdAstNode)astNode;
             var terms = predicate.Terms;
 
             Assert.AreEqual("predName", predicate.Name);
@@ -615,58 +617,58 @@ namespace PAD.Tests.PDDL
         [TestMethod]
         public void TC_GrammarPrefConGD()
         {
-            var astNode = Utilities.LoadAst(typeof(PrefConGD), GetFilePath("TC_GrammarPrefConGD.pddl"));
+            var astNode = Utilities.LoadAst(typeof(PrefConGd), GetFilePath("TC_GrammarPrefConGD.pddl"));
 
-            Assert.IsTrue(astNode is AndConGDAstNode);
-            var andExprArgs = ((AndConGDAstNode)astNode).Arguments;
+            Assert.IsTrue(astNode is AndConGdAstNode);
+            var andExprArgs = ((AndConGdAstNode)astNode).Arguments;
 
             Assert.AreEqual(13, andExprArgs.Count);
 
-            Assert.IsTrue(andExprArgs[0] is ForallConGDAstNode);
-            Assert.IsTrue(andExprArgs[1] is AtEndConGDAstNode);
-            Assert.IsTrue(andExprArgs[2] is AlwaysConGDAstNode);
-            Assert.IsTrue(andExprArgs[3] is SometimeConGDAstNode);
-            Assert.IsTrue(andExprArgs[4] is WithinConGDAstNode);
-            Assert.IsTrue(andExprArgs[5] is AtMostOnceConGDAstNode);
-            Assert.IsTrue(andExprArgs[6] is SometimeAfterConGDAstNode);
-            Assert.IsTrue(andExprArgs[7] is SometimeBeforeConGDAstNode);
-            Assert.IsTrue(andExprArgs[8] is AlwaysWithinConGDAstNode);
-            Assert.IsTrue(andExprArgs[9] is HoldDuringConGDAstNode);
-            Assert.IsTrue(andExprArgs[10] is HoldAfterConGDAstNode);
+            Assert.IsTrue(andExprArgs[0] is ForallConGdAstNode);
+            Assert.IsTrue(andExprArgs[1] is AtEndConGdAstNode);
+            Assert.IsTrue(andExprArgs[2] is AlwaysConGdAstNode);
+            Assert.IsTrue(andExprArgs[3] is SometimeConGdAstNode);
+            Assert.IsTrue(andExprArgs[4] is WithinConGdAstNode);
+            Assert.IsTrue(andExprArgs[5] is AtMostOnceConGdAstNode);
+            Assert.IsTrue(andExprArgs[6] is SometimeAfterConGdAstNode);
+            Assert.IsTrue(andExprArgs[7] is SometimeBeforeConGdAstNode);
+            Assert.IsTrue(andExprArgs[8] is AlwaysWithinConGdAstNode);
+            Assert.IsTrue(andExprArgs[9] is HoldDuringConGdAstNode);
+            Assert.IsTrue(andExprArgs[10] is HoldAfterConGdAstNode);
 
-            Assert.IsTrue(andExprArgs[11] is PreferenceConGDAstNode);
-            var preference = (PreferenceConGDAstNode)andExprArgs[11];
+            Assert.IsTrue(andExprArgs[11] is PreferenceConGdAstNode);
+            var preference = (PreferenceConGdAstNode)andExprArgs[11];
             Assert.AreEqual("prefName", preference.Name);
-            Assert.IsTrue(preference.Argument is AlwaysConGDAstNode);
+            Assert.IsTrue(preference.Argument is AlwaysConGdAstNode);
 
-            Assert.IsTrue(andExprArgs[12] is PreferenceConGDAstNode);
-            var preferenceWithEmptyName = (PreferenceConGDAstNode)andExprArgs[12];
+            Assert.IsTrue(andExprArgs[12] is PreferenceConGdAstNode);
+            var preferenceWithEmptyName = (PreferenceConGdAstNode)andExprArgs[12];
             Assert.AreEqual("", preferenceWithEmptyName.Name);
-            Assert.IsTrue(preferenceWithEmptyName.Argument is AlwaysConGDAstNode);
+            Assert.IsTrue(preferenceWithEmptyName.Argument is AlwaysConGdAstNode);
         }
 
         [TestMethod]
         public void TC_GrammarPreGD()
         {
-            var astNode = Utilities.LoadAst(typeof(PreGD), GetFilePath("TC_GrammarPreGD.pddl"));
+            var astNode = Utilities.LoadAst(typeof(PreGd), GetFilePath("TC_GrammarPreGD.pddl"));
 
-            Assert.IsTrue(astNode is AndGDAstNode);
-            var andExprArgs = ((AndGDAstNode)astNode).Arguments;
+            Assert.IsTrue(astNode is AndGdAstNode);
+            var andExprArgs = ((AndGdAstNode)astNode).Arguments;
 
             Assert.AreEqual(9, andExprArgs.Count);
-            Assert.IsTrue(andExprArgs[0] is PredicateGDAstNode);
-            Assert.IsTrue(andExprArgs[1] is NotGDAstNode);
-            Assert.IsTrue(andExprArgs[2] is OrGDAstNode);
-            Assert.IsTrue(andExprArgs[3] is ImplyGDAstNode);
-            Assert.IsTrue(andExprArgs[4] is ExistsGDAstNode);
-            Assert.IsTrue(andExprArgs[5] is ForallGDAstNode);
-            Assert.IsTrue(andExprArgs[6] is EqualsOpGDAstNode);
-            Assert.IsTrue(andExprArgs[7] is NumCompGDAstNode);
+            Assert.IsTrue(andExprArgs[0] is PredicateGdAstNode);
+            Assert.IsTrue(andExprArgs[1] is NotGdAstNode);
+            Assert.IsTrue(andExprArgs[2] is OrGdAstNode);
+            Assert.IsTrue(andExprArgs[3] is ImplyGdAstNode);
+            Assert.IsTrue(andExprArgs[4] is ExistsGdAstNode);
+            Assert.IsTrue(andExprArgs[5] is ForallGdAstNode);
+            Assert.IsTrue(andExprArgs[6] is EqualsOpGdAstNode);
+            Assert.IsTrue(andExprArgs[7] is NumCompGdAstNode);
 
-            Assert.IsTrue(andExprArgs[8] is PreferenceGDAstNode);
-            var preference = (PreferenceGDAstNode)andExprArgs[8];
+            Assert.IsTrue(andExprArgs[8] is PreferenceGdAstNode);
+            var preference = (PreferenceGdAstNode)andExprArgs[8];
             Assert.AreEqual("prefName", preference.Name);
-            Assert.IsTrue(preference.Argument is PredicateGDAstNode);
+            Assert.IsTrue(preference.Argument is PredicateGdAstNode);
         }
 
         [TestMethod]
@@ -675,7 +677,7 @@ namespace PAD.Tests.PDDL
             var astNode = Utilities.LoadAst(typeof(Problem), GetFilePath("TC_GrammarProblem.pddl"));
 
             Assert.IsTrue(astNode is ProblemAstNode);
-            var problem = ((ProblemAstNode)astNode);
+            var problem = (ProblemAstNode)astNode;
             var sections = problem.ProblemSections;
 
             Assert.AreEqual("problemName", problem.ProblemName);
@@ -700,10 +702,10 @@ namespace PAD.Tests.PDDL
             Assert.AreEqual(3, init.InitElemList.Count);
 
             var goal = (ProblemGoalAstNode)sections[3];
-            Assert.IsTrue(goal.Condition is PredicateGDAstNode);
+            Assert.IsTrue(goal.Condition is PredicateGdAstNode);
 
             var constraints = (ProblemConstraintsAstNode)sections[4];
-            Assert.IsTrue(constraints.Expression is AtMostOnceConGDAstNode);
+            Assert.IsTrue(constraints.Expression is AtMostOnceConGdAstNode);
 
             var metric = (ProblemMetricAstNode)sections[5];
             Assert.AreEqual(OptimizationSpecifier.MINIMIZE, metric.OptimizationSpecifier);
@@ -720,10 +722,10 @@ namespace PAD.Tests.PDDL
         [TestMethod]
         public void TC_GrammarTerm()
         {
-            var astNode = Utilities.LoadAst(typeof(PredicateGD), GetFilePath("TC_GrammarTerm.pddl"));
+            var astNode = Utilities.LoadAst(typeof(PredicateGd), GetFilePath("TC_GrammarTerm.pddl"));
 
-            Assert.IsTrue(astNode is PredicateGDAstNode);
-            var terms = ((PredicateGDAstNode)astNode).Terms;
+            Assert.IsTrue(astNode is PredicateGdAstNode);
+            var terms = ((PredicateGdAstNode)astNode).Terms;
 
             Assert.AreEqual(3, terms.Count);
             Assert.IsTrue(terms[0] is IdentifierTermAstNode);
@@ -765,13 +767,13 @@ namespace PAD.Tests.PDDL
 
             var effect2 = (AssignTimedEffectAstNode)timedEffects[2];
             Assert.AreEqual(TimedEffectAssignOperator.INCREASE, effect2.AssignOperator);
-            Assert.IsTrue(effect2.Function is FunctionTermAstNode);
-            Assert.IsTrue(effect2.Expression is TimedNumericExpressionAstNode);
+            Assert.IsNotNull(effect2.Function);
+            Assert.IsNotNull(effect2.Expression);
 
             var effect3 = (AssignTimedEffectAstNode)timedEffects[3];
             Assert.AreEqual(TimedEffectAssignOperator.DECREASE, effect3.AssignOperator);
-            Assert.IsTrue(effect3.Function is FunctionTermAstNode);
-            Assert.IsTrue(effect3.Expression is TimedNumericExpressionAstNode);
+            Assert.IsNotNull(effect3.Function);
+            Assert.IsNotNull(effect3.Expression);
         }
 
         [TestMethod]
@@ -832,30 +834,30 @@ namespace PAD.Tests.PDDL
         [TestMethod]
         public void TC_GrammarValueOrTerm()
         {
-            var astNode = Utilities.LoadAst(typeof(GD), GetFilePath("TC_GrammarValueOrTerm.pddl"));
+            var astNode = Utilities.LoadAst(typeof(Gd), GetFilePath("TC_GrammarValueOrTerm.pddl"));
 
-            Assert.IsTrue(astNode is AndGDAstNode);
-            var andExprArgs = ((AndGDAstNode)astNode).Arguments;
+            Assert.IsTrue(astNode is AndGdAstNode);
+            var andExprArgs = ((AndGdAstNode)astNode).Arguments;
 
             Assert.AreEqual(4, andExprArgs.Count);
-            Assert.IsTrue(andExprArgs[0] is EqualsOpGDAstNode);
-            Assert.IsTrue(andExprArgs[1] is EqualsOpGDAstNode);
-            Assert.IsTrue(andExprArgs[2] is EqualsOpGDAstNode);
-            Assert.IsTrue(andExprArgs[3] is EqualsOpGDAstNode);
+            Assert.IsTrue(andExprArgs[0] is EqualsOpGdAstNode);
+            Assert.IsTrue(andExprArgs[1] is EqualsOpGdAstNode);
+            Assert.IsTrue(andExprArgs[2] is EqualsOpGdAstNode);
+            Assert.IsTrue(andExprArgs[3] is EqualsOpGdAstNode);
 
-            var equalExpr0 = (EqualsOpGDAstNode)andExprArgs[0];
+            var equalExpr0 = (EqualsOpGdAstNode)andExprArgs[0];
             Assert.IsTrue(equalExpr0.Argument1 is FunctionTermAstNode);
             Assert.IsTrue(equalExpr0.Argument2 is IdentifierTermAstNode);
 
-            var equalExpr1 = (EqualsOpGDAstNode)andExprArgs[1];
+            var equalExpr1 = (EqualsOpGdAstNode)andExprArgs[1];
             Assert.IsTrue(equalExpr1.Argument1 is FunctionTermAstNode);
             Assert.IsTrue(equalExpr1.Argument2 is IdentifierTermAstNode);
 
-            var equalExpr2 = (EqualsOpGDAstNode)andExprArgs[2];
+            var equalExpr2 = (EqualsOpGdAstNode)andExprArgs[2];
             Assert.IsTrue(equalExpr2.Argument1 is IdentifierTermAstNode);
             Assert.IsTrue(equalExpr2.Argument2 is IdentifierTermAstNode);
 
-            var equalExpr3 = (EqualsOpGDAstNode)andExprArgs[3];
+            var equalExpr3 = (EqualsOpGdAstNode)andExprArgs[3];
             Assert.IsTrue(equalExpr3.Argument1 is NumberTermAstNode);
             Assert.IsTrue(equalExpr3.Argument2 is NumericOpAstNode);
         }
@@ -875,17 +877,17 @@ namespace PAD.Tests.PDDL
 
             Assert.IsTrue(andExprArgs[0] is AssignPEffectAstNode);
             var equalExpr0 = (AssignPEffectAstNode)andExprArgs[0];
-            Assert.IsTrue(equalExpr0.Argument1 is FunctionTermAstNode);
+            Assert.IsNotNull(equalExpr0.Argument1);
             Assert.IsTrue(equalExpr0.Argument2 is DurationVariableTermAstNode);
 
             Assert.IsTrue(andExprArgs[1] is AssignPEffectAstNode);
             var equalExpr1 = (AssignPEffectAstNode)andExprArgs[1];
-            Assert.IsTrue(equalExpr1.Argument1 is FunctionTermAstNode);
+            Assert.IsNotNull(equalExpr1.Argument1);
             Assert.IsTrue(equalExpr1.Argument2 is IdentifierTermAstNode);
 
             Assert.IsTrue(andExprArgs[2] is AssignPEffectAstNode);
             var equalExpr2 = (AssignPEffectAstNode)andExprArgs[2];
-            Assert.IsTrue(equalExpr2.Argument1 is FunctionTermAstNode);
+            Assert.IsNotNull(equalExpr2.Argument1);
             Assert.IsTrue(equalExpr2.Argument2 is DurationVariableTermAstNode);
         }
     }

@@ -11,18 +11,18 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Relaxed PDDL state (collection of propositions).
         /// </summary>
-        public IState State { set; get; } = null;
+        public IState State { set; get; }
 
         /// <summary>
         /// Corresponding labels for the relaxed state propositions.
         /// </summary>
-        public StateLabels Labels { set; get; } = null;
+        public StateLabels Labels { set; get; }
 
         /// <summary>
         /// Constructs the state layer from the initial state of the problem.
         /// </summary>
         /// <param name="state">State.</param>
-        /// <param name="initLabels">Should the labels be inited?</param>
+        /// <param name="initLabels">Should the labels be initialized?</param>
         public StateLayer(IState state, bool initLabels = true)
         {
             State = state;
@@ -43,7 +43,7 @@ namespace PAD.Planner.PDDL
         }
 
         /// <summary>
-        /// Constructs the state layer from the predecessing state layer and action layer.
+        /// Constructs the state layer from the preceding state layer and action layer.
         /// </summary>
         /// <param name="sLayer">State layer.</param>
         /// <param name="aLayer">Action layer.</param>
@@ -77,7 +77,7 @@ namespace PAD.Planner.PDDL
         /// <param name="label">Predicate label.</param>
         private void StoreLabel(IAtom atom, double label)
         {
-            double value = -1;
+            double value;
             if (Labels.TryGetValue(atom, out value))
             {
                 Labels[atom] = Math.Min(value, label);

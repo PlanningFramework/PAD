@@ -11,15 +11,15 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// ID manager.
         /// </summary>
-        IDManager IDManager { set; get; } = null;
+        private IdManager IdManager { get; }
 
         /// <summary>
         /// Constructs the atom factory.
         /// </summary>
         /// <param name="idManager">ID manager.</param>
-        public PrimitivesFactory(IDManager idManager)
+        public PrimitivesFactory(IdManager idManager)
         {
-            IDManager = idManager;
+            IdManager = idManager;
         }
 
         /// <summary>
@@ -53,13 +53,13 @@ namespace PAD.Planner.PDDL
         /// <returns>New atom.</returns>
         private IAtom CreatePredicateOrFunction(bool isFunction, string name, params string[] argumentNames)
         {
-            int nameID = (isFunction) ? IDManager.Functions.GetID(name, argumentNames.Length) : IDManager.Predicates.GetID(name, argumentNames.Length);
+            int nameId = (isFunction) ? IdManager.Functions.GetId(name, argumentNames.Length) : IdManager.Predicates.GetId(name, argumentNames.Length);
             var terms = new List<ITerm>();
             foreach (var argumentName in argumentNames)
             {
                 terms.Add(CreateTerm(argumentName));
             }
-            return new Atom(nameID, terms);
+            return new Atom(nameId, terms);
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace PAD.Planner.PDDL
             {
                 inputPredicates.Add(predicate);
             }
-            return new State(inputPredicates, null, null, IDManager);
+            return new State(inputPredicates, null, null, IdManager);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace PAD.Planner.PDDL
         /// <returns>New state.</returns>
         public IState CreateState(HashSet<IAtom> predicates, Dictionary<IAtom, int> objectFunctions = null, Dictionary<IAtom, double> numericFunctions = null)
         {
-            return new State(predicates, numericFunctions, objectFunctions, IDManager);
+            return new State(predicates, numericFunctions, objectFunctions, IdManager);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace PAD.Planner.PDDL
             {
                 inputPredicates.Add(predicate);
             }
-            return new RelativeState(inputPredicates.Count != 0 ? inputPredicates : null, null, null, null, IDManager);
+            return new RelativeState(inputPredicates.Count != 0 ? inputPredicates : null, null, null, null, IdManager);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace PAD.Planner.PDDL
                 }
             }
 
-            return new RelativeState(inputPredicates, inputNegatedPredicates, null, null, IDManager);
+            return new RelativeState(inputPredicates, inputNegatedPredicates, null, null, IdManager);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace PAD.Planner.PDDL
         /// <returns>Constant ID.</returns>
         public int CreateConstant(string name)
         {
-            return IDManager.Constants.GetID(name);
+            return IdManager.Constants.GetId(name);
         }
 
         /// <summary>
@@ -149,11 +149,11 @@ namespace PAD.Planner.PDDL
         {
             if (name.StartsWith("?"))
             {
-                return new VariableTerm(IDManager.Variables.GetID(name));
+                return new VariableTerm(IdManager.Variables.GetId(name));
             }
             else
             {
-                return new ConstantTerm(IDManager.Constants.GetID(name), IDManager);
+                return new ConstantTerm(IdManager.Constants.GetId(name), IdManager);
             }
         }
 
@@ -164,11 +164,11 @@ namespace PAD.Planner.PDDL
         /// <returns>Type ID.</returns>
         public int CreateType(string name)
         {
-            return IDManager.Types.GetID(name);
+            return IdManager.Types.GetId(name);
         }
 
         /// <summary>
-        /// Creates a substitution from the given parameters and substitued constants.
+        /// Creates a substitution from the given parameters and substituted constants.
         /// </summary>
         /// <param name="parameters">Parameters.</param>
         /// <param name="constNames">Constant names.</param>
@@ -182,7 +182,7 @@ namespace PAD.Planner.PDDL
             {
                 if (!string.IsNullOrEmpty(constNames[i]))
                 {
-                    substitution.Add(parameters[i].ParameterNameID, CreateConstant(constNames[i]));
+                    substitution.Add(parameters[i].ParameterNameId, CreateConstant(constNames[i]));
                 }
             }
             return substitution;

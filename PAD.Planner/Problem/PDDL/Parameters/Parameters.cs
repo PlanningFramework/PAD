@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
@@ -14,19 +15,19 @@ namespace PAD.Planner.PDDL
         /// </summary>
         /// <param name="parameters">PDDL parameters definition.</param>
         /// <param name="idManager">ID manager.</param>
-        public Parameters(InputData.PDDL.Parameters parameters, IDManager idManager)
+        public Parameters(InputData.PDDL.Parameters parameters, IdManager idManager)
         {
             foreach (var parameter in parameters)
             {
-                int parameterNameID = idManager.Variables.GetID(parameter.ParameterName);
+                int parameterNameId = idManager.Variables.GetId(parameter.ParameterName);
 
                 List<int> typeNamesIDs = new List<int>();
                 foreach (var typeName in parameter.TypeNames)
                 {
-                    typeNamesIDs.Add(idManager.Types.GetID(typeName));
+                    typeNamesIDs.Add(idManager.Types.GetId(typeName));
                 }
 
-                Add(new Parameter(parameterNameID, typeNamesIDs, idManager));
+                Add(new Parameter(parameterNameId, typeNamesIDs, idManager));
             }
         }
 
@@ -71,7 +72,7 @@ namespace PAD.Planner.PDDL
 
             foreach (var parameter in this)
             {
-                if (other.Exists(otherParameter => parameter.ParameterNameID == otherParameter.ParameterNameID))
+                if (other.Exists(otherParameter => parameter.ParameterNameId == otherParameter.ParameterNameId))
                 {
                     return true;
                 }
@@ -83,14 +84,14 @@ namespace PAD.Planner.PDDL
         /// Gets the maximal used parameter ID.
         /// </summary>
         /// <returns>Maximal used parameter ID.</returns>
-        public int GetMaxUsedParameterID()
+        public int GetMaxUsedParameterId()
         {
-            int maxID = 0;
+            int maxId = 0;
             foreach (var parameter in this)
             {
-                maxID = Math.Max(maxID, parameter.ParameterNameID);
+                maxId = Math.Max(maxId, parameter.ParameterNameId);
             }
-            return maxID;
+            return maxId;
         }
 
         /// <summary>

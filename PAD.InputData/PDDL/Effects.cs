@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using PAD.InputData.PDDL.Traits;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
+// ReSharper disable StringLiteralTypo
 
 namespace PAD.InputData.PDDL
 {
@@ -47,12 +50,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// List of expression parameters.
         /// </summary>
-        public Parameters Parameters { get; set; } = new Parameters();
+        public Parameters Parameters { get; set; }
 
         /// <summary>
         /// List of effects for the expression to be applied.
         /// </summary>
-        public Effects Effects { get; set; } = new Effects();
+        public Effects Effects { get; set; }
 
         /// <summary>
         /// Constructs the effect.
@@ -95,12 +98,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument expression.
         /// </summary>
-        public Expression Expression { get; set; } = null;
+        public Expression Expression { get; set; }
 
         /// <summary>
         /// List of effects for the expression to be applied.
         /// </summary>
-        public PrimitiveEffects Effects { get; set; } = new PrimitiveEffects();
+        public PrimitiveEffects Effects { get; set; }
 
         /// <summary>
         /// Constructs the effect.
@@ -181,7 +184,7 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Predicate name.
         /// </summary>
-        public string Name { get; set; } = "";
+        public string Name { get; set; }
 
         /// <summary>
         /// Argument terms.
@@ -226,12 +229,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// First argument term.
         /// </summary>
-        public Term Term1 { get; set; } = null;
+        public Term Term1 { get; set; }
 
         /// <summary>
         /// Second argument term.
         /// </summary>
-        public Term Term2 { get; set; } = null;
+        public Term Term2 { get; set; }
 
         /// <summary>
         /// Constructs the effect.
@@ -274,12 +277,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Argument effect.
         /// </summary>
-        public AtomicFormulaEffect Argument { get; set; } = null;
+        public AtomicFormulaEffect Argument { get; set; }
 
         /// <summary>
         /// Constructs the effect.
         /// </summary>
-        /// <param name="argument">Argument effect.</param>
+        /// <param name="effect">Argument effect.</param>
         public NotEffect(AtomicFormulaEffect effect)
         {
             Argument = effect;
@@ -314,17 +317,17 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Assignment operator specifier.
         /// </summary>
-        public AssignOperator AssignOperator { get; set; } = AssignOperator.ASSIGN;
+        public AssignOperator AssignOperator { get; set; }
 
         /// <summary>
         /// Numeric function of which value will be assigned.
         /// </summary>
-        public NumericFunction Function { get; set; } = null;
+        public NumericFunction Function { get; set; }
 
         /// <summary>
         /// Numeric value to be assigned.
         /// </summary>
-        public NumericExpression Value { get; set; } = null;
+        public NumericExpression Value { get; set; }
 
         /// <summary>
         /// Constructs the effect.
@@ -369,12 +372,12 @@ namespace PAD.InputData.PDDL
         /// <summary>
         /// Object function of which value will be assigned.
         /// </summary>
-        public ObjectFunctionTerm Function { get; set; } = null;
+        public ObjectFunctionTerm Function { get; set; }
 
         /// <summary>
         /// Object value to be assigned.
         /// </summary>
-        public Term Value { get; set; } = null;
+        public Term Value { get; set; }
 
         /// <summary>
         /// Constructs the effect.

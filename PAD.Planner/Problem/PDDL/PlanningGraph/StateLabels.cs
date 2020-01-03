@@ -9,14 +9,14 @@ namespace PAD.Planner.PDDL
     public class StateLabels : Dictionary<IAtom, double>, IStateLabels
     {
         /// <summary>
-        /// Constructs empty state lables.
+        /// Constructs empty state labels.
         /// </summary>
         public StateLabels()
         {
         }
 
         /// <summary>
-        /// Constructs the initial state lables.
+        /// Constructs the initial state labels.
         /// </summary>
         public StateLabels(IState initialState)
         {

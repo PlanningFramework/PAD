@@ -20,30 +20,31 @@ namespace PAD.InputData.PDDL
             {
                 case Requirement.ADL:
                 {
-                    Add(Requirement.STRIPS);
-                    Add(Requirement.TYPING);
-                    Add(Requirement.NEGATIVE_PRECONDITIONS);
-                    Add(Requirement.DISJUNCTIVE_PRECONDITIONS);
-                    Add(Requirement.EQUALITY);
-                    Add(Requirement.QUANTIFIED_PRECONDITIONS);
-                    Add(Requirement.CONDITIONAL_EFFECTS);
+                    base.Add(Requirement.STRIPS);
+                    base.Add(Requirement.TYPING);
+                    base.Add(Requirement.NEGATIVE_PRECONDITIONS);
+                    base.Add(Requirement.DISJUNCTIVE_PRECONDITIONS);
+                    base.Add(Requirement.EQUALITY);
+                    base.Add(Requirement.EXISTENTIAL_PRECONDITIONS);
+                    base.Add(Requirement.UNIVERSAL_PRECONDITIONS);
+                    base.Add(Requirement.CONDITIONAL_EFFECTS);
                     break;
                 }
                 case Requirement.QUANTIFIED_PRECONDITIONS:
                 {
-                    Add(Requirement.EXISTENTIAL_PRECONDITIONS);
-                    Add(Requirement.UNIVERSAL_PRECONDITIONS);
+                    base.Add(Requirement.EXISTENTIAL_PRECONDITIONS);
+                    base.Add(Requirement.UNIVERSAL_PRECONDITIONS);
                     break;
                 }
                 case Requirement.FLUENTS:
                 {
-                    Add(Requirement.NUMERIC_FLUENTS);
-                    Add(Requirement.OBJECT_FLUENTS);
+                    base.Add(Requirement.NUMERIC_FLUENTS);
+                    base.Add(Requirement.OBJECT_FLUENTS);
                     break;
                 }
                 case Requirement.TIMED_INITIAL_LITERALS:
                 {
-                    Add(Requirement.DURATIVE_ACTIONS);
+                    base.Add(Requirement.DURATIVE_ACTIONS);
                     break;
                 }
             }

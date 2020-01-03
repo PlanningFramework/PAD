@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.SAS
 {
     /// <summary>
-    /// Implementation of standard conditions (conjuction of constrains) in the SAS+ problem. Constraints are represented
+    /// Implementation of standard conditions (conjunction of constrains) in the SAS+ problem. Constraints are represented
     /// as a collection of required assignments, i.e. concrete values for specific variables.
     /// </summary>
     public class Conditions : HashSet<IAssignment>, ISimpleConditions
@@ -13,7 +14,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Constructs SAS+ conditions from other conditions.
         /// </summary>
-        /// <param name="conditionsList">List of conditions.</param>
+        /// <param name="conditions">List of conditions.</param>
         public Conditions(Conditions conditions) : base(conditions)
         {
         }
@@ -100,7 +101,7 @@ namespace PAD.Planner.SAS
         /// <summary>
         /// Gets the number of not accomplished condition constraints for the specified state.
         /// </summary>
-        /// <param name="state">State to be evalatuated.</param>
+        /// <param name="state">State to be evaluated.</param>
         /// <returns>Number of not accomplished condition constraints.</returns>
         public int GetNotAccomplishedConstraintsCount(IState state)
         {
@@ -220,7 +221,7 @@ namespace PAD.Planner.SAS
         /// <returns>True if the conditions are conflicted with the given assignment, false otherwise.</returns>
         public bool IsConflictedWith(IAssignment assignment)
         {
-            int value = -1;
+            int value;
             if (IsVariableConstrained(assignment.GetVariable(), out value))
             {
                 // different constraint on the same variable -> conflict
@@ -230,13 +231,13 @@ namespace PAD.Planner.SAS
         }
 
         /// <summary>
-        /// Evaluates the relavance of a single effect assignment.
+        /// Evaluates the relevance of a single effect assignment.
         /// </summary>
         /// <param name="assignment">Effect assignment.</param>
         /// <returns>Effect relevance of the specified assignment.</returns>
         public EffectRelevance IsEffectAssignmentRelevant(IAssignment assignment)
         {
-            int value = -1;
+            int value;
             if (IsVariableConstrained(assignment.GetVariable(), out value))
             {
                 return (assignment.GetValue() == value) ? EffectRelevance.RELEVANT : EffectRelevance.ANTI_RELEVANT;
@@ -249,7 +250,7 @@ namespace PAD.Planner.SAS
         /// </summary>
         /// <param name="mutexConstraints">Mutex constraints.</param>
         /// <returns>True if the conditions is compatible with the specified mutex constraints, false otherwise.</returns>
-        public bool IsCompatibleWithMutexContraints(IList<IAssignment> mutexConstraints)
+        public bool IsCompatibleWithMutexConstraints(IList<IAssignment> mutexConstraints)
         {
             bool anyLocked = false;
             foreach (var constraint in mutexConstraints)
@@ -292,7 +293,7 @@ namespace PAD.Planner.SAS
         /// Checks whether the specified variable is actually constrained. If the check is positive, returns also a constraining value.
         /// </summary>
         /// <param name="variable">Variable to be checked.</param>
-        /// <param name="value">Costraining value.</param>
+        /// <param name="value">Constraining value.</param>
         /// <returns>True if the given variable is constrained in the conditions, false otherwise.</returns>
         public bool IsVariableConstrained(int variable, out int value)
         {
@@ -304,7 +305,7 @@ namespace PAD.Planner.SAS
                     return true;
                 }
             }
-            value = Assignment.INVALID_VALUE;
+            value = Assignment.InvalidValue;
             return false;
         }
 

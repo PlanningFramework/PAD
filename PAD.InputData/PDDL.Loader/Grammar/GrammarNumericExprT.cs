@@ -12,15 +12,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
         /// Constructor of the grammar node.
         /// </summary>
         /// <param name="p">Parent master grammar.</param>
-        public NumericExprT(MasterGrammar p) : base(p, BForm.FULL)
-        {
-        }
-
-        /// <summary>
-        /// Factory method for defining grammar rules of the grammar node.
-        /// </summary>
-        /// <returns>Grammar rules for this node.</returns>
-        protected override NonTerminal Make()
+        public NumericExprT(MasterGrammar p) : base(p)
         {
             // NON-TERMINAL AND TERMINAL SYMBOLS
 
@@ -50,7 +42,7 @@ namespace PAD.InputData.PDDL.Loader.Grammar
 
             p.MarkTransient(numericExprT, numericExprTComplex, numericExprTProductVariant);
 
-            return numericExprT;
+            Rule = numericExprT;
         }
     }
 }

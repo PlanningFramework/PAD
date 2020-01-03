@@ -28,7 +28,7 @@ namespace PAD.Planner.Search
         double GetCost();
 
         /// <summary>
-        /// Gets the full string description of the solution plan, i.e. the full path of operartor applications
+        /// Gets the full string description of the solution plan, i.e. the full path of operator applications
         /// including all the intermediate states.
         /// </summary>
         /// <returns>Full description of the solution plan.</returns>

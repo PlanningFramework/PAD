@@ -24,7 +24,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Problem definition sections.
         /// </summary>
-        public List<ProblemSectionAstNode> ProblemSections { get; private set; } = null;
+        public List<ProblemSectionAstNode> ProblemSections { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -64,7 +64,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of PDDL requirements.
         /// </summary>
-        public List<Requirement> RequirementsList { get; private set; } = null;
+        public List<Requirement> RequirementsList { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -99,7 +99,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of typed objects.
         /// </summary>
-        public TypedListAstNode ObjectsList { get; private set; } = null;
+        public TypedListAstNode ObjectsList { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -129,7 +129,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of init elements.
         /// </summary>
-        public List<InitElemAstNode> InitElemList { get; private set; } = null;
+        public List<InitElemAstNode> InitElemList { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -159,7 +159,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Goal condition of the problem.
         /// </summary>
-        public GDAstNode Condition { get; private set; } = null;
+        public GdAstNode Condition { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -167,7 +167,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Condition = treeNode.GetChildAst<GDAstNode>(1);
+            Condition = treeNode.GetChildAst<GdAstNode>(1);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Constraint expression for the problem.
         /// </summary>
-        public ConGDAstNode Expression { get; private set; } = null;
+        public ConGdAstNode Expression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -197,7 +197,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <param name="treeNode">Parse-tree node.</param>
         public override void Init(ParseTreeNode treeNode)
         {
-            Expression = treeNode.GetChildAst<ConGDAstNode>(1);
+            Expression = treeNode.GetChildAst<ConGdAstNode>(1);
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// Expression to be optimized.
         /// </summary>
-        public TermOrNumericAstNode MetricExpression { get; private set; } = null;
+        public TermOrNumericAstNode MetricExpression { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.
@@ -256,7 +256,7 @@ namespace PAD.InputData.PDDL.Loader.Ast
         /// <summary>
         /// List of length specifications.
         /// </summary>
-        public List<Tuple<LengthSpecifier, int>> LengthSpecifications { get; private set; } = null;
+        public List<Tuple<LengthSpecifier, int>> LengthSpecifications { get; private set; }
 
         /// <summary>
         /// Initialization of the AST node. Specifies conversion from parse-tree node to AST node.

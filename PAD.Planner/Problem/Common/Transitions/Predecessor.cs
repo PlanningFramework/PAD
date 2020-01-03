@@ -11,17 +11,17 @@ namespace PAD.Planner
         /// <summary>
         /// Reference to the original conditions.
         /// </summary>
-        private IConditions ReferenceConditions { set; get; } = null;
+        private IConditions ReferenceConditions { get; }
 
         /// <summary>
         /// Reference to the original relative state.
         /// </summary>
-        private IRelativeState ReferenceRelativeState { set; get; } = null;
+        private IRelativeState ReferenceRelativeState { get; }
 
         /// <summary>
         /// Grounded applied operator.
         /// </summary>
-        private IOperator AppliedOperator { set; get; } = null;
+        private IOperator AppliedOperator { get; }
 
         /// <summary>
         /// Constructs the predecessor entity from conditions.
@@ -81,7 +81,7 @@ namespace PAD.Planner
         }
 
         /// <summary>
-        /// Gets the collection of all possible predecessing states for the current backwards application.
+        /// Gets the collection of all possible preceding states for the current backwards application.
         /// </summary>
         /// <param name="problem">Reference planning problem.</param>
         /// <returns>All possible state predecessors.</returns>
@@ -135,7 +135,7 @@ namespace PAD.Planner
             }
 
             // Possible optimization for relative states: find out beforehand whether the applied operator can create more than one
-            // predecessing relative states by its backwards application (= contains conditional effects, OR in preconditions etc.)
+            // preceding relative states by its backwards application (= contains conditional effects, OR in preconditions etc.)
             return true;
         }
 

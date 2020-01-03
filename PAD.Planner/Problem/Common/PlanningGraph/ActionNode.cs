@@ -10,17 +10,17 @@ namespace PAD.Planner
         /// <summary>
         /// Applied operator.
         /// </summary>
-        public IOperator Operator { set; get; } = null;
+        public IOperator Operator { set; get; }
 
         /// <summary>
         /// Previous atoms in the planning graph, i.e. effective preconditions of the operator.
         /// </summary>
-        public List<IProposition> Predecessors { set; get; } = null;
+        public List<IProposition> Predecessors { set; get; }
 
         /// <summary>
         /// Successor atoms in the planning graph, i.e. actual effects of the operator.
         /// </summary>
-        public List<IProposition> Successors { set; get; } = null;
+        public List<IProposition> Successors { set; get; }
 
         /// <summary>
         /// Label value of the action node (within a forward cost evaluation).
@@ -42,7 +42,8 @@ namespace PAD.Planner
         /// Constructs the action node of the relaxed planning graph (for FF calculation).
         /// </summary>
         /// <param name="appliedOperator">Applied operator.</param>
-        /// <param name="predecessor">Predecessor state.</param>
+        /// <param name="predecessors">Predecessors.</param>
+        /// <param name="successors">Successors.</param>
         public ActionNode(IOperator appliedOperator, List<IProposition> predecessors, List<IProposition> successors)
         {
             Operator = appliedOperator;
@@ -53,8 +54,7 @@ namespace PAD.Planner
         /// <summary>
         /// Constructs the action node of the relaxed planning graph (for FF calculation).
         /// </summary>
-        /// <param name="appliedOperator">Applied operator.</param>
-        /// <param name="predecessor">Predecessor state.</param>
+        /// <param name="predecessors">Predecessors.</param>
         public ActionNode(List<IProposition> predecessors)
         {
             Predecessors = predecessors;

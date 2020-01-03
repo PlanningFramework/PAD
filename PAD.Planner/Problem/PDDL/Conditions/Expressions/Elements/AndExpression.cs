@@ -11,7 +11,7 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Children expressions.
         /// </summary>
-        public List<IExpression> Children { set; get; } = null;
+        public List<IExpression> Children { set; get; }
 
         /// <summary>
         /// Constructs the AND expression.

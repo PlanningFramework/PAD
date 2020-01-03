@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+// ReSharper disable CommentTypo
 
 namespace PAD.Planner.PDDL
 {
     /// <summary>
-    /// Builder class for a construction of simplified CNF expressions. In CNF (conjuctive-normal-form), the expression needs to be strictly in a form of a conjuntion
+    /// Builder class for a construction of simplified CNF expressions. In CNF (conjunctive-normal-form), the expression needs to be strictly in a form of a conjunction
     /// of clauses (which are a disjunction of literals, or literals itselves). The given expression is firstly converted into CNF via ExpressionToCNFTransformer but
     /// remains in the original data structure (IExpression). Then the expression is transformed into a separate, more compact, data structure (ConditionsCNF). CNF
     /// expression is a convenient form for further processing (e.g. evaluating conditions against operator effects to determine relevant operators).
@@ -14,22 +15,22 @@ namespace PAD.Planner.PDDL
         /// <summary>
         /// Expression CNF transformer (while the result is still an IExpression, not ConditionsCNF).
         /// </summary>
-        private ExpressionToCNFTransformer ExpressionToCNFTransformer { set; get; } = null;
+        private ExpressionToCNFTransformer ExpressionToCNFTransformer { get; }
 
         /// <summary>
         /// Evaluation manager.
         /// </summary>
-        private EvaluationManager EvaluationManager { set; get; } = null;
+        private EvaluationManager EvaluationManager { get; }
 
         /// <summary>
         /// Stack of CNF expression parts.
         /// </summary>
-        private Stack<IConjunctCNF> Stack { set; get; } = new Stack<IConjunctCNF>();
+        private Stack<IConjunctCNF> Stack { get; } = new Stack<IConjunctCNF>();
 
         /// <summary>
         /// Is the currently processed subexpression negated?
         /// </summary>
-        private bool IsNegated { set; get; } = false;
+        private bool IsNegated { set; get; }
 
         /// <summary>
         /// Creates the expression CNF builder.
