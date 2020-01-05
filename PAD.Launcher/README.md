@@ -50,7 +50,7 @@ The config file for the planning tasks can be something like this (see the valid
 
     MaxNumberOfParallelTasks=8
 
-    \# Task 1
+    # Task 1
     Type=PDDL
     Algorithm=AStarSearch
     Heuristic=FFHeuristic
@@ -62,12 +62,12 @@ The config file for the planning tasks can be something like this (see the valid
     TimeLimit=60
     MemoryLimit=50000
 
-    \# Task 2
+    # Task 2
     Type=SAS+
     Algorithm=HillClimbingSearch
     Problems=problem1.sas;problem2.sas
 
-    \# Task 3
+    # Task 3
     Type=SAS+
     Problems=Problems/SAS/
 
@@ -75,7 +75,7 @@ The config file for the planning tasks can be something like this (see the valid
 
     [MaxNumberOfParallelTasks=UNSIGNED_INTEGER]
 
-    \# <taskName1>
+    # <taskName1>
     [Type=PDDL|SAS+]
     [Algorithm=AStarSearch|BeamSearch|HillClimbingSearch]
     [Heuristic=BlindHeuristic|StripsHeuristic|PerfectRelaxationHeuristic|AdditiveRelaxationHeuristic|MaxRelaxationHeuristic|FFHeuristic|PDBHeuristic]
@@ -87,5 +87,5 @@ The config file for the planning tasks can be something like this (see the valid
     [TimeLimit=UNSIGNED_INTEGER]
     [MemoryLimit=UNSIGNED_INTEGER]
 
-    \# <taskName2>
+    # <taskName2>
     ...
